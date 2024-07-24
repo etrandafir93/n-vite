@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="http://localhost:35729/livereload.js"></script>
+    <meta charset="UTF-8">
+    <title>Wedding Invitation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body text-center">
+            <h1 class="card-title">You're Invited!</h1>
+            <p class="card-text">We are delighted to invite you to the wedding of</p>
+            <h2 class="card-text" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
+            <p class="card-text">on</p>
+            <h3 class="card-text" th:text="${event_date}"></h3>
+            <p class="card-text">at</p>
+            <h4 class="card-text" th:text="${event_location}"></h4>
+            <p class="card-text">Reception to follow at</p>
+            <h4 class="card-text" th:text="${event_reception}"></h4>
+            <a href="#" class="btn btn-primary mt-3">RSVP</a>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
