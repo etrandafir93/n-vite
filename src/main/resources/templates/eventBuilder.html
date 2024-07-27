@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .card-title {
+            font-family: 'Lora', serif;
+            color: #333333;
+        }
+        .card-text {
+            color: #666666;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            width: 120px;
+            font-size: 1rem;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            border-radius: 5px;
+            width: 120px;
+            font-size: 1rem;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-save {
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            width: 120px;
+            font-size: 1rem;
+        }
+        .btn-save:hover {
+            background-color: #218838;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title text-center">Our Wedding</h1>
+            <form th:action="@{/events}" method="post">
+                <div class="form-group">
+                    <label for="groomName">Groom Name</label>
+                    <input type="text" class="form-control" id="groomName" name="groomName" required>
+                </div>
+                <div class="form-group">
+                    <label for="brideName">Bride Name</label>
+                    <input type="text" class="form-control" id="brideName" name="brideName" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventLocation">Event Location</label>
+                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventReception">Event Reception</label>
+                    <input type="text" class="form-control" id="eventReception" name="eventReception" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDateTime">Event Date and Time</label>
+                    <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime" required>
+                </div>
+                <div class="button-container mt-4">
+                    <a href="/events" class="btn btn-warning">Cancel</a>
+                    <button type="submit" class="btn btn-save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

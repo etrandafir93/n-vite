@@ -1,7 +1,7 @@
 package com.etr.nvite.guest;
 
 import com.etr.nvite.db.Events;
-import com.etr.nvite.db.Events.EventReference;
+import com.etr.nvite.db.EventReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

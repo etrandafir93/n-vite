@@ -1,33 +1,39 @@
 package com.etr.nvite.db;
 
-import jakarta.annotation.Nullable;
-import lombok.With;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.time.LocalDateTime.now;
+
 @Repository
 public class Events {
     private final Map<EventReference, Event> events = new HashMap<>();
 
+    @PostConstruct
+    void testEvents() {
+        create(new Event("John Snow", "Daeneys", "Castely Rock", "North of the Wall", now().minusYears(10).toString()));
+        create(new Event("Dorel", "Ileana", "Turnu Magurele", "Biserica Sf Patrafir", now().plusDays(10).toString()));
+    }
+
     public EventReference create(Event event) {
-        Assert.isNull(event.reference, "reference must be null when creating a new event!");
-        Assert.isNull(event.created, "created must be null when creating a new event!");
+        Assert.isNull(event.reference(), "reference must be null when creating a new event!");
+        Assert.isNull(event.created(), "created must be null when creating a new event!");
 
         String ref = "%s-and-%s".formatted(
-                event.brideName.replace(" ", ""),
-                event.groomName.replace(" ", "")
+                event.brideName().replace(" ", ""),
+                event.groomName().replace(" ", "")
         );
         EventReference evtRef = new EventReference(ref);
         Assert.isNull(events.get(evtRef), "Key %s is not unique! We cannot save this event!".formatted(ref));
 
         var newEvent = event.withReference(evtRef)
-                .withCreated(LocalDateTime.now());
+                .withCreated(now());
 
         events.put(evtRef, newEvent);
         return evtRef;
@@ -41,36 +47,4 @@ public class Events {
         return events.values().stream();
     }
 
-    public record EventReference(String value) {
-    }
-
-    public record Event(
-            String groomName,
-            String brideName,
-            String eventLocation,
-            String eventReception,
-            String eventDateTime,
-
-            @With @Nullable
-            LocalDateTime created,
-            @With @Nullable
-            EventReference reference
-    ) {
-
-        public Event(String groomName,
-                     String brideName,
-                     String eventLocation,
-                     String eventReception,
-                     String eventDateTime) {
-            this(
-                    groomName,
-                    brideName,
-                    eventLocation,
-                    eventReception,
-                    eventDateTime,
-                    null,
-                    null
-            );
-        }
-    }
 }
