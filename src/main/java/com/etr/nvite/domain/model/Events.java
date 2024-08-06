@@ -1,4 +1,4 @@
-package com.etr.nvite.db;
+package com.etr.nvite.domain.model;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.now;
+
+import com.etr.nvite.domain.model.Event;
+import com.etr.nvite.domain.model.EventReference;
 
 @Repository
 public class Events {
@@ -43,8 +46,14 @@ public class Events {
         return Optional.ofNullable(events.get(ref));
     }
 
+    public Event findOrThrow(EventReference ref) {
+        return find(ref)
+            .orElseThrow(() -> new IllegalArgumentException("cannot find event with eventReference=" + ref));
+    }
+
     public Stream<Event> findAll() {
         return events.values().stream();
     }
+
 
 }

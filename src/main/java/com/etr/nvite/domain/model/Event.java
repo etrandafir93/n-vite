@@ -1,4 +1,4 @@
-package com.etr.nvite.db;
+package com.etr.nvite.domain.model;
 
 import jakarta.annotation.Nullable;
 import lombok.With;
