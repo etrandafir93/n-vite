@@ -22,13 +22,29 @@
         .card-text {
             color: #666666; /* Slightly lighter text color */
         }
-        .btn-primary {
-            background-color: #007bff; /* Bootstrap primary color */
+        .btn-primary, .btn-secondary {
             border: none;
-            border-radius: 5px; /* Rounded corners for the button */
+            border-radius: 5px; /* Rounded corners for the buttons */
         }
         .btn-primary:hover {
             background-color: #0056b3; /* Darker shade on hover */
+        }
+        .btn-secondary {
+            background-color: #6c757d; /* Bootstrap secondary color */
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Darker shade on hover */
+        }
+        .form-inline .form-group {
+            display: flex;
+            align-items: center;
+        }
+        .form-inline .form-group input {
+            margin-left: 10px;
+            width: 200px; /* Smaller input field */
+        }
+        .btn-group {
+            margin-top: 10px; /* Add space between the input field and buttons */
         }
     </style>
 </head>
@@ -45,7 +61,17 @@
             <h4 class="card-text" th:text="${event_location}"></h4>
             <p class="card-text">Reception to follow at</p>
             <h4 class="card-text" th:text="${event_reception}"></h4>
-            <a href="#" class="btn btn-primary mt-3">RSVP</a>
+            <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post" class="mt-3 form-inline justify-content-center">
+                <div class="form-group">
+                    <label for="guest">Name:</label>
+                    <input type="text" id="guest" name="guest" class="form-control" required>
+                </div>
+                <br>
+                <div class="btn-group" role="group">
+                    <button type="submit" name="rsvp" value="DECLINE" class="btn btn-secondary">Decline</button>
+                    <button type="submit" name="rsvp" value="ACCEPT" class="btn btn-primary">Accept</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -15,6 +15,8 @@ import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.domain.model.InvitationVisits;
+import tech.nvite.domain.model.Rsvp;
+import tech.nvite.domain.model.RsvpRepository;
 import tech.nvite.domain.usecases.CreateEventUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 class EventBuilderRest {
 
     private final Events events;
+    private final RsvpRepository rsvps;
     private final InvitationVisits invitationVisits;
     private final CreateEventUseCase createEvent;
 
@@ -62,10 +65,15 @@ class EventBuilderRest {
             .toList();
         return new InvitationVisitsResponse(ref, visits);
     }
-
     record VisitSummary(String name, Instant visitTime) {
     }
 
     record InvitationVisitsResponse(String eventReference, List<VisitSummary> visits) {
     }
+
+    @GetMapping("{ref}/rsvp")
+    List<Rsvp> showEventRsvps(@PathVariable String ref) {
+        return rsvps.findAllByEventReference(ref);
+    }
+
 }

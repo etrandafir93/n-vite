@@ -2,6 +2,8 @@ package tech.nvite.domain.usecases;
 
 import java.util.function.Function;
 
+import org.springframework.stereotype.Component;
+
 import tech.nvite.util.UseCase;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;

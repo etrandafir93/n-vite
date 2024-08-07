@@ -18,10 +18,10 @@ public class InvitationVisits {
             case InvitationVisitor.NamedGuest(String name) -> name;
             case InvitationVisitor.Anonymous _ -> "ANONYMOUS";
         };
-        repository.save(new Visit(Instant.now(), visitorName, event.value()));
+        repository.save(new InvitationVisit(Instant.now(), visitorName, event.value()));
     }
 
-    public Stream<Visit> find(EventReference ref) {
+    public Stream<InvitationVisit> find(EventReference ref) {
         return repository.findAllByEventRef(ref.value());
     }
 }
