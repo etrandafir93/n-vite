@@ -16,7 +16,7 @@ public class InvitationVisits {
     public void add(InvitationVisitor visitor, EventReference event) {
         String visitorName = switch (visitor) {
             case InvitationVisitor.NamedGuest(String name) -> name;
-            case InvitationVisitor.Anonymous _ -> "ANONYMOUS";
+            case InvitationVisitor.Anonymous __ -> "ANONYMOUS";
         };
         repository.save(new InvitationVisit(Instant.now(), visitorName, event.value()));
     }
