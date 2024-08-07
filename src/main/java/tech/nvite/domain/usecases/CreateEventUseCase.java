@@ -1,11 +1,37 @@
-package com.etr.nvite.host.create.event;
+package tech.nvite.domain.usecases;
+
+import tech.nvite.util.UseCase;
+import tech.nvite.domain.model.Event;
+import tech.nvite.domain.model.EventReference;
+import tech.nvite.domain.model.Events;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.RequiredArgsConstructor;
 
-@Schema(description = "Request body for creating a new wedding event")
-public record CreateEventRequest(
+import java.util.function.Function;
+
+@UseCase
+@RequiredArgsConstructor
+public class CreateEventUseCase implements Function<CreateEventUseCase.Request, EventReference> {
+
+    private final Events events;
+
+    @Override
+    public EventReference apply(CreateEventUseCase.Request req) {
+        var evt = new Event(
+                req.groomName(),
+                req.brideName(),
+                req.eventLocation(),
+                req.eventReception(),
+                req.eventDateTime()
+        );
+        return events.create(evt);
+    }
+
+    @Schema(description = "Request body for creating a new wedding event")
+    public record Request(
         @NotBlank(message = "Groom name is required")
         @Size(min = 3, max = 22, message = "Groom name must be between {min} and {max} characters")
         @Schema(description = "Name of the groom", example = "John Doe")
@@ -30,5 +56,6 @@ public record CreateEventRequest(
         @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters")
         @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00")
         String eventDateTime
-) {
+    ) {
+    }
 }

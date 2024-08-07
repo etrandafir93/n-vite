@@ -1,4 +1,4 @@
-package com.etr.nvite.db;
+package tech.nvite.domain.model;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -12,11 +12,10 @@ import static java.time.LocalDateTime.now;
 
 @Repository
 @RequiredArgsConstructor
-class MongoEvents implements Events, CommandLineRunner {
+public class Events implements CommandLineRunner {
 
 	private final EventsMongoRepository repo;
 
-	@Override
 	public EventReference create(Event event) {
 		Assert.isNull(event.reference(), "reference must be null when creating a new event!");
 		Assert.isNull(event.created(), "created must be null when creating a new event!");
@@ -35,12 +34,15 @@ class MongoEvents implements Events, CommandLineRunner {
 		return evtRef;
 	}
 
-	@Override
 	public Optional<Event> find(EventReference ref) {
 		return Optional.ofNullable(repo.findByReference(ref));
 	}
 
-	@Override
+	public Event findOrThrow(EventReference ref) {
+		return find(ref)
+			.orElseThrow(() -> new IllegalArgumentException("cannot find event with eventReference=" + ref));
+	}
+
 	public Stream<Event> findAll() {
 		return repo.findAll().stream();
 	}

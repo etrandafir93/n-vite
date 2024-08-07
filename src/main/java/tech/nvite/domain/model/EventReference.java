@@ -1,4 +1,4 @@
-package com.etr.nvite.db;
+package tech.nvite.domain.model;
 
 public record EventReference(String value) {
 }

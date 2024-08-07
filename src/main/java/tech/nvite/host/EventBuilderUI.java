@@ -1,10 +1,7 @@
-package com.etr.nvite.host;
+package tech.nvite.host;
 
-import com.etr.nvite.db.Events;
-import com.etr.nvite.host.create.event.CreateEventRequest;
-import com.etr.nvite.host.create.event.CreateEventUseCase;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static java.util.stream.Collectors.joining;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +9,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import static java.util.stream.Collectors.joining;
+import tech.nvite.domain.model.Events;
+import tech.nvite.domain.usecases.CreateEventUseCase;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class EventBuilderUi {
+class EventBuilderUI {
 
     private final Events events;
     private final CreateEventUseCase createEvent;
@@ -53,7 +54,7 @@ public class EventBuilderUi {
     public RedirectView createEvent(@RequestParam String groomName, @RequestParam String brideName,
                                     @RequestParam String eventLocation, @RequestParam String eventReception,
                                     @RequestParam String eventDateTime, Model model) {
-        var req = new CreateEventRequest(groomName, brideName, eventLocation, eventReception, eventDateTime);
+        var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, eventDateTime);
         log.info("saving event {}", req);
 
         var resp = createEvent.apply(req);
