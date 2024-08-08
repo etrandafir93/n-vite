@@ -31,7 +31,7 @@ class EventBuilderUI {
     @GetMapping("/events")
     public String showEvents(Model model) {
         var evts = events.findAll()
-                .map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), "/invitations/" + evt.reference().value()))
+                .map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
                 .toList();
         log.info("showing all events, {}", evts.stream()
                 .map(evt -> "%s & %s".formatted(evt.groomName, evt.brideName))
@@ -41,7 +41,7 @@ class EventBuilderUI {
         return "eventsList";
     }
 
-    record EventListItem(String groomName, String brideName, String dateTime, String link) {
+    record EventListItem(String groomName, String brideName, String dateTime, String ref) {
     }
 
     @GetMapping("/events/builder")

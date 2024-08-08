@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Event List</title>
+    <title>Timeline</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <style>
@@ -10,36 +10,43 @@
             background-color: #f0f8ff;
             font-family: 'Open Sans', sans-serif;
         }
-        .list-group-item {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            padding: 15px;
-            background-color: #ffffff;
+        .timeline {
+            position: relative;
+            padding: 0;
+            list-style: none;
         }
-        .list-group-item:hover {
-            background-color: #f8f9fa;
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 30px;
+            width: 4px;
+            background: #e0e0e0;
         }
-        .list-group-item h4 {
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 60px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007bff;
+            border: 3px solid #ffffff;
+        }
+        .timeline-item h4 {
             font-family: 'Lora', serif;
             color: #333333;
+            margin-bottom: 5px;
         }
-        .list-group-item p {
+        .timeline-item p {
             color: #666666;
-        }
-        .btn-eye, .btn-calendar {
-            color: #007bff;
-            font-size: 1.2rem;
-            border: none;
-            background: none;
-            margin-left: 5px;
-        }
-        .btn-eye:hover, .btn-calendar:hover {
-            color: #0056b3;
-        }
-        .btn-container {
-            display: flex;
-            align-items: center;
         }
         .btn-add {
             background-color: #28a745;
@@ -63,25 +70,17 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="text-center">Upcoming Events</h1>
-    <ul class="list-group">
-        <li th:each="event : ${events}" class="list-group-item d-flex justify-content-between align-items-center">
+    <h1 class="text-center" th:text="${event.reference().value()}"></h1>
+    <ul class="timeline">
+        <li th:each="event : ${eventActivityList}" class="timeline-item">
             <div>
-                <h4 th:text="${event.groomName} + ' & ' + ${event.brideName}"></h4>
-                <p th:text="'Date: ' + ${event.dateTime}"></p>
-            </div>
-            <div class="btn-container">
-                <a th:href="@{'/invitations/' + ${event.ref}}" class="btn btn-eye">
-                    <i class="fa fa-eye"></i>
-                </a>
-                <a th:href="@{'/events/' + ${event.ref}}" class="btn btn-calendar">
-                    <i class="fa fa-calendar-check-o"></i>
-                </a>
+                <h4 th:text="${event.guest}"></h4>
+                <p th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
             </div>
         </li>
     </ul>
 </div>
-<a href="/events/builder" class="btn btn-add">
+<a href="/events/add" class="btn btn-add">
     <i class="fa fa-plus"></i>
 </a>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
