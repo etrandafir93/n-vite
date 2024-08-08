@@ -1,4 +1,4 @@
-# Digital Wedding Invitations - [ ] User Stories for MVP
+# Digital Wedding Invitations - User Stories for MVP
 
 ## User Stories for the Groom and Bride
 
