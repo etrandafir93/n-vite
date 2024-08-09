@@ -7,69 +7,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f8ff; /* Pale background color */
+            background: url('https://www.w3schools.com/w3images/wedding.jpg') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Open Sans', sans-serif;
-        }
-        .card {
-            background-color: #ffffff; /* White background for the card */
-            border: 1px solid #e0e0e0; /* Light border color */
-            border-radius: 8px; /* Rounded corners */
-        }
-        .card-title {
-            font-family: 'Lora', serif; /* Elegant font for the title */
-            color: #333333; /* Darker text color */
-        }
-        .card-text {
-            color: #666666; /* Slightly lighter text color */
-        }
-        .btn-primary, .btn-secondary {
-            border: none;
-            border-radius: 5px; /* Rounded corners for the buttons */
-        }
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-        }
-        .btn-secondary {
-            background-color: #6c757d; /* Bootstrap secondary color */
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268; /* Darker shade on hover */
-        }
-        .form-inline .form-group {
+            color: #ffffff;
+            height: 100vh;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .container {
+            width: 60%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
         }
-        .form-inline .form-group input {
-            margin-left: 10px;
-            width: 200px; /* Smaller input field */
+        .content, .form-card {
+            width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .section p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+        }
+        .section h1, .section h2, .section h3, .section h4 {
+            margin-bottom: 20px;
+            font-family: 'Lora', serif;
+        }
+        .section h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+        .section h2 {
+            font-size: 2rem;
+            color: #ffeb3b;
+        }
+        .section h3 {
+            font-size: 1.75rem;
+        }
+        .section h4 {
+            font-size: 1.5rem;
+        }
+        .form-card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-size: 1.1rem;
+            color: #ffd700;
+        }
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            border: 1px solid #ced4da;
         }
         .btn-group {
-            margin-top: 10px; /* Add space between the input field and buttons */
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5%;
+        }
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 5px 0;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #003d99;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-in-row {
+
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-body text-center">
+<div class="container">
+    <div class="content">
+        <div class="section">
             <h1 class="card-title">You're Invited!</h1>
-            <p class="card-text">We are delighted to invite you to the wedding of</p>
-            <h2 class="card-text" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
-            <p class="card-text">on</p>
-            <h3 class="card-text" th:text="${event_date}"></h3>
-            <p class="card-text">at</p>
-            <h4 class="card-text" th:text="${event_location}"></h4>
-            <p class="card-text">Reception to follow at</p>
-            <h4 class="card-text" th:text="${event_reception}"></h4>
-            <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post" class="mt-3 form-inline justify-content-center">
+            <p>We are delighted to invite you to the wedding of</p>
+            <h2 th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
+        </div>
+        <div class="section">
+            <p>on</p>
+            <h3 th:text="${event_date}"></h3>
+            <p>at</p>
+            <h4 th:text="${event_location}"></h4>
+        </div>
+        <div class="section">
+            <p>Reception to follow at</p>
+            <h4 th:text="${event_reception}"></h4>
+        </div>
+    </div>
+    <!-- New Form Card -->
+    <div class="form-card">
+        <div class="section">
+            <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post">
                 <div class="form-group">
                     <label for="guest">Name:</label>
                     <input type="text" id="guest" name="guest" class="form-control" required>
                 </div>
-                <br>
-                <div class="btn-group" role="group">
-                    <button type="submit" name="rsvp" value="DECLINE" class="btn btn-secondary">Decline</button>
-                    <button type="submit" name="rsvp" value="ACCEPT" class="btn btn-primary">Accept</button>
+                <div class="btn-group flex-btn" role="group">
+                    <button type="submit" name="rsvp" value="DECLINE" class="btn btn-secondary btn-in-row">Decline</button>
+                    <button type="submit" name="rsvp" value="ACCEPT" class="btn btn-primary btn-in-row">Accept</button>
                 </div>
             </form>
         </div>
