@@ -42,6 +42,7 @@ class EventBuilderUI {
     }
 
     record EventListItem(String groomName, String brideName, String dateTime, String ref) {
+
     }
 
     @GetMapping("/events/builder")
