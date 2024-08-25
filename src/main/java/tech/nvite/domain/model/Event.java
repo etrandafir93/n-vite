@@ -13,7 +13,8 @@ public record Event(
 		String eventLocation,
 		String eventReception,
 		String eventDateTime,
-
+		@With @Nullable
+		String backgroundImage,
 		@With @Nullable
 		LocalDateTime created,
 		@With @Nullable
@@ -24,13 +25,15 @@ public record Event(
 				 String brideName,
 				 String eventLocation,
 				 String eventReception,
-				 String eventDateTime) {
+				 String eventDateTime,
+				 String backgroundImage) {
 		this(
 				groomName,
 				brideName,
 				eventLocation,
 				eventReception,
 				eventDateTime,
+				backgroundImage,
 				null,
 				null
 		);

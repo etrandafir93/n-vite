@@ -49,10 +49,6 @@ public class Events implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		if (repo.count() == 0) {
-			create(new Event("John Snow", "Daeneys", "Castely Rock", "North of the Wall", now().minusYears(10).toString()));
-			create(new Event("Dorel", "Ileana", "Turnu Magurele", "Biserica Sf Patrafir", now().plusDays(10).toString()));
-		}
 	}
 
 }
