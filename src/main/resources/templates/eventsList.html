@@ -27,14 +27,14 @@
         .list-group-item p {
             color: #666666;
         }
-        .btn-eye, .btn-calendar {
+        .btn-eye, .btn-calendar, .btn-edit {
             color: #007bff;
             font-size: 1.2rem;
             border: none;
             background: none;
             margin-left: 5px;
         }
-        .btn-eye:hover, .btn-calendar:hover {
+        .btn-eye:hover, .btn-calendar:hover, .btn-edit:hover {
             color: #0056b3;
         }
         .btn-container {
@@ -76,6 +76,9 @@
                 </a>
                 <a th:href="@{'/events/' + ${event.ref}}" class="btn btn-calendar">
                     <i class="fa fa-calendar-check-o"></i>
+                </a>
+                <a th:href="@{'/events/builder?eventReference=' + ${event.ref}}" class="btn btn-edit">
+                    <i class="fa fa-pencil-alt"></i>
                 </a>
             </div>
         </li>

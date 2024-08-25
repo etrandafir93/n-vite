@@ -14,41 +14,47 @@ import static java.time.LocalDateTime.now;
 @RequiredArgsConstructor
 public class Events implements CommandLineRunner {
 
-	private final EventsMongoRepository repo;
+    private final EventsMongoRepository repo;
 
-	public EventReference create(Event event) {
-		Assert.isNull(event.reference(), "reference must be null when creating a new event!");
-		Assert.isNull(event.created(), "created must be null when creating a new event!");
+    public EventReference create(Event event) {
+        Assert.isNull(event.reference(), "reference must be null when creating a new event!");
+        Assert.isNull(event.created(), "created must be null when creating a new event!");
 
-		String ref = "%s-and-%s".formatted(
-				event.brideName().replace(" ", ""),
-				event.groomName().replace(" ", "")
-		);
-		EventReference evtRef = new EventReference(ref);
-		Assert.isNull(repo.findByReference(evtRef), "Key %s is not unique! We cannot save this event!".formatted(ref));
+        String ref = "%s-and-%s".formatted(
+                event.brideName().replace(" ", ""),
+                event.groomName().replace(" ", "")
+        );
+        EventReference evtRef = new EventReference(ref);
+        Assert.isTrue(repo.findById(evtRef).isEmpty(), "Key %s is not unique! We cannot save this event!".formatted(ref));
 
-		var newEvent = event.withReference(evtRef)
-				.withCreated(now());
+        var newEvent = event.withReference(evtRef)
+                .withCreated(now());
 
-		repo.save(newEvent);
-		return evtRef;
-	}
+        repo.save(newEvent);
+        return evtRef;
+    }
 
-	public Optional<Event> find(EventReference ref) {
-		return Optional.ofNullable(repo.findByReference(ref));
-	}
+    public EventReference edit(Event event) {
+        Assert.notNull(event.reference(), "Reference must not be null when editing existing event!");
+        repo.save(event);
+        return event.reference();
+    }
 
-	public Event findOrThrow(EventReference ref) {
-		return find(ref)
-			.orElseThrow(() -> new IllegalArgumentException("cannot find event with eventReference=" + ref));
-	}
+    public Optional<Event> find(EventReference ref) {
+        return repo.findById(ref);
+    }
 
-	public Stream<Event> findAll() {
-		return repo.findAll().stream();
-	}
+    public Event findOrThrow(EventReference ref) {
+        return find(ref)
+                .orElseThrow(() -> new IllegalArgumentException("cannot find event with eventReference=" + ref));
+    }
 
-	@Override
-	public void run(String... args) {
-	}
+    public Stream<Event> findAll() {
+        return repo.findAll().stream();
+    }
+
+    @Override
+    public void run(String... args) {
+    }
 
 }

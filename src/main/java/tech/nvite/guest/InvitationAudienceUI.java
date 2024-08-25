@@ -41,10 +41,7 @@ class InvitationAudienceUI {
         model.addAttribute("event_location", event.eventLocation());
         model.addAttribute("event_reception", event.eventReception());
         model.addAttribute("event_reference", event.reference().value());
-        model.addAttribute("event_background_img", firstNonNull(
-                event.backgroundImage(),
-                "https://www.w3schools.com/w3images/wedding.jpg")
-        );
+        model.addAttribute("event_background_img", event.backgroundImageOrDefault());
         return "invitation";
     }
 

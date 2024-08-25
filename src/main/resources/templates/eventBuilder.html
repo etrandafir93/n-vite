@@ -65,29 +65,30 @@
         <div class="card-body">
             <h1 class="card-title text-center">Our Wedding</h1>
             <form th:action="@{/events}" method="post">
+                <input type="hidden" name="eventReference" th:value="${eventReference}">
                 <div class="form-group">
                     <label for="groomName">Groom Name</label>
-                    <input type="text" class="form-control" id="groomName" name="groomName" required>
+                    <input type="text" class="form-control" id="groomName" name="groomName" th:value="${groomName}" required>
                 </div>
                 <div class="form-group">
                     <label for="brideName">Bride Name</label>
-                    <input type="text" class="form-control" id="brideName" name="brideName" required>
+                    <input type="text" class="form-control" id="brideName" name="brideName" th:value="${brideName}" required>
                 </div>
                 <div class="form-group">
                     <label for="eventLocation">Event Location</label>
-                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" required>
+                    <input type="text" class="form-control" id="eventLocation" name="eventLocation" th:value="${eventLocation}" required>
                 </div>
                 <div class="form-group">
                     <label for="eventReception">Event Reception</label>
-                    <input type="text" class="form-control" id="eventReception" name="eventReception" required>
+                    <input type="text" class="form-control" id="eventReception" name="eventReception" th:value="${eventReception}" required>
                 </div>
                 <div class="form-group">
                     <label for="eventBackgroundImage">Event Background Image</label>
-                    <input type="url" class="form-control" id="eventBackgroundImage" name="eventBackgroundImage">
+                    <input type="url" class="form-control" id="eventBackgroundImage" name="eventBackgroundImage" th:value="${eventBackgroundImage}">
                 </div>
                 <div class="form-group">
                     <label for="eventDateTime">Event Date and Time</label>
-                    <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime" required>
+                    <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime" th:value="${eventDateTime}" required>
                 </div>
                 <div class="button-container mt-4">
                     <a href="/events" class="btn btn-warning">Cancel</a>

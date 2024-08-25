@@ -1,4 +1,6 @@
 package tech.nvite.domain.model;
 
-public record EventReference(String value) {
+import java.io.Serializable;
+
+public record EventReference(String value) implements Serializable {
 }
