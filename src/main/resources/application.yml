@@ -6,6 +6,24 @@ spring:
     mongodb:
       uri: mongodb+srv://n-vite-app:oCz5Sz5urHaU3nk2@cluster0.or1qk.mongodb.net/account
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 626515189021-coqnnlvcclkr0e6hqbormbap88keurrv.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
 
 springdoc.swagger-ui.path: /swagger-ui.html
 springdoc.api-docs.path: /api-docs
