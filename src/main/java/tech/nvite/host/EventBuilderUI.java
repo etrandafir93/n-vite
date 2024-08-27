@@ -3,6 +3,8 @@ package tech.nvite.host;
 import static java.util.stream.Collectors.joining;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +35,7 @@ class EventBuilderUI {
     }
 
     @GetMapping("/events")
-    public String showEvents(Model model) {
+    public String showEvents(Model model, @AuthenticationPrincipal OAuth2User principal) {
         var evts = events.findAll()
                 .map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
                 .toList();
