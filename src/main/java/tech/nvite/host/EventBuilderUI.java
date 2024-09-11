@@ -53,8 +53,8 @@ class EventBuilderUI {
     @PostMapping("/events")
     public RedirectView createEvent(@RequestParam String groomName, @RequestParam String brideName,
                                     @RequestParam String eventLocation, @RequestParam String eventReception,
-                                    @RequestParam String eventDateTime, Model model) {
-        var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, eventDateTime);
+                                    @RequestParam String eventDateTime,@RequestParam String backgroundImage, Model model) {
+        var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, eventDateTime, backgroundImage);
         log.info("saving event {}", req);
 
         var resp = createEvent.apply(req);

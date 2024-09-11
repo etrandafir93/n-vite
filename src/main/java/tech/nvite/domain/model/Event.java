@@ -5,6 +5,7 @@ import lombok.With;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Document("events")
 public record Event(
@@ -13,7 +14,8 @@ public record Event(
 		String eventLocation,
 		String eventReception,
 		String eventDateTime,
-
+		@With @Nullable
+		String backgroundImage,
 		@With @Nullable
 		LocalDateTime created,
 		@With @Nullable
@@ -24,13 +26,15 @@ public record Event(
 				 String brideName,
 				 String eventLocation,
 				 String eventReception,
-				 String eventDateTime) {
+				 String eventDateTime
+	) {
 		this(
 				groomName,
 				brideName,
 				eventLocation,
 				eventReception,
 				eventDateTime,
+				null,
 				null,
 				null
 		);

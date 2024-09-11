@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,10 @@ class InvitationAudienceUI {
 		model.addAttribute("event_location", event.eventLocation());
 		model.addAttribute("event_reception", event.eventReception());
 		model.addAttribute("event_reference", event.reference().value());
-		return "invitation";
+		model.addAttribute("event_image",
+            event.backgroundImage() != null	? event.backgroundImage() : "https://www.w3schools.com/w3images/wedding.jpg");
+
+        return "invitation";
 	}
 
 	@PostMapping("/invitations/{ref}/responses")

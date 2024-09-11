@@ -21,7 +21,8 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
 
     @Override
     public EventReference apply(CreateEventUseCase.Request req) {
-        var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime());
+        var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime())
+            .withBackgroundImage(req.backgroundImage);
         return events.create(evt);
     }
 
@@ -34,6 +35,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
 
                           @NotBlank(message = "Event Reception name is required") @Size(min = 3, max = 44, message = "Event Reception must be between {min} and {max} characters") @Schema(description = "Reception details of the wedding event", example = "Rooftop Dinner") String eventReception,
 
-                          @NotBlank(message = "Event Date name is required") @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters") @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00") String eventDateTime) {
+                          @NotBlank(message = "Event Date name is required") @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters") @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00") String eventDateTime,
+                          @Schema(description = "...", example = "...") String backgroundImage) {
     }
 }
