@@ -35,7 +35,7 @@ class EventBuilderRest {
 
     @GetMapping
     List<EvtSummary> showEvents() {
-        return events.findAll()
+        return events.findAllForLoggedInUser()
             .map(it -> new EvtSummary(it.groomName(), it.brideName(), it.reference()
                 .value()))
             .toList();

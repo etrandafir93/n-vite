@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
+import tech.nvite.security.SecurityAccessor;
 import tech.nvite.util.UseCase;
 
 import java.util.function.Function;
@@ -16,11 +17,13 @@ import java.util.function.Function;
 public class EditEventUseCase implements Function<EditEventUseCase.Request, EventReference> {
 
     private final Events events;
+    private final SecurityAccessor securityAccessor;
 
     @Override
     public EventReference apply(EditEventUseCase.Request req) {
         var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), req.eventBackgroundImage())
-                .withReference(req.reference());
+                .withReference(req.reference())
+                .withCreatedBy(securityAccessor.getCurrentUserId());
         return events.edit(evt);
     }
 

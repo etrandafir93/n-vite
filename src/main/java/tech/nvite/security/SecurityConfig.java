@@ -15,13 +15,20 @@ class SecurityConfig {
 		http
 				.authorizeHttpRequests(authorizeRequests ->
 						authorizeRequests
-								.requestMatchers("/login").permitAll()
+								.requestMatchers("/login", "/invitations/**").permitAll()
 								.requestMatchers("/icons/**", "/css/**", "/js/**", "/images/**").permitAll()
 								.anyRequest().authenticated()
 				)
 				.oauth2Login(oauth2 -> oauth2
 						.loginPage("/login")
 						.defaultSuccessUrl("/events", true)
+				)
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login?logout")
+						.invalidateHttpSession(true)
+						.clearAuthentication(true)
+						.deleteCookies("JSESSIONID")
 				);
 
 		return http.build();

@@ -35,7 +35,7 @@ class EventBuilderUI {
 	@GetMapping("/events")
 	public String showEvents(Model model) {
 		log.info("Current User is = {}", securityAccessor.getCurrentUserId());
-		var evts = events.findAll()
+		var evts = events.findAllForLoggedInUser()
 				.map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
 				.toList();
 		log.info("showing all events, {}", evts.stream()
