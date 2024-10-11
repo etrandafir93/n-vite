@@ -15,3 +15,8 @@
 - `docker push europe-southwest1-docker.pkg.dev/n-vite/nvite-registry/n-vite:1.2.3`
 
 
+### Local Development
+- login to gcloud and grant access to the application: `gcloud auth application-default login`
+
+
+

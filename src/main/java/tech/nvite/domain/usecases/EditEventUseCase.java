@@ -9,7 +9,7 @@ import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.infra.security.SecurityAccessor;
-import tech.nvite.infra.storage.GoogleCloudStorageService;
+import tech.nvite.infra.storage.GoogleCloudStorage;
 import tech.nvite.util.UseCase;
 
 import java.util.function.Function;
@@ -20,7 +20,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
 
     private final Events events;
     private final SecurityAccessor securityAccessor;
-	private final GoogleCloudStorageService storage;
+	private final GoogleCloudStorage storage;
 
 	@Override
     public EventReference apply(EditEventUseCase.Request req) {
