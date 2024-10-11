@@ -8,12 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.domain.usecases.CreateEventUseCase;
 import tech.nvite.domain.usecases.EditEventUseCase;
-import tech.nvite.security.SecurityAccessor;
+import tech.nvite.infra.security.SecurityAccessor;
 
 import static java.util.stream.Collectors.joining;
 
@@ -71,7 +72,7 @@ class EventBuilderUI {
 	@PostMapping("/events")
 	public RedirectView saveEvent(@RequestParam String groomName, @RequestParam String brideName,
 								  @RequestParam String eventLocation, @RequestParam String eventReception,
-								  @RequestParam String eventDateTime, @RequestParam String eventBackgroundImage,
+								  @RequestParam String eventDateTime, @RequestParam MultipartFile eventBackgroundImage,
 								  @RequestParam(required = false) String eventReference, Model model) {
 		if (!StringUtils.isBlank(eventReference)) {
 			var req = new EditEventUseCase.Request(new EventReference(eventReference), groomName, brideName, eventLocation, eventReception, eventDateTime, eventBackgroundImage);

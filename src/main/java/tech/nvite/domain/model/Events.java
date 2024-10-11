@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
-import tech.nvite.security.SecurityAccessor;
+import tech.nvite.infra.security.SecurityAccessor;
 
 import java.util.Optional;
 import java.util.stream.Stream;

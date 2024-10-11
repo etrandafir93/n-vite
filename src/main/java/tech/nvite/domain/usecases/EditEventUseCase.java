@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
-import tech.nvite.security.SecurityAccessor;
+import tech.nvite.infra.security.SecurityAccessor;
+import tech.nvite.infra.storage.GoogleCloudStorageService;
 import tech.nvite.util.UseCase;
 
 import java.util.function.Function;
@@ -18,10 +20,12 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
 
     private final Events events;
     private final SecurityAccessor securityAccessor;
+	private final GoogleCloudStorageService storage;
 
-    @Override
+	@Override
     public EventReference apply(EditEventUseCase.Request req) {
-        var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), req.eventBackgroundImage())
+		String imageUrl = storage.uploadFile(req.eventBackgroundImage());
+		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
                 .withReference(req.reference())
                 .withCreatedBy(securityAccessor.getCurrentUserId());
         return events.edit(evt);
@@ -39,7 +43,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
             @NotBlank(message = "Event Reception name is required") @Size(min = 3, max = 44, message = "Event Reception must be between {min} and {max} characters") @Schema(description = "Reception details of the wedding event", example = "Rooftop Dinner") String eventReception,
 
             @NotBlank(message = "Event Date name is required") @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters") @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00") String eventDateTime,
-            String eventBackgroundImage
+            MultipartFile eventBackgroundImage
     ) {
     }
 }
