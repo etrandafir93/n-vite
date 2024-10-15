@@ -1,0 +1,25 @@
+package tech.nvite.infra.security;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+public class CurrentUser {
+
+	public User get() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !(auth.getPrincipal() instanceof OAuth2User principal)) {
+			throw new IllegalStateException("no user in context!");
+		}
+		log.info("Current User Data: {}", principal);
+		return new User(principal.getAttribute("sub"), principal.getAttribute("email"));
+	}
+
+	public record User(String id, String email) {
+	}
+
+}

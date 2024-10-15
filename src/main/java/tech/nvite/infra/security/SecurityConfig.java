@@ -12,20 +12,17 @@ class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeHttpRequests(authorizeRequests ->
-						authorizeRequests
-								.requestMatchers("/login", "/invitations/**").permitAll()
-								.requestMatchers("/icons/**", "/css/**", "/js/**", "/images/**").permitAll()
-								.anyRequest().authenticated()
+		http.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/", "/login", "/invitations/**", "/icons/**", "/css/**", "/js/**", "/images/**").permitAll()
+						.anyRequest().authenticated()
 				)
 				.oauth2Login(oauth2 -> oauth2
-						.loginPage("/login")
+						.loginPage("/")
 						.defaultSuccessUrl("/events", true)
 				)
 				.logout(logout -> logout
 						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login?logout")
+						.logoutSuccessUrl("/")
 						.invalidateHttpSession(true)
 						.clearAuthentication(true)
 						.deleteCookies("JSESSIONID")

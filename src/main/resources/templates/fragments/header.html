@@ -1,0 +1,43 @@
+<th:block th:fragment="header">
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <!-- Logo on the left -->
+            <a href="#" class="text-xl font-bold text-gray-800">
+                <img th:src="@{/icons/n-vite-logo.png}" alt="Logo" class="h-10 inline-block mr-2">
+                N-Vite
+            </a>
+
+            <div th:if="${#authentication.getName().equals('anonymousUser')}">
+                <button id="loginBtn"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                    Login
+                </button>
+            </div>
+            <div th:if="${!#authentication.getName().equals('anonymousUser')}">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit"
+                            class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal (hidden by default) -->
+    <div id="loginModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-80">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Login</h2>
+                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <form th:action="@{/oauth2/authorization/google}" method="get">
+                <button type="submit"
+                        class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg shadow-md transition duration-200">
+                    <img th:src="@{/icons/google.png}" alt="Google logo" class="h-5 w-5 mr-3">
+                    Login with Google
+                </button>
+            </form>
+        </div>
+    </div>
+</th:block>

@@ -14,7 +14,7 @@ import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.domain.usecases.CreateEventUseCase;
 import tech.nvite.domain.usecases.EditEventUseCase;
-import tech.nvite.infra.security.SecurityAccessor;
+import tech.nvite.infra.security.CurrentUser;
 
 import static java.util.stream.Collectors.joining;
 
@@ -26,16 +26,11 @@ class EventBuilderUI {
 	private final Events events;
 	private final EditEventUseCase editEvent;
 	private final CreateEventUseCase createEvent;
-	private final SecurityAccessor securityAccessor;
-
-	@GetMapping("/")
-	public RedirectView redirectToEvents() {
-		return new RedirectView("/events");
-	}
+	private final CurrentUser currentUser;
 
 	@GetMapping("/events")
 	public String showEvents(Model model) {
-		log.info("Current User is = {}", securityAccessor.getCurrentUserId());
+		log.info("Current User is = {}", currentUser.get().id());
 		var evts = events.findAllForLoggedInUser()
 				.map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
 				.toList();

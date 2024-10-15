@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
-import tech.nvite.infra.security.SecurityAccessor;
+import tech.nvite.infra.security.CurrentUser;
 import tech.nvite.infra.storage.GoogleCloudStorage;
 import tech.nvite.util.UseCase;
 
@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class EditEventUseCase implements Function<EditEventUseCase.Request, EventReference> {
 
     private final Events events;
-    private final SecurityAccessor securityAccessor;
+    private final CurrentUser currentUser;
 	private final GoogleCloudStorage storage;
 
 	@Override
@@ -27,7 +27,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
 		String imageUrl = storage.uploadFile(req.eventBackgroundImage());
 		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
                 .withReference(req.reference())
-                .withCreatedBy(securityAccessor.getCurrentUserId());
+                .withCreatedBy(currentUser.get().id());
         return events.edit(evt);
     }
 

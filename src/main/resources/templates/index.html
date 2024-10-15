@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>N-Vite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-custom {
+            background-image: url([[@{/icons/landing-background2.png}]]);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<div th:replace="~{fragments/header :: #loginModal}"></div>
+
+<main class="bg-custom min-h-screen"></main>
+
+<script src="/js/login.js"></script>
+</body>
+</html>

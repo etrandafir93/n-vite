@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
-import tech.nvite.infra.security.SecurityAccessor;
+import tech.nvite.infra.security.CurrentUser;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -16,7 +16,7 @@ import static java.time.LocalDateTime.now;
 public class Events implements CommandLineRunner {
 
 	private final EventsMongoRepository repo;
-	private final SecurityAccessor securityAccessor;
+	private final CurrentUser currentUser;
 
 	public EventReference create(Event event) {
 		Assert.isNull(event.reference(), "reference must be null when creating a new event!");
@@ -52,7 +52,7 @@ public class Events implements CommandLineRunner {
 	}
 
 	public Stream<Event> findAllForLoggedInUser() {
-		return repo.findAllByCreatedBy(securityAccessor.getCurrentUserId()).stream();
+		return repo.findAllByCreatedBy(currentUser.get().id()).stream();
 	}
 
 	@Override
