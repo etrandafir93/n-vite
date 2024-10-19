@@ -10,15 +10,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class GoogleCloudStorage {
+	public static final String SAVED_IMAGE_URL = "https://storage.googleapis.com/n-vite/%s";
 	private final Storage storage = StorageOptions.getDefaultInstance().getService();
 
 	@SneakyThrows
 	public String uploadFile(MultipartFile file) {
-		String fileName = "invitations/" + file.getOriginalFilename();
-		BlobId blobId = BlobId.of("n-vite", fileName);
-		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+		String fileName = "invitations/%s".formatted(file.getOriginalFilename());
+		BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of("n-vite", fileName)).build();
 
 		storage.create(blobInfo, file.getBytes());
-		return String.format("https://storage.googleapis.com/n-vite/%s", fileName);
+		return SAVED_IMAGE_URL.formatted(fileName);
 	}
 }

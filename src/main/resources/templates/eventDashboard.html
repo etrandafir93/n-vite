@@ -3,86 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Timeline</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: #f0f8ff;
             font-family: 'Open Sans', sans-serif;
-        }
-        .timeline {
-            position: relative;
-            padding: 0;
-            list-style: none;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 30px;
-            width: 4px;
-            background: #e0e0e0;
-        }
-        .timeline-item {
-            position: relative;
-            margin-bottom: 20px;
-            padding-left: 60px;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007bff;
-            border: 3px solid #ffffff;
-        }
-        .timeline-item h4 {
-            font-family: 'Lora', serif;
-            color: #333333;
-            margin-bottom: 5px;
-        }
-        .timeline-item p {
-            color: #666666;
-        }
-        .btn-add {
-            background-color: #28a745;
-            color: #ffffff;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-        .btn-add:hover {
-            background-color: #218838;
         }
     </style>
 </head>
-<body>
+<body class="bg-blue-50">
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container mt-5">
-    <h1 class="text-center" th:text="${event.reference().value()}"></h1>
-    <ul class="timeline">
-        <li th:each="event : ${eventActivityList}" class="timeline-item">
-            <div>
-                <h4 th:text="${event.guest}"></h4>
-                <p th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
+<div class="container mx-auto mt-12">
+    <h1 class="text-center text-3xl font-serif text-gray-800 mb-8" th:text="${event.reference().value()}"></h1>
+    <ul class="relative pl-8">
+        <li th:each="event : ${eventActivityList}" class="mb-8 relative">
+            <div class="absolute left-4 top-0 transform -translate-x-1/2 bg-blue-500 h-5 w-5 rounded-full border-4 border-white"></div>
+            <div class="ml-12">
+                <h4 class="text-xl font-serif text-gray-800" th:text="${event.guest}"></h4>
+                <p class="text-gray-600" th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
             </div>
         </li>
     </ul>
 </div>
+
+<!-- Add button -->
+<button class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full w-16 h-16 text-2xl flex items-center justify-center hover:bg-green-600">
+    <i class="fas fa-plus"></i>
+</button>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
