@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
@@ -14,6 +16,9 @@ import tech.nvite.util.UseCase;
 
 import java.util.function.Function;
 
+import com.mongodb.internal.logging.StructuredLogger;
+
+@Slf4j
 @UseCase
 @RequiredArgsConstructor
 public class CreateEventUseCase implements Function<CreateEventUseCase.Request, EventReference> {
@@ -24,10 +29,14 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
 
 	@Override
 	public EventReference apply(CreateEventUseCase.Request req) {
+		log.info("Creating event {}", req);
 		String imageUrl = storage.uploadFile(req.eventBackgroundImage());
 		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
 				.withCreatedBy(currentUser.get().id());
-		return events.create(evt);
+
+		EventReference ref = events.create(evt);
+		log.info("Event created ref={}", ref.value());
+		return ref;
 	}
 
 	@Schema(description = "Request body for creating a new wedding event")

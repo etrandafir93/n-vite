@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
@@ -14,6 +16,7 @@ import tech.nvite.util.UseCase;
 
 import java.util.function.Function;
 
+@Slf4j
 @UseCase
 @RequiredArgsConstructor
 public class EditEventUseCase implements Function<EditEventUseCase.Request, EventReference> {
@@ -24,11 +27,15 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
 
 	@Override
     public EventReference apply(EditEventUseCase.Request req) {
+        log.info("Editing event {}", req);
 		String imageUrl = storage.uploadFile(req.eventBackgroundImage());
 		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
                 .withReference(req.reference())
                 .withCreatedBy(currentUser.get().id());
-        return events.edit(evt);
+
+        EventReference ref = events.edit(evt);
+        log.info("Event edited {}", ref.value());
+        return ref;
     }
 
     @Schema(description = "Request body for editing existing wedding event")

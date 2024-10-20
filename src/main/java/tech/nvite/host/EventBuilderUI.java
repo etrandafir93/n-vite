@@ -30,13 +30,9 @@ class EventBuilderUI {
 
 	@GetMapping("/events")
 	public String showEvents(Model model) {
-		log.info("Current User is = {}", currentUser.get().id());
 		var evts = events.findAllForLoggedInUser()
 				.map(evt -> new EventListItem(evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
 				.toList();
-		log.info("showing all events, {}", evts.stream()
-				.map(evt -> "%s & %s".formatted(evt.groomName, evt.brideName))
-				.collect(joining(",")));
 
 		model.addAttribute("events", evts);
 		return "eventsList";
