@@ -65,18 +65,13 @@ class EventBuilderUI {
 								  @RequestParam String eventLocation, @RequestParam String eventReception,
 								  @RequestParam String eventDateTime, @RequestParam MultipartFile eventBackgroundImage,
 								  @RequestParam(required = false) String eventReference, Model model) {
+
 		if (!StringUtils.isBlank(eventReference)) {
 			var req = new EditEventUseCase.Request(new EventReference(eventReference), groomName, brideName, eventLocation, eventReception, eventDateTime, eventBackgroundImage);
-			log.info("editing event {}", req);
-
-			var resp = editEvent.apply(req);
-			log.info("event edited {}", resp);
+			editEvent.apply(req);
 		} else {
 			var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, eventDateTime, eventBackgroundImage);
-			log.info("saving event {}", req);
-
-			var resp = createEvent.apply(req);
-			log.info("event saved {}", resp);
+			createEvent.apply(req);
 		}
 
 		return new RedirectView("/events");

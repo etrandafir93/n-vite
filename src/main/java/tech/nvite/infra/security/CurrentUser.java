@@ -15,7 +15,7 @@ public class CurrentUser {
 		if (auth == null || !(auth.getPrincipal() instanceof OAuth2User principal)) {
 			throw new IllegalStateException("no user in context!");
 		}
-		log.info("Current User Data: {}", principal);
+		log.debug("Current User Data: {}", principal);
 		return new User(principal.getAttribute("sub"), principal.getAttribute("email"));
 	}
 
