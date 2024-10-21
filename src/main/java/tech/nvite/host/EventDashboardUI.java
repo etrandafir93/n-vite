@@ -35,7 +35,7 @@ class EventDashboardUI {
         var eventReference = new EventReference(ref);
         var event = events.findOrThrow(eventReference);
         var visitList = visits.find(eventReference)
-            .map(v -> new EventDetails(v.visitorName(), v.visitTime(), "VISIT"));
+            .map(v -> new EventDetails(v.visitorName(), v.visitTime(), "VISITED"));
         var rspvList = rspvs.findAllByEventReference(ref)
             .stream()
             .map(r -> new EventDetails(r.guest(), r.timestamp(), r.answer()));
@@ -46,6 +46,9 @@ class EventDashboardUI {
 
         model.addAttribute("event", event);
         model.addAttribute("eventActivityList", wholeList);
+        model.addAttribute("acceptedCount", 20); // TODO add real numbers
+        model.addAttribute("declinedCount", 4); // TODO add real numbers
+        model.addAttribute("visitedCount", 7); // TODO add real numbers
         return "eventDashboard";
     }
 

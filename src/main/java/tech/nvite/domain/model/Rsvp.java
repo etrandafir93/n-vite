@@ -11,8 +11,8 @@ import jakarta.annotation.Nullable;
 public record Rsvp(@Id @Nullable String id, Instant timestamp, String guest, String eventReference, String answer) {
     public Rsvp(String guest, EventReference eventReference, RsvpAnswer answer) {
         this(null, Instant.now(), guest, eventReference.value(), switch (answer) {
-            case RsvpAnswer.Accept __ -> "ACCEPTED";
-            case RsvpAnswer.Decline __ -> "DECLINE";
+            case RsvpAnswer.Accepted __ -> "ACCEPTED";
+            case RsvpAnswer.Declined __ -> "DECLINED";
         });
     }
 }

@@ -1,10 +1,10 @@
 package tech.nvite.domain.model;
 
-public sealed interface RsvpAnswer permits RsvpAnswer.Accept, RsvpAnswer.Decline {
+public sealed interface RsvpAnswer permits RsvpAnswer.Accepted, RsvpAnswer.Declined {
 
-    record Accept() implements RsvpAnswer {
+    record Accepted() implements RsvpAnswer {
     }
 
-    record Decline() implements RsvpAnswer {
+    record Declined() implements RsvpAnswer {
     }
 }

@@ -5,31 +5,76 @@
     <title>Timeline</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
 </head>
-<body class="bg-blue-50">
+<body class="bg-blue-50 font-sans">
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="container mx-auto mt-12">
     <h1 class="text-center text-3xl font-serif text-gray-800 mb-8" th:text="${event.reference().value()}"></h1>
-    <ul class="relative pl-8">
-        <li th:each="event : ${eventActivityList}" class="mb-8 relative">
-            <div class="absolute left-4 top-0 transform -translate-x-1/2 bg-blue-500 h-5 w-5 rounded-full border-4 border-white"></div>
-            <div class="ml-12">
-                <h4 class="text-xl font-serif text-gray-800" th:text="${event.guest}"></h4>
-                <p class="text-gray-600" th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
-            </div>
-        </li>
-    </ul>
+
+    <!-- Statistics Section -->
+    <div class="flex justify-center mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-700" th:text="'Accepted: ' + ${acceptedCount}"></h2>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-700" th:text="'Declined: ' + ${declinedCount}"></h2>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
+            <h2 class="text-2xl font-bold text-gray-700" th:text="'Visited: ' + ${visitedCount}"></h2>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="flex justify-center mb-8">
+        <button class="mx-2 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300" data-filter="ALL">All</button>
+        <button class="mx-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300" data-filter="ACCEPTED">Accepted</button>
+        <button class="mx-2 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300" data-filter="DECLINED">Declined</button>
+        <button class="mx-2 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300" data-filter="VISITED">Visited</button>
+    </div>
+
+    <div id="eventListContainer">
+        <ul id="eventList" class="relative pl-8 list">
+            <li th:each="event : ${eventActivityList}" class="mb-8 relative bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300" th:attr="data-action=${event.action}">
+                <div class="absolute left-4 top-0 transform -translate-x-1/2 bg-blue-500 h-5 w-5 rounded-full border-4 border-white"></div>
+                <div class="ml-12">
+                    <h4 class="text-xl font-serif text-gray-800 name" th:text="${event.guest}"></h4>
+                    <p class="text-gray-600 action" th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOMContentLoaded event fired');
+        const options = {
+            valueNames: ['name']
+        };
+        const eventList = new List('eventListContainer', options);
+
+        document.querySelectorAll('[data-filter]').forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+                console.log('Filter button clicked:', filter);
+                if (filter === 'ALL') {
+                    eventList.filter();
+                } else {
+                    eventList.filter(item => {
+                        const action = item.elm.getAttribute('data-action');
+                        console.log('Filtering item:', action);
+                        return action && action.toUpperCase() === filter;
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

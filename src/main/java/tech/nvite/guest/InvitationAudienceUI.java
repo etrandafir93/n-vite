@@ -16,8 +16,6 @@ import tech.nvite.domain.usecases.VisitInvitationUseCase;
 
 import java.util.Optional;
 
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
-
 @Controller
 @RequiredArgsConstructor
 class InvitationAudienceUI {
@@ -54,7 +52,7 @@ class InvitationAudienceUI {
         var req = new RsvpInvitationUseCase.Request(
                 new EventReference(eventReference),
                 guest,
-                rsvp.equals("ACCEPT") ? new RsvpAnswer.Accept() : new RsvpAnswer.Decline()
+                rsvp.equals("ACCEPTED") ? new RsvpAnswer.Accepted() : new RsvpAnswer.Declined()
         );
         rsvpInvitation.apply(req);
         return new RedirectView("/events");
