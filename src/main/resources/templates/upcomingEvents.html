@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-50 font-sans">
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container mx-auto mt-12">
+    <h1 class="text-center text-4xl font-bold text-gray-800 mb-8">Upcoming Events</h1>
+    <ul class="list-none">
+        <li th:each="event : ${events}" class="flex justify-between items-center bg-white shadow rounded-lg p-6 mb-4">
+            <div>
+                <h4 th:text="${event.groomName} + ' & ' + ${event.brideName}" class="text-2xl font-serif text-gray-800"></h4>
+                <p th:text="'Date: ' + ${event.dateTime}" class="text-gray-600"></p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a th:href="@{'/invitations/' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
+                    <i class="fa fa-eye"></i>
+                </a>
+                <a th:href="@{'/events/' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
+                    <i class="fa fa-calendar-check-o"></i>
+                </a>
+                <a th:href="@{'/events/builder?eventReference=' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
+                    <i class="fa fa-pencil-alt"></i>
+                </a>
+                <form th:action="@{'/events/' + ${event.ref} + '/delete'}" method="post" class="inline-block">
+                    <button type="submit" class="text-red-500 hover:text-red-700" title="Delete Event">
+                        <i class="fa fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- Floating Add Event Button -->
+<a href="/events/builder" class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full p-4 text-3xl flex items-center justify-center hover:bg-green-600">
+    <i class="fa fa-plus"></i>
+</a>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</body>
+</html>

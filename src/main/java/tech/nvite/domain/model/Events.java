@@ -36,6 +36,10 @@ public class Events implements CommandLineRunner {
 		return evtRef;
 	}
 
+	public void delete(EventReference ref) {
+		repo.deleteById(ref);
+	}
+
 	public EventReference edit(Event event) {
 		Assert.notNull(event.reference(), "Reference must not be null when editing existing event!");
 		repo.save(event);

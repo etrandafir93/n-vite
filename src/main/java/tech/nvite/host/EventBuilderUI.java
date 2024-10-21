@@ -35,7 +35,7 @@ class EventBuilderUI {
 				.toList();
 
 		model.addAttribute("events", evts);
-		return "eventsList";
+		return "upcomingEvents";
 	}
 
 	record EventListItem(String groomName, String brideName, String dateTime, String ref) {
