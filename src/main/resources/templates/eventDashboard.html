@@ -13,25 +13,20 @@
 <div class="container mx-auto mt-12">
     <h1 class="text-center text-3xl font-serif text-gray-800 mb-8" th:text="${event.reference().value()}"></h1>
 
-    <!-- Statistics Section -->
+    <!-- Statistics Section with Clickable Counters -->
     <div class="flex justify-center mb-8">
-        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
-            <h2 class="text-2xl font-bold text-gray-700" th:text="'Accepted: ' + ${acceptedCount}"></h2>
+        <div class="bg-blue-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-blue-600 transition duration-300" data-filter="ALL">
+            <h2 class="text-2xl font-bold text-white">All</h2>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
-            <h2 class="text-2xl font-bold text-gray-700" th:text="'Declined: ' + ${declinedCount}"></h2>
+        <div class="bg-green-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-green-600 transition duration-300" data-filter="ACCEPTED">
+            <h2 class="text-2xl font-bold text-white" th:text="'Accepted: ' + ${acceptedCount}"></h2>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-md mx-4 text-center">
-            <h2 class="text-2xl font-bold text-gray-700" th:text="'Visited: ' + ${visitedCount}"></h2>
+        <div class="bg-red-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-red-600 transition duration-300" data-filter="DECLINED">
+            <h2 class="text-2xl font-bold text-white" th:text="'Declined: ' + ${declinedCount}"></h2>
         </div>
-    </div>
-
-    <!-- Filters Section -->
-    <div class="flex justify-center mb-8">
-        <button class="mx-2 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300" data-filter="ALL">All</button>
-        <button class="mx-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300" data-filter="ACCEPTED">Accepted</button>
-        <button class="mx-2 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300" data-filter="DECLINED">Declined</button>
-        <button class="mx-2 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300" data-filter="VISITED">Visited</button>
+        <div class="bg-yellow-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-yellow-600 transition duration-300" data-filter="VISITED">
+            <h2 class="text-2xl font-bold text-white" th:text="'Visited: ' + ${visitedCount}"></h2>
+        </div>
     </div>
 
     <div id="eventListContainer">
@@ -53,22 +48,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('DOMContentLoaded event fired');
         const options = {
             valueNames: ['name']
         };
         const eventList = new List('eventListContainer', options);
 
-        document.querySelectorAll('[data-filter]').forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-                console.log('Filter button clicked:', filter);
+        // Add click event listener to counters to act as filters
+        document.querySelectorAll('.flex .cursor-pointer').forEach(counter => {
+            counter.addEventListener('click', () => {
+                const filter = counter.getAttribute('data-filter');
                 if (filter === 'ALL') {
-                    eventList.filter();
-                } else {
+                    eventList.filter(); // Show all if filter is ALL
+                } else if (filter) {
                     eventList.filter(item => {
                         const action = item.elm.getAttribute('data-action');
-                        console.log('Filtering item:', action);
                         return action && action.toUpperCase() === filter;
                     });
                 }

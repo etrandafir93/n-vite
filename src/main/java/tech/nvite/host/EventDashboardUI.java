@@ -2,6 +2,7 @@ package tech.nvite.host;
 
 import java.time.Instant;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Controller;
@@ -46,10 +47,14 @@ class EventDashboardUI {
 
         model.addAttribute("event", event);
         model.addAttribute("eventActivityList", wholeList);
-        model.addAttribute("acceptedCount", 20); // TODO add real numbers
-        model.addAttribute("declinedCount", 4); // TODO add real numbers
-        model.addAttribute("visitedCount", 7); // TODO add real numbers
+        model.addAttribute("acceptedCount", countAction(wholeList, "ACCEPTED"));
+        model.addAttribute("declinedCount", countAction(wholeList, "DECLINED"));
+        model.addAttribute("visitedCount", countAction(wholeList, "VISITED"));
         return "eventDashboard";
+    }
+
+    private static long countAction(List<EventDetails> actions, String action) {
+        return actions.stream().filter(a -> action.equalsIgnoreCase(a.action())).count();
     }
 
     @PostMapping("/events/{ref}/delete")
