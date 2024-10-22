@@ -20,41 +20,43 @@ import java.util.Optional;
 @RequiredArgsConstructor
 class InvitationAudienceUI {
 
-    private final VisitInvitationUseCase visitInvitation;
-    private final RsvpInvitationUseCase rsvpInvitation;
+	private final VisitInvitationUseCase visitInvitation;
+	private final RsvpInvitationUseCase rsvpInvitation;
 
-    @GetMapping("/invitations/{ref}")
-    String showInvitation(@PathVariable("ref") String ref, @RequestParam(required = false) String guest, Model model) {
-        InvitationVisitor viewer = Optional.ofNullable(guest)
-                .map(InvitationVisitor::withName)
-                .orElseGet(InvitationVisitor::anonymous);
+	@GetMapping("/invitations/{ref}")
+	String showInvitation(@PathVariable("ref") String ref, @RequestParam(required = false) String guest, Model model) {
+		InvitationVisitor viewer = Optional.ofNullable(guest)
+				.map(InvitationVisitor::withName)
+				.orElseGet(InvitationVisitor::anonymous);
 
-        VisitInvitationUseCase.Request req = new VisitInvitationUseCase.Request(new EventReference(ref), viewer);
-        VisitInvitationUseCase.Response resp = visitInvitation.apply(req);
+		VisitInvitationUseCase.Request req = new VisitInvitationUseCase.Request(new EventReference(ref), viewer);
+		VisitInvitationUseCase.Response resp = visitInvitation.apply(req);
 
-        var event = resp.evt();
-        model.addAttribute("bride_name", event.brideName());
-        model.addAttribute("groom_name", event.groomName());
-        model.addAttribute("event_date", event.eventDateTime());
-        model.addAttribute("event_location", event.eventLocation());
-        model.addAttribute("event_reception", event.eventReception());
-        model.addAttribute("event_reference", event.reference().value());
-        model.addAttribute("event_background_img", event.backgroundImageOrDefault());
-        return "invitation";
-    }
+		var event = resp.evt();
+		model.addAttribute("bride_name", event.brideName());
+		model.addAttribute("groom_name", event.groomName());
+		model.addAttribute("event_date", event.eventDateTime());
+		model.addAttribute("event_location", event.eventLocation());
+		model.addAttribute("event_reception", event.eventReception());
+		model.addAttribute("event_reference", event.reference().value());
+		model.addAttribute("event_background_img", event.backgroundImageOrDefault());
+		return "invitation";
+	}
 
-    @PostMapping("/invitations/{ref}/responses")
-    RedirectView submitResponse(
-            @PathVariable("ref") String eventReference,
-            @RequestParam("guest") String guest,
-            @RequestParam("rsvp") String rsvp
-    ) {
-        var req = new RsvpInvitationUseCase.Request(
-                new EventReference(eventReference),
-                guest,
-                rsvp.equals("ACCEPTED") ? new RsvpAnswer.Accepted() : new RsvpAnswer.Declined()
-        );
-        rsvpInvitation.apply(req);
-        return new RedirectView("/events");
-    }
+	@PostMapping("/invitations/{ref}/responses")
+	RedirectView submitResponse(
+			@PathVariable("ref") String eventReference,
+			@RequestParam("guest") String guest,
+			@RequestParam("rsvp") String rsvp,
+			@RequestParam(value = "partnerName", required = false) String partnerName
+	) {
+		var req = new RsvpInvitationUseCase.Request(
+				new EventReference(eventReference),
+				guest,
+				rsvp.equals("ACCEPTED") ? new RsvpAnswer.Accepted() : new RsvpAnswer.Declined(),
+				partnerName
+		);
+		rsvpInvitation.apply(req);
+		return new RedirectView("/events");
+	}
 }

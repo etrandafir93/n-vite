@@ -2,8 +2,7 @@ package tech.nvite.domain.usecases;
 
 import java.util.function.Function;
 
-import org.springframework.stereotype.Component;
-
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.model.EventReference;
@@ -22,12 +21,12 @@ public class RsvpInvitationUseCase implements Function<RsvpInvitationUseCase.Req
     @Override
     public Response apply(Request req) {
         log.info("Saving RSVP {}", req);
-        var saved = rsvp.save(new Rsvp(req.name, req.eventReference, req.rsvp));
+        var saved = rsvp.save(new Rsvp(req.name, req.eventReference, req.rsvp, req.partnerName()));
         log.info("RSVP saved {}", saved.id());
         return new Response(saved.id());
     }
 
-    public record Request(EventReference eventReference, String name, RsvpAnswer rsvp) {
+    public record Request(EventReference eventReference, String name, RsvpAnswer rsvp, @Nullable String partnerName) {
     }
 
     public record Response(String rsvpId) {}
