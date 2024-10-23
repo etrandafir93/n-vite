@@ -16,16 +16,16 @@
     <!-- Statistics Section with Clickable Counters -->
     <div class="flex justify-center mb-8">
         <div class="bg-blue-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-blue-600 transition duration-300" data-filter="ALL">
-            <h2 class="text-2xl font-bold text-white">All</h2>
+            <h4 class="text-2xl font-bold text-white" th:text="'People Attending: ' + ${attendingCount}"></h4>
         </div>
         <div class="bg-green-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-green-600 transition duration-300" data-filter="ACCEPTED">
-            <h2 class="text-2xl font-bold text-white" th:text="'Accepted: ' + ${acceptedCount}"></h2>
+            <h4 class="text-2xl font-bold text-white" th:text="'Invitations Accepted: ' + ${acceptedCount}"></h4>
         </div>
         <div class="bg-red-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-red-600 transition duration-300" data-filter="DECLINED">
-            <h2 class="text-2xl font-bold text-white" th:text="'Declined: ' + ${declinedCount}"></h2>
+            <h4 class="text-2xl font-bold text-white" th:text="'Invitations Declined: ' + ${declinedCount}"></h4>
         </div>
         <div class="bg-yellow-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-yellow-600 transition duration-300" data-filter="VISITED">
-            <h2 class="text-2xl font-bold text-white" th:text="'Visited: ' + ${visitedCount}"></h2>
+            <h4 class="text-2xl font-bold text-white" th:text="'Visited: ' + ${visitedCount}"></h4>
         </div>
     </div>
 

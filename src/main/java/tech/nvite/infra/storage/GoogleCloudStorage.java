@@ -1,5 +1,7 @@
 package tech.nvite.infra.storage;
 
+import java.util.UUID;
+
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -21,7 +23,7 @@ public class GoogleCloudStorage {
 
     @SneakyThrows
     public String uploadFile(MultipartFile file) {
-        String fileName = "invitations/%s".formatted(file.getOriginalFilename());
+        String fileName = "invitations/%s".formatted(UUID.randomUUID().toString());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId(fileName))
             .build();
 

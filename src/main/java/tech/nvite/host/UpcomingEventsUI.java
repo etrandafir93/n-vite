@@ -21,12 +21,11 @@ import static java.util.stream.Collectors.joining;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-class EventBuilderUI {
+class UpcomingEventsUI {
 
 	private final Events events;
 	private final EditEventUseCase editEvent;
 	private final CreateEventUseCase createEvent;
-	private final CurrentUser currentUser;
 
 	@GetMapping("/events")
 	public String showEvents(Model model) {
@@ -39,7 +38,6 @@ class EventBuilderUI {
 	}
 
 	record EventListItem(String groomName, String brideName, String dateTime, String ref) {
-
 	}
 
 	@GetMapping("/events/builder")
