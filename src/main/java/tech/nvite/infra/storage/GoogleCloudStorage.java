@@ -2,6 +2,9 @@ package tech.nvite.infra.storage;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -9,9 +12,6 @@ import com.google.cloud.storage.StorageOptions;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Component
@@ -23,7 +23,8 @@ public class GoogleCloudStorage {
 
     @SneakyThrows
     public String uploadFile(MultipartFile file) {
-        String fileName = "invitations/%s".formatted(UUID.randomUUID().toString());
+        String fileName = "invitations/%s".formatted(UUID.randomUUID()
+            .toString());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId(fileName))
             .build();
 
@@ -32,9 +33,7 @@ public class GoogleCloudStorage {
     }
 
     public void delete(String imageNameOrUrl) {
-        String imgName = imageNameOrUrl.contains(SAVED_IMAGE_URL)
-            ? imageNameOrUrl.split(SAVED_IMAGE_URL)[1]
-            : imageNameOrUrl;
+        String imgName = imageNameOrUrl.contains(SAVED_IMAGE_URL) ? imageNameOrUrl.split(SAVED_IMAGE_URL)[1] : imageNameOrUrl;
 
         boolean deleted = storage.delete(blobId(imgName));
         if (deleted) {

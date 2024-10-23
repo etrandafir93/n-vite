@@ -4,9 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
@@ -14,9 +13,8 @@ import tech.nvite.infra.security.CurrentUser;
 import tech.nvite.infra.storage.GoogleCloudStorage;
 import tech.nvite.util.UseCase;
 
+import java.util.UUID;
 import java.util.function.Function;
-
-import com.mongodb.internal.logging.StructuredLogger;
 
 @Slf4j
 @UseCase
@@ -31,12 +29,30 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
 	public EventReference apply(CreateEventUseCase.Request req) {
 		log.info("Creating event {}", req);
 		String imageUrl = storage.uploadFile(req.eventBackgroundImage());
-		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
-				.withCreatedBy(currentUser.get().id());
 
-		EventReference ref = events.create(evt);
+		var ref = newEventReference(req.brideName(), req.groomName());
+		var evt = new Event(req.groomName(), req.brideName(), req.eventLocation(), req.eventReception(), req.eventDateTime(), imageUrl)
+				.withCreatedBy(currentUser.get().id())
+				.withReference(ref);
+
+		events.create(evt);
 		log.info("Event created ref={}", ref.value());
 		return ref;
+	}
+
+	private EventReference newEventReference(String bride, String groom) {
+		String ref = "%s-and-%s".formatted(bride.replace(" ", ""), groom.replace(" ", ""));
+
+		EventReference evtRef = new EventReference(ref);
+		boolean refAlreadyUsed = events.find(evtRef)
+				.isPresent();
+
+		if (refAlreadyUsed) {
+			String uuid = UUID.randomUUID().toString();
+			log.info("the reference [{}] is already used. We'll use an uuid [{}] for this event.", ref, uuid);
+			return new EventReference(uuid);
+		}
+		return evtRef;
 	}
 
 	@Schema(description = "Request body for creating a new wedding event")

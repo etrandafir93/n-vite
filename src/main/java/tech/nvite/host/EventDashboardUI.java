@@ -72,12 +72,11 @@ class EventDashboardUI {
 
     @PostMapping("/events/{ref}/delete")
     String deleteEvent(Model model, @PathVariable String ref) {
-        deleteEvent.apply(new DeleteEventUseCase.Request(new EventReference(ref)));
+        deleteEvent.accept(new DeleteEventUseCase.Request(new EventReference(ref)));
         return "redirect:/events";
     }
 
     private record EventDetails(String guest, @Nullable String partnerName, Instant timestamp, String action) {
-
     }
 
 }

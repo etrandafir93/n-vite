@@ -1,7 +1,6 @@
 package tech.nvite.domain.model;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import tech.nvite.infra.security.CurrentUser;
@@ -13,27 +12,23 @@ import static java.time.LocalDateTime.now;
 
 @Repository
 @RequiredArgsConstructor
-public class Events implements CommandLineRunner {
+public class Events {
 
 	private final EventsMongoRepository repo;
 	private final CurrentUser currentUser;
 
 	public EventReference create(Event event) {
-		Assert.isNull(event.reference(), "reference must be null when creating a new event!");
+		Assert.notNull(event.reference(), "reference cannot be null.");
 		Assert.isNull(event.created(), "created must be null when creating a new event!");
 
-		String ref = "%s-and-%s".formatted(
-				event.brideName().replace(" ", ""),
-				event.groomName().replace(" ", "")
-		);
-		EventReference evtRef = new EventReference(ref);
-		Assert.isTrue(repo.findById(evtRef).isEmpty(), "Key %s is not unique! We cannot save this event!".formatted(ref));
+		Assert.isTrue(repo.findById(event.reference()).isEmpty(), "Key %s is not unique! We cannot save this event!"
+				.formatted(event.reference().value()));
 
-		var newEvent = event.withReference(evtRef)
+		var newEvent = event.withReference(event.reference())
 				.withCreated(now());
 
 		repo.save(newEvent);
-		return evtRef;
+		return event.reference();
 	}
 
 	public void delete(EventReference ref) {
@@ -57,10 +52,6 @@ public class Events implements CommandLineRunner {
 
 	public Stream<Event> findAllForLoggedInUser() {
 		return repo.findAllByCreatedBy(currentUser.get().id()).stream();
-	}
-
-	@Override
-	public void run(String... args) {
 	}
 
 }
