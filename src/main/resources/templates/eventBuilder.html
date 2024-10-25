@@ -20,6 +20,7 @@
         <!-- Use enctype to allow file upload -->
         <form th:action="@{/events}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="eventReference" th:value="${eventReference}">
+            <input type="hidden" id="timezone" name="timezone">
             <div class="mb-4">
                 <label for="groomName" class="block text-gray-700 font-semibold mb-2">Groom Name</label>
                 <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="groomName" name="groomName" th:value="${groomName}" required>
@@ -52,6 +53,15 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the user's timezone name using the Internationalization API
+        const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        // Set the value in the hidden input field
+        document.getElementById('timezone').value = timezoneName;
+    });
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

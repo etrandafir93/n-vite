@@ -14,6 +14,7 @@ import tech.nvite.infra.security.CurrentUser;
 import tech.nvite.infra.storage.GoogleCloudStorage;
 import tech.nvite.util.UseCase;
 
+import java.time.Instant;
 import java.util.function.Function;
 
 @Slf4j
@@ -49,7 +50,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
 
             @NotBlank(message = "Event Reception name is required") @Size(min = 3, max = 44, message = "Event Reception must be between {min} and {max} characters") @Schema(description = "Reception details of the wedding event", example = "Rooftop Dinner") String eventReception,
 
-            @NotBlank(message = "Event Date name is required") @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters") @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00") String eventDateTime,
+            @NotBlank(message = "Event Date name is required") @Size(min = 3, max = 44, message = "Event Date must be between {min} and {max} characters") @Schema(description = "Date and time of the wedding event", example = "2024-07-24T14:00:00") Instant eventDateTime,
             MultipartFile eventBackgroundImage
     ) {
     }

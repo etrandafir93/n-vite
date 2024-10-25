@@ -6,6 +6,7 @@ import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
@@ -18,7 +19,7 @@ public record Event(
 		String brideName,
 		String eventLocation,
 		String eventReception,
-		String eventDateTime,
+		Instant eventDateTime,
 		@With @Nullable
 		String backgroundImage,
 		@With @Nullable
@@ -32,7 +33,7 @@ public record Event(
 				 String brideName,
 				 String eventLocation,
 				 String eventReception,
-				 String eventDateTime,
+				 Instant eventDateTime,
 				 String backgroundImage) {
 		this(
 				groomName,

@@ -16,6 +16,12 @@ import tech.nvite.domain.usecases.CreateEventUseCase;
 import tech.nvite.domain.usecases.EditEventUseCase;
 import tech.nvite.infra.security.CurrentUser;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static java.util.stream.Collectors.joining;
 
 @Controller
@@ -37,7 +43,7 @@ class UpcomingEventsUI {
 		return "upcomingEvents";
 	}
 
-	record EventListItem(String groomName, String brideName, String dateTime, String ref) {
+	record EventListItem(String groomName, String brideName, Instant dateTime, String ref) {
 	}
 
 	@GetMapping("/events/builder")
@@ -59,21 +65,34 @@ class UpcomingEventsUI {
 	}
 
 	@PostMapping("/events")
-	public RedirectView saveEvent(@RequestParam String groomName, @RequestParam String brideName,
-								  @RequestParam String eventLocation, @RequestParam String eventReception,
-								  @RequestParam String eventDateTime, @RequestParam MultipartFile eventBackgroundImage,
-								  @RequestParam(required = false) String eventReference, Model model) {
+	public RedirectView saveEvent(@RequestParam String groomName,
+								  @RequestParam String brideName,
+								  @RequestParam String eventLocation,
+								  @RequestParam String eventReception,
+								  @RequestParam String eventDateTime,
+								  @RequestParam MultipartFile eventBackgroundImage,
+								  @RequestParam(required = false) String eventReference,
+								  @RequestParam String timezone,
+								  Model model) {
+
+		var instant = toInstant(eventDateTime, timezone);
 
 		if (!StringUtils.isBlank(eventReference)) {
-			var req = new EditEventUseCase.Request(new EventReference(eventReference), groomName, brideName, eventLocation, eventReception, eventDateTime, eventBackgroundImage);
+			var req = new EditEventUseCase.Request(new EventReference(eventReference), groomName, brideName, eventLocation, eventReception, instant, eventBackgroundImage);
 			editEvent.apply(req);
 		} else {
-			var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, eventDateTime, eventBackgroundImage);
+			var req = new CreateEventUseCase.Request(groomName, brideName, eventLocation, eventReception, instant, eventBackgroundImage);
 			createEvent.apply(req);
 		}
 
 		return new RedirectView("/events");
 	}
 
-}
+	private static Instant toInstant(String eventDateTime, String timezone) {
+		LocalDateTime localDateTime = LocalDateTime.parse(eventDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+		ZoneId zoneId = ZoneId.of(timezone);
+		ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
+		return zonedDateTime.toInstant();
+	}
 
+}
