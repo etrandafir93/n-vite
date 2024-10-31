@@ -38,11 +38,9 @@
     <div class="flex justify-around items-center my-3">
         <h2 class="fancy-text text-2xl" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
         <nav class="flex space-x-4 text-2xl">
-            <a href="#" class="hover:underline">What?</a>
-            <a href="#when"
-               class="hover:bg-gray-200 hover:text-black rounded-lg transition-all duration-200 ease-in-out">When?</a>
-            <a href="#where"
-               class="hover:bg-gray-200 hover:text-black rounded-lg transition-all duration-200 ease-in-out">Where?</a>
+            <a href="#what" class="hover:underline">What?</a>
+            <a href="#when" class="hover:underline">When?</a>
+            <a href="#where" class="hover:underline">Where?</a>
             <a href="#confirmation" class="hover:underline">Confirmation</a>
         </nav>
     </div>
@@ -106,7 +104,7 @@
 
 <!-- Where Section -->
 <section id="where" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         th:style="|background-image: url('${event_background_img}');|">
+         th:style="|background-image: url('https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg');|">
     <div class="w-full max-w-3xl text-center bg-white bg-opacity-70 p-8 rounded-lg">
         <h2 class="text-5xl font-lora mb-8">Where</h2>
         <p class="text-2xl mb-6" th:text="${event_location}"></p>
@@ -115,7 +113,7 @@
 
 <!-- Form Section -->
 <section id="confirmation" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg');">
+         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_blue.jpg');">
     <div class="w-full max-w-2xl bg-white bg-opacity-10 p-8 rounded-lg">
         <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post">
             <div class="mb-6">
@@ -139,10 +137,10 @@
         </form>
     </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 <script th:inline="javascript">
     // Initialize Headroom.js to manage header visibility and style
     const header = document.getElementById('sticky-header');
@@ -158,11 +156,11 @@
         speedAsDuration: true
     });
 
+    // Countdown Logic
     document.addEventListener("DOMContentLoaded", function () {
         /*<![CDATA[*/
         const eventDateStr = [[${event_date}]];
         console.log("Event Date:", eventDateStr);
-
         /*]]>*/
 
         function updateCountdown() {
