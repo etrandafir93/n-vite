@@ -23,7 +23,8 @@
         }
 
         .fancy-text {
-            font-family: 'Great Vibes', cursive; letter-spacing: 0.1em;
+            font-family: 'Great Vibes', cursive;
+            letter-spacing: 0.1em;
         }
 
         #sticky-header a {
@@ -104,10 +105,38 @@
 
 <!-- Where Section -->
 <section id="where" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         th:style="|background-image: url('https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg');|">
-    <div class="w-full max-w-3xl text-center bg-white bg-opacity-70 p-8 rounded-lg">
-        <h2 class="text-5xl font-lora mb-8">Where</h2>
-        <p class="text-2xl mb-6" th:text="${event_location}"></p>
+         style="background-image: url('https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg');">
+    <!-- Locations Container -->
+    <div class="flex flex-col md:flex-row justify-center gap-8 text-black">
+        <!-- Location 1: Religious Ceremony -->
+        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
+             style="min-width: 300px; max-width: 400px;">
+            <div class="relative mb-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Awl_CZgAUXEFovt_b2lttkiDcJ5oPQwD-w&s"
+                     alt="Religious Ceremony Image"
+                     class="rounded-full w-32 h-32 mx-auto">
+            </div>
+            <h3 class="fancy-text text-2xl mb-2 text-black">Religious Ceremony</h3>
+            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
+            <p class="text-md mb-2 text-black">Ora 16:00 (TBD)</p>
+            <p class="text-md mb-4 text-black" th:text="${event_location}"></p>
+            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
+        </div>
+
+        <!-- Location 2: Reception -->
+        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
+             style="min-width: 300px; max-width: 400px;">
+            <div class="relative mb-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI4GKA24yiau1H3ZQQmEgPBT5hV0RwXgxuw&s"
+                     alt="Civil Ceremony Image"
+                     class="rounded-full w-32 h-32 mx-auto">
+            </div>
+            <h3 class="fancy-text text-2xl mb-2 text-black">Reception</h3>
+            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
+            <p class="text-md mb-2 text-black">Ora 13:00 (TBD)</p>
+            <p class="text-md mb-4 text-black" th:text="${event_reception}"></p>
+            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
+        </div>
     </div>
 </section>
 
@@ -161,6 +190,7 @@
         /*<![CDATA[*/
         const eventDateStr = [[${event_date}]];
         console.log("Event Date:", eventDateStr);
+
         /*]]>*/
 
         function updateCountdown() {
