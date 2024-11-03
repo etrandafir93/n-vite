@@ -1,7 +1,5 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    env:
-      - 'MONGO_URL_ENV=${_MONGO_URL}'
     args:
       - build
       - '--no-cache'
