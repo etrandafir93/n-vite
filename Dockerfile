@@ -6,5 +6,8 @@ RUN mvn clean package -DskipTests
 FROM amazoncorretto:21-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
+ENV MONGO_URL_ENV=${MONGO_URL_ENV}
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
