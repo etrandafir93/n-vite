@@ -1,5 +1,5 @@
 
-nvite.test: ${_MONGO_URL}
+nvite.test: ${MONGO_URL}
 
 spring:
   application.name: nvite

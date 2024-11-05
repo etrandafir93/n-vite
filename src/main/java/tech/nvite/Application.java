@@ -16,20 +16,10 @@ public class Application {
     }
 
 	@Service @Slf4j
-	static class TestVars implements CommandLineRunner {
-
-		@Value("${nvite.test}")
-		String mongo;
-
+	static class TestVars {
 		@EventListener(ApplicationReadyEvent.class)
 		public void x() {
-			log.error("!!!!mongo url ready:" + mongo);
-		}
-
-		@Override
-		public void run(String... args) throws Exception {
-			log.error("!!!!mongo url:" + mongo);
+			System.getenv().forEach((key, value) -> System.out.println(key + "=" + value));
 		}
 	}
-
 }
