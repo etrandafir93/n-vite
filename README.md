@@ -8,8 +8,11 @@ making wedding planning simpler and more eco-friendly.
 
 Here is a [spreadsheet checklist](https://docs.google.com/spreadsheets/d/1p1IBNcukyfj4lw2CZX7oXG4OgLBP_xVST_9aSGrVU08/edit?usp=sharing) with all the supported functionalities, including testcases, [bugs](https://github.com/etrandafir93/n-vite/issues?q=is%3Aissue+is%3Aopen+label%3ABUG) and [improvements](https://github.com/etrandafir93/n-vite/issues?q=is%3Aissue+is%3Aopen+label%3Aimprovement).
 
-![logo](./src/main/resources/static/icons/n-vite-logo.png)
-
+<br/>
+<p align="center">
+  <img src="./src/main/resources/static/icons/n-vite-logo.png"/>
+</p>
+<br/>
 
 ### Development
 
