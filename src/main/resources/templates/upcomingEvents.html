@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Event List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap"
+          rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-blue-50 font-sans">
@@ -12,21 +13,36 @@
 <div class="container mx-auto mt-12">
     <h1 class="text-center text-4xl font-bold text-gray-800 mb-8">Upcoming Events</h1>
     <ul class="list-none">
-        <li th:each="event : ${events}" class="flex justify-between items-center bg-white shadow rounded-lg p-6 mb-4">
-            <div>
-                <h4 th:text="${event.groomName} + ' & ' + ${event.brideName}" class="text-2xl font-serif text-gray-800"></h4>
-                <p th:text="'Date: ' + ${event.dateTime}" class="text-gray-600"></p>
-            </div>
+        <li th:each="event : ${events}"
+            class="flex justify-between items-center bg-white shadow rounded-lg p-6 mb-4">
+
+            <a th:href="@{'/events/' + ${event.ref}}">
+                <div>
+                    <h4 th:text="${event.groomName} + ' & ' + ${event.brideName}"
+                        class="text-2xl font-serif text-gray-800"></h4>
+                    <p th:text="'Date: ' + ${event.dateTime}" class="text-gray-600"></p>
+                </div>
+            </a>
+
             <div class="flex items-center space-x-3">
                 <a th:href="@{'/invitations/' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a th:href="@{'/events/' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
-                    <i class="fa fa-calendar-check-o"></i>
-                </a>
-                <a th:href="@{'/events/builder?eventReference=' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
+                <a th:href="@{'/events/builder?eventReference=' + ${event.ref}}"
+                   class="text-blue-500 hover:text-blue-700 text-xl">
                     <i class="fa fa-pencil-alt"></i>
                 </a>
+
+                <button th:attr="onclick=|copyEventUrl('${event.ref}')|"
+                        class="text-blue-500 hover:text-blue-700 text-xl" title="Copy URL">
+                    <i class="fa fa-copy"></i>
+                </button>
+
+                <button th:attr="onclick=|shareOnWapp('${event.ref}')|"
+                        class="text-blue-500 hover:text-blue-700 text-xl" title="Share on Wapp">
+                    <i class="fa fa-share-alt"></i>
+                </button>
+
                 <form th:action="@{'/events/' + ${event.ref} + '/delete'}" method="post" class="inline-block">
                     <button type="submit" class="text-red-500 hover:text-red-700" title="Delete Event">
                         <i class="fa fa-trash-alt"></i>
@@ -38,9 +54,29 @@
 </div>
 
 <!-- Floating Add Event Button -->
-<a href="/events/builder" class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full p-4 text-3xl flex items-center justify-center hover:bg-green-600">
+<a href="/events/builder"
+   class="fixed bottom-5 right-5 bg-green-500 text-white rounded-full p-4 text-3xl flex items-center justify-center hover:bg-green-600">
     <i class="fa fa-plus"></i>
 </a>
+
+<script>
+    function copyEventUrl(evtRef) {
+        let url = window.location.origin + "/invitations/" + evtRef;
+        navigator.clipboard.writeText(url).then(function () {
+            alert("URL copied to clipboard!");
+        }).catch(function (error) {
+            console.error("Failed to copy URL:", error);
+        });
+    }
+
+    function shareOnWapp(evtRef) {
+        let url = window.location.origin + "/invitations/" + evtRef;
+        // const textToShare = `Join us to celebrate our wedding. ${url}`;
+        const encodedText = encodeURIComponent(url);
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+        window.open(whatsappUrl, '_blank');
+    }
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
