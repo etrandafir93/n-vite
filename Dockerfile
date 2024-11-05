@@ -8,6 +8,6 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
-ENV MONGO_URL_ENV=${MONGO_URL_ENV}
+ENV _MONGO_URL=${_MONGO_URL}
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
