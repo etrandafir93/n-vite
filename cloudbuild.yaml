@@ -29,6 +29,9 @@ steps:
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
       - '--region=$_DEPLOY_REGION'
       - '--quiet'
+      - '--update-env-vars'
+      - >-
+        MONGO_URL_ENV=${_MONGO_URL},GOOGLE_CLIENT_ID_ENV=${_GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET_ENV=${_GOOGLE_CLIENT_SECRET}
     id: Deploy
     entrypoint: gcloud
 images:
@@ -38,11 +41,11 @@ options:
   substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
 substitutions:
+  _SERVICE_NAME: n-vite-beta
   _DEPLOY_REGION: europe-southwest1
   _AR_HOSTNAME: europe-southwest1-docker.pkg.dev
   _PLATFORM: managed
   _TRIGGER_ID: 51cc822f-a8c9-422a-b93f-6fb742d69575
-  _SERVICE_NAME: n-vite-beta
 tags:
   - gcp-cloud-build-deploy-cloud-run
   - gcp-cloud-build-deploy-cloud-run-managed
