@@ -1,3 +1,6 @@
+
+nvite.test: ${_MONGO_URL}
+
 spring:
   application.name: nvite
   thymeleaf.cache: false
