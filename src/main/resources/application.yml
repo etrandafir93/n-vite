@@ -1,13 +1,11 @@
 
-nvite.test: ${MONGO_URL}
-
 spring:
   application.name: nvite
   thymeleaf.cache: false
 
   data:
     mongodb:
-      uri: mongodb+srv://n-vite-app:oCz5Sz5urHaU3nk2@cluster0.or1qk.mongodb.net/account
+      uri: ${MONGO_URL_ENV}
 
   security:
     oauth2:
