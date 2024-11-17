@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.infra.storage.GoogleCloudStorage;
-import tech.nvite.util.UseCase;
+import tech.nvite.app.UseCase;
 
 import java.util.function.Consumer;
 

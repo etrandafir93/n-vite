@@ -9,7 +9,7 @@ import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Rsvp;
 import tech.nvite.domain.model.RsvpAnswer;
 import tech.nvite.domain.model.RsvpRepository;
-import tech.nvite.util.UseCase;
+import tech.nvite.app.UseCase;
 
 @Slf4j
 @UseCase

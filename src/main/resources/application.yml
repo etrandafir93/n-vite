@@ -1,3 +1,18 @@
+#springdoc:
+#  swagger-ui.enabled: true
+#  api-docs.enabled: true
+
+logging:
+  level:
+    org.springdoc: DEBUG
+    org.springframework.web: WARN
+    org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration: WARN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 spring:
   application.name: nvite
@@ -29,12 +44,4 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-springdoc:
-  swagger-ui.path: /swagger-ui.html
-  api-docs.path: /api-docs
-
-logging:
-  level:
-    org.springframework.web: WARN
-    org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration: WARN
 

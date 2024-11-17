@@ -9,7 +9,7 @@ import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.Events;
 import tech.nvite.domain.model.InvitationVisitor;
 import tech.nvite.domain.model.InvitationVisits;
-import tech.nvite.util.UseCase;
+import tech.nvite.app.UseCase;
 
 @Slf4j
 @UseCase

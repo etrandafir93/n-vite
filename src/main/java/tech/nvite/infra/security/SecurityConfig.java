@@ -13,7 +13,9 @@ class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/actuator/**").permitAll()
 						.requestMatchers("/", "/login", "/invitations/**", "/icons/**", "/css/**", "/js/**", "/images/**").permitAll()
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.oauth2Login(oauth2 -> oauth2
