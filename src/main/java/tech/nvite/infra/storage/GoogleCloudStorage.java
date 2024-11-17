@@ -2,6 +2,9 @@ package tech.nvite.infra.storage;
 
 import java.util.UUID;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,11 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class GoogleCloudStorage {
 
     public static final String SAVED_IMAGE_URL = "https://storage.googleapis.com/n-vite/";
-    private final Storage storage = StorageOptions.getDefaultInstance()
-        .getService();
+    private final Storage storage;
 
     @SneakyThrows
     public String uploadFile(MultipartFile file) {
@@ -46,4 +49,12 @@ public class GoogleCloudStorage {
     private static BlobId blobId(String fileName) {
         return BlobId.of("n-vite", fileName);
     }
+
+	@Configuration
+	static class Config {
+		@Bean
+		Storage storage(){
+			return StorageOptions.getDefaultInstance().getService();
+		}
+	}
 }

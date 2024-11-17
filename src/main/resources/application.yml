@@ -5,15 +5,15 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGO_URL_ENV}
+      uri: mongodb+srv://n-vite-app:oCz5Sz5urHaU3nk2@cluster0.or1qk.mongodb.net/account
 
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID_ENV}
-            client-secret: ${GOOGLE_CLIENT_SECRET_ENV}
+            client-id: 626515189021-coqnnlvcclkr0e6hqbormbap88keurrv.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
