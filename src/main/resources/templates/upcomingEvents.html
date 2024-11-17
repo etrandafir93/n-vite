@@ -16,7 +16,7 @@
         <li th:each="event : ${events}"
             class="flex justify-between items-center bg-white shadow rounded-lg p-6 mb-4">
 
-            <a th:href="@{'/events/' + ${event.ref}}">
+            <a th:href="@{'/events/' + ${event.reference}}">
                 <div>
                     <h4 th:text="${event.groomName} + ' & ' + ${event.brideName}"
                         class="text-2xl font-serif text-gray-800"></h4>
