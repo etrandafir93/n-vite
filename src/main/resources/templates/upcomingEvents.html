@@ -25,25 +25,25 @@
             </a>
 
             <div class="flex items-center space-x-3">
-                <a th:href="@{'/invitations/' + ${event.ref}}" class="text-blue-500 hover:text-blue-700 text-xl">
+                <a th:href="@{'/invitations/' + ${event.reference}}" class="text-blue-500 hover:text-blue-700 text-xl">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a th:href="@{'/events/builder?eventReference=' + ${event.ref}}"
+                <a th:href="@{'/events/builder?eventReference=' + ${event.reference}}"
                    class="text-blue-500 hover:text-blue-700 text-xl">
                     <i class="fa fa-pencil-alt"></i>
                 </a>
 
-                <button th:attr="onclick=|copyEventUrl('${event.ref}')|"
+                <button th:attr="onclick=|copyEventUrl('${event.reference}')|"
                         class="text-blue-500 hover:text-blue-700 text-xl" title="Copy URL">
                     <i class="fa fa-copy"></i>
                 </button>
 
-                <button th:attr="onclick=|shareOnWapp('${event.ref}')|"
+                <button th:attr="onclick=|shareOnWapp('${event.reference}')|"
                         class="text-blue-500 hover:text-blue-700 text-xl" title="Share on Wapp">
                     <i class="fa fa-share-alt"></i>
                 </button>
 
-                <form th:action="@{'/events/' + ${event.ref} + '/delete'}" method="post" class="inline-block">
+                <form th:action="@{'/events/' + ${event.reference} + '/delete'}" method="post" class="inline-block">
                     <button type="submit" class="text-red-500 hover:text-red-700" title="Delete Event">
                         <i class="fa fa-trash-alt"></i>
                     </button>
