@@ -1,6 +1,7 @@
 package tech.nvite.infra.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -13,6 +14,9 @@ public class CurrentUser {
 
   public User get() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth instanceof TestingAuthenticationToken testAuth) {
+      return new User(testAuth.toString(), testAuth.toString() + "@nvite.com");
+    }
     if (auth == null || !(auth.getPrincipal() instanceof OAuth2User principal)) {
       throw new NoUserInContextException();
     }

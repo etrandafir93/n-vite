@@ -3,12 +3,13 @@ package tech.nvite.infra.security;
 import jakarta.servlet.*;
 import java.io.IOException;
 import org.slf4j.MDC;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component @Order(2)
 class UserLoggingFilter implements Filter {
   private static final String USER_KEY = "username";
 
