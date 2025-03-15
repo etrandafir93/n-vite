@@ -19,9 +19,12 @@ public class GoogleCloudStorage {
 
   @SneakyThrows
   public String uploadFile(MultipartFile file) {
+    if (file == null) {
+      return "";
+    }
+
     String fileName = "invitations/%s".formatted(UUID.randomUUID().toString());
     BlobInfo blobInfo = BlobInfo.newBuilder(blobId(fileName)).build();
-
     storage.create(blobInfo, file.getBytes());
     return SAVED_IMAGE_URL + fileName;
   }

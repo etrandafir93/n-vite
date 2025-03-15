@@ -4,12 +4,14 @@ import jakarta.servlet.*;
 import java.io.IOException;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 
-@Component @Order(2)
+@Component
+@Order(2)
 class UserLoggingFilter implements Filter {
   private static final String USER_KEY = "username";
 
@@ -18,6 +20,13 @@ class UserLoggingFilter implements Filter {
       throws IOException, ServletException {
     try {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+      if (authentication instanceof TestingAuthenticationToken testAuth) {
+        MDC.put(USER_KEY, testAuth.getPrincipal().toString());
+        chain.doFilter(request, response);
+        return;
+      }
+
       if (authentication != null
           && authentication.getPrincipal() != null
           && authentication.getPrincipal() instanceof DefaultOAuth2User user) {

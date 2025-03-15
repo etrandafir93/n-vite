@@ -129,6 +129,7 @@ class UpcomingEventsUI {
                     schema = @Schema(implementation = ErrorResponse.class)))
       })
   @PutMapping("api/events")
+  @ResponseBody
   public EventReference updateEvent(@RequestBody EditEventUseCase.Request req) {
     return editEvent.apply(req);
   }
@@ -161,6 +162,7 @@ class UpcomingEventsUI {
                     schema = @Schema(implementation = ErrorResponse.class)))
       })
   @PostMapping("api/events")
+  @ResponseBody
   private EventReference createEvent(@RequestBody CreateEventUseCase.Request req) {
     return createEvent.apply(req);
   }
@@ -186,8 +188,8 @@ class UpcomingEventsUI {
                     mediaType = "application/json",
                     schema = @Schema(implementation = ErrorResponse.class)))
       })
-  @ResponseBody
   @GetMapping("/api/events")
+  @ResponseBody
   public List<EventListItem> getEventsForUser() {
     return events
         .findAllForLoggedInUser()

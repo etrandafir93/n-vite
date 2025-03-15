@@ -1,11 +1,15 @@
 package tech.nvite.guest;
 
+import static tech.nvite.domain.model.RsvpAnswer.*;
+import static tech.nvite.guest.InvitationAudienceUI.SubmitRspvDto.Answer.ACCEPTED;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.InvitationVisitor;
-import tech.nvite.domain.model.RsvpAnswer;
 import tech.nvite.domain.usecases.RsvpInvitationUseCase;
 import tech.nvite.domain.usecases.VisitInvitationUseCase;
 
@@ -53,9 +56,9 @@ class InvitationAudienceUI {
         new RsvpInvitationUseCase.Request(
             new EventReference(eventReference),
             guest,
-            rsvp.equals("ACCEPTED") ? new RsvpAnswer.Accepted() : new RsvpAnswer.Declined(),
+            rsvp.equals("ACCEPTED") ? new Accepted() : new Declined(),
             partnerName);
-    saveRsvp(eventReference, req);
+    rsvpInvitation.apply(req);
     return new RedirectView("/events");
   }
 
@@ -89,13 +92,29 @@ class InvitationAudienceUI {
                     schema = @Schema(implementation = ErrorResponse.class)))
       })
   @PostMapping("/api/invitations/{reference}/responses")
-  public void saveRsvp(
-      @PathVariable String reference, @RequestBody RsvpInvitationUseCase.Request rsvp) {
-    rsvpInvitation.apply(rsvp.withEventReference(new EventReference(reference)));
+  @ResponseBody
+  public void saveRsvp(@PathVariable String reference, @RequestBody SubmitRspvDto rsvp) {
+    rsvpInvitation.apply(rsvp.map());
+  }
+
+  record SubmitRspvDto(String reference, String name, Answer rsvp, @Nullable String partnerName) {
+
+    public enum Answer {
+      ACCEPTED,
+      DECLINED
+    }
+
+    private RsvpInvitationUseCase.Request map() {
+      return new RsvpInvitationUseCase.Request(
+          new EventReference(reference),
+          name,
+          rsvp.equals(ACCEPTED) ? new Accepted() : new Declined(),
+          partnerName);
+    }
   }
 
   @Operation(
-      summary = "Get an invitation for an event",
+      summary = "See invitation details and add a visit",
       description =
           "Retrieves the invitation for a specific event, with an optional guest name for personalized details.")
   @ApiResponses(
@@ -130,6 +149,7 @@ class InvitationAudienceUI {
                     schema = @Schema(implementation = ErrorResponse.class)))
       })
   @GetMapping("/api/invitations/{reference}")
+  @ResponseBody
   public VisitInvitationUseCase.Response getInvitation(
       @PathVariable String reference, @RequestParam(required = false) String guest) {
     InvitationVisitor viewer =
