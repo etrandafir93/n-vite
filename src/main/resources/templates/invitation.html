@@ -3,23 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Wedding Invitation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&family=Great+Vibes&family=Lato:wght@300;400&family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nv-pastel-pink': '#FCD8CD',
+                        'nv-light-pink-lilac': '#FEEBF6',
+                        'nv-light-lavender': '#EBD6FB',
+                        'nv-cornflower-blue': '#687FE5',
+                        'nv-dark-gray': '#4A4A4A',
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.12.0/headroom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
 
     <style>
+        body {
+            color: #4A4A4A; /* Default dark gray text for readability */
+        }
         .headroom--top {
-            background-color: rgba(255, 255, 255, 0);
-            color: white !important;
+            background-color: rgba(255, 255, 255, 0); /* Transparent when at top */
         }
 
         .headroom--not-top {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black !important;
+            background-color: rgba(254, 235, 246, 0.9); /* nv-light-pink-lilac with opacity */
+            color: #4A4A4A !important; /* Dark gray text */
+        }
+
+        .headroom--not-top .nav-link {
+            color: #4A4A4A !important;
+        }
+         .headroom--not-top .fancy-text-header {
+            color: #4A4A4A !important;
         }
 
         .fancy-text {
@@ -27,149 +48,158 @@
             letter-spacing: 0.1em;
         }
 
-        #sticky-header a {
+        #sticky-header a.nav-link {
+            transition: color 0.15s;
+            color: white; /* Default for hero section */
+        }
+
+        #sticky-header h2.fancy-text-header {
+            color: white; /* Default for hero section */
             transition: color 0.15s;
         }
+
+        .hero-text-shadow {
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
     </style>
 </head>
-<body class="font-open-sans text-white m-0 relative">
+<body class="font-open-sans text-nv-dark-gray m-0 relative bg-nv-light-pink-lilac"> <!-- Base background -->
 <!-- Slim Sticky Header Section -->
 <header id="sticky-header"
-        class="w-full text-black py-1 px-4 fixed top-0 left-0 z-10 shadow-md header-transparent transition-colors duration-300 ease-in-out">
-    <div class="flex justify-around items-center my-3">
-        <h2 class="fancy-text text-2xl" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
-        <nav class="flex space-x-4 text-2xl">
-            <a href="#what" class="hover:underline">What?</a>
-            <a href="#when" class="hover:underline">When?</a>
-            <a href="#where" class="hover:underline">Where?</a>
-            <a href="#confirmation" class="hover:underline">Confirmation</a>
+        class="w-full py-2 px-6 fixed top-0 left-0 z-50 transition-colors duration-300 ease-in-out">
+    <div class="container mx-auto flex justify-between items-center">
+        <h2 class="fancy-text fancy-text-header text-3xl" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
+        <nav class="flex space-x-6 text-lg">
+            <a href="#what" class="nav-link hover:text-nv-cornflower-blue hover:underline">Our Story</a>
+            <a href="#when" class="nav-link hover:text-nv-cornflower-blue hover:underline">When & Where</a>
+            <a href="#confirmation" class="nav-link hover:text-nv-cornflower-blue hover:underline">RSVP</a>
         </nav>
     </div>
 </header>
 
-<!-- what Section -->
-<section id="what" class="h-screen flex items-center justify-center relative pt-16">
+<!-- what Section (Hero) -->
+<section id="what" class="h-screen flex items-center justify-center relative text-white">
     <!-- Background Image with Dark Overlay -->
     <div class="absolute inset-0 w-full h-full">
         <img th:src="${event_background_img}" alt="Wedding Background" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="absolute inset-0 bg-black opacity-40"></div> <!-- Slightly less opacity -->
     </div>
 
     <!-- Content Wrapper -->
-    <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center">
-        <div class="w-full max-w-3xl p-5">
-            <h1 class="text-6xl font-lora mb-4" th:text="${groom_name} + ' & ' + ${bride_name}"></h1>
-            <p class="fancy-text text-2xl mb-6" th:text="${#dates.format(event_date, 'dd MMMM yyyy')}"></p>
+    <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center p-5">
+        <div class="bg-black bg-opacity-30 p-8 rounded-lg shadow-xl">
+            <p class="font-lato text-xl md:text-2xl text-nv-pastel-pink mb-4 hero-text-shadow">You are invited to celebrate the wedding of</p>
+            <h1 class="fancy-text text-6xl md:text-8xl mb-6 hero-text-shadow" th:text="${groom_name} + ' & ' + ${bride_name}"></h1>
+            <p class="font-lora text-3xl md:text-4xl text-nv-light-lavender hero-text-shadow" th:text="${#dates.format(event_date, 'dd MMMM yyyy')}"></p>
         </div>
     </div>
 </section>
 
-<!-- When Section -->
-<section id="when" class="h-screen flex flex-col items-center justify-center bg-cover bg-center relative py-20"
-         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg');">
+<!-- When & Where Section -->
+<section id="when" class="min-h-screen flex flex-col items-center justify-center relative py-20 bg-nv-light-lavender text-nv-dark-gray px-4">
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 text-nv-cornflower-blue text-6xl">
+        <span class="fancy-text">&hearts;</span>
+    </div>
 
-    <!-- Dark overlay for better contrast -->
-    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="text-center w-full max-w-4xl">
+        <h2 class="fancy-text text-5xl md:text-7xl text-nv-cornflower-blue mb-8">Join Us</h2>
 
-    <!-- Content Wrapper -->
-    <div class="relative z-10 text-center text-white px-6">
-        <!-- Logo and Title -->
-        <div class="mb-4">
-            <h2 class="fancy-text text-6xl font-lora font-semibold mb-2"
-                th:text="${#dates.format(event_date, 'dd MMMM yyyy')}"></h2>
-            <h3 class="text-xl italic" th:text="${event_location}"></h3>
+        <div class="mb-12">
+            <h3 class="font-lora text-3xl md:text-4xl font-semibold mb-3"
+                th:text="${#dates.format(event_date, 'dddd, dd MMMM yyyy')}"></h3>
+            <p class="text-xl md:text-2xl font-light" th:text="'At ' + ${#dates.format(event_date, 'hh:mm a')}"></p>
         </div>
 
         <!-- Countdown Timer -->
-        <div class="flex justify-center gap-8 mt-10 text-3xl font-semibold" id="countdown"
-             data-event-date="${event_date}">
-            <div class="text-center">
-                <span class="text-5xl" id="days">0</span>
-                <div class="text-base mt-1">Days</div>
+        <div id="countdown" class="flex justify-center gap-4 md:gap-8 my-10 text-nv-dark-gray" data-event-date="${event_date}">
+            <div class="text-center bg-white bg-opacity-50 p-4 rounded-lg shadow-md min-w-[70px] md:min-w-[100px]">
+                <span class="text-3xl md:text-5xl font-dosis font-bold" id="days">0</span>
+                <div class="text-sm md:text-base mt-1 font-lato">Days</div>
             </div>
-            <div class="text-center">
-                <span class="text-5xl" id="hours">0</span>
-                <div class="text-base mt-1">Hours</div>
+            <div class="text-center bg-white bg-opacity-50 p-4 rounded-lg shadow-md min-w-[70px] md:min-w-[100px]">
+                <span class="text-3xl md:text-5xl font-dosis font-bold" id="hours">0</span>
+                <div class="text-sm md:text-base mt-1 font-lato">Hours</div>
             </div>
-            <div class="text-center">
-                <span class="text-5xl" id="minutes">0</span>
-                <div class="text-base mt-1">Minutes</div>
+            <div class="text-center bg-white bg-opacity-50 p-4 rounded-lg shadow-md min-w-[70px] md:min-w-[100px]">
+                <span class="text-3xl md:text-5xl font-dosis font-bold" id="minutes">0</span>
+                <div class="text-sm md:text-base mt-1 font-lato">Minutes</div>
             </div>
-            <div class="text-center">
-                <span class="text-5xl" id="seconds">0</span>
-                <div class="text-base mt-1">Seconds</div>
+            <div class="text-center bg-white bg-opacity-50 p-4 rounded-lg shadow-md min-w-[70px] md:min-w-[100px]">
+                <span class="text-3xl md:text-5xl font-dosis font-bold" id="seconds">0</span>
+                <div class="text-sm md:text-base mt-1 font-lato">Seconds</div>
+            </div>
+        </div>
+
+        <!-- Locations Container -->
+        <div class="mt-16 flex flex-col md:flex-row justify-around gap-8 text-nv-dark-gray">
+            <!-- Location 1: Religious Ceremony -->
+            <div class="flex-1 p-6 rounded-xl shadow-xl bg-white bg-opacity-70 flex flex-col items-center transform hover:scale-105 transition-transform duration-300">
+                <div class="relative mb-4">
+                     <!-- Placeholder Icon (e.g., a church icon or floral) -->
+                    <svg class="w-16 h-16 text-nv-cornflower-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <!-- Using a clock for now, replace with better -->
+                </div>
+                <h3 class="fancy-text text-3xl mb-3 text-nv-cornflower-blue">Ceremony</h3>
+                <p class="font-lora text-lg mb-1" th:text="${#dates.format(event_date, 'hh:mm a')}"></p>
+                <p class="text-md mb-3 font-light" th:text="${event_location}"></p>
+                <a th:href="'https://maps.google.com/?q=' + ${event_location}" target="_blank"
+                   class="text-nv-cornflower-blue hover:text-indigo-700 underline font-semibold transition-colors">
+                   View Map
+                </a>
+            </div>
+
+            <!-- Location 2: Reception -->
+            <div class="flex-1 p-6 rounded-xl shadow-xl bg-white bg-opacity-70 flex flex-col items-center transform hover:scale-105 transition-transform duration-300">
+                <div class="relative mb-4">
+                    <!-- Placeholder Icon (e.g., a reception icon or floral) -->
+                     <svg class="w-16 h-16 text-nv-cornflower-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7.014A7.986 7.986 0 0122 9.857c0 2.497-1.527 4.747-3.88 5.894L17.657 18.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1014.12 11.88l-4.242 4.242z"></path></svg> <!-- Using a champagne for now -->
+                </div>
+                <h3 class="fancy-text text-3xl mb-3 text-nv-cornflower-blue">Reception</h3>
+                <p class="font-lora text-lg mb-1" th:text="${#dates.format(event_date, 'hh:mm a')} + ' onwards'"> (Adjust time logic as needed)</p>
+                <p class="text-md mb-3 font-light" th:text="${event_reception}"></p>
+                 <a th:href="'https://maps.google.com/?q=' + ${event_reception}" target="_blank"
+                    class="text-nv-cornflower-blue hover:text-indigo-700 underline font-semibold transition-colors">
+                    View Map
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Where Section -->
-<section id="where" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         style="background-image: url('https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg');">
-    <!-- Locations Container -->
-    <div class="flex flex-col md:flex-row justify-center gap-8 text-black">
-        <!-- Location 1: Religious Ceremony -->
-        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
-             style="min-width: 300px; max-width: 400px;">
-            <div class="relative mb-4">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Awl_CZgAUXEFovt_b2lttkiDcJ5oPQwD-w&s"
-                     alt="Religious Ceremony Image"
-                     class="rounded-full w-32 h-32 mx-auto">
-            </div>
-            <h3 class="fancy-text text-2xl mb-2 text-black">Religious Ceremony</h3>
-            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
-            <p class="text-md mb-2 text-black">Ora 16:00 (TBD)</p>
-            <p class="text-md mb-4 text-black" th:text="${event_location}"></p>
-            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
-        </div>
-
-        <!-- Location 2: Reception -->
-        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
-             style="min-width: 300px; max-width: 400px;">
-            <div class="relative mb-4">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI4GKA24yiau1H3ZQQmEgPBT5hV0RwXgxuw&s"
-                     alt="Civil Ceremony Image"
-                     class="rounded-full w-32 h-32 mx-auto">
-            </div>
-            <h3 class="fancy-text text-2xl mb-2 text-black">Reception</h3>
-            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
-            <p class="text-md mb-2 text-black">Ora 13:00 (TBD)</p>
-            <p class="text-md mb-4 text-black" th:text="${event_reception}"></p>
-            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
-        </div>
+<!-- RSVP Section -->
+<section id="confirmation" class="min-h-screen flex items-center justify-center relative py-20 bg-nv-pastel-pink text-nv-dark-gray px-4">
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 text-nv-cornflower-blue text-6xl">
+        <span class="fancy-text">&hearts;</span>
     </div>
-</section>
-
-<!-- Form Section -->
-<section id="confirmation" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg');">
-    <div class="w-full max-w-2xl bg-white bg-opacity-10 p-8 rounded-lg">
-        <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post">
-            <div class="mb-6">
-                <label for="guest" class="block text-xl text-yellow-300 mb-2">Name:</label>
-                <input type="text" id="guest" name="guest" class="w-full p-3 text-black border border-gray-300 rounded"
-                       required>
+    <div class="w-full max-w-lg bg-white bg-opacity-80 p-8 md:p-12 rounded-xl shadow-2xl text-center">
+        <h2 class="fancy-text text-5xl md:text-7xl text-nv-cornflower-blue mb-8">Will You Be There?</h2>
+        <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post" class="space-y-6">
+            <div>
+                <label for="guest" class="block font-lora text-lg text-nv-dark-gray mb-2 text-left">Your Name(s):</label>
+                <input type="text" id="guest" name="guest"
+                       class="w-full p-3 text-nv-dark-gray border border-nv-pastel-pink rounded-lg focus:ring-nv-cornflower-blue focus:border-nv-cornflower-blue transition-colors"
+                       required placeholder="e.g., John Doe & Jane Smith">
             </div>
-            <div class="mb-6">
-                <label for="partnerName" class="block text-xl text-yellow-300 mb-2">Partner:</label>
+            <div>
+                <label for="partnerName" class="block font-lora text-lg text-nv-dark-gray mb-2 text-left">Bringing a Guest?</label>
                 <input type="text" id="partnerName" name="partnerName"
-                       class="w-full p-3 text-black border border-gray-300 rounded">
+                       class="w-full p-3 text-nv-dark-gray border border-nv-pastel-pink rounded-lg focus:ring-nv-cornflower-blue focus:border-nv-cornflower-blue transition-colors"
+                       placeholder="Guest's Name (optional)">
             </div>
-            <div class="flex justify-center gap-10">
-                <button type="submit" name="rsvp" value="DECLINED"
-                        class="px-10 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded transition">Decline
-                </button>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
                 <button type="submit" name="rsvp" value="ACCEPTED"
-                        class="px-10 py-3 bg-blue-600 hover:bg-blue-800 text-white rounded transition">Accept
+                        class="w-full sm:w-auto px-8 py-3 bg-nv-cornflower-blue hover:bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    Joyfully Accept
+                </button>
+                <button type="submit" name="rsvp" value="DECLINED"
+                        class="w-full sm:w-auto px-8 py-3 bg-gray-300 hover:bg-gray-400 text-nv-dark-gray font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    Regretfully Decline
                 </button>
             </div>
         </form>
     </div>
 </section>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
     // Initialize Headroom.js to manage header visibility and style
     const header = document.getElementById('sticky-header');
