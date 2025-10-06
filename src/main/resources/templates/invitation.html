@@ -1,219 +1,286 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Wedding Invitation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap"
-          rel="stylesheet">
+    <meta charset="UTF-8" />
+    <title th:text="${pageTitle} ?: 'Wedding Invitation'">Wedding Invitation</title>
+
+    <!-- Performance: preconnect + font-display:swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;600&family=Great+Vibes&family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind (CDN quick start). У проді — краще збірка. -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.12.0/headroom.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js"></script>
+    <script>
+        // невеликий тв-конфіг для шрифтів/кольорів
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Open Sans', 'ui-sans-serif', 'system-ui'],
+                        serif: ['Lora', 'ui-serif', 'Georgia'],
+                        display: ['Great Vibes', 'cursive'],
+                        rounded: ['Dosis', 'ui-sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            600: '#4f46e5',
+                            700: '#4338ca'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Headroom + SmoothScroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.12.0/headroom.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/16.1.3/smooth-scroll.polyfills.min.js" defer></script>
 
     <style>
-        .headroom--top {
-            background-color: rgba(255, 255, 255, 0);
-            color: white !important;
-        }
-
-        .headroom--not-top {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black !important;
-        }
-
-        .fancy-text {
-            font-family: 'Great Vibes', cursive;
-            letter-spacing: 0.1em;
-        }
-
-        #sticky-header a {
-            transition: color 0.15s;
-        }
+        /* акуратні стани хедера */
+        .headroom--top    { background-color: rgba(255,255,255,0);    color: #fff; }
+        .headroom--not-top{ background-color: rgba(255,255,255,0.88); color: #111827; backdrop-filter: saturate(180%) blur(8px); }
+        /* красива каліграфія */
+        .fancy-text { font-family: 'Great Vibes', cursive; letter-spacing: .02em; }
     </style>
 </head>
-<body class="font-open-sans text-white m-0 relative">
-<!-- Slim Sticky Header Section -->
+
+<body class="bg-gray-50 text-gray-900 antialiased">
+<!-- Skip link для доступності -->
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-gray-900 px-3 py-1 rounded">
+    Skip to content
+</a>
+
+<!-- Sticky Header -->
 <header id="sticky-header"
-        class="w-full text-black py-1 px-4 fixed top-0 left-0 z-10 shadow-md header-transparent transition-colors duration-300 ease-in-out">
-    <div class="flex justify-around items-center my-3">
-        <h2 class="fancy-text text-2xl" th:text="${groom_name} + ' & ' + ${bride_name}"></h2>
-        <nav class="flex space-x-4 text-2xl">
-            <a href="#what" class="hover:underline">What?</a>
-            <a href="#when" class="hover:underline">When?</a>
-            <a href="#where" class="hover:underline">Where?</a>
-            <a href="#confirmation" class="hover:underline">Confirmation</a>
-        </nav>
+        class="fixed inset-x-0 top-0 z-20 transition-colors duration-300 will-change-transform">
+    <div class="mx-auto max-w-6xl px-4">
+        <div class="flex items-center justify-between gap-6 py-3">
+            <h1 class="fancy-text text-2xl md:text-3xl" th:text="${groom_name} + ' & ' + ${bride_name}">Alex & Mia</h1>
+            <nav class="hidden md:flex items-center gap-6 text-base md:text-lg" aria-label="Primary">
+                <a href="#what" class="hover:underline underline-offset-4">What?</a>
+                <a href="#when" class="hover:underline underline-offset-4">When?</a>
+                <a href="#where" class="hover:underline underline-offset-4">Where?</a>
+                <a href="#confirmation" class="hover:underline underline-offset-4">Confirmation</a>
+            </nav>
+            <!-- mobile nav -->
+            <nav class="md:hidden flex items-center gap-4 text-sm" aria-label="Mobile">
+                <a href="#what" class="hover:underline">What</a>
+                <a href="#when" class="hover:underline">When</a>
+                <a href="#where" class="hover:underline">Where</a>
+                <a href="#confirmation" class="hover:underline">RSVP</a>
+            </nav>
+        </div>
     </div>
 </header>
 
-<!-- what Section -->
-<section id="what" class="h-screen flex items-center justify-center relative pt-16">
-    <!-- Background Image with Dark Overlay -->
-    <div class="absolute inset-0 w-full h-full">
-        <img th:src="${event_background_img}" alt="Wedding Background" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-    </div>
+<main id="main">
 
-    <!-- Content Wrapper -->
-    <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center">
-        <div class="w-full max-w-3xl p-5">
-            <h1 class="text-6xl font-lora mb-4" th:text="${groom_name} + ' & ' + ${bride_name}"></h1>
-            <p class="fancy-text text-2xl mb-6" th:text="${#dates.format(event_date, 'dd MMMM yyyy')}"></p>
-        </div>
-    </div>
-</section>
-
-<!-- When Section -->
-<section id="when" class="h-screen flex flex-col items-center justify-center bg-cover bg-center relative py-20"
-         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg');">
-
-    <!-- Dark overlay for better contrast -->
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-
-    <!-- Content Wrapper -->
-    <div class="relative z-10 text-center text-white px-6">
-        <!-- Logo and Title -->
-        <div class="mb-4">
-            <h2 class="fancy-text text-6xl font-lora font-semibold mb-2"
-                th:text="${#dates.format(event_date, 'dd MMMM yyyy')}"></h2>
-            <h3 class="text-xl italic" th:text="${event_location}"></h3>
+    <!-- WHAT -->
+    <section id="what" class="relative min-h-screen flex items-center justify-center">
+        <!-- bg + overlay -->
+        <div class="absolute inset-0">
+            <img th:src="${event_background_img}" alt="Wedding background"
+                 class="h-full w-full object-cover" loading="lazy" decoding="async" />
+            <div class="absolute inset-0 bg-black/50"></div>
         </div>
 
-        <!-- Countdown Timer -->
-        <div class="flex justify-center gap-8 mt-10 text-3xl font-semibold" id="countdown"
-             data-event-date="${event_date}">
-            <div class="text-center">
-                <span class="text-5xl" id="days">0</span>
-                <div class="text-base mt-1">Days</div>
-            </div>
-            <div class="text-center">
-                <span class="text-5xl" id="hours">0</span>
-                <div class="text-base mt-1">Hours</div>
-            </div>
-            <div class="text-center">
-                <span class="text-5xl" id="minutes">0</span>
-                <div class="text-base mt-1">Minutes</div>
-            </div>
-            <div class="text-center">
-                <span class="text-5xl" id="seconds">0</span>
-                <div class="text-base mt-1">Seconds</div>
-            </div>
+        <!-- content -->
+        <div class="relative z-10 mx-auto max-w-3xl px-4 py-24 text-center text-white">
+            <h2 class="font-serif [font-size:clamp(2rem,6vw,4.5rem)] leading-tight drop-shadow"
+                th:text="${groom_name} + ' & ' + ${bride_name}">Alex & Mia</h2>
+            <p class="fancy-text [font-size:clamp(1.25rem,3vw,2.25rem)] mt-4 tracking-wide"
+               th:text="${#dates.format(event_date, 'dd MMMM yyyy')}">12 June 2026</p>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Where Section -->
-<section id="where" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         style="background-image: url('https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg');">
-    <!-- Locations Container -->
-    <div class="flex flex-col md:flex-row justify-center gap-8 text-black">
-        <!-- Location 1: Religious Ceremony -->
-        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
-             style="min-width: 300px; max-width: 400px;">
-            <div class="relative mb-4">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Awl_CZgAUXEFovt_b2lttkiDcJ5oPQwD-w&s"
-                     alt="Religious Ceremony Image"
-                     class="rounded-full w-32 h-32 mx-auto">
-            </div>
-            <h3 class="fancy-text text-2xl mb-2 text-black">Religious Ceremony</h3>
-            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
-            <p class="text-md mb-2 text-black">Ora 16:00 (TBD)</p>
-            <p class="text-md mb-4 text-black" th:text="${event_location}"></p>
-            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
+    <!-- WHEN -->
+    <section id="when" class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img src="https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg"
+                 alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+            <div class="absolute inset-0 bg-black/60"></div>
         </div>
 
-        <!-- Location 2: Reception -->
-        <div class="flex-1 p-6 rounded-lg shadow-lg bg-white bg-opacity-80 flex flex-col items-center"
-             style="min-width: 300px; max-width: 400px;">
-            <div class="relative mb-4">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI4GKA24yiau1H3ZQQmEgPBT5hV0RwXgxuw&s"
-                     alt="Civil Ceremony Image"
-                     class="rounded-full w-32 h-32 mx-auto">
+        <div class="relative z-10 mx-auto max-w-3xl px-6 text-center text-white">
+            <h3 class="fancy-text [font-size:clamp(2rem,5vw,4rem)] mb-2"
+                th:text="${#dates.format(event_date, 'dd MMMM yyyy')}">12 June 2026</h3>
+            <p class="text-lg md:text-xl opacity-90" th:text="${event_location}">Barcelona, Spain</p>
+
+            <!-- Countdown -->
+            <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6" id="countdown"
+                 th:attr="data-event-date=${#dates.format(event_date, 'yyyy-MM-dd''T''HH:mm:ssXXX')}">
+                <div class="rounded-2xl bg-white/10 backdrop-blur px-6 py-5">
+                    <div class="text-4xl md:text-5xl font-semibold" id="days">0</div>
+                    <div class="mt-1 text-sm uppercase tracking-wider">Days</div>
+                </div>
+                <div class="rounded-2xl bg-white/10 backdrop-blur px-6 py-5">
+                    <div class="text-4xl md:text-5xl font-semibold" id="hours">0</div>
+                    <div class="mt-1 text-sm uppercase tracking-wider">Hours</div>
+                </div>
+                <div class="rounded-2xl bg-white/10 backdrop-blur px-6 py-5">
+                    <div class="text-4xl md:text-5xl font-semibold" id="minutes">0</div>
+                    <div class="mt-1 text-sm uppercase tracking-wider">Minutes</div>
+                </div>
+                <div class="rounded-2xl bg-white/10 backdrop-blur px-6 py-5">
+                    <div class="text-4xl md:text-5xl font-semibold" id="seconds">0</div>
+                    <div class="mt-1 text-sm uppercase tracking-wider">Seconds</div>
+                </div>
             </div>
-            <h3 class="fancy-text text-2xl mb-2 text-black">Reception</h3>
-            <p class="text-lg mb-2 text-black">Luni, 2 Decembrie 2024 (TBD)</p>
-            <p class="text-md mb-2 text-black">Ora 13:00 (TBD)</p>
-            <p class="text-md mb-4 text-black" th:text="${event_reception}"></p>
-            <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank" class="text-blue-600 hover:text-blue-800 underline">(See map)</a>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Form Section -->
-<section id="confirmation" class="min-h-screen flex items-center justify-center bg-cover bg-center py-20"
-         style="background-image: url('https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg');">
-    <div class="w-full max-w-2xl bg-white bg-opacity-10 p-8 rounded-lg">
-        <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post">
-            <div class="mb-6">
-                <label for="guest" class="block text-xl text-yellow-300 mb-2">Name:</label>
-                <input type="text" id="guest" name="guest" class="w-full p-3 text-black border border-gray-300 rounded"
-                       required>
-            </div>
-            <div class="mb-6">
-                <label for="partnerName" class="block text-xl text-yellow-300 mb-2">Partner:</label>
-                <input type="text" id="partnerName" name="partnerName"
-                       class="w-full p-3 text-black border border-gray-300 rounded">
-            </div>
-            <div class="flex justify-center gap-10">
-                <button type="submit" name="rsvp" value="DECLINED"
-                        class="px-10 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded transition">Decline
-                </button>
-                <button type="submit" name="rsvp" value="ACCEPTED"
-                        class="px-10 py-3 bg-blue-600 hover:bg-blue-800 text-white rounded transition">Accept
-                </button>
-            </div>
-        </form>
-    </div>
-</section>
+    <!-- WHERE -->
+    <section id="where" class="relative py-20">
+        <div class="absolute inset-0">
+            <img src="https://lapkovsky.com/wp-content/uploads/2020/04/wedding-venues-in-nj-03.jpg"
+                 alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+            <div class="absolute inset-0 bg-white/70"></div>
+        </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <div class="relative z-10 mx-auto max-w-6xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Ceremony -->
+                <article class="bg-white rounded-2xl shadow p-6 text-center">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2Awl_CZgAUXEFovt_b2lttkiDcJ5oPQwD-w&s"
+                         alt="Religious Ceremony" class="mx-auto h-28 w-28 rounded-full object-cover" loading="lazy" />
+                    <h4 class="fancy-text text-3xl mt-4 text-gray-900">Religious Ceremony</h4>
+                    <p class="mt-2 text-gray-700">Luni, 2 Decembrie 2024 (TBD)</p>
+                    <p class="text-gray-700">Ora 16:00 (TBD)</p>
+                    <p class="mt-2 text-gray-800" th:text="${event_location}">Church name, address</p>
+                    <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank"
+                       class="mt-4 inline-flex items-center justify-center rounded-xl border border-gray-300 px-4 py-2 text-gray-900 hover:bg-gray-50 transition">
+                        See map
+                    </a>
+                </article>
+
+                <!-- Reception -->
+                <article class="bg-white rounded-2xl shadow p-6 text-center">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaI4GKA24yiau1H3ZQQmEgPBT5hV0RwXgxuw&s"
+                         alt="Reception" class="mx-auto h-28 w-28 rounded-full object-cover" loading="lazy" />
+                    <h4 class="fancy-text text-3xl mt-4 text-gray-900">Reception</h4>
+                    <p class="mt-2 text-gray-700">Luni, 2 Decembrie 2024 (TBD)</p>
+                    <p class="text-gray-700">Ora 13:00 (TBD)</p>
+                    <p class="mt-2 text-gray-800" th:text="${event_reception}">Venue name, address</p>
+                    <a href="https://maps.app.goo.gl/ZSQYcFpy26TSY1Zu6" target="_blank"
+                       class="mt-4 inline-flex items-center justify-center rounded-xl border border-gray-300 px-4 py-2 text-gray-900 hover:bg-gray-50 transition">
+                        See map
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONFIRMATION -->
+    <section id="confirmation" class="relative py-24">
+        <div class="absolute inset-0">
+            <img src="https://storage.cloud.google.com/n-vite/templates/bg_wood_brown.jpg"
+                 alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+            <div class="absolute inset-0 bg-black/60"></div>
+        </div>
+
+        <div class="relative z-10 mx-auto max-w-2xl px-4">
+            <div class="rounded-2xl bg-white/10 backdrop-blur p-8">
+                <h3 class="text-center fancy-text [font-size:clamp(1.75rem,3.5vw,2.5rem)] text-white mb-6">
+                    Confirmation (RSVP)
+                </h3>
+
+                <form th:action="@{'/invitations/' + ${event_reference} + '/responses'}" method="post" class="space-y-6"
+                      autocomplete="on" novalidate>
+                    <div>
+                        <label for="guest" class="block text-sm font-medium text-white/90 mb-2">Name</label>
+                        <input type="text" id="guest" name="guest" required
+                               class="w-full rounded-xl border border-white/30 bg-white/90 px-3 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600"
+                               placeholder="Your full name" />
+                    </div>
+
+                    <div>
+                        <label for="partnerName" class="block text-sm font-medium text-white/90 mb-2">Partner (optional)</label>
+                        <input type="text" id="partnerName" name="partnerName"
+                               class="w-full rounded-xl border border-white/30 bg-white/90 px-3 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600"
+                               placeholder="Partner name" />
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                        <button type="submit" name="rsvp" value="DECLINED"
+                                class="inline-flex items-center justify-center rounded-xl border border-white/40 bg-white/10 px-8 py-3 text-white hover:bg-white/20 transition">
+                            Decline
+                        </button>
+                        <button type="submit" name="rsvp" value="ACCEPTED"
+                                class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-8 py-3 text-white font-medium hover:bg-brand-700 transition">
+                            Accept
+                        </button>
+                    </div>
+                </form>
+
+                <!-- success/error placeholders (якщо рендериш повідомлення з сервера) -->
+                <p th:if="${successMessage}" th:text="${successMessage}"
+                   class="mt-6 rounded-xl border border-green-200 bg-green-50 text-green-800 px-4 py-3 text-sm"></p>
+                <p th:if="${errorMessage}" th:text="${errorMessage}"
+                   class="mt-4 rounded-xl border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm"></p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Scripts -->
 <script th:inline="javascript">
-    // Initialize Headroom.js to manage header visibility and style
-    const header = document.getElementById('sticky-header');
-    const headroom = new Headroom(header, {
-        offset: 10,
-        tolerance: 5
-    });
-    headroom.init();
-
-    // Use Smooth Scroll library for smooth scrolling
-    const scroll = new SmoothScroll('a[href^="#"]', {
-        speed: 800,
-        speedAsDuration: true
-    });
-
-    // Countdown Logic
-    document.addEventListener("DOMContentLoaded", function () {
-        /*<![CDATA[*/
-        const eventDateStr = [[${event_date}]];
-        console.log("Event Date:", eventDateStr);
-
-        /*]]>*/
-
-        function updateCountdown() {
-            const now = new Date();
-            const evtDate = new Date(eventDateStr);
-
-            let timeDifference = evtDate.getTime() - now.getTime();
-            if (timeDifference < 0) {
-                document.getElementById("days").textContent = "0";
-                document.getElementById("hours").textContent = "0";
-                document.getElementById("minutes").textContent = "0";
-                document.getElementById("seconds").textContent = "0";
-                return;
-            }
-
-            document.getElementById("days").textContent = "" + Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").textContent = "" + Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").textContent = "" + Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("seconds").textContent = "" + Math.floor((timeDifference % (1000 * 60)) / 1000);
+    // Headroom init
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.getElementById('sticky-header');
+        if (window.Headroom && header) {
+            const headroom = new Headroom(header, { offset: 10, tolerance: 5 });
+            headroom.init();
         }
 
-        // Update countdown every 1 second
-        setInterval(updateCountdown, 1000);
+        // Smooth scroll
+        if (window.SmoothScroll) {
+            new SmoothScroll('a[href^="#"]', { speed: 700, speedAsDuration: true, offset: 4 });
+        }
+
+        // Countdown: source from data attribute (ISO-8601)
+        const cd = document.getElementById('countdown');
+        if (cd) {
+            const iso = cd.getAttribute('data-event-date'); // e.g. "2026-06-12T15:00:00+02:00"
+            const evtDate = iso ? new Date(iso) : null;
+
+            const els = {
+                days:    document.getElementById('days'),
+                hours:   document.getElementById('hours'),
+                minutes: document.getElementById('minutes'),
+                seconds: document.getElementById('seconds')
+            };
+
+            function renderZero() {
+                els.days.textContent = '0';
+                els.hours.textContent = '0';
+                els.minutes.textContent = '0';
+                els.seconds.textContent = '0';
+            }
+
+            function tick() {
+                if (!evtDate) return renderZero();
+                const now = new Date();
+                const diff = evtDate.getTime() - now.getTime();
+                if (diff <= 0) return renderZero();
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                els.days.textContent = String(d);
+                els.hours.textContent = String(h);
+                els.minutes.textContent = String(m);
+                els.seconds.textContent = String(s);
+            }
+
+            tick();
+            setInterval(tick, 1000);
+        }
     });
 </script>
 
