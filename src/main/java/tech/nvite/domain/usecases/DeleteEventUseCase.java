@@ -24,9 +24,9 @@ public class DeleteEventUseCase implements Consumer<DeleteEventUseCase.Request> 
 
     events.delete(req.reference());
 
-    //        if (event.backgroundImage() != null) {
-    //            storage.delete(event.backgroundImage());
-    //        }
+            if (event.backgroundImage() != null) {
+                storage.delete(event.backgroundImage());
+            }
 
     log.info("Event deleted {}", req.reference());
   }

@@ -2,66 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Timeline</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <title>Event Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        ink: '#0f172a',      // dark text
+                        mute: '#475569',     // muted
+                        paper: '#fafafa',    // background
+                        accent: '#111827'    // lines/accents
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-blue-50 font-sans">
+<body class="bg-paper text-ink antialiased">
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container mx-auto mt-12">
-    <h1 class="text-center text-3xl font-serif text-gray-800 mb-8" th:text="${event.reference().value()}"></h1>
+<main class="min-h-screen px-4 py-10">
+    <section class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-8 sm:p-12">
+        <h1 class="font-serif text-center text-3xl md:text-4xl font-bold mb-4" th:text="${event.reference().value()}"></h1>
+        <p class="text-center text-mute mb-8">Here you can track your event's progress</p>
 
-    <!-- Statistics Section with Clickable Counters -->
-    <div class="flex justify-center mb-8">
-        <div class="bg-blue-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-blue-600 transition duration-300" data-filter="ALL">
-            <h4 class="text-2xl font-bold text-white" th:text="'People Attending: ' + ${attendingCount}"></h4>
+        <!-- Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-10">
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 cursor-pointer hover:bg-gray-100 transition" data-filter="ALL">
+                <h3 class="text-3xl font-bold" th:text="${attendingCount}"></h3>
+                <p class="text-sm text-mute">Attending</p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 cursor-pointer hover:bg-gray-100 transition" data-filter="ACCEPTED">
+                <h3 class="text-3xl font-bold" th:text="${acceptedCount}"></h3>
+                <p class="text-sm text-mute">Accepted</p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 cursor-pointer hover:bg-gray-100 transition" data-filter="DECLINED">
+                <h3 class="text-3xl font-bold" th:text="${declinedCount}"></h3>
+                <p class="text-sm text-mute">Declined</p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 cursor-pointer hover:bg-gray-100 transition" data-filter="VISITED">
+                <h3 class="text-3xl font-bold" th:text="${visitedCount}"></h3>
+                <p class="text-sm text-mute">Visited</p>
+            </div>
         </div>
-        <div class="bg-green-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-green-600 transition duration-300" data-filter="ACCEPTED">
-            <h4 class="text-2xl font-bold text-white" th:text="'Invitations Accepted: ' + ${acceptedCount}"></h4>
-        </div>
-        <div class="bg-red-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-red-600 transition duration-300" data-filter="DECLINED">
-            <h4 class="text-2xl font-bold text-white" th:text="'Invitations Declined: ' + ${declinedCount}"></h4>
-        </div>
-        <div class="bg-yellow-500 p-6 rounded-lg shadow-md mx-4 text-center cursor-pointer hover:bg-yellow-600 transition duration-300" data-filter="VISITED">
-            <h4 class="text-2xl font-bold text-white" th:text="'Visited: ' + ${visitedCount}"></h4>
-        </div>
-    </div>
 
-    <div id="eventListContainer">
-        <ul id="eventList" class="relative pl-8 list">
-            <li th:each="event : ${eventInteractions}" class="mb-8 relative bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300" th:attr="data-action=${event.action}">
-                <div class="absolute left-4 top-0 transform -translate-x-1/2 bg-blue-500 h-5 w-5 rounded-full border-4 border-white"></div>
-                <div class="ml-12">
-                    <h4 class="text-xl font-serif text-gray-800 name"
-                        th:text="${event.partnerName != null ? event.guest + ' & ' + event.partnerName : event.guest}">
-                    </h4>
-                    <p class="text-gray-600 action" th:text="${#dates.format(event.timestamp, 'dd MMM yyyy HH:mm:ss')} + ', ' + ${event.action}"></p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+        <!-- Event List -->
+        <div id="eventListContainer">
+            <ul id="eventList" class="list space-y-4">
+                <li th:each="event : ${eventInteractions}" 
+                    class="p-4 bg-paper border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50 transition"
+                    th:attr="data-action=${event.action}">
+                    <div>
+                        <h4 class="font-semibold name"
+                            th:text="${event.partnerName != null ? event.guest + ' & ' + event.partnerName : event.guest}"></h4>
+                        <p class="text-sm text-mute action" th:text="${#dates.format(event.timestamp, 'dd MMM yyyy, HH:mm')}"></p>
+                    </div>
+                    <span class="px-3 py-1 text-xs font-semibold rounded-full"
+                          th:text="${event.action}"
+                          th:classappend="${event.action == 'ACCEPTED' ? 'bg-green-100 text-green-800' : (event.action == 'DECLINED' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800')}">
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</main>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const options = {
-            valueNames: ['name']
+            valueNames: ['name', 'action']
         };
         const eventList = new List('eventListContainer', options);
 
-        // Add click event listener to counters to act as filters
-        document.querySelectorAll('.flex .cursor-pointer').forEach(counter => {
+        document.querySelectorAll('[data-filter]').forEach(counter => {
             counter.addEventListener('click', () => {
                 const filter = counter.getAttribute('data-filter');
                 if (filter === 'ALL') {
-                    eventList.filter(); // Show all if filter is ALL
-                } else if (filter) {
+                    eventList.filter();
+                } else {
                     eventList.filter(item => {
                         const action = item.elm.getAttribute('data-action');
                         return action && action.toUpperCase() === filter;
@@ -71,5 +95,6 @@
         });
     });
 </script>
+
 </body>
 </html>

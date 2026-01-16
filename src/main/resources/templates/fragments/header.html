@@ -1,22 +1,20 @@
 <th:block th:fragment="header">
-    <header class="bg-white shadow-md py-4">
+    <header class="bg-white shadow-sm py-4 ring-1 ring-black/5">
         <div class="container mx-auto flex justify-between items-center px-4">
-            <!-- Logo on the left -->
-            <a th:href="@{/events}" class="text-xl font-bold text-gray-800">
-                <img th:src="@{/icons/n-vite-logo.png}" alt="Logo" class="h-10 inline-block mr-2">
-                N-Vite
+            <a th:href="@{/events}" class="flex items-center space-x-2">
+                <img th:src="@{/icons/n-vite-logo.png}" alt="N-Vite Logo" class="h-8">
+                <span class="font-semibold text-lg text-ink">N-Vite</span>
             </a>
 
             <div th:if="${#authentication.getName().equals('anonymousUser')}">
-                <button id="loginBtn"
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                <button id="loginBtn" class="px-5 py-2 rounded-lg bg-accent text-white font-semibold hover:bg-opacity-90 transition">
                     Login
                 </button>
             </div>
+
             <div th:if="${!#authentication.getName().equals('anonymousUser')}">
                 <form th:action="@{/logout}" method="post">
-                    <button type="submit"
-                            class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                    <button type="submit" class="px-5 py-2 rounded-lg border border-gray-300 text-mute font-semibold hover:bg-gray-50 transition">
                         Logout
                     </button>
                 </form>
@@ -24,18 +22,18 @@
         </div>
     </header>
 
-    <!-- Modal (hidden by default) -->
-    <div id="loginModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-8 rounded-lg shadow-lg w-80">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-gray-800">Login</h2>
-                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-800">&times;</button>
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-serif text-2xl font-bold text-ink">Welcome Back</h2>
+                <button id="closeLoginModal" class="text-gray-400 hover:text-gray-600">&times;</button>
             </div>
+            <p class="text-mute mb-6">Please log in to continue.</p>
             <form th:action="@{/oauth2/authorization/google}" method="get">
-                <button type="submit"
-                        class="flex items-center justify-center w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg shadow-md transition duration-200">
-                    <img th:src="@{/icons/google.png}" alt="Google logo" class="h-5 w-5 mr-3">
-                    Login with Google
+                <button type="submit" class="flex items-center justify-center w-full px-4 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">
+                    <img th:src="@{/icons/google.png}" alt="Google Logo" class="h-5 w-5 mr-3">
+                    Sign in with Google
                 </button>
             </form>
         </div>

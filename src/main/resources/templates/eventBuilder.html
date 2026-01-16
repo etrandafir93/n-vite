@@ -2,69 +2,87 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Event Form</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <title>Create Your Invitation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        ink: '#0f172a',      // dark text
+                        mute: '#475569',     // muted
+                        paper: '#fafafa',    // background
+                        accent: '#111827'    // lines/accents
+                    }
+                }
+            }
         }
-    </style>
+    </script>
 </head>
-<body class="bg-blue-50">
+<body class="bg-paper text-ink antialiased">
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="container mx-auto mt-12">
-    <div class="bg-white shadow-md rounded-lg p-8">
-        <h1 class="text-center text-3xl font-serif text-gray-800 mb-8">Our Wedding</h1>
-        <!-- Use enctype to allow file upload -->
-        <form th:action="@{/events}" method="post" enctype="multipart/form-data">
+<main class="min-h-screen flex items-center justify-center px-4 py-10">
+    <section class="w-full max-w-2xl bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-8 sm:p-12">
+        <h1 class="font-serif text-center text-3xl md:text-4xl font-bold mb-8">Create Your Event</h1>
+        <form th:action="@{/events}" method="post" enctype="multipart/form-data" class="space-y-6">
             <input type="hidden" name="eventReference" th:value="${eventReference}">
             <input type="hidden" id="timezone" name="timezone">
-            <div class="mb-4">
-                <label for="groomName" class="block text-gray-700 font-semibold mb-2">Groom Name</label>
-                <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="groomName" name="groomName" th:value="${groomName}" required>
+
+            <div>
+                <label for="groomName" class="block text-sm font-semibold text-mute mb-2">Groom's Name</label>
+                <input type="text" id="groomName" name="groomName" th:value="${groomName}" required
+                       class="block w-full px-4 py-3 bg-paper border border-gray-200 rounded-lg focus:ring-accent focus:border-accent">
             </div>
-            <div class="mb-4">
-                <label for="brideName" class="block text-gray-700 font-semibold mb-2">Bride Name</label>
-                <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="brideName" name="brideName" th:value="${brideName}" required>
+
+            <div>
+                <label for="brideName" class="block text-sm font-semibold text-mute mb-2">Bride's Name</label>
+                <input type="text" id="brideName" name="brideName" th:value="${brideName}" required
+                       class="block w-full px-4 py-3 bg-paper border border-gray-200 rounded-lg focus:ring-accent focus:border-accent">
             </div>
-            <div class="mb-4">
-                <label for="eventLocation" class="block text-gray-700 font-semibold mb-2">Event Location</label>
-                <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="eventLocation" name="eventLocation" th:value="${eventLocation}" required>
+
+            <div>
+                <label for="eventLocation" class="block text-sm font-semibold text-mute mb-2">Event Location</label>
+                <input type="text" id="eventLocation" name="eventLocation" th:value="${eventLocation}" required
+                       class="block w-full px-4 py-3 bg-paper border border-gray-200 rounded-lg focus:ring-accent focus:border-accent">
             </div>
-            <div class="mb-4">
-                <label for="eventReception" class="block text-gray-700 font-semibold mb-2">Event Reception</label>
-                <input type="text" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="eventReception" name="eventReception" th:value="${eventReception}" required>
+
+            <div>
+                <label for="eventReception" class="block text-sm font-semibold text-mute mb-2">Reception Details</label>
+                <input type="text" id="eventReception" name="eventReception" th:value="${eventReception}"
+                       class="block w-full px-4 py-3 bg-paper border border-gray-200 rounded-lg focus:ring-accent focus:border-accent">
             </div>
-            <div class="mb-4">
-                <label for="eventBackgroundImage" class="block text-gray-700 font-semibold mb-2">Event Background Image</label>
-                <input type="file" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" id="eventBackgroundImage" name="eventBackgroundImage">
+
+            <div>
+                <label for="eventDateTime" class="block text-sm font-semibold text-mute mb-2">Date and Time</label>
+                <input type="datetime-local" id="eventDateTime" name="eventDateTime" th:value="${eventDateTime}" required
+                       class="block w-full px-4 py-3 bg-paper border border-gray-200 rounded-lg focus:ring-accent focus:border-accent">
             </div>
-            <div class="mb-4">
-                <label for="eventDateTime" class="block text-gray-700 font-semibold mb-2">Event Date and Time</label>
-                <!-- Apply a smaller width here -->
-                <input type="datetime-local" class="form-input mt-1 block w-1/4 border-gray-300 rounded-md shadow-sm" id="eventDateTime" name="eventDateTime" th:value="${eventDateTime}" required>
+            
+            <div>
+                <label for="eventBackgroundImage" class="block text-sm font-semibold text-mute mb-2">Background Image</label>
+                <input type="file" id="eventBackgroundImage" name="eventBackgroundImage"
+                       class="block w-full text-sm text-mute file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-paper file:text-accent hover:file:bg-gray-100">
             </div>
-            <div class="flex justify-center gap-4 mt-6">
-                <a href="/events" class="bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600">Cancel</a>
-                <button type="submit" class="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600">Save</button>
+
+            <div class="flex justify-center gap-4 pt-4">
+                <a href="/events" class="px-8 py-3 rounded-lg border border-gray-300 text-mute font-semibold hover:bg-gray-50 transition">Cancel</a>
+                <button type="submit" class="px-8 py-3 rounded-lg bg-accent text-white font-semibold hover:bg-opacity-90 transition">Save Event</button>
             </div>
         </form>
-    </div>
-</div>
+    </section>
+</main>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get the user's timezone name using the Internationalization API
         const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        // Set the value in the hidden input field
         document.getElementById('timezone').value = timezoneName;
     });
 </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

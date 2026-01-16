@@ -13,13 +13,39 @@
             background-repeat: no-repeat;
         }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        ink: '#0f172a',      // dark text
+                        mute: '#475569',     // muted
+                        paper: '#fafafa',    // background
+                        accent: '#111827'    // lines/accents
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
+<body class="bg-paper text-ink antialiased">
 
 <header th:replace="~{fragments/header :: header}"></header>
 <div th:replace="~{fragments/header :: #loginModal}"></div>
 
-<main class="bg-custom min-h-screen"></main>
+<main class="bg-custom min-h-screen flex items-center justify-center text-center">
+    <div class="max-w-2xl">
+        <h1 class="font-serif text-5xl md:text-7xl font-bold text-white">Create Beautiful Event Invitations</h1>
+        <p class="mt-4 text-lg md:text-xl text-white">Effortlessly design and send stunning invitations for any occasion.</p>
+        <div class="mt-8">
+            <a href="/events/new" class="bg-accent text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-opacity-90 transition">Create an Invitation</a>
+        </div>
+    </div>
+</main>
 
 <script src="/js/login.js"></script>
 </body>
