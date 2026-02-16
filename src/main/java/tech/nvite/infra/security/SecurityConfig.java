@@ -25,7 +25,9 @@ class SecurityConfig {
                         "/icons/**",
                         "/css/**",
                         "/js/**",
-                        "/images/**")
+                        "/images/**",
+                        "/v2",
+                        "/v2/**")
                     .permitAll()
                     .requestMatchers(
                         "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**")
