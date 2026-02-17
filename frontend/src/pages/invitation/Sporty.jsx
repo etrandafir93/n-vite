@@ -69,9 +69,19 @@ const css = `
   .spt-section-label::after { content: ''; flex: 1; height: 1px; background: #1a2e42; }
 
   /* Families */
-  .spt-families { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #1a2e42; }
-  @media (max-width: 600px) { .spt-families { grid-template-columns: 1fr; } }
-  .spt-family-card { background: #122033; padding: 1.5rem; }
+  .spt-families {
+    display: flex; flex-wrap: wrap;
+    background: #122033; border: 1px solid #1a2e42;
+  }
+  .spt-family-card {
+    flex: 1; min-width: 160px; padding: 1.5rem 1.4rem;
+    border-right: 1px solid #1a2e42;
+  }
+  .spt-family-card:last-child { border-right: none; }
+  @media (max-width: 600px) {
+    .spt-family-card { flex-basis: 100%; border-right: none; border-bottom: 1px solid #1a2e42; }
+    .spt-family-card:last-child { border-bottom: none; }
+  }
   .spt-family-card__role {
     font-size: 0.55rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
     color: #4a6880; display: block; margin-bottom: 0.4rem;
@@ -100,6 +110,9 @@ const css = `
     display: inline-block; background: #f5a623; color: #0d1b2a;
     font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.35rem 0.9rem;
+  }
+  .spt-event__map {
+    width: 100%; height: 180px; border: 0; display: block; margin-top: 1rem;
   }
 
   /* RSVP */
@@ -296,6 +309,7 @@ export default function SportyInvitation() {
                 <p className="spt-event__name">St. Mary's Cathedral</p>
                 <p className="spt-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
                 <span className="spt-event__time">2:00 PM</span>
+                <iframe className="spt-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
               </div>
             </div>
             <div className="spt-event">
@@ -305,6 +319,7 @@ export default function SportyInvitation() {
                 <p className="spt-event__name">The Grand Ballroom</p>
                 <p className="spt-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
                 <span className="spt-event__time">6:00 PM</span>
+                <iframe className="spt-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
               </div>
             </div>
           </div>

@@ -8,7 +8,10 @@
       "Bash(dir:*)",
       "Bash(\"D:\\repos\\n-vite\\frontend\\node\\npm.cmd\" run dev)",
       "Bash(\"D:\\repos\\n-vite\\frontend\\node\\npm.cmd\" install react-router-dom)",
-      "WebFetch(domain:www.inviteme.ro)"
+      "WebFetch(domain:www.inviteme.ro)",
+      "Bash(taskkill:*)",
+      "Bash(powershell:*)",
+      "WebFetch(domain:maps.app.goo.gl)"
     ],
     "deny": [],
     "ask": []

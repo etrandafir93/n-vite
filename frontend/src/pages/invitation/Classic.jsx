@@ -71,9 +71,19 @@ const css = `
   }
 
   /* ── Families ─────────────────────────────────── */
-  .cl-families { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #e8e2d8; }
-  @media(max-width:600px){ .cl-families { grid-template-columns:1fr; } }
-  .cl-family-card { background:#fff; padding:1.6rem 1.2rem; text-align:center; }
+  .cl-families {
+    display: flex; flex-wrap: wrap; background: #fff;
+    border: 1px solid #e8e2d8;
+  }
+  .cl-family-card {
+    flex: 1; min-width: 160px; padding: 1.6rem 1.4rem; text-align: center;
+    border-right: 1px solid #e8e2d8;
+  }
+  .cl-family-card:last-child { border-right: none; }
+  @media(max-width:600px){
+    .cl-family-card { flex-basis: 100%; border-right: none; border-bottom: 1px solid #e8e2d8; }
+    .cl-family-card:last-child { border-bottom: none; }
+  }
   .cl-family-card__role {
     font-size:.58rem; letter-spacing:.22em; text-transform:uppercase;
     color:#c9a96e; display:block; margin-bottom:.5rem;
@@ -105,6 +115,9 @@ const css = `
   .cl-event__time-pill {
     display: inline-block; padding: .3rem .9rem; background: #1c1c1c;
     color: #f5f0e8; font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  }
+  .cl-event__map {
+    width: 100%; height: 180px; border: 0; display: block; margin-top: .9rem;
   }
 
   /* ── RSVP ─────────────────────────────────────── */
@@ -282,6 +295,7 @@ export default function ClassicInvitation() {
                 <p className="cl-event__name">St. Mary's Cathedral</p>
                 <p className="cl-event__detail">123 Church Street<br/>Saturday, September 13, 2025</p>
                 <span className="cl-event__time-pill">2:00 PM</span>
+                <iframe className="cl-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location"/>
               </div>
             </div>
             <div className="cl-event">
@@ -291,6 +305,7 @@ export default function ClassicInvitation() {
                 <p className="cl-event__name">The Grand Ballroom</p>
                 <p className="cl-event__detail">456 Elm Avenue<br/>Saturday, September 13, 2025</p>
                 <span className="cl-event__time-pill">6:00 PM</span>
+                <iframe className="cl-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location"/>
               </div>
             </div>
           </div>

@@ -68,16 +68,24 @@ const css = `
   .nat-section__title::before, .nat-section__title::after { content: ''; flex: 1; height: 1px; background: #ddd5c5; }
 
   /* Families */
-  .nat-families { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
-  @media (max-width: 600px) { .nat-families { grid-template-columns: 1fr; } }
-  .nat-family-card {
-    background: #fff; border-radius: 14px; padding: 1.5rem 1rem; text-align: center;
-    border: 1px solid #e8e0d4; box-shadow: 0 2px 12px rgba(122,158,126,0.08);
-    position: relative; overflow: hidden;
+  .nat-families {
+    display: flex; flex-wrap: wrap;
+    background: #fff; border-radius: 14px; border: 1px solid #e8e0d4;
+    box-shadow: 0 2px 12px rgba(122,158,126,0.08); overflow: hidden;
+    position: relative;
   }
-  .nat-family-card::before {
+  .nat-families::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, #7a9e7e, #a8c5ab);
+  }
+  .nat-family-card {
+    flex: 1; min-width: 160px; padding: 1.5rem 1.2rem; text-align: center;
+    border-right: 1px solid #e8e0d4;
+  }
+  .nat-family-card:last-child { border-right: none; }
+  @media (max-width: 600px) {
+    .nat-family-card { flex-basis: 100%; border-right: none; border-bottom: 1px solid #e8e0d4; }
+    .nat-family-card:last-child { border-bottom: none; }
   }
   .nat-family-card__icon { font-size: 1.3rem; margin-bottom: 0.6rem; display: block; }
   .nat-family-card__role {
@@ -109,6 +117,9 @@ const css = `
     display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.85rem;
     background: #f0ebe2; border: 1px solid #d5ccbc; border-radius: 20px;
     font-size: 0.72rem; color: #5a7d5e; font-weight: 600;
+  }
+  .nat-event__map {
+    width: 100%; height: 180px; border: 0; display: block; margin-top: 0.9rem; border-radius: 10px; overflow: hidden;
   }
 
   /* RSVP */
@@ -301,6 +312,7 @@ export default function NaturalInvitation() {
                 <p className="nat-event__name">St. Mary's Cathedral</p>
                 <p className="nat-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
                 <span className="nat-event__time-pill">🕑 2:00 PM</span>
+                <iframe className="nat-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
               </div>
             </div>
             <div className="nat-event">
@@ -310,6 +322,7 @@ export default function NaturalInvitation() {
                 <p className="nat-event__name">The Grand Ballroom</p>
                 <p className="nat-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
                 <span className="nat-event__time-pill">🕕 6:00 PM</span>
+                <iframe className="nat-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
               </div>
             </div>
           </div>

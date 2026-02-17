@@ -72,11 +72,19 @@ const css = `
   }
 
   /* Families */
-  .rom-families { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  @media (max-width: 600px) { .rom-families { grid-template-columns: 1fr; } }
+  .rom-families {
+    display: flex; flex-wrap: wrap;
+    background: #fff; border-radius: 20px; border: 1px solid #f0dde6;
+    box-shadow: 0 4px 20px rgba(184,86,112,0.07); overflow: hidden;
+  }
   .rom-family-card {
-    background: #fff; border-radius: 16px; padding: 1.6rem 1rem; text-align: center;
-    border: 1px solid #f0dde6; box-shadow: 0 4px 20px rgba(184,86,112,0.07);
+    flex: 1; min-width: 160px; padding: 1.6rem 1.2rem; text-align: center;
+    border-right: 1px solid #f0dde6;
+  }
+  .rom-family-card:last-child { border-right: none; }
+  @media (max-width: 600px) {
+    .rom-family-card { flex-basis: 100%; border-right: none; border-bottom: 1px solid #f0dde6; }
+    .rom-family-card:last-child { border-bottom: none; }
   }
   .rom-family-card__top { font-size: 1.4rem; margin-bottom: 0.6rem; }
   .rom-family-card__role {
@@ -111,6 +119,9 @@ const css = `
     background: linear-gradient(135deg, #f2c4ce, #d4788a); color: #7a2040;
     font-size: 0.72rem; letter-spacing: 0.1em; font-style: italic;
     font-family: 'Playfair Display', serif;
+  }
+  .rom-event__map {
+    width: 100%; height: 180px; border: 0; display: block; margin-top: 0.9rem; border-radius: 10px; overflow: hidden;
   }
 
   /* RSVP */
@@ -302,6 +313,7 @@ export default function RomanticInvitation() {
                 <p className="rom-event__name">St. Mary's Cathedral</p>
                 <p className="rom-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
                 <span className="rom-event__time-pill">2:00 PM</span>
+                <iframe className="rom-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
               </div>
             </div>
             <div className="rom-event">
@@ -311,6 +323,7 @@ export default function RomanticInvitation() {
                 <p className="rom-event__name">The Grand Ballroom</p>
                 <p className="rom-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
                 <span className="rom-event__time-pill">6:00 PM</span>
+                <iframe className="rom-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
               </div>
             </div>
           </div>
