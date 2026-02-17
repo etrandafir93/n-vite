@@ -1,7 +1,8 @@
-FROM maven:3.9.9-amazoncorretto-21 AS build
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
 WORKDIR /app
 COPY . .
-RUN mvn clean package -DskipTests
+RUN mvn clean install -DskipTests
 
 FROM amazoncorretto:21-alpine
 WORKDIR /app

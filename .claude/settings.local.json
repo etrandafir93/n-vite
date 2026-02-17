@@ -3,7 +3,8 @@
     "allow": [
       "Bash(findstr:*)",
       "Bash(git -C \"D:/repos/n-vite\" status --short)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebFetch(domain:stackoverflow.com)"
     ],
     "deny": [],
     "ask": []
