@@ -4,7 +4,11 @@
       "Bash(findstr:*)",
       "Bash(git -C \"D:/repos/n-vite\" status --short)",
       "Bash(find:*)",
-      "WebFetch(domain:stackoverflow.com)"
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(dir:*)",
+      "Bash(\"D:\\repos\\n-vite\\frontend\\node\\npm.cmd\" run dev)",
+      "Bash(\"D:\\repos\\n-vite\\frontend\\node\\npm.cmd\" install react-router-dom)",
+      "WebFetch(domain:www.inviteme.ro)"
     ],
     "deny": [],
     "ask": []
