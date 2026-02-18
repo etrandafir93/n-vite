@@ -27,7 +27,7 @@ public class InvitationAudienceV2 {
   private final VisitInvitationUseCase visitInvitationUseCase;
   private final RsvpInvitationUseCase rsvpInvitationUseCase;
 
-  @GetMapping
+  @GetMapping(produces = "application/json")
   public InvitationDetailsDto invitationDetails(
       @PathVariable String ref, @RequestParam(required = false) String guest) {
     InvitationVisitor viewer =

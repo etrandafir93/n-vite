@@ -12,6 +12,11 @@ class V2PageController {
     return "forward:/v2/index.html";
   }
 
+  @GetMapping("/v2/invitations/{ref}")
+  String invitationPage(@PathVariable String ref) {
+    return "forward:/v2/index.html";
+  }
+
   @GetMapping("/v2/invitation/{invitationName}/{style}")
   String invitations(@PathVariable String invitationName, @PathVariable String style) {
     return "forward:/v2/index.html";
