@@ -1,6 +1,6 @@
 package tech.nvite.guest;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -59,7 +59,7 @@ public class InvitationAudienceV2 {
   public record InvitationDetailsDto(
       String brideName,
       String groomName,
-      LocalDateTime eventDate,
+      Instant eventDate,
       String eventLocation,
       String eventReception,
       String eventReference,
