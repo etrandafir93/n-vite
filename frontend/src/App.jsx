@@ -9,6 +9,7 @@ import ClassicInvitation from './pages/invitation/Classic'
 import RomanticInvitation from './pages/invitation/Romantic'
 import SportyInvitation from './pages/invitation/Sporty'
 import NaturalInvitation from './pages/invitation/Natural'
+import Invitation from './pages/invitation/Invitation'
 
 function Home() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
     <BrowserRouter basename="/v2">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/invitations/:ref" element={<Invitation />} />
         <Route path="/invitation/:slug/classic" element={<ClassicInvitation />} />
         <Route path="/invitation/:slug/romantic" element={<RomanticInvitation />} />
         <Route path="/invitation/:slug/sporty" element={<SportyInvitation />} />
