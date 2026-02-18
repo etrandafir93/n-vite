@@ -9,7 +9,7 @@ import ClassicInvitation from './pages/invitation/Classic'
 import RomanticInvitation from './pages/invitation/Romantic'
 import SportyInvitation from './pages/invitation/Sporty'
 import NaturalInvitation from './pages/invitation/Natural'
-import Invitation from './pages/invitation/Invitation'
+import Invitation from './pages/guests/Invitation'
 
 function Home() {
   return (
