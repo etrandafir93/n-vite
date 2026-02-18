@@ -16,7 +16,7 @@ export default function Invitation() {
             setGuestName(guest);
         }
 
-        fetch(`/v2/invitations/${ref}?${guest ? 'guest=' + guest : ''}`)
+        fetch(`/api/v2/invitations/${ref}?${guest ? 'guest=' + guest : ''}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -35,7 +35,7 @@ export default function Invitation() {
             partnerName,
         };
 
-        fetch(`/v2/invitations/${ref}/responses`, {
+        fetch(`/api/v2/invitations/${ref}/responses`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
