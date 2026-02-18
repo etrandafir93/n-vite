@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Navbar.css'
+import { version } from '../../package.json'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -15,7 +16,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__inner">
         <a href="#" className="navbar__logo">
-          n<span>·</span>vite
+          n<span>·</span>vite <span style={{ fontSize: '0.7rem', verticalAlign: 'super' }}>v{version}</span>
         </a>
 
         <ul className={`navbar__links ${menuOpen ? 'navbar__links--open' : ''}`}>
