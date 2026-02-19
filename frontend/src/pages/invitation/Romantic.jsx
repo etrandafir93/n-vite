@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
-const COUPLE_PHOTO = 'https://hips.hearstapps.com/hmg-prod/images/gettyimages-1190043570-1-672cee697e7c8.jpg?crop=0.668xw:1.00xh;0.0865xw,0&resize=1120:*'
-const CHURCH_PHOTO = 'https://doxologia.ro/sites/default/files/styles/imagine_articol_320/public/articol/2016/05/cununii-foto-benedict-both.jpg?itok=lU-DNou6'
-const PARTY_PHOTO  = 'https://cdn-ilcfplf.nitrocdn.com/SyCrIzrKGMjPKhvowtSUaxPZwZPIFwao/assets/images/optimized/rev-8448987/flashbox.ro/wp-content/uploads/2026/02/locatie-pentru-nunta-bucuresti.jpg'
+function fmtDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const wd = d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' })
+  const rest = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return `${wd}, ${rest}`
+}
 
 const css = `
   .rom-page * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,7 +20,6 @@ const css = `
   }
   .rom-hero__photo {
     position: absolute; inset: 0;
-    background-image: url('${COUPLE_PHOTO}');
     background-size: cover; background-position: center top;
   }
   .rom-hero__overlay {
@@ -257,13 +261,27 @@ function RsvpForm() {
 }
 
 export default function RomanticInvitation() {
+  const { slug } = useParams()
+  const [inv, setInv] = useState(null)
+
+  useEffect(() => {
+    fetch(`/api/v2/invitations/${slug}`)
+      .then(r => r.json())
+      .then(setInv)
+      .catch(console.error)
+  }, [slug])
+
+  if (!inv) return <div className="rom-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
+
+  const heroOverlay = 'linear-gradient(to bottom, rgba(240,200,215,0.15) 0%, rgba(180,80,110,0.12) 30%, rgba(60,15,35,0.65) 65%, rgba(40,10,25,0.88) 100%)'
+
   return (
     <div className="rom-page">
       <style>{css}</style>
 
       {/* Hero */}
       <section className="rom-hero">
-        <div className="rom-hero__photo" />
+        <div className="rom-hero__photo" style={{backgroundImage:`url('${inv.backgroundImageUrl}')`}} />
         <div className="rom-hero__overlay" />
         <div className="rom-hero__flowers">🌸🌺</div>
         <div className="rom-hero__flowers-bl">🌸🌺</div>
@@ -271,11 +289,11 @@ export default function RomanticInvitation() {
           <span className="rom-hero__petal">✿ ✿ ✿</span>
           <span className="rom-hero__label">Together with their families, joyfully invite you to celebrate</span>
           <h1 className="rom-hero__names">
-            John Smith
+            {inv.groomName}
             <span className="rom-hero__amp">❧</span>
-            Jane Doe
+            {inv.brideName}
           </h1>
-          <p className="rom-hero__date">Saturday, September 13th, 2025</p>
+          <p className="rom-hero__date">{fmtDate(inv.eventDate)}</p>
         </div>
       </section>
 
@@ -287,18 +305,20 @@ export default function RomanticInvitation() {
             <div className="rom-family-card">
               <div className="rom-family-card__top">🤍</div>
               <span className="rom-family-card__role">Parents of the Groom</span>
-              <p className="rom-family-card__name">Michael &amp; Susan Smith</p>
+              <p className="rom-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="rom-family-card">
               <div className="rom-family-card__top">🤍</div>
               <span className="rom-family-card__role">Parents of the Bride</span>
-              <p className="rom-family-card__name">Robert &amp; Elena Doe</p>
+              <p className="rom-family-card__name">{inv.brideParents}</p>
             </div>
-            <div className="rom-family-card">
-              <div className="rom-family-card__top">🕊️</div>
-              <span className="rom-family-card__role">Godparents</span>
-              <p className="rom-family-card__name">George &amp; Maria Johnson</p>
-            </div>
+            {inv.godparents && (
+              <div className="rom-family-card">
+                <div className="rom-family-card__top">🕊️</div>
+                <span className="rom-family-card__role">Godparents</span>
+                <p className="rom-family-card__name">{inv.godparents}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -307,23 +327,23 @@ export default function RomanticInvitation() {
           <p className="rom-section__title">~ The day's celebrations ~</p>
           <div className="rom-events">
             <div className="rom-event">
-              <img className="rom-event__photo" src={CHURCH_PHOTO} alt="St. Mary's Cathedral" />
+              {inv.ceremonyPhotoUrl && <img className="rom-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
               <div className="rom-event__body">
                 <span className="rom-event__type">Holy Ceremony</span>
-                <p className="rom-event__name">St. Mary's Cathedral</p>
-                <p className="rom-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
-                <span className="rom-event__time-pill">2:00 PM</span>
-                <iframe className="rom-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
+                <p className="rom-event__name">{inv.ceremonyVenue}</p>
+                <p className="rom-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="rom-event__time-pill">{inv.ceremonyTime}</span>
+                {inv.ceremonyMapUrl && <iframe className="rom-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
               </div>
             </div>
             <div className="rom-event">
-              <img className="rom-event__photo" src={PARTY_PHOTO} alt="The Grand Ballroom" />
+              {inv.receptionPhotoUrl && <img className="rom-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
               <div className="rom-event__body">
                 <span className="rom-event__type">Reception &amp; Dinner</span>
-                <p className="rom-event__name">The Grand Ballroom</p>
-                <p className="rom-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
-                <span className="rom-event__time-pill">6:00 PM</span>
-                <iframe className="rom-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
+                <p className="rom-event__name">{inv.receptionVenue}</p>
+                <p className="rom-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="rom-event__time-pill">{inv.receptionTime}</span>
+                {inv.receptionMapUrl && <iframe className="rom-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
               </div>
             </div>
           </div>
@@ -336,7 +356,7 @@ export default function RomanticInvitation() {
           <div className="rom-rsvp__head">
             <div className="rom-rsvp__petals">🌸 🌸 🌸</div>
             <h2 className="rom-rsvp__title">Kindly Reply</h2>
-            <p className="rom-rsvp__sub">Please respond by August 1st, 2025</p>
+            {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
           <RsvpForm />
         </div>

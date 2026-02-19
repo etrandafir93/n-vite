@@ -20,5 +20,10 @@ public class CurrentUser {
     return new User(principal.getAttribute("sub"), principal.getAttribute("email"));
   }
 
-  public record User(String id, String email) {}
+  public record User(String id, String email) {
+    @Override
+    public String toString() {
+      return email.split("@")[0];
+    }
+  }
 }

@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
-const SCENE_PHOTO  = 'https://cdn0.hitched.co.uk/article/3033/3_2/1280/jpg/153303-hidden-river-cabins-winter-wedding.webp'
-const CHURCH_PHOTO = 'https://doxologia.ro/sites/default/files/styles/imagine_articol_320/public/articol/2016/05/cununii-foto-benedict-both.jpg?itok=lU-DNou6'
-const PARTY_PHOTO  = 'https://cdn-ilcfplf.nitrocdn.com/SyCrIzrKGMjPKhvowtSUaxPZwZPIFwao/assets/images/optimized/rev-8448987/flashbox.ro/wp-content/uploads/2026/02/locatie-pentru-nunta-bucuresti.jpg'
+function fmtDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const wd = d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' })
+  const rest = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return `${wd}, ${rest}`
+}
 
 const css = `
   .spt-page * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -244,6 +249,20 @@ function RsvpForm() {
 }
 
 export default function SportyInvitation() {
+  const { slug } = useParams()
+  const [inv, setInv] = useState(null)
+
+  useEffect(() => {
+    fetch(`/api/v2/invitations/${slug}`)
+      .then(r => r.json())
+      .then(setInv)
+      .catch(console.error)
+  }, [slug])
+
+  if (!inv) return <div className="spt-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
+
+  const year = inv.eventDate ? new Date(inv.eventDate).getUTCFullYear() : ''
+
   return (
     <div className="spt-page">
       <style>{css}</style>
@@ -251,29 +270,39 @@ export default function SportyInvitation() {
       {/* Hero – split */}
       <section className="spt-hero">
         <div className="spt-hero__photo-side">
-          <img src={SCENE_PHOTO} alt="Wedding venue" />
+          <img src={inv.backgroundImageUrl} alt="Wedding couple" />
           <div className="spt-hero__photo-overlay" />
         </div>
         <div className="spt-hero__text-side">
-          <span className="spt-hero__eyebrow">Wedding Invitation · 2025</span>
+          <span className="spt-hero__eyebrow">Wedding Invitation · {year}</span>
           <h1 className="spt-hero__names">
-            <span>John</span> Smith
+            <span>{inv.groomName.split(' ')[0]}</span> {inv.groomName.split(' ').slice(1).join(' ')}
             <span className="spt-hero__and">— &amp; —</span>
-            <span>Jane</span> Doe
+            <span>{inv.brideName.split(' ')[0]}</span> {inv.brideName.split(' ').slice(1).join(' ')}
           </h1>
           <div className="spt-hero__meta">
             <div className="spt-hero__meta-row">
               <div className="spt-hero__meta-dot" />
-              <span className="spt-hero__meta-text"><strong>Saturday</strong>, September 13, 2025</span>
+              <span className="spt-hero__meta-text">{fmtDate(inv.eventDate)}</span>
             </div>
-            <div className="spt-hero__meta-row">
-              <div className="spt-hero__meta-dot" />
-              <span className="spt-hero__meta-text">Ceremony <strong>2:00 PM</strong> · Reception <strong>6:00 PM</strong></span>
-            </div>
-            <div className="spt-hero__meta-row">
-              <div className="spt-hero__meta-dot" />
-              <span className="spt-hero__meta-text">St. Mary's Cathedral &amp; The Grand Ballroom</span>
-            </div>
+            {(inv.ceremonyTime || inv.receptionTime) && (
+              <div className="spt-hero__meta-row">
+                <div className="spt-hero__meta-dot" />
+                <span className="spt-hero__meta-text">
+                  {inv.ceremonyTime && <>Ceremony <strong>{inv.ceremonyTime}</strong></>}
+                  {inv.ceremonyTime && inv.receptionTime && ' · '}
+                  {inv.receptionTime && <>Reception <strong>{inv.receptionTime}</strong></>}
+                </span>
+              </div>
+            )}
+            {(inv.ceremonyVenue || inv.receptionVenue) && (
+              <div className="spt-hero__meta-row">
+                <div className="spt-hero__meta-dot" />
+                <span className="spt-hero__meta-text">
+                  {inv.ceremonyVenue}{inv.ceremonyVenue && inv.receptionVenue ? ' & ' : ''}{inv.receptionVenue}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -285,16 +314,18 @@ export default function SportyInvitation() {
           <div className="spt-families">
             <div className="spt-family-card">
               <span className="spt-family-card__role">Parents of the Groom</span>
-              <p className="spt-family-card__name">Michael &amp; Susan Smith</p>
+              <p className="spt-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="spt-family-card">
               <span className="spt-family-card__role">Parents of the Bride</span>
-              <p className="spt-family-card__name">Robert &amp; Elena Doe</p>
+              <p className="spt-family-card__name">{inv.brideParents}</p>
             </div>
-            <div className="spt-family-card">
-              <span className="spt-family-card__role">Godparents</span>
-              <p className="spt-family-card__name">George &amp; Maria Johnson</p>
-            </div>
+            {inv.godparents && (
+              <div className="spt-family-card">
+                <span className="spt-family-card__role">Godparents</span>
+                <p className="spt-family-card__name">{inv.godparents}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -303,23 +334,23 @@ export default function SportyInvitation() {
           <div className="spt-section-label">Schedule</div>
           <div className="spt-events">
             <div className="spt-event">
-              <img className="spt-event__photo" src={CHURCH_PHOTO} alt="St. Mary's Cathedral" />
+              {inv.ceremonyPhotoUrl && <img className="spt-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
               <div className="spt-event__body">
                 <span className="spt-event__type">Ceremony</span>
-                <p className="spt-event__name">St. Mary's Cathedral</p>
-                <p className="spt-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
-                <span className="spt-event__time">2:00 PM</span>
-                <iframe className="spt-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
+                <p className="spt-event__name">{inv.ceremonyVenue}</p>
+                <p className="spt-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="spt-event__time">{inv.ceremonyTime}</span>
+                {inv.ceremonyMapUrl && <iframe className="spt-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
               </div>
             </div>
             <div className="spt-event">
-              <img className="spt-event__photo" src={PARTY_PHOTO} alt="The Grand Ballroom" />
+              {inv.receptionPhotoUrl && <img className="spt-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
               <div className="spt-event__body">
                 <span className="spt-event__type">Reception</span>
-                <p className="spt-event__name">The Grand Ballroom</p>
-                <p className="spt-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
-                <span className="spt-event__time">6:00 PM</span>
-                <iframe className="spt-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
+                <p className="spt-event__name">{inv.receptionVenue}</p>
+                <p className="spt-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="spt-event__time">{inv.receptionTime}</span>
+                {inv.receptionMapUrl && <iframe className="spt-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
               </div>
             </div>
           </div>
@@ -332,7 +363,7 @@ export default function SportyInvitation() {
           <div className="spt-rsvp__head">
             <div className="spt-section-label" style={{ marginBottom: '1rem' }}>RSVP</div>
             <h2 className="spt-rsvp__title">Your <span>Response</span></h2>
-            <p className="spt-rsvp__sub">Deadline · August 1, 2025</p>
+            {inv.rsvpDeadline && <p className="spt-rsvp__sub">Deadline · {inv.rsvpDeadline}</p>}
           </div>
           <RsvpForm />
         </div>

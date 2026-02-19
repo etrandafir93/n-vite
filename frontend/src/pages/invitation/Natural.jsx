@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
-const COUPLE_PHOTO = 'https://hips.hearstapps.com/hmg-prod/images/gettyimages-1190043570-1-672cee697e7c8.jpg?crop=0.668xw:1.00xh;0.0865xw,0&resize=1120:*'
-const CHURCH_PHOTO = 'https://doxologia.ro/sites/default/files/styles/imagine_articol_320/public/articol/2016/05/cununii-foto-benedict-both.jpg?itok=lU-DNou6'
-const PARTY_PHOTO  = 'https://cdn-ilcfplf.nitrocdn.com/SyCrIzrKGMjPKhvowtSUaxPZwZPIFwao/assets/images/optimized/rev-8448987/flashbox.ro/wp-content/uploads/2026/02/locatie-pentru-nunta-bucuresti.jpg'
+function fmtDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const wd = d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' })
+  const rest = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return `${wd} · ${rest}`
+}
 
 const css = `
   .nat-page * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,7 +20,6 @@ const css = `
   }
   .nat-hero__photo {
     position: absolute; inset: 0;
-    background-image: url('${COUPLE_PHOTO}');
     background-size: cover; background-position: center 15%;
   }
   .nat-hero__overlay {
@@ -246,7 +250,7 @@ function RsvpForm() {
       </div>
       <div className="nat-field">
         <label className="nat-label">Questions or comments</label>
-        <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for John & Jane..." value={notes} onChange={e => setNotes(e.target.value)} />
+        <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="nat-cta-row">
         <button className="nat-btn-primary">🌿 Accept Invitation</button>
@@ -257,24 +261,42 @@ function RsvpForm() {
 }
 
 export default function NaturalInvitation() {
+  const { slug } = useParams()
+  const [inv, setInv] = useState(null)
+
+  useEffect(() => {
+    fetch(`/api/v2/invitations/${slug}`)
+      .then(r => r.json())
+      .then(setInv)
+      .catch(console.error)
+  }, [slug])
+
+  if (!inv) return <div className="nat-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
+
   return (
     <div className="nat-page">
       <style>{css}</style>
 
       {/* Hero */}
       <section className="nat-hero">
-        <div className="nat-hero__photo" />
+        <div className="nat-hero__photo" style={{backgroundImage:`url('${inv.backgroundImageUrl}')`}} />
         <div className="nat-hero__overlay" />
         <div className="nat-hero__content">
           <span className="nat-hero__leaf">🌿 🌾 🌿</span>
           <span className="nat-hero__label">Together with their families</span>
           <h1 className="nat-hero__names">
-            John Smith
+            {inv.groomName}
             <span className="nat-hero__amp">✦</span>
-            Jane Doe
+            {inv.brideName}
           </h1>
-          <p className="nat-hero__date">Saturday · September 13, 2025</p>
-          <div className="nat-hero__badge">🕑 Ceremony 2 PM · 🕕 Reception 6 PM</div>
+          <p className="nat-hero__date">{fmtDate(inv.eventDate)}</p>
+          {(inv.ceremonyTime || inv.receptionTime) && (
+            <div className="nat-hero__badge">
+              {inv.ceremonyTime && <>🕑 Ceremony {inv.ceremonyTime}</>}
+              {inv.ceremonyTime && inv.receptionTime && ' · '}
+              {inv.receptionTime && <>🕕 Reception {inv.receptionTime}</>}
+            </div>
+          )}
         </div>
       </section>
 
@@ -286,18 +308,20 @@ export default function NaturalInvitation() {
             <div className="nat-family-card">
               <span className="nat-family-card__icon">🌱</span>
               <span className="nat-family-card__role">Parents of the Groom</span>
-              <p className="nat-family-card__name">Michael &amp; Susan Smith</p>
+              <p className="nat-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="nat-family-card">
               <span className="nat-family-card__icon">🌱</span>
               <span className="nat-family-card__role">Parents of the Bride</span>
-              <p className="nat-family-card__name">Robert &amp; Elena Doe</p>
+              <p className="nat-family-card__name">{inv.brideParents}</p>
             </div>
-            <div className="nat-family-card">
-              <span className="nat-family-card__icon">🕊️</span>
-              <span className="nat-family-card__role">Godparents</span>
-              <p className="nat-family-card__name">George &amp; Maria Johnson</p>
-            </div>
+            {inv.godparents && (
+              <div className="nat-family-card">
+                <span className="nat-family-card__icon">🕊️</span>
+                <span className="nat-family-card__role">Godparents</span>
+                <p className="nat-family-card__name">{inv.godparents}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -306,23 +330,23 @@ export default function NaturalInvitation() {
           <p className="nat-section__title">The Celebrations</p>
           <div className="nat-events">
             <div className="nat-event">
-              <img className="nat-event__photo" src={CHURCH_PHOTO} alt="St. Mary's Cathedral" />
+              {inv.ceremonyPhotoUrl && <img className="nat-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
               <div className="nat-event__body">
                 <span className="nat-event__type">⛪ Ceremony</span>
-                <p className="nat-event__name">St. Mary's Cathedral</p>
-                <p className="nat-event__detail">123 Church Street<br />Saturday, September 13, 2025</p>
-                <span className="nat-event__time-pill">🕑 2:00 PM</span>
-                <iframe className="nat-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />
+                <p className="nat-event__name">{inv.ceremonyVenue}</p>
+                <p className="nat-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="nat-event__time-pill">🕑 {inv.ceremonyTime}</span>
+                {inv.ceremonyMapUrl && <iframe className="nat-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
               </div>
             </div>
             <div className="nat-event">
-              <img className="nat-event__photo" src={PARTY_PHOTO} alt="The Grand Ballroom" />
+              {inv.receptionPhotoUrl && <img className="nat-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
               <div className="nat-event__body">
                 <span className="nat-event__type">🥂 Reception &amp; Dinner</span>
-                <p className="nat-event__name">The Grand Ballroom</p>
-                <p className="nat-event__detail">456 Elm Avenue<br />Saturday, September 13, 2025</p>
-                <span className="nat-event__time-pill">🕕 6:00 PM</span>
-                <iframe className="nat-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />
+                <p className="nat-event__name">{inv.receptionVenue}</p>
+                <p className="nat-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
+                <span className="nat-event__time-pill">🕕 {inv.receptionTime}</span>
+                {inv.receptionMapUrl && <iframe className="nat-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
               </div>
             </div>
           </div>
@@ -335,7 +359,7 @@ export default function NaturalInvitation() {
           <div className="nat-rsvp__head">
             <div className="nat-rsvp__leaves">🌿 🌾 🌿</div>
             <h2 className="nat-rsvp__title">Kindly Reply</h2>
-            <p className="nat-rsvp__sub">Please respond by August 1, 2025</p>
+            {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
           <RsvpForm />
         </div>

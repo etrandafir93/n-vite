@@ -69,8 +69,8 @@ export default function Invitation() {
                 <h1 className="text-5xl mb-4">{invitation.brideName} & {invitation.groomName}</h1>
                 <p className="text-2xl mb-2">We are getting married!</p>
                 <p className="text-xl mb-6">{new Date(invitation.eventDate).toLocaleString()}</p>
-                <p className="text-lg mb-4">{invitation.eventLocation}</p>
-                <p className="text-lg mb-8">{invitation.eventReception}</p>
+                <p className="text-lg mb-4">{invitation.ceremonyVenue}</p>
+                <p className="text-lg mb-8">{invitation.receptionVenue}</p>
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

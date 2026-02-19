@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
-const COUPLE_PHOTO  = 'https://hips.hearstapps.com/hmg-prod/images/gettyimages-1190043570-1-672cee697e7c8.jpg?crop=0.668xw:1.00xh;0.0865xw,0&resize=1120:*'
-const CHURCH_PHOTO  = 'https://doxologia.ro/sites/default/files/styles/imagine_articol_320/public/articol/2016/05/cununii-foto-benedict-both.jpg?itok=lU-DNou6'
-const PARTY_PHOTO   = 'https://cdn-ilcfplf.nitrocdn.com/SyCrIzrKGMjPKhvowtSUaxPZwZPIFwao/assets/images/optimized/rev-8448987/flashbox.ro/wp-content/uploads/2026/02/locatie-pentru-nunta-bucuresti.jpg'
+function fmtDate(iso) {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const wd = d.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' })
+  const rest = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return `${wd} · ${rest}`
+}
 
 const css = `
   .cl-page * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,9 +20,6 @@ const css = `
   }
   .cl-hero__bg {
     position: absolute; inset: 0;
-    background-image:
-      linear-gradient(to bottom, rgba(10,8,5,.55) 0%, rgba(10,8,5,.3) 40%, rgba(10,8,5,.72) 100%),
-      url('${COUPLE_PHOTO}');
     background-size: cover; background-position: center top;
   }
   .cl-hero__frame {
@@ -175,7 +177,7 @@ const css = `
   .cl-btn-secondary:hover { border-color:#888; color:#333; }
 `
 
-function RsvpForm() {
+function RsvpForm({ rsvpDeadline }) {
   const [attending, setAttending]   = useState(null)
   const [menu, setMenu]             = useState(null)
   const [plusOne, setPlusOne]       = useState(null)
@@ -241,25 +243,39 @@ function RsvpForm() {
 }
 
 export default function ClassicInvitation() {
+  const { slug } = useParams()
+  const [inv, setInv] = useState(null)
+
+  useEffect(() => {
+    fetch(`/api/v2/invitations/${slug}`)
+      .then(r => r.json())
+      .then(setInv)
+      .catch(console.error)
+  }, [slug])
+
+  if (!inv) return <div className="cl-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
+
+  const heroGradient = 'linear-gradient(to bottom, rgba(10,8,5,.55) 0%, rgba(10,8,5,.3) 40%, rgba(10,8,5,.72) 100%)'
+
   return (
     <div className="cl-page">
       <style>{css}</style>
 
       <section className="cl-hero">
-        <div className="cl-hero__bg"/>
+        <div className="cl-hero__bg" style={{backgroundImage:`${heroGradient}, url('${inv.backgroundImageUrl}')`}}/>
         <div className="cl-hero__frame">
           <span className="cl-hero__label">Together with their families</span>
           <h1 className="cl-hero__names">
-            John Smith
+            {inv.groomName}
             <span className="cl-hero__amp">&amp;</span>
-            Jane Doe
+            {inv.brideName}
           </h1>
           <div className="cl-divider">
             <div className="cl-divider__line"/>
             <span className="cl-divider__gem">✦ ✦ ✦</span>
             <div className="cl-divider__line"/>
           </div>
-          <p className="cl-hero__date">Saturday · September 13, 2025</p>
+          <p className="cl-hero__date">{fmtDate(inv.eventDate)}</p>
         </div>
         <div className="cl-scroll-hint">Scroll</div>
       </section>
@@ -271,16 +287,18 @@ export default function ClassicInvitation() {
           <div className="cl-families">
             <div className="cl-family-card">
               <span className="cl-family-card__role">Parents of the Groom</span>
-              <p className="cl-family-card__name">Michael &amp; Susan Smith</p>
+              <p className="cl-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="cl-family-card">
               <span className="cl-family-card__role">Parents of the Bride</span>
-              <p className="cl-family-card__name">Robert &amp; Elena Doe</p>
+              <p className="cl-family-card__name">{inv.brideParents}</p>
             </div>
-            <div className="cl-family-card">
-              <span className="cl-family-card__role">Godparents</span>
-              <p className="cl-family-card__name">George &amp; Maria Johnson</p>
-            </div>
+            {inv.godparents && (
+              <div className="cl-family-card">
+                <span className="cl-family-card__role">Godparents</span>
+                <p className="cl-family-card__name">{inv.godparents}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -289,23 +307,23 @@ export default function ClassicInvitation() {
           <p className="cl-section__title">Order of Celebrations</p>
           <div className="cl-events">
             <div className="cl-event">
-              <img className="cl-event__photo" src={CHURCH_PHOTO} alt="St. Mary's Cathedral"/>
+              {inv.ceremonyPhotoUrl && <img className="cl-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue}/>}
               <div className="cl-event__body">
                 <span className="cl-event__type">Holy Ceremony</span>
-                <p className="cl-event__name">St. Mary's Cathedral</p>
-                <p className="cl-event__detail">123 Church Street<br/>Saturday, September 13, 2025</p>
-                <span className="cl-event__time-pill">2:00 PM</span>
-                <iframe className="cl-event__map" src="https://maps.google.com/maps?q=44.4422684,26.0913552&z=17&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location"/>
+                <p className="cl-event__name">{inv.ceremonyVenue}</p>
+                <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>
+                <span className="cl-event__time-pill">{inv.ceremonyTime}</span>
+                {inv.ceremonyMapUrl && <iframe className="cl-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location"/>}
               </div>
             </div>
             <div className="cl-event">
-              <img className="cl-event__photo" src={PARTY_PHOTO} alt="The Grand Ballroom"/>
+              {inv.receptionPhotoUrl && <img className="cl-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue}/>}
               <div className="cl-event__body">
                 <span className="cl-event__type">Reception &amp; Dinner</span>
-                <p className="cl-event__name">The Grand Ballroom</p>
-                <p className="cl-event__detail">456 Elm Avenue<br/>Saturday, September 13, 2025</p>
-                <span className="cl-event__time-pill">6:00 PM</span>
-                <iframe className="cl-event__map" src="https://maps.google.com/maps?q=44.4471355,26.1079432&z=15&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location"/>
+                <p className="cl-event__name">{inv.receptionVenue}</p>
+                <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>
+                <span className="cl-event__time-pill">{inv.receptionTime}</span>
+                {inv.receptionMapUrl && <iframe className="cl-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location"/>}
               </div>
             </div>
           </div>
@@ -322,9 +340,9 @@ export default function ClassicInvitation() {
               <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
             </div>
             <h2 className="cl-rsvp__title">Kindly Reply</h2>
-            <p className="cl-rsvp__sub">Please respond by August 1, 2025</p>
+            {inv.rsvpDeadline && <p className="cl-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
-          <RsvpForm/>
+          <RsvpForm rsvpDeadline={inv.rsvpDeadline}/>
         </div>
       </div>
     </div>

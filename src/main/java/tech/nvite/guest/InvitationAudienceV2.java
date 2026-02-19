@@ -1,6 +1,5 @@
 package tech.nvite.guest;
 
-import java.time.Instant;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.InvitationVisitor;
 import tech.nvite.domain.model.RsvpAnswer;
@@ -28,6 +26,7 @@ public class InvitationAudienceV2 {
 
   private final VisitInvitationUseCase visitInvitationUseCase;
   private final RsvpInvitationUseCase rsvpInvitationUseCase;
+  private final InvitationMapper invitationMapper;
 
   @GetMapping(produces = "application/json")
   public InvitationDetailsDto invitationDetails(
@@ -39,7 +38,7 @@ public class InvitationAudienceV2 {
             .orElseGet(InvitationVisitor::anonymous);
     var request = new VisitInvitationUseCase.Request(new EventReference(ref), viewer);
     var response = visitInvitationUseCase.apply(request);
-    return InvitationDetailsDto.from(response.evt());
+    return invitationMapper.toDto(response.evt());
   }
 
   @PostMapping("/responses")
@@ -53,30 +52,13 @@ public class InvitationAudienceV2 {
 
     var request =
         new RsvpInvitationUseCase.Request(
-            new EventReference(ref), rsvpRequest.guestName(), rsvpAnswer, rsvpRequest.partnerName());
+            new EventReference(ref),
+            rsvpRequest.guestName(),
+            rsvpAnswer,
+            rsvpRequest.partnerName());
 
     rsvpInvitationUseCase.apply(request);
   }
 
   public record RsvpRequestDto(String guestName, String answer, String partnerName) {}
-
-  public record InvitationDetailsDto(
-      String brideName,
-      String groomName,
-      Instant eventDate,
-      String eventLocation,
-      String eventReception,
-      String eventReference,
-      String backgroundImageUrl) {
-    public static InvitationDetailsDto from(Event event) {
-      return new InvitationDetailsDto(
-          event.brideName(),
-          event.groomName(),
-          event.eventDateTime(),
-          event.eventLocation(),
-          event.eventReception(),
-          event.reference().value(),
-          event.backgroundImageOrDefault());
-    }
-  }
 }
