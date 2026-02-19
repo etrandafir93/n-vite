@@ -35,6 +35,7 @@ class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
         .oauth2Login(oauth2 -> oauth2.loginPage("/").defaultSuccessUrl("/v2/events", true))
         .logout(
             logout ->

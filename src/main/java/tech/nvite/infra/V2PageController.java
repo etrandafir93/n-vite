@@ -32,4 +32,10 @@ class V2PageController {
     log.info("Serving V2 events dashboard");
     return "forward:/v2/index.html";
   }
+
+  @GetMapping("/v2/events/builder")
+  String eventsBuilder() {
+    log.info("Serving V2 events builder");
+    return "forward:/v2/index.html";
+  }
 }

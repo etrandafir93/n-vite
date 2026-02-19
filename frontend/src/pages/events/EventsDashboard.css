@@ -366,36 +366,6 @@
   color: var(--text-muted);
 }
 
-/* ---- Floating action button ---- */
-
-.ev-fab {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 52px;
-  height: 52px;
-  background: var(--gold);
-  color: var(--navy);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(201, 160, 122, 0.45);
-  transition: all var(--transition);
-  z-index: 50;
-}
-
-.ev-fab:hover {
-  background: var(--gold-light);
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(201, 160, 122, 0.55);
-}
-
-.ev-fab svg {
-  width: 22px;
-  height: 22px;
-}
-
 /* ---- Responsive: tablet ---- */
 
 @media (max-width: 860px) {
@@ -472,12 +442,5 @@
 
   .ev-share__menu {
     min-width: 200px;
-  }
-
-  .ev-fab {
-    bottom: 1.25rem;
-    right: 1.25rem;
-    width: 48px;
-    height: 48px;
   }
 }

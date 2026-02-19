@@ -39,15 +39,6 @@ const EyeIcon = () => (
   </svg>
 )
 
-const GridIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" />
-    <rect x="14" y="3" width="7" height="7" />
-    <rect x="14" y="14" width="7" height="7" />
-    <rect x="3" y="14" width="7" height="7" />
-  </svg>
-)
-
 const EditIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -70,13 +61,6 @@ const TrashIcon = () => (
     <path d="M10 11v6" />
     <path d="M14 11v6" />
     <path d="M9 6V4h6v2" />
-  </svg>
-)
-
-const PlusIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
   </svg>
 )
 
@@ -225,10 +209,6 @@ function EventCard({ event, onDelete }) {
           <EyeIcon />
           <span className="ev-btn__label">Preview</span>
         </a>
-        <a href={`/events/${event.reference}`} className="ev-btn" title="Open dashboard">
-          <GridIcon />
-          <span className="ev-btn__label">Open</span>
-        </a>
         <a
           href={`/events/builder?eventReference=${event.reference}`}
           className="ev-btn"
@@ -339,9 +319,6 @@ export default function EventsDashboard() {
         )}
       </main>
 
-      <a href="/events/builder" className="ev-fab" title="Create new invitation">
-        <PlusIcon />
-      </a>
     </div>
   )
 }
