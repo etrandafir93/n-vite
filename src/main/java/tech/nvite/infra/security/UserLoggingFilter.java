@@ -20,7 +20,10 @@ class UserLoggingFilter implements Filter {
       if (authentication != null
           && authentication.getPrincipal() != null
           && authentication.getPrincipal() instanceof DefaultOAuth2User user) {
-        MDC.put(USER_KEY, user.getAttribute("email"));
+        var email = user.getAttribute("email");
+        if (email != null && email.toString().contains("@")) {
+          MDC.put(USER_KEY, user.getAttribute("email").toString().split("@")[0]);
+        }
       } else {
         MDC.put(USER_KEY, "anonymous");
       }
