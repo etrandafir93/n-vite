@@ -169,12 +169,12 @@
                     </java>
                 </configuration>
                 <executions>
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>package</phase>-->
-<!--                    </execution>-->
+                    <execution>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

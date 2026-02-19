@@ -10,6 +10,7 @@ import RomanticInvitation from './pages/invitation/Romantic'
 import SportyInvitation from './pages/invitation/Sporty'
 import NaturalInvitation from './pages/invitation/Natural'
 import Invitation from './pages/guests/Invitation'
+import EventsDashboard from './pages/events/EventsDashboard'
 
 function Home() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/invitation/:slug/romantic" element={<RomanticInvitation />} />
         <Route path="/invitation/:slug/sporty" element={<SportyInvitation />} />
         <Route path="/invitation/:slug/natural" element={<NaturalInvitation />} />
+        <Route path="/events" element={<EventsDashboard />} />
       </Routes>
     </BrowserRouter>
   )

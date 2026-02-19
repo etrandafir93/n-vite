@@ -1,4 +1,4 @@
-package tech.nvite.demo;
+package tech.nvite.guest;
 
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +13,14 @@ import tech.nvite.domain.model.Events;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DemoDataSeeder {
+class DemoDataSeeder {
 
   private static final String DEMO_REF = "joe-and-jane";
 
   private final Events events;
 
   @EventListener(ApplicationStartedEvent.class)
-  public void seedDemoData() {
+  void seedDemoData() {
     EventReference ref = new EventReference(DEMO_REF);
 
     if (events.find(ref).isPresent()) {

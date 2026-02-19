@@ -141,6 +141,11 @@
   }
 
   .navbar__actions {
+    margin-left: auto;
+    gap: 0.5rem;
+  }
+
+  .navbar__cta {
     display: none;
   }
 

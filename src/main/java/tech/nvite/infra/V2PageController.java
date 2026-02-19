@@ -26,4 +26,10 @@ class V2PageController {
     log.info("Serving V2 invitation page for name: {} and style: {}", invitationName, style);
     return "forward:/v2/index.html";
   }
+
+  @GetMapping("/v2/events")
+  String eventsDashboard() {
+    log.info("Serving V2 events dashboard");
+    return "forward:/v2/index.html";
+  }
 }
