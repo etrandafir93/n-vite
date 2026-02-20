@@ -248,16 +248,23 @@ function RsvpForm() {
   )
 }
 
-export default function SportyInvitation() {
+export default function SportyInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
-  const [inv, setInv] = useState(null)
+  const [inv, setInv] = useState(invitationData || null)
 
   useEffect(() => {
-    fetch(`/api/v2/invitations/${slug}`)
+    if (invitationData) {
+      setInv(invitationData)
+      return
+    }
+    const ref = invitationRef || slug
+    if (!ref) return
+
+    fetch(`/api/v2/invitations/${ref}`)
       .then(r => r.json())
       .then(setInv)
       .catch(console.error)
-  }, [slug])
+  }, [slug, invitationRef, invitationData])
 
   if (!inv) return <div className="spt-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 

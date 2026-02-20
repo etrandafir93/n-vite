@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
+import tech.nvite.domain.model.EventStatus;
 import tech.nvite.domain.model.Events;
 import tech.nvite.infra.security.CurrentUser;
 
@@ -46,7 +47,9 @@ class EventBuilderV2 {
       String receptionTime,
       String receptionPhotoUrl,
       String receptionMapUrl,
-      String rsvpDeadline) {}
+      String rsvpDeadline,
+      String theme,
+      EventStatus status) {}
 
   @GetMapping("/{reference}/form")
   public EventFormResponse getForm(@PathVariable String reference) {
@@ -58,7 +61,11 @@ class EventBuilderV2 {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public EventReference create(@RequestBody EventFormRequest req) {
-    log.info("Creating event via v2 builder for {} & {}", req.groomName(), req.brideName());
+    log.info(
+        "Creating event via v2 builder for {} & {} with status {}",
+        req.groomName(),
+        req.brideName(),
+        req.status());
     var ref = newReference(req.brideName(), req.groomName());
     events.create(buildEvent(req, ref));
     return ref;
@@ -66,7 +73,7 @@ class EventBuilderV2 {
 
   @PutMapping("/{reference}")
   public EventReference update(@PathVariable String reference, @RequestBody EventFormRequest req) {
-    log.info("Updating event {} via v2 builder", reference);
+    log.info("Updating event {} via v2 builder with status {}", reference, req.status());
     var ref = new EventReference(reference);
     var existing = events.findOrThrow(ref);
     events.edit(buildEvent(req, ref).withCreated(existing.created()));
@@ -93,6 +100,8 @@ class EventBuilderV2 {
         .receptionPhotoUrl(req.receptionPhotoUrl())
         .receptionMapUrl(req.receptionMapUrl())
         .rsvpDeadline(req.rsvpDeadline())
+        .theme(req.theme())
+        .status(req.status() != null ? req.status() : EventStatus.LIVE)
         .reference(ref)
         .createdBy(currentUser.get().id())
         .build();

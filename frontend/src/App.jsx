@@ -34,6 +34,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/invitations/:ref" element={<Invitation />} />
+        <Route path="/invitations/:ref/:theme" element={<Invitation />} />
         <Route path="/invitation/:slug/classic" element={<ClassicInvitation />} />
         <Route path="/invitation/:slug/romantic" element={<RomanticInvitation />} />
         <Route path="/invitation/:slug/sporty" element={<SportyInvitation />} />

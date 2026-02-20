@@ -182,6 +182,7 @@ function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
 
 function EventCard({ event, onDelete }) {
   const isPast = new Date(event.dateTime) < new Date()
+  const isDraft = event.status === 'DRAFT'
   const [shareOpen, setShareOpen] = useState(false)
 
   const handleDelete = () => {
@@ -193,13 +194,16 @@ function EventCard({ event, onDelete }) {
 
   return (
     <div
-      className={`ev-card${isPast ? ' ev-card--past' : ''}`}
+      className={`ev-card${isPast ? ' ev-card--past' : ''}${isDraft ? ' ev-card--draft' : ''}`}
       style={shareOpen ? { zIndex: 10 } : undefined}
     >
       <div className="ev-card__body">
-        <h3 className="ev-card__names">
-          {event.groomName} &amp; {event.brideName}
-        </h3>
+        <div className="ev-card__header">
+          <h3 className="ev-card__names">
+            {event.groomName} &amp; {event.brideName}
+          </h3>
+          {isDraft && <span className="ev-badge ev-badge--draft">Draft</span>}
+        </div>
         <p className="ev-card__date">{formatDate(event.dateTime)}</p>
         <span className={`ev-card__when${isPast ? ' ev-card__when--past' : ''}`}>
           {timeRelative(event.dateTime)}
@@ -218,12 +222,14 @@ function EventCard({ event, onDelete }) {
           <EditIcon />
           <span className="ev-btn__label">Edit</span>
         </Link>
-        <ShareMenu
-          reference={event.reference}
-          groomName={event.groomName}
-          brideName={event.brideName}
-          onOpenChange={setShareOpen}
-        />
+        {!isDraft && (
+          <ShareMenu
+            reference={event.reference}
+            groomName={event.groomName}
+            brideName={event.brideName}
+            onOpenChange={setShareOpen}
+          />
+        )}
         <button onClick={handleDelete} className="ev-btn ev-btn--danger" title="Delete invitation">
           <TrashIcon />
           <span className="ev-btn__label">Delete</span>

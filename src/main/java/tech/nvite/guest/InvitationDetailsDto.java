@@ -21,4 +21,5 @@ public record InvitationDetailsDto(
     String receptionTime,
     String receptionPhotoUrl,
     String receptionMapUrl,
-    String rsvpDeadline) {}
+    String rsvpDeadline,
+    String theme) {}

@@ -85,8 +85,8 @@
 /* ---- Main content ---- */
 
 .ev-main {
-  padding-top: 3rem;
-  padding-bottom: 6rem;
+  padding-top: 3.5rem;
+  padding-bottom: 7rem;
 }
 
 /* ---- Sections ---- */
@@ -143,16 +143,45 @@
   opacity: 0.68;
 }
 
+.ev-card--draft {
+  border-left: 3px solid var(--gold);
+  background: linear-gradient(to right, rgba(201, 160, 122, 0.05), transparent);
+}
+
 .ev-card__body {
   flex: 1;
   min-width: 0;
+}
+
+.ev-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.2rem;
 }
 
 .ev-card__names {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.15rem;
   color: var(--text-dark);
-  margin-bottom: 0.2rem;
+}
+
+.ev-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ev-badge--draft {
+  background: var(--gold-pale);
+  color: var(--navy);
+  border: 1px solid var(--gold);
 }
 
 .ev-card__date {
@@ -397,7 +426,7 @@
   }
 
   .ev-main {
-    padding-top: 2rem;
+    padding-top: 2.5rem;
   }
 
   .ev-card {

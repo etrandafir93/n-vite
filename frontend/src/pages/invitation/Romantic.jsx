@@ -260,16 +260,25 @@ function RsvpForm() {
   )
 }
 
-export default function RomanticInvitation() {
+export default function RomanticInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
-  const [inv, setInv] = useState(null)
+  const [inv, setInv] = useState(invitationData || null)
 
   useEffect(() => {
-    fetch(`/api/v2/invitations/${slug}`)
+    // If data is already provided via props, don't fetch
+    if (invitationData) {
+      setInv(invitationData)
+      return
+    }
+    // Otherwise fetch using slug from params
+    const ref = invitationRef || slug
+    if (!ref) return
+
+    fetch(`/api/v2/invitations/${ref}`)
       .then(r => r.json())
       .then(setInv)
       .catch(console.error)
-  }, [slug])
+  }, [slug, invitationRef, invitationData])
 
   if (!inv) return <div className="rom-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 

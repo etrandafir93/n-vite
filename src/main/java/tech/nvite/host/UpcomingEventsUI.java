@@ -194,7 +194,11 @@ class UpcomingEventsUI {
         .map(
             evt ->
                 new EventListItem(
-                    evt.groomName(), evt.brideName(), evt.eventDateTime(), evt.reference().value()))
+                    evt.groomName(),
+                    evt.brideName(),
+                    evt.eventDateTime(),
+                    evt.reference().value(),
+                    evt.status() != null ? evt.status() : tech.nvite.domain.model.EventStatus.LIVE))
         .toList();
   }
 
@@ -207,5 +211,7 @@ class UpcomingEventsUI {
       @Schema(description = "Date and time of the event", example = "2024-11-17T15:00:00Z")
           Instant dateTime,
       @Schema(description = "Reference identifier for the event", example = "Ion-and-Maria")
-          String reference) {}
+          String reference,
+      @Schema(description = "Event status", example = "LIVE")
+          tech.nvite.domain.model.EventStatus status) {}
 }

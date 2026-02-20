@@ -1,6 +1,7 @@
 package tech.nvite.host;
 
 import java.time.Instant;
+import tech.nvite.domain.model.EventStatus;
 
 public record EventFormResponse(
     String eventReference,
@@ -21,4 +22,6 @@ public record EventFormResponse(
     String receptionTime,
     String receptionPhotoUrl,
     String receptionMapUrl,
-    String rsvpDeadline) {}
+    String rsvpDeadline,
+    String theme,
+    EventStatus status) {}

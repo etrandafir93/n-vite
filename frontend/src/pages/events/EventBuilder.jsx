@@ -21,6 +21,8 @@ const EMPTY_FORM = {
   receptionPhotoUrl: '',
   receptionMapUrl: '',
   rsvpDeadline: '',
+  theme: 'classic',
+  status: 'LIVE',
 }
 
 function toLocalDateTimeInput(iso) {
@@ -171,6 +173,8 @@ export default function EventBuilder() {
           receptionPhotoUrl: data.receptionPhotoUrl ?? '',
           receptionMapUrl: data.receptionMapUrl ?? '',
           rsvpDeadline: data.rsvpDeadline ?? '',
+          theme: data.theme ?? 'classic',
+          status: data.status ?? 'LIVE',
         })
       })
       .catch(() => setError('Could not load invitation data.'))
@@ -179,16 +183,20 @@ export default function EventBuilder() {
 
   const set = field => value => setForm(prev => ({ ...prev, [field]: value }))
 
+  const preparePayload = (status) => {
+    return {
+      ...form,
+      eventDateTime: form.eventDateTime ? new Date(form.eventDateTime).toISOString() : null,
+      status,
+    }
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
     setSaving(true)
     setError(null)
 
-    const payload = {
-      ...form,
-      eventDateTime: form.eventDateTime ? new Date(form.eventDateTime).toISOString() : null,
-    }
-
+    const payload = preparePayload('LIVE')
     const url = isEdit ? `/api/v2/events/${eventReference}` : '/api/v2/events'
     const method = isEdit ? 'PUT' : 'POST'
 
@@ -200,8 +208,42 @@ export default function EventBuilder() {
       })
       if (!res.ok) throw new Error('Save failed')
       navigate('/events')
-    } catch {
+    } catch (err) {
+      console.error('Save error:', err)
       setError('Failed to save. Please check the form and try again.')
+      setSaving(false)
+    }
+  }
+
+  const handlePreview = async () => {
+    setSaving(true)
+    setError(null)
+
+    const payload = preparePayload('DRAFT')
+    const url = isEdit ? `/api/v2/events/${eventReference}` : '/api/v2/events'
+    const method = isEdit ? 'PUT' : 'POST'
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) {
+        const errorText = await res.text()
+        console.error('Preview error:', errorText)
+        throw new Error('Preview failed')
+      }
+      const data = await res.json()
+      console.log('Preview response:', data)
+      // Open preview in new window
+      const reference = data.value || data
+      window.open(`/v2/invitations/${reference}`, '_blank')
+      // Navigate to events dashboard
+      navigate('/events')
+    } catch (err) {
+      console.error('Preview error:', err)
+      setError('Failed to create preview. Please check the form and try again.')
       setSaving(false)
     }
   }
@@ -271,8 +313,8 @@ export default function EventBuilder() {
               <Field label="Address">
                 <Input value={form.ceremonyAddress} onChange={set('ceremonyAddress')} placeholder="e.g. 123 Church Street" />
               </Field>
-              <Field label="Time">
-                <Input type="time" value={form.ceremonyTime} onChange={set('ceremonyTime')} />
+              <Field label="Date & Time">
+                <Input type="datetime-local" value={form.ceremonyTime} onChange={set('ceremonyTime')} />
               </Field>
             </div>
             <Field label="Ceremony Photo" hint="Image of the ceremony venue">
@@ -291,8 +333,8 @@ export default function EventBuilder() {
               <Field label="Address">
                 <Input value={form.receptionAddress} onChange={set('receptionAddress')} placeholder="e.g. 456 Elm Avenue" />
               </Field>
-              <Field label="Time">
-                <Input type="time" value={form.receptionTime} onChange={set('receptionTime')} />
+              <Field label="Date & Time">
+                <Input type="datetime-local" value={form.receptionTime} onChange={set('receptionTime')} />
               </Field>
             </div>
             <Field label="Reception Photo" hint="Image of the reception venue">
@@ -309,8 +351,22 @@ export default function EventBuilder() {
             </Field>
           </Section>
 
+          <Section title="Theme" subtitle="Choose the default invitation theme">
+            <Field label="Invitation Theme">
+              <select className="eb-input" value={form.theme} onChange={e => set('theme')(e.target.value)}>
+                <option value="classic">Classic</option>
+                <option value="romantic">Romantic</option>
+                <option value="sporty">Sporty</option>
+                <option value="natural">Natural</option>
+              </select>
+            </Field>
+          </Section>
+
           <div className="eb-actions">
             <Link to="/events" className="eb-btn eb-btn--ghost">Cancel</Link>
+            <button type="button" onClick={handlePreview} className="eb-btn eb-btn--secondary" disabled={saving}>
+              Preview
+            </button>
             <button type="submit" className="eb-btn eb-btn--primary" disabled={saving}>
               {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Create Invitation'}
             </button>

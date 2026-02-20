@@ -34,7 +34,9 @@ public record Event(
     @Nullable String receptionTime,
     @Nullable String receptionPhotoUrl,
     @Nullable String receptionMapUrl,
-    @Nullable String rsvpDeadline) {
+    @Nullable String rsvpDeadline,
+    @Nullable String theme,
+    @Nullable EventStatus status) {
 
   public Event(
       String groomName,
@@ -50,6 +52,8 @@ public record Event(
         eventReception,
         eventDateTime,
         backgroundImage,
+        null,
+        null,
         null,
         null,
         null,

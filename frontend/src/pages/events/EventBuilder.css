@@ -54,8 +54,8 @@
 /* ---- Main ---- */
 
 .eb-main {
-  padding-top: 3rem;
-  padding-bottom: 5rem;
+  padding-top: 3.5rem;
+  padding-bottom: 6rem;
   max-width: 760px;
 }
 
@@ -301,6 +301,22 @@
   color: var(--text-dark);
 }
 
+.eb-btn--secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--gold);
+}
+
+.eb-btn--secondary:hover:not(:disabled) {
+  background: var(--gold-pale);
+  transform: translateY(-1px);
+}
+
+.eb-btn--secondary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 /* ---- Loading ---- */
 
 .eb-loading {
@@ -320,7 +336,7 @@
   }
 
   .eb-main {
-    padding-top: 2rem;
+    padding-top: 2.5rem;
   }
 
   .eb-section__body {
