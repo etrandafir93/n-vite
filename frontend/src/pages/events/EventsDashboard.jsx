@@ -65,6 +65,21 @@ const TrashIcon = () => (
   </svg>
 )
 
+const CheckCircleIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="9 12 11 14 15 10" />
+  </svg>
+)
+
+const ChartIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="12" y1="20" x2="12" y2="10" />
+    <line x1="18" y1="20" x2="18" y2="4" />
+    <line x1="6" y1="20" x2="6" y2="16" />
+  </svg>
+)
+
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -95,6 +110,36 @@ const CopyIcon = () => (
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
   </svg>
 )
+
+function DeleteConfirmModal({ isOpen, onClose, onConfirm, eventName }) {
+  if (!isOpen) return null
+
+  return (
+    <div className="ev-modal-overlay" onClick={onClose}>
+      <div className="ev-modal" onClick={e => e.stopPropagation()}>
+        <div className="ev-modal__header">
+          <h3 className="ev-modal__title">Delete Invitation?</h3>
+        </div>
+        <div className="ev-modal__body">
+          <p className="ev-modal__text">
+            Are you sure you want to delete the invitation for <strong>{eventName}</strong>?
+          </p>
+          <p className="ev-modal__warning">
+            This action cannot be undone. All data associated with this invitation will be permanently deleted.
+          </p>
+        </div>
+        <div className="ev-modal__footer">
+          <button onClick={onClose} className="ev-modal__btn ev-modal__btn--cancel">
+            Cancel
+          </button>
+          <button onClick={onConfirm} className="ev-modal__btn ev-modal__btn--danger">
+            Delete Invitation
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
   const [open, setOpen] = useState(false)
@@ -180,62 +225,108 @@ function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
   )
 }
 
-function EventCard({ event, onDelete }) {
+function EventCard({ event, onDelete, onEnable }) {
   const isPast = new Date(event.dateTime) < new Date()
   const isDraft = event.status === 'DRAFT'
   const [shareOpen, setShareOpen] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  const handleDelete = () => {
-    if (!confirm(`Delete invitation for ${event.groomName} & ${event.brideName}?`)) return
+  const handleDeleteClick = () => {
+    setDeleteModalOpen(true)
+  }
+
+  const handleDeleteConfirm = () => {
+    setDeleteModalOpen(false)
     fetch(`/api/events/${event.reference}`, { method: 'DELETE' })
       .then(() => onDelete(event.reference))
       .catch(console.error)
   }
 
+  const handleEnable = () => {
+    fetch(`/api/events/${event.reference}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'LIVE' })
+    })
+      .then(r => r.json())
+      .then(() => onEnable(event.reference))
+      .catch(console.error)
+  }
+
   return (
-    <div
-      className={`ev-card${isPast ? ' ev-card--past' : ''}${isDraft ? ' ev-card--draft' : ''}`}
-      style={shareOpen ? { zIndex: 10 } : undefined}
-    >
-      <div className="ev-card__body">
-        <div className="ev-card__header">
-          <h3 className="ev-card__names">
-            {event.groomName} &amp; {event.brideName}
-          </h3>
-          {isDraft && <span className="ev-badge ev-badge--draft">Draft</span>}
+    <>
+      <div
+        className={`ev-card${isPast ? ' ev-card--past' : ''}${isDraft ? ' ev-card--draft' : ''}`}
+        style={shareOpen ? { zIndex: 10 } : undefined}
+      >
+        <Link to={`/v2/invitations/${event.reference}`} className="ev-card__body">
+          <div className="ev-card__header">
+            <h3 className="ev-card__names">
+              {event.groomName} &amp; {event.brideName}
+            </h3>
+            {isDraft && <span className="ev-badge ev-badge--draft">Draft</span>}
+          </div>
+          <p className="ev-card__date">{formatDate(event.dateTime)}</p>
+          <span className={`ev-card__when${isPast ? ' ev-card__when--past' : ''}`}>
+            {timeRelative(event.dateTime)}
+          </span>
+        </Link>
+        <div className="ev-card__actions">
+          <a
+            href={`/v2/invitations/${event.reference}`}
+            target="_blank"
+            rel="noreferrer"
+            className="ev-btn"
+            title="Preview invitation"
+          >
+            <EyeIcon />
+            <span className="ev-btn__label">Preview</span>
+          </a>
+          <Link
+            to={`/events/builder?eventReference=${event.reference}`}
+            className="ev-btn"
+            title="Edit invitation"
+          >
+            <EditIcon />
+            <span className="ev-btn__label">Edit</span>
+          </Link>
+          {!isDraft && (
+            <Link
+              to={`/events/dashboard/${event.reference}`}
+              className="ev-btn ev-btn--info"
+              title="View analytics"
+            >
+              <ChartIcon />
+              <span className="ev-btn__label">Dashboard</span>
+            </Link>
+          )}
+          {isDraft ? (
+            <button onClick={handleEnable} className="ev-btn ev-btn--success" title="Enable invitation">
+              <CheckCircleIcon />
+              <span className="ev-btn__label">Enable</span>
+            </button>
+          ) : (
+            <ShareMenu
+              reference={event.reference}
+              groomName={event.groomName}
+              brideName={event.brideName}
+              onOpenChange={setShareOpen}
+            />
+          )}
+          <button onClick={handleDeleteClick} className="ev-btn ev-btn--danger" title="Delete invitation">
+            <TrashIcon />
+            <span className="ev-btn__label">Delete</span>
+          </button>
         </div>
-        <p className="ev-card__date">{formatDate(event.dateTime)}</p>
-        <span className={`ev-card__when${isPast ? ' ev-card__when--past' : ''}`}>
-          {timeRelative(event.dateTime)}
-        </span>
       </div>
-      <div className="ev-card__actions">
-        <Link to={`/invitations/${event.reference}`} className="ev-btn" title="Preview invitation">
-          <EyeIcon />
-          <span className="ev-btn__label">Preview</span>
-        </Link>
-        <Link
-          to={`/events/builder?eventReference=${event.reference}`}
-          className="ev-btn"
-          title="Edit invitation"
-        >
-          <EditIcon />
-          <span className="ev-btn__label">Edit</span>
-        </Link>
-        {!isDraft && (
-          <ShareMenu
-            reference={event.reference}
-            groomName={event.groomName}
-            brideName={event.brideName}
-            onOpenChange={setShareOpen}
-          />
-        )}
-        <button onClick={handleDelete} className="ev-btn ev-btn--danger" title="Delete invitation">
-          <TrashIcon />
-          <span className="ev-btn__label">Delete</span>
-        </button>
-      </div>
-    </div>
+
+      <DeleteConfirmModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        eventName={`${event.groomName} & ${event.brideName}`}
+      />
+    </>
   )
 }
 
@@ -262,6 +353,10 @@ export default function EventsDashboard() {
     .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
 
   const handleDelete = ref => setEvents(prev => prev.filter(e => e.reference !== ref))
+
+  const handleEnable = ref => setEvents(prev =>
+    prev.map(e => e.reference === ref ? { ...e, status: 'LIVE' } : e)
+  )
 
   if (loading) {
     return (
@@ -306,7 +401,7 @@ export default function EventsDashboard() {
             <h2 className="ev-section__heading">Upcoming</h2>
             <div className="ev-list">
               {upcoming.map(e => (
-                <EventCard key={e.reference} event={e} onDelete={handleDelete} />
+                <EventCard key={e.reference} event={e} onDelete={handleDelete} onEnable={handleEnable} />
               ))}
             </div>
           </section>
@@ -317,12 +412,16 @@ export default function EventsDashboard() {
             <h2 className="ev-section__heading ev-section__heading--muted">Past Events</h2>
             <div className="ev-list">
               {past.map(e => (
-                <EventCard key={e.reference} event={e} onDelete={handleDelete} />
+                <EventCard key={e.reference} event={e} onDelete={handleDelete} onEnable={handleEnable} />
               ))}
             </div>
           </section>
         )}
       </main>
+
+      <Link to="/events/builder" className="ev-fab" title="Create new invitation">
+        +
+      </Link>
 
     </div>
   )

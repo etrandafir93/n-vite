@@ -12,6 +12,7 @@ import NaturalInvitation from './pages/invitation/Natural'
 import Invitation from './pages/guests/Invitation'
 import EventsDashboard from './pages/events/EventsDashboard'
 import EventBuilder from './pages/events/EventBuilder'
+import EventAnalytics from './pages/events/EventAnalytics'
 
 function Home() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/invitation/:slug/natural" element={<NaturalInvitation />} />
         <Route path="/events" element={<EventsDashboard />} />
         <Route path="/events/builder" element={<EventBuilder />} />
+        <Route path="/events/dashboard/:reference" element={<EventAnalytics />} />
       </Routes>
     </BrowserRouter>
   )

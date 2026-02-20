@@ -11,7 +11,7 @@ function fmtDate(iso) {
 
 const css = `
   .spt-page * { box-sizing: border-box; margin: 0; padding: 0; }
-  .spt-page { font-family: 'Inter', system-ui, sans-serif; background: #0d1b2a; color: #e8f0f8; }
+  .spt-page { font-family: 'Inter', system-ui, sans-serif; background: #0d1b2a; color: #e8f0f8; scroll-behavior: smooth; }
 
   /* Hero – full bleed split layout on desktop, stacked on mobile */
   .spt-hero {
@@ -62,6 +62,27 @@ const css = `
   .spt-hero__meta-dot { width: 6px; height: 6px; border-radius: 50%; background: #f5a623; flex-shrink: 0; }
   .spt-hero__meta-text { font-size: 0.82rem; color: #6a90b0; font-weight: 500; }
   .spt-hero__meta-text strong { color: #c8dce8; font-weight: 600; }
+
+  /* Navigation */
+  .spt-nav {
+    position: sticky; top: 0; z-index: 100; background: rgba(13,27,42,0.95);
+    backdrop-filter: blur(8px); border-bottom: 1px solid #1a2e42;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .spt-nav__inner {
+    max-width: 860px; margin: 0 auto; padding: 0 1.25rem;
+    display: flex; justify-content: center; gap: 2rem;
+  }
+  .spt-nav__link {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #6a90b0; padding: 1rem 0; text-decoration: none;
+    transition: color 0.2s; border-bottom: 2px solid transparent;
+  }
+  .spt-nav__link:hover { color: #f5a623; border-bottom-color: #f5a623; }
+  @media(max-width:600px){
+    .spt-nav__inner { gap: 1rem; }
+    .spt-nav__link { font-size: 0.6rem; padding: 0.85rem 0; }
+  }
 
   /* Layout */
   .spt-wrap { max-width: 860px; margin: 0 auto; padding: 0 1.25rem; }
@@ -116,9 +137,11 @@ const css = `
     font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.35rem 0.9rem;
   }
-  .spt-event__map {
-    width: 100%; height: 180px; border: 0; display: block; margin-top: 1rem;
+  .spt-event__map-link {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem;
+    font-size: 0.82rem; color: #f5a623; text-decoration: none; transition: color 0.2s;
   }
+  .spt-event__map-link:hover { color: #ffb84d; text-decoration: underline; }
 
   /* RSVP */
   .spt-rsvp { padding: 4rem 0 5rem; }
@@ -134,51 +157,51 @@ const css = `
   }
 
   /* Form */
-  .spt-form { background: #122033; border: 1px solid #1a2e42; padding: clamp(1.5rem,4vw,2.5rem); }
+  .spt-form { background: rgba(18,32,51,0.7); border: 1px solid rgba(26,46,66,0.5); padding: clamp(1.5rem,4vw,2.5rem); border-radius: 12px; }
   .spt-field { margin-bottom: 1.8rem; }
   .spt-label {
-    display: block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase;
-    color: #4a6880; margin-bottom: 0.75rem;
+    display: block; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02em;
+    color: #6a90b0; margin-bottom: 0.75rem;
   }
   .spt-toggle-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .spt-toggle-btn {
-    flex: 1; min-width: 110px; padding: 0.7rem 1rem; border: 1px solid #1e3450;
-    background: transparent; color: #4a6880; font-size: 0.75rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
-    font-family: 'Inter', sans-serif; transition: all 0.15s; text-align: center;
+    flex: 1; min-width: 110px; padding: 0.7rem 1rem; border: 1px solid rgba(74,104,128,0.3);
+    background: rgba(26,46,66,0.3); color: #6a90b0; font-size: 0.85rem; font-weight: 400;
+    letter-spacing: 0.02em; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 0.15s; text-align: center; border-radius: 8px;
   }
-  .spt-toggle-btn.active { background: #f5a623; color: #0d1b2a; border-color: #f5a623; }
+  .spt-toggle-btn.active { background: rgba(245,166,35,0.15); color: #f5a623; border-color: rgba(245,166,35,0.5); }
   .spt-menu-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .spt-menu-btn {
-    padding: 0.6rem 1.2rem; border: 1px solid #1e3450; background: transparent;
-    color: #4a6880; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
+    padding: 0.6rem 1.2rem; border: 1px solid rgba(74,104,128,0.3); background: rgba(26,46,66,0.3);
+    color: #6a90b0; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.02em;
+    cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s; border-radius: 8px;
   }
-  .spt-menu-btn.active { background: #ff6b35; color: #fff; border-color: #ff6b35; }
+  .spt-menu-btn.active { background: rgba(245,166,35,0.15); color: #f5a623; border-color: rgba(245,166,35,0.5); }
   .spt-children-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-  .spt-child-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4a6880; }
+  .spt-child-label { font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02em; color: #6a90b0; }
   .spt-number-input {
-    width: 75px; padding: 0.5rem 0.6rem; border: 1px solid #1e3450; background: #0d1b2a;
-    color: #fff; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; font-weight: 600;
+    width: 75px; padding: 0.5rem 0.6rem; border: 1px solid rgba(74,104,128,0.3); background: rgba(26,46,66,0.3);
+    color: #c8dce8; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; border-radius: 6px;
   }
   .spt-textarea {
-    width: 100%; padding: 0.85rem; border: 1px solid #1e3450; background: #0d1b2a;
+    width: 100%; padding: 0.85rem; border: 1px solid rgba(74,104,128,0.3); background: rgba(26,46,66,0.3);
     color: #c8dce8; font-size: 0.88rem; font-family: 'Inter', sans-serif;
-    resize: vertical; min-height: 100px; outline: none; line-height: 1.6;
+    resize: vertical; min-height: 100px; outline: none; line-height: 1.6; border-radius: 10px;
   }
   .spt-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
   .spt-btn-primary {
-    flex: 1; min-width: 140px; padding: 0.95rem 2rem; background: #f5a623; color: #0d1b2a;
-    border: none; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.15s;
-  }
-  .spt-btn-primary:hover { opacity: 0.9; }
-  .spt-btn-secondary {
-    flex: 1; min-width: 140px; padding: 0.95rem 2rem; background: transparent; color: #4a6880;
-    border: 1px solid #1e3450; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    flex: 1; min-width: 140px; padding: 0.95rem 2rem; background: rgba(245,166,35,0.9); color: #0d1b2a;
+    border: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; border-radius: 10px;
     cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
   }
-  .spt-btn-secondary:hover { border-color: #4a6880; color: #8ab0c8; }
+  .spt-btn-primary:hover { background: rgba(245,166,35,1); box-shadow: 0 2px 8px rgba(245,166,35,0.3); }
+  .spt-btn-secondary {
+    flex: 1; min-width: 140px; padding: 0.95rem 2rem; background: rgba(26,46,66,0.3); color: #6a90b0;
+    border: 1px solid rgba(74,104,128,0.3); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; border-radius: 10px;
+    cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
+  }
+  .spt-btn-secondary:hover { border-color: rgba(74,104,128,0.5); color: #8ab0c8; }
 `
 
 function RsvpForm() {
@@ -241,7 +264,7 @@ function RsvpForm() {
         <textarea className="spt-textarea" placeholder="Anything you'd like us to know..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="spt-cta-row">
-        <button className="spt-btn-primary">✓ Accept</button>
+        <button className="spt-btn-primary">Accept</button>
         <button className="spt-btn-secondary">Decline</button>
       </div>
     </div>
@@ -314,9 +337,17 @@ export default function SportyInvitation({ invitationRef, invitationData }) {
         </div>
       </section>
 
+      <nav className="spt-nav">
+        <div className="spt-nav__inner">
+          <a href="#families" className="spt-nav__link">Families</a>
+          <a href="#schedule" className="spt-nav__link">Schedule</a>
+          <a href="#rsvp" className="spt-nav__link">RSVP</a>
+        </div>
+      </nav>
+
       {/* Families */}
       <div className="spt-wrap">
-        <div className="spt-section">
+        <div className="spt-section" id="families">
           <div className="spt-section-label">Families</div>
           <div className="spt-families">
             <div className="spt-family-card">
@@ -337,7 +368,7 @@ export default function SportyInvitation({ invitationRef, invitationData }) {
         </div>
 
         {/* Events */}
-        <div className="spt-section">
+        <div className="spt-section" id="schedule">
           <div className="spt-section-label">Schedule</div>
           <div className="spt-events">
             <div className="spt-event">
@@ -347,7 +378,7 @@ export default function SportyInvitation({ invitationRef, invitationData }) {
                 <p className="spt-event__name">{inv.ceremonyVenue}</p>
                 <p className="spt-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
                 <span className="spt-event__time">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <iframe className="spt-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
+                {inv.ceremonyMapUrl && <a className="spt-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
             <div className="spt-event">
@@ -357,7 +388,7 @@ export default function SportyInvitation({ invitationRef, invitationData }) {
                 <p className="spt-event__name">{inv.receptionVenue}</p>
                 <p className="spt-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
                 <span className="spt-event__time">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <iframe className="spt-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
+                {inv.receptionMapUrl && <a className="spt-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
           </div>
@@ -365,7 +396,7 @@ export default function SportyInvitation({ invitationRef, invitationData }) {
       </div>
 
       {/* RSVP */}
-      <div className="spt-rsvp">
+      <div className="spt-rsvp" id="rsvp">
         <div className="spt-wrap">
           <div className="spt-rsvp__head">
             <div className="spt-section-label" style={{ marginBottom: '1rem' }}>RSVP</div>

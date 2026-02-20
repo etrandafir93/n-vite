@@ -11,7 +11,7 @@ function fmtDate(iso) {
 
 const css = `
   .cl-page * { box-sizing: border-box; margin: 0; padding: 0; }
-  .cl-page { font-family: 'Inter', system-ui, sans-serif; color: #1c1c1c; background: #faf8f4; }
+  .cl-page { font-family: 'Inter', system-ui, sans-serif; color: #1c1c1c; background: #faf8f4; scroll-behavior: smooth; }
 
   /* ── Hero ─────────────────────────────────────── */
   .cl-hero {
@@ -58,6 +58,27 @@ const css = `
     0%,100%{transform:scaleY(0);transform-origin:top;opacity:0}
     40%{opacity:1;transform:scaleY(1);transform-origin:top}
     80%{opacity:0;transform:scaleY(1);transform-origin:bottom}
+  }
+
+  /* ── Navigation ───────────────────────────────── */
+  .cl-nav {
+    position: sticky; top: 0; z-index: 100; background: rgba(250,248,244,0.95);
+    backdrop-filter: blur(8px); border-bottom: 1px solid #e8e2d8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .cl-nav__inner {
+    max-width: 800px; margin: 0 auto; padding: 0 1.25rem;
+    display: flex; justify-content: center; gap: 2rem;
+  }
+  .cl-nav__link {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: #888; padding: 1rem 0; text-decoration: none;
+    transition: color .2s; border-bottom: 2px solid transparent;
+  }
+  .cl-nav__link:hover { color: #c9a96e; border-bottom-color: #c9a96e; }
+  @media(max-width:600px){
+    .cl-nav__inner { gap: 1rem; }
+    .cl-nav__link { font-size: .6rem; padding: .85rem 0; }
   }
 
   /* ── Layout ───────────────────────────────────── */
@@ -118,9 +139,11 @@ const css = `
     display: inline-block; padding: .3rem .9rem; background: #1c1c1c;
     color: #f5f0e8; font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
   }
-  .cl-event__map {
-    width: 100%; height: 180px; border: 0; display: block; margin-top: .9rem;
+  .cl-event__map-link {
+    display:inline-flex; align-items:center; gap:.4rem; margin-top:.9rem;
+    font-size:.82rem; color:#c9a96e; text-decoration:none; transition:color .2s;
   }
+  .cl-event__map-link:hover { color:#b8906b; text-decoration:underline; }
 
   /* ── RSVP ─────────────────────────────────────── */
   .cl-rsvp { padding: 4rem 0 5rem; }
@@ -132,49 +155,49 @@ const css = `
   .cl-rsvp__sub { font-size:.82rem; color:#999; letter-spacing:.08em; }
 
   /* ── Form ─────────────────────────────────────── */
-  .cl-form { background:#fff; border:1px solid #e8e2d8; padding:clamp(1.5rem,4vw,2.5rem); }
+  .cl-form { background:rgba(255,255,255,0.6); border:1px solid rgba(61,20,33,0.05); padding:clamp(1.5rem,4vw,2.5rem); border-radius:16px; }
   .cl-field { margin-bottom:1.8rem; }
   .cl-label {
-    display:block; font-size:.6rem; letter-spacing:.25em; text-transform:uppercase;
+    display:block; font-size:.75rem; font-weight:400; letter-spacing:.02em;
     color:#888; margin-bottom:.75rem;
   }
   .cl-toggle-row { display:flex; gap:.5rem; flex-wrap:wrap; }
   .cl-toggle-btn {
-    flex:1; min-width:120px; padding:.65rem 1rem; border:1px solid #ddd;
-    background:#fff; color:#777; font-size:.85rem; cursor:pointer;
-    font-family:'Playfair Display',serif; transition:all .18s; text-align:center;
+    flex:1; min-width:120px; padding:.65rem 1rem; border:1px solid rgba(61,20,33,0.08);
+    background:rgba(255,255,255,0.4); color:#666; font-size:.85rem; cursor:pointer;
+    font-family:'Inter',sans-serif; font-weight:400; transition:all .18s; text-align:center; border-radius:8px;
   }
-  .cl-toggle-btn.active { background:#1c1c1c; color:#f5f0e8; border-color:#1c1c1c; }
+  .cl-toggle-btn.active { background:rgba(201,169,110,0.12); color:#555; border-color:rgba(201,169,110,0.4); }
   .cl-menu-row { display:flex; gap:.5rem; flex-wrap:wrap; }
   .cl-menu-btn {
-    padding:.55rem 1.3rem; border:1px solid #ddd; background:#fff;
-    color:#777; font-size:.82rem; cursor:pointer; font-family:'Playfair Display',serif; transition:all .18s;
+    padding:.55rem 1.3rem; border:1px solid rgba(61,20,33,0.08); background:rgba(255,255,255,0.4);
+    color:#666; font-size:.82rem; cursor:pointer; font-family:'Inter',sans-serif; font-weight:400; transition:all .18s; border-radius:8px;
   }
-  .cl-menu-btn.active { background:#c9a96e; color:#fff; border-color:#c9a96e; }
+  .cl-menu-btn.active { background:rgba(201,169,110,0.12); color:#555; border-color:rgba(201,169,110,0.4); }
   .cl-children-row { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
   .cl-child-label { font-size:.75rem; color:#888; }
   .cl-number-input {
-    width:75px; padding:.5rem .6rem; border:1px solid #ddd;
-    font-size:.9rem; font-family:'Playfair Display',serif; outline:none;
+    width:75px; padding:.5rem .6rem; border:1px solid rgba(61,20,33,0.08); border-radius:6px;
+    font-size:.9rem; font-family:'Inter',sans-serif; outline:none; background:rgba(255,255,255,0.4);
   }
   .cl-textarea {
-    width:100%; padding:.8rem; border:1px solid #ddd; font-size:.88rem;
+    width:100%; padding:.8rem; border:1px solid rgba(61,20,33,0.08); font-size:.88rem; border-radius:10px;
     font-family:'Inter',sans-serif; resize:vertical; min-height:100px;
-    outline:none; color:#1c1c1c; line-height:1.6;
+    outline:none; color:#1c1c1c; line-height:1.6; background:rgba(255,255,255,0.4);
   }
   .cl-cta-row { display:flex; gap:.75rem; margin-top:2rem; flex-wrap:wrap; }
   .cl-btn-primary {
-    flex:1; min-width:140px; padding:.9rem 2rem; background:#1c1c1c; color:#f5f0e8;
-    border:1px solid #1c1c1c; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
-    cursor:pointer; font-family:'Inter',sans-serif; font-weight:500; transition:background .18s;
-  }
-  .cl-btn-primary:hover { background:#333; }
-  .cl-btn-secondary {
-    flex:1; min-width:140px; padding:.9rem 2rem; background:#fff; color:#555;
-    border:1px solid #ccc; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
+    flex:1; min-width:140px; padding:.9rem 2rem; background:rgba(201,169,110,0.85); color:#fff;
+    border:none; font-size:.8rem; letter-spacing:.02em; border-radius:10px;
     cursor:pointer; font-family:'Inter',sans-serif; font-weight:500; transition:all .18s;
   }
-  .cl-btn-secondary:hover { border-color:#888; color:#333; }
+  .cl-btn-primary:hover { background:rgba(201,169,110,1); box-shadow:0 2px 8px rgba(201,169,110,0.3); }
+  .cl-btn-secondary {
+    flex:1; min-width:140px; padding:.9rem 2rem; background:rgba(255,255,255,0.5); color:#666;
+    border:1px solid rgba(61,20,33,0.08); font-size:.8rem; letter-spacing:.02em; border-radius:10px;
+    cursor:pointer; font-family:'Inter',sans-serif; font-weight:500; transition:all .18s;
+  }
+  .cl-btn-secondary:hover { border-color:rgba(201,169,110,0.4); color:#555; }
 `
 
 function RsvpForm({ rsvpDeadline }) {
@@ -279,17 +302,25 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
           </h1>
           <div className="cl-divider">
             <div className="cl-divider__line"/>
-            <span className="cl-divider__gem">✦ ✦ ✦</span>
+            <span className="cl-divider__gem">···</span>
             <div className="cl-divider__line"/>
           </div>
           <p className="cl-hero__date">{fmtDate(inv.eventDate)}</p>
         </div>
-        <div className="cl-scroll-hint">Scroll</div>
+        <div className="cl-scroll-hint"></div>
       </section>
+
+      <nav className="cl-nav">
+        <div className="cl-nav__inner">
+          <a href="#families" className="cl-nav__link">Families</a>
+          <a href="#celebrations" className="cl-nav__link">Celebrations</a>
+          <a href="#rsvp" className="cl-nav__link">RSVP</a>
+        </div>
+      </nav>
 
       <div className="cl-wrap">
         {/* Families */}
-        <div className="cl-section">
+        <div className="cl-section" id="families">
           <p className="cl-section__title">With the Blessings of</p>
           <div className="cl-families">
             <div className="cl-family-card">
@@ -310,7 +341,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
         </div>
 
         {/* Events */}
-        <div className="cl-section">
+        <div className="cl-section" id="celebrations">
           <p className="cl-section__title">Order of Celebrations</p>
           <div className="cl-events">
             <div className="cl-event">
@@ -320,7 +351,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                 <p className="cl-event__name">{inv.ceremonyVenue}</p>
                 <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>
                 <span className="cl-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <iframe className="cl-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location"/>}
+                {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
             <div className="cl-event">
@@ -330,7 +361,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                 <p className="cl-event__name">{inv.receptionVenue}</p>
                 <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>
                 <span className="cl-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <iframe className="cl-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location"/>}
+                {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
           </div>
@@ -338,12 +369,12 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
       </div>
 
       {/* RSVP */}
-      <div className="cl-rsvp">
+      <div className="cl-rsvp" id="rsvp">
         <div className="cl-wrap">
           <div className="cl-rsvp__head">
             <div className="cl-divider" style={{maxWidth:200,margin:'0 auto 1.5rem'}}>
               <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
-              <span className="cl-divider__gem">✦</span>
+              <span className="cl-divider__gem">·</span>
               <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
             </div>
             <h2 className="cl-rsvp__title">Kindly Reply</h2>

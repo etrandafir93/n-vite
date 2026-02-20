@@ -11,7 +11,7 @@ function fmtDate(iso) {
 
 const css = `
   .nat-page * { box-sizing: border-box; margin: 0; padding: 0; }
-  .nat-page { font-family: 'Inter', system-ui, sans-serif; color: #2e2a24; background: #faf7f2; }
+  .nat-page { font-family: 'Inter', system-ui, sans-serif; color: #2e2a24; background: #faf7f2; scroll-behavior: smooth; }
 
   /* Hero – full height, photo bottom half visible, text layered over */
   .nat-hero {
@@ -60,6 +60,27 @@ const css = `
     padding: 0.45rem 1.1rem; border: 1px solid rgba(168,197,171,0.4);
     font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(168,197,171,0.85); font-weight: 500;
+  }
+
+  /* Navigation */
+  .nat-nav {
+    position: sticky; top: 0; z-index: 100; background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(8px); border-bottom: 1px solid #e8e0d4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .nat-nav__inner {
+    max-width: 740px; margin: 0 auto; padding: 0 1.25rem;
+    display: flex; justify-content: center; gap: 2rem;
+  }
+  .nat-nav__link {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #8a7d6e; padding: 1rem 0; text-decoration: none;
+    transition: color 0.2s; border-bottom: 2px solid transparent;
+  }
+  .nat-nav__link:hover { color: #7a9e7e; border-bottom-color: #7a9e7e; }
+  @media(max-width:600px){
+    .nat-nav__inner { gap: 1rem; }
+    .nat-nav__link { font-size: 0.6rem; padding: 0.85rem 0; }
   }
 
   /* Layout */
@@ -122,9 +143,11 @@ const css = `
     background: #f0ebe2; border: 1px solid #d5ccbc; border-radius: 20px;
     font-size: 0.72rem; color: #5a7d5e; font-weight: 600;
   }
-  .nat-event__map {
-    width: 100%; height: 180px; border: 0; display: block; margin-top: 0.9rem; border-radius: 10px; overflow: hidden;
+  .nat-event__map-link {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem;
+    font-size: 0.82rem; color: #7a9e7e; text-decoration: none; transition: color 0.2s;
   }
+  .nat-event__map-link:hover { color: #5a7d5e; text-decoration: underline; }
 
   /* RSVP */
   .nat-rsvp { padding: 4rem 0 5rem; }
@@ -138,59 +161,58 @@ const css = `
 
   /* Form */
   .nat-form {
-    background: #fff; border-radius: 20px; border: 1px solid #e8e0d4;
-    padding: clamp(1.5rem,4vw,2.5rem); box-shadow: 0 8px 40px rgba(122,158,126,0.1);
+    background: rgba(255,255,255,0.6); border-radius: 20px; border: 1px solid rgba(122,158,126,0.08);
+    padding: clamp(1.5rem,4vw,2.5rem); box-shadow: 0 2px 12px rgba(122,158,126,0.05);
   }
   .nat-field { margin-bottom: 1.8rem; }
   .nat-label {
-    display: block; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    display: block; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.02em;
     color: #8a7d6e; margin-bottom: 0.75rem;
   }
   .nat-toggle-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .nat-toggle-btn {
     flex: 1; min-width: 120px; padding: 0.7rem 1rem; border-radius: 10px;
-    border: 1.5px solid #e0d8cc; background: #fff; color: #8a7d6e;
+    border: 1px solid rgba(122,158,126,0.15); background: rgba(255,255,255,0.4); color: #6a7d6e;
     font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif;
-    font-weight: 500; transition: all 0.18s; text-align: center;
+    font-weight: 400; transition: all 0.18s; text-align: center;
   }
   .nat-toggle-btn.active {
-    background: #7a9e7e; color: #fff; border-color: #7a9e7e;
-    box-shadow: 0 2px 10px rgba(90,125,94,0.3);
+    background: rgba(122,158,126,0.12); color: #5a7d5e; border-color: rgba(122,158,126,0.4);
   }
   .nat-menu-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .nat-menu-btn {
-    padding: 0.6rem 1.3rem; border-radius: 10px; border: 1.5px solid #e0d8cc;
-    background: #fff; color: #8a7d6e; font-size: 0.85rem; cursor: pointer;
-    font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.18s;
+    padding: 0.6rem 1.3rem; border-radius: 10px; border: 1px solid rgba(122,158,126,0.15);
+    background: rgba(255,255,255,0.4); color: #6a7d6e; font-size: 0.85rem; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.18s;
   }
-  .nat-menu-btn.active { background: #c4704a; color: #fff; border-color: #c4704a; }
+  .nat-menu-btn.active { background: rgba(122,158,126,0.12); color: #5a7d5e; border-color: rgba(122,158,126,0.4); }
   .nat-children-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-  .nat-child-label { font-size: 0.72rem; color: #a09080; font-weight: 500; }
+  .nat-child-label { font-size: 0.72rem; color: #a09080; font-weight: 400; }
   .nat-number-input {
-    width: 75px; padding: 0.5rem 0.6rem; border: 1.5px solid #e0d8cc; border-radius: 8px;
-    font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; color: #2e2a24; background: #faf7f2;
+    width: 75px; padding: 0.5rem 0.6rem; border: 1px solid rgba(122,158,126,0.15); border-radius: 8px;
+    font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; color: #2e2a24; background: rgba(255,255,255,0.4);
   }
   .nat-textarea {
-    width: 100%; padding: 0.9rem; border: 1.5px solid #e0d8cc; border-radius: 12px;
+    width: 100%; padding: 0.9rem; border: 1px solid rgba(122,158,126,0.15); border-radius: 12px;
     font-size: 0.88rem; font-family: 'Inter', sans-serif; resize: vertical; min-height: 100px;
-    outline: none; color: #2e2a24; line-height: 1.6; background: #faf7f2;
+    outline: none; color: #2e2a24; line-height: 1.6; background: rgba(255,255,255,0.4);
   }
   .nat-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
   .nat-btn-primary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 12px;
-    background: linear-gradient(135deg, #7a9e7e, #5a7d5e); color: #fff; border: none;
-    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(122,158,126,0.85); color: #fff; border: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em;
     cursor: pointer; font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 16px rgba(90,125,94,0.35); transition: opacity 0.18s;
+    box-shadow: 0 2px 8px rgba(122,158,126,0.2); transition: all 0.18s;
   }
-  .nat-btn-primary:hover { opacity: 0.9; }
+  .nat-btn-primary:hover { background: rgba(122,158,126,1); box-shadow: 0 4px 12px rgba(122,158,126,0.3); }
   .nat-btn-secondary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 12px;
-    background: #fff; color: #8a7d6e; border: 1.5px solid #e0d8cc;
-    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    background: rgba(255,255,255,0.5); color: #6a7d6e; border: 1px solid rgba(122,158,126,0.15);
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em;
     cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.18s;
   }
-  .nat-btn-secondary:hover { border-color: #a09080; color: #5a5040; }
+  .nat-btn-secondary:hover { border-color: rgba(122,158,126,0.4); color: #5a7d5e; }
 `
 
 function RsvpForm() {
@@ -253,7 +275,7 @@ function RsvpForm() {
         <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="nat-cta-row">
-        <button className="nat-btn-primary">🌿 Accept Invitation</button>
+        <button className="nat-btn-primary">Accept Invitation</button>
         <button className="nat-btn-secondary">Decline</button>
       </div>
     </div>
@@ -289,7 +311,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
         <div className="nat-hero__photo" style={{backgroundImage:`url('${inv.backgroundImageUrl}')`}} />
         <div className="nat-hero__overlay" />
         <div className="nat-hero__content">
-          <span className="nat-hero__leaf">🌿 🌾 🌿</span>
+          <span className="nat-hero__leaf">···</span>
           <span className="nat-hero__label">Together with their families</span>
           <h1 className="nat-hero__names">
             {inv.groomName}
@@ -299,32 +321,37 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
           <p className="nat-hero__date">{fmtDate(inv.eventDate)}</p>
           {(inv.ceremonyTime || inv.receptionTime) && (
             <div className="nat-hero__badge">
-              {inv.ceremonyTime && <>🕑 Ceremony {inv.ceremonyTime}</>}
+              {inv.ceremonyTime && <>Ceremony {inv.ceremonyTime}</>}
               {inv.ceremonyTime && inv.receptionTime && ' · '}
-              {inv.receptionTime && <>🕕 Reception {inv.receptionTime}</>}
+              {inv.receptionTime && <>Reception {inv.receptionTime}</>}
             </div>
           )}
         </div>
       </section>
 
+      <nav className="nat-nav">
+        <div className="nat-nav__inner">
+          <a href="#families" className="nat-nav__link">Families</a>
+          <a href="#celebrations" className="nat-nav__link">Celebrations</a>
+          <a href="#rsvp" className="nat-nav__link">RSVP</a>
+        </div>
+      </nav>
+
       {/* Families */}
       <div className="nat-wrap">
-        <div className="nat-section">
+        <div className="nat-section" id="families">
           <p className="nat-section__title">With the Blessings of</p>
           <div className="nat-families">
             <div className="nat-family-card">
-              <span className="nat-family-card__icon">🌱</span>
               <span className="nat-family-card__role">Parents of the Groom</span>
               <p className="nat-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="nat-family-card">
-              <span className="nat-family-card__icon">🌱</span>
               <span className="nat-family-card__role">Parents of the Bride</span>
               <p className="nat-family-card__name">{inv.brideParents}</p>
             </div>
             {inv.godparents && (
               <div className="nat-family-card">
-                <span className="nat-family-card__icon">🕊️</span>
                 <span className="nat-family-card__role">Godparents</span>
                 <p className="nat-family-card__name">{inv.godparents}</p>
               </div>
@@ -333,27 +360,27 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
         </div>
 
         {/* Events */}
-        <div className="nat-section">
+        <div className="nat-section" id="celebrations">
           <p className="nat-section__title">The Celebrations</p>
           <div className="nat-events">
             <div className="nat-event">
               {inv.ceremonyPhotoUrl && <img className="nat-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
               <div className="nat-event__body">
-                <span className="nat-event__type">⛪ Ceremony</span>
+                <span className="nat-event__type">Ceremony</span>
                 <p className="nat-event__name">{inv.ceremonyVenue}</p>
                 <p className="nat-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="nat-event__time-pill">🕑 {inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <iframe className="nat-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
+                <span className="nat-event__time-pill">{inv.ceremonyTime}</span>
+                {inv.ceremonyMapUrl && <a className="nat-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
             <div className="nat-event">
               {inv.receptionPhotoUrl && <img className="nat-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
               <div className="nat-event__body">
-                <span className="nat-event__type">🥂 Reception &amp; Dinner</span>
+                <span className="nat-event__type">Reception &amp; Dinner</span>
                 <p className="nat-event__name">{inv.receptionVenue}</p>
                 <p className="nat-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="nat-event__time-pill">🕕 {inv.receptionTime}</span>
-                {inv.receptionMapUrl && <iframe className="nat-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
+                <span className="nat-event__time-pill">{inv.receptionTime}</span>
+                {inv.receptionMapUrl && <a className="nat-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
           </div>
@@ -361,10 +388,10 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
       </div>
 
       {/* RSVP */}
-      <div className="nat-rsvp">
+      <div className="nat-rsvp" id="rsvp">
         <div className="nat-wrap">
           <div className="nat-rsvp__head">
-            <div className="nat-rsvp__leaves">🌿 🌾 🌿</div>
+            <div className="nat-rsvp__leaves">···</div>
             <h2 className="nat-rsvp__title">Kindly Reply</h2>
             {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>

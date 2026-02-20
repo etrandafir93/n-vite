@@ -85,8 +85,8 @@
 /* ---- Main content ---- */
 
 .ev-main {
-  padding-top: 3.5rem;
-  padding-bottom: 7rem;
+  padding-top: 5rem !important;
+  padding-bottom: 10rem;
 }
 
 /* ---- Sections ---- */
@@ -151,6 +151,13 @@
 .ev-card__body {
   flex: 1;
   min-width: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.ev-card__body:hover {
+  opacity: 0.8;
 }
 
 .ev-card__header {
@@ -259,6 +266,28 @@
   background: #fdf0ee;
   border-color: #b03a2e;
   color: #b03a2e;
+}
+
+.ev-btn--success {
+  color: #1a8a3a;
+  border-color: rgba(26, 138, 58, 0.15);
+}
+
+.ev-btn--success:hover {
+  background: #f0faf2;
+  border-color: #1a8a3a;
+  color: #1a8a3a;
+}
+
+.ev-btn--info {
+  color: #2c5aa0;
+  border-color: rgba(44, 90, 160, 0.15);
+}
+
+.ev-btn--info:hover {
+  background: #ebf2fa;
+  border-color: #2c5aa0;
+  color: #2c5aa0;
 }
 
 /* ---- Share menu ---- */
@@ -388,6 +417,161 @@
   color: var(--text-muted);
 }
 
+/* ---- Floating Action Button ---- */
+
+.ev-fab {
+  display: none;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+  transition: all var(--transition);
+  z-index: 100;
+  text-decoration: none;
+}
+
+.ev-fab:hover {
+  background: var(--gold-light);
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(201, 162, 39, 0.5);
+}
+
+/* ---- Delete Modal ---- */
+
+.ev-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ev-modal {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 480px;
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ev-modal__header {
+  padding: 1.75rem 1.75rem 1rem;
+  border-bottom: 1px solid var(--light-bg2);
+}
+
+.ev-modal__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  color: var(--navy);
+  margin: 0;
+}
+
+.ev-modal__body {
+  padding: 1.5rem 1.75rem;
+}
+
+.ev-modal__text {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+.ev-modal__text strong {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.ev-modal__warning {
+  font-size: 0.85rem;
+  color: #b03a2e;
+  background: #fdf0ee;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin: 0;
+  border-left: 3px solid #b03a2e;
+  line-height: 1.5;
+}
+
+.ev-modal__footer {
+  padding: 1rem 1.75rem 1.75rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.ev-modal__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  transition: all var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.ev-modal__btn--cancel {
+  background: var(--light-bg);
+  color: var(--text-dark);
+  border: 1.5px solid rgba(61, 20, 33, 0.15);
+}
+
+.ev-modal__btn--cancel:hover {
+  background: var(--light-bg2);
+  border-color: rgba(61, 20, 33, 0.25);
+}
+
+.ev-modal__btn--danger {
+  background: #b03a2e;
+  color: white;
+  min-width: 150px;
+}
+
+.ev-modal__btn--danger:hover {
+  background: #9a3126;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(176, 58, 46, 0.3);
+}
+
 /* ---- Responsive: tablet ---- */
 
 @media (max-width: 860px) {
@@ -425,8 +609,12 @@
     display: none;
   }
 
+  .ev-fab {
+    display: flex;
+  }
+
   .ev-main {
-    padding-top: 2.5rem;
+    padding-top: 2.5rem !important;
   }
 
   .ev-card {
@@ -459,5 +647,13 @@
 
   .ev-share__menu {
     min-width: 200px;
+  }
+
+  .ev-modal__footer {
+    flex-direction: column-reverse;
+  }
+
+  .ev-modal__btn {
+    width: 100%;
   }
 }

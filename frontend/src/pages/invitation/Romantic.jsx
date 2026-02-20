@@ -11,7 +11,7 @@ function fmtDate(iso) {
 
 const css = `
   .rom-page * { box-sizing: border-box; margin: 0; padding: 0; }
-  .rom-page { font-family: 'Inter', system-ui, sans-serif; color: #3a2030; background: #fdf6f0; }
+  .rom-page { font-family: 'Inter', system-ui, sans-serif; color: #3a2030; background: #fdf6f0; scroll-behavior: smooth; }
 
   /* Hero */
   .rom-hero {
@@ -65,6 +65,27 @@ const css = `
     position: absolute; bottom: 0; left: 0;
     font-size: 3rem; opacity: 0.18; color: #fff; line-height: 1;
     padding: 1rem; user-select: none; pointer-events: none; transform: scaleX(-1);
+  }
+
+  /* Navigation */
+  .rom-nav {
+    position: sticky; top: 0; z-index: 100; background: rgba(253,246,240,0.95);
+    backdrop-filter: blur(8px); border-bottom: 1px solid #f0dde6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .rom-nav__inner {
+    max-width: 720px; margin: 0 auto; padding: 0 1.25rem;
+    display: flex; justify-content: center; gap: 2rem;
+  }
+  .rom-nav__link {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #9b7080; padding: 1rem 0; text-decoration: none;
+    transition: color 0.2s; border-bottom: 2px solid transparent;
+  }
+  .rom-nav__link:hover { color: #d4788a; border-bottom-color: #d4788a; }
+  @media(max-width:600px){
+    .rom-nav__inner { gap: 1rem; }
+    .rom-nav__link { font-size: 0.6rem; padding: 0.85rem 0; }
   }
 
   /* Layout */
@@ -124,9 +145,11 @@ const css = `
     font-size: 0.72rem; letter-spacing: 0.1em; font-style: italic;
     font-family: 'Playfair Display', serif;
   }
-  .rom-event__map {
-    width: 100%; height: 180px; border: 0; display: block; margin-top: 0.9rem; border-radius: 10px; overflow: hidden;
+  .rom-event__map-link {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem;
+    font-size: 0.82rem; color: #d4788a; text-decoration: none; transition: color 0.2s;
   }
+  .rom-event__map-link:hover { color: #b85670; text-decoration: underline; }
 
   /* RSVP */
   .rom-rsvp { padding: 4rem 0 5rem; }
@@ -140,57 +163,57 @@ const css = `
 
   /* Form */
   .rom-form {
-    background: #fff; border-radius: 24px; border: 1px solid #f0dde6;
-    padding: clamp(1.5rem,4vw,2.5rem); box-shadow: 0 8px 40px rgba(184,86,112,0.1);
+    background: rgba(255,255,255,0.6); border-radius: 24px; border: 1px solid rgba(184,86,112,0.08);
+    padding: clamp(1.5rem,4vw,2.5rem); box-shadow: 0 2px 12px rgba(184,86,112,0.05);
   }
   .rom-field { margin-bottom: 1.8rem; }
   .rom-label {
-    display: block; font-size: 0.75rem; color: #b85670; margin-bottom: 0.8rem;
-    font-style: italic; letter-spacing: 0.04em;
+    display: block; font-size: 0.75rem; color: #9b7080; margin-bottom: 0.8rem;
+    font-weight: 400; letter-spacing: 0.02em;
   }
   .rom-toggle-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .rom-toggle-btn {
     flex: 1; min-width: 120px; padding: 0.7rem 1rem; border-radius: 30px;
-    border: 1.5px solid #f0dde6; background: #fff; color: #9b7080;
-    font-size: 0.85rem; font-style: italic; cursor: pointer;
-    font-family: 'Playfair Display', serif; transition: all 0.2s; text-align: center;
+    border: 1px solid rgba(184,86,112,0.15); background: rgba(255,255,255,0.4); color: #9b7080;
+    font-size: 0.85rem; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.2s; text-align: center;
   }
   .rom-toggle-btn.active {
-    border-color: #d4788a; background: linear-gradient(135deg,#f2c4ce,#e8a0b4); color: #7a2040;
+    border-color: rgba(184,86,112,0.4); background: rgba(212,120,138,0.12); color: #7a2040;
   }
   .rom-menu-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .rom-menu-btn {
-    padding: 0.6rem 1.4rem; border-radius: 30px; border: 1.5px solid #f0dde6;
-    background: #fff; color: #9b7080; font-size: 0.85rem; font-style: italic;
-    cursor: pointer; font-family: 'Playfair Display', serif; transition: all 0.2s;
+    padding: 0.6rem 1.4rem; border-radius: 30px; border: 1px solid rgba(184,86,112,0.15);
+    background: rgba(255,255,255,0.4); color: #9b7080; font-size: 0.85rem;
+    cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.2s;
   }
-  .rom-menu-btn.active { background: #b85670; color: #fff; border-color: #b85670; }
+  .rom-menu-btn.active { background: rgba(212,120,138,0.12); color: #7a2040; border-color: rgba(184,86,112,0.4); }
   .rom-children-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-  .rom-child-label { font-size: 0.78rem; color: #b09098; font-style: italic; }
+  .rom-child-label { font-size: 0.78rem; color: #b09098; font-weight: 400; }
   .rom-number-input {
-    width: 75px; padding: 0.5rem 0.6rem; border: 1.5px solid #f0dde6; border-radius: 10px;
-    font-size: 0.9rem; font-style: italic; font-family: 'Playfair Display', serif; outline: none; color: #3a2030;
+    width: 75px; padding: 0.5rem 0.6rem; border: 1px solid rgba(184,86,112,0.15); border-radius: 10px;
+    font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; color: #3a2030; background: rgba(255,255,255,0.4);
   }
   .rom-textarea {
-    width: 100%; padding: 0.9rem; border: 1.5px solid #f0dde6; border-radius: 14px;
+    width: 100%; padding: 0.9rem; border: 1px solid rgba(184,86,112,0.15); border-radius: 14px;
     font-size: 0.88rem; font-family: 'Inter', sans-serif; resize: vertical; min-height: 100px;
-    outline: none; color: #3a2030; line-height: 1.6; font-style: italic;
+    outline: none; color: #3a2030; line-height: 1.6; background: rgba(255,255,255,0.4);
   }
   .rom-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
   .rom-btn-primary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 30px;
-    background: linear-gradient(135deg,#d4788a,#b85670); color: #fff; border: none;
-    font-size: 0.82rem; letter-spacing: 0.08em; cursor: pointer;
+    background: rgba(184,86,112,0.85); color: #fff; border: none;
+    font-size: 0.85rem; letter-spacing: 0.02em; cursor: pointer;
     font-family: 'Inter', sans-serif; font-weight: 500;
-    box-shadow: 0 4px 18px rgba(184,86,112,0.35); transition: opacity 0.2s;
+    box-shadow: 0 2px 8px rgba(184,86,112,0.2); transition: all 0.2s;
   }
-  .rom-btn-primary:hover { opacity: 0.9; }
+  .rom-btn-primary:hover { background: rgba(184,86,112,1); box-shadow: 0 4px 12px rgba(184,86,112,0.3); }
   .rom-btn-secondary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 30px;
-    background: #fff; color: #b85670; border: 1.5px solid #f0dde6;
-    font-size: 0.82rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.2s;
+    background: rgba(255,255,255,0.5); color: #9b7080; border: 1px solid rgba(184,86,112,0.15);
+    font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.2s;
   }
-  .rom-btn-secondary:hover { border-color: #d4788a; }
+  .rom-btn-secondary:hover { border-color: rgba(184,86,112,0.4); color: #7a2040; }
 `
 
 function RsvpForm() {
@@ -253,7 +276,7 @@ function RsvpForm() {
         <textarea className="rom-textarea" placeholder="Dietary needs, special requests, or a loving note..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="rom-cta-row">
-        <button className="rom-btn-primary">✓ Accept with Love</button>
+        <button className="rom-btn-primary">Accept with Love</button>
         <button className="rom-btn-secondary">Decline</button>
       </div>
     </div>
@@ -295,7 +318,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
         <div className="rom-hero__flowers">🌸🌺</div>
         <div className="rom-hero__flowers-bl">🌸🌺</div>
         <div className="rom-hero__content">
-          <span className="rom-hero__petal">✿ ✿ ✿</span>
+          <span className="rom-hero__petal">···</span>
           <span className="rom-hero__label">Together with their families, joyfully invite you to celebrate</span>
           <h1 className="rom-hero__names">
             {inv.groomName}
@@ -306,24 +329,29 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
         </div>
       </section>
 
+      <nav className="rom-nav">
+        <div className="rom-nav__inner">
+          <a href="#families" className="rom-nav__link">Families</a>
+          <a href="#celebrations" className="rom-nav__link">Celebrations</a>
+          <a href="#rsvp" className="rom-nav__link">RSVP</a>
+        </div>
+      </nav>
+
       {/* Families */}
       <div className="rom-wrap">
-        <div className="rom-section">
+        <div className="rom-section" id="families">
           <p className="rom-section__title">~ With the blessings of their families ~</p>
           <div className="rom-families">
             <div className="rom-family-card">
-              <div className="rom-family-card__top">🤍</div>
               <span className="rom-family-card__role">Parents of the Groom</span>
               <p className="rom-family-card__name">{inv.groomParents}</p>
             </div>
             <div className="rom-family-card">
-              <div className="rom-family-card__top">🤍</div>
               <span className="rom-family-card__role">Parents of the Bride</span>
               <p className="rom-family-card__name">{inv.brideParents}</p>
             </div>
             {inv.godparents && (
               <div className="rom-family-card">
-                <div className="rom-family-card__top">🕊️</div>
                 <span className="rom-family-card__role">Godparents</span>
                 <p className="rom-family-card__name">{inv.godparents}</p>
               </div>
@@ -332,7 +360,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
         </div>
 
         {/* Events */}
-        <div className="rom-section">
+        <div className="rom-section" id="celebrations">
           <p className="rom-section__title">~ The day's celebrations ~</p>
           <div className="rom-events">
             <div className="rom-event">
@@ -342,7 +370,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                 <p className="rom-event__name">{inv.ceremonyVenue}</p>
                 <p className="rom-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
                 <span className="rom-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <iframe className="rom-event__map" src={inv.ceremonyMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Church location" />}
+                {inv.ceremonyMapUrl && <a className="rom-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
             <div className="rom-event">
@@ -352,7 +380,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                 <p className="rom-event__name">{inv.receptionVenue}</p>
                 <p className="rom-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
                 <span className="rom-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <iframe className="rom-event__map" src={inv.receptionMapUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Party location" />}
+                {inv.receptionMapUrl && <a className="rom-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer">View on map</a>}
               </div>
             </div>
           </div>
@@ -360,10 +388,10 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
       </div>
 
       {/* RSVP */}
-      <div className="rom-rsvp">
+      <div className="rom-rsvp" id="rsvp">
         <div className="rom-wrap">
           <div className="rom-rsvp__head">
-            <div className="rom-rsvp__petals">🌸 🌸 🌸</div>
+            <div className="rom-rsvp__petals">···</div>
             <h2 className="rom-rsvp__title">Kindly Reply</h2>
             {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>

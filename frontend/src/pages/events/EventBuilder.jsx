@@ -196,17 +196,37 @@ export default function EventBuilder() {
     setSaving(true)
     setError(null)
 
-    const payload = preparePayload('LIVE')
-    const url = isEdit ? `/api/v2/events/${eventReference}` : '/api/v2/events'
-    const method = isEdit ? 'PUT' : 'POST'
-
     try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      if (!res.ok) throw new Error('Save failed')
+      if (isEdit) {
+        // Draft already exists, just enable it
+        const res = await fetch(`/api/events/${eventReference}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'LIVE' }),
+        })
+        if (!res.ok) throw new Error('Failed to enable invitation')
+      } else {
+        // Draft doesn't exist, create it first, then enable it
+        const draftPayload = preparePayload('DRAFT')
+        const createRes = await fetch('/api/v2/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(draftPayload),
+        })
+        if (!createRes.ok) throw new Error('Failed to create draft')
+
+        const data = await createRes.json()
+        const reference = data.value || data
+
+        // Now enable the draft
+        const enableRes = await fetch(`/api/events/${reference}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'LIVE' }),
+        })
+        if (!enableRes.ok) throw new Error('Failed to enable invitation')
+      }
+
       navigate('/events')
     } catch (err) {
       console.error('Save error:', err)
@@ -352,14 +372,35 @@ export default function EventBuilder() {
           </Section>
 
           <Section title="Theme" subtitle="Choose the default invitation theme">
-            <Field label="Invitation Theme">
-              <select className="eb-input" value={form.theme} onChange={e => set('theme')(e.target.value)}>
-                <option value="classic">Classic</option>
-                <option value="romantic">Romantic</option>
-                <option value="sporty">Sporty</option>
-                <option value="natural">Natural</option>
-              </select>
-            </Field>
+            <div className="eb-theme-grid">
+              {[
+                { value: 'classic', label: 'Classic' },
+                { value: 'romantic', label: 'Romantic' },
+                { value: 'sporty', label: 'Sporty' },
+                { value: 'natural', label: 'Natural' },
+              ].map(theme => (
+                <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="theme"
+                    value={theme.value}
+                    checked={form.theme === theme.value}
+                    onChange={e => set('theme')(e.target.value)}
+                    className="eb-theme-radio"
+                  />
+                  <span className="eb-theme-label">{theme.label}</span>
+                  <a
+                    href={`/v2/invitations/joe-and-jane?theme=${theme.value}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="eb-theme-demo"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    View Demo
+                  </a>
+                </label>
+              ))}
+            </div>
           </Section>
 
           <div className="eb-actions">
