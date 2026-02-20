@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import './EventsDashboard.css'
 
 function formatDate(iso) {
@@ -104,7 +105,7 @@ function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
   }
   const [copied, setCopied] = useState(false)
   const wrapperRef = useRef(null)
-  const url = `${window.location.origin}/invitations/${reference}`
+  const url = `${window.location.origin}/v2/invitations/${reference}`
   const text = `You're invited to ${groomName} & ${brideName}'s wedding! 💍`
 
   useEffect(() => {
@@ -205,18 +206,18 @@ function EventCard({ event, onDelete }) {
         </span>
       </div>
       <div className="ev-card__actions">
-        <a href={`/invitations/${event.reference}`} className="ev-btn" title="Preview invitation">
+        <Link to={`/invitations/${event.reference}`} className="ev-btn" title="Preview invitation">
           <EyeIcon />
           <span className="ev-btn__label">Preview</span>
-        </a>
-        <a
-          href={`/events/builder?eventReference=${event.reference}`}
+        </Link>
+        <Link
+          to={`/events/builder?eventReference=${event.reference}`}
           className="ev-btn"
           title="Edit invitation"
         >
           <EditIcon />
           <span className="ev-btn__label">Edit</span>
-        </a>
+        </Link>
         <ShareMenu
           reference={event.reference}
           groomName={event.groomName}
@@ -273,26 +274,24 @@ export default function EventsDashboard() {
               Log out
             </a>
           </div>
-          <a href="/v2" className="ev-logo">
+          <Link to="/" className="ev-logo">
             n<span>·</span>vite
-          </a>
+          </Link>
           <div className="ev-header__right">
-            <a href="/events/builder" className="ev-new-btn">
+            <Link to="/events/builder" className="ev-new-btn">
               + New Invitation
-            </a>
+            </Link>
           </div>
         </div>
       </header>
 
       <main className="ev-main container">
-        <h1 className="ev-page-title">My Invitations</h1>
-
         {events.length === 0 && (
           <div className="ev-empty">
             <p>You haven&apos;t created any invitations yet.</p>
-            <a href="/events/builder" className="ev-cta-btn">
+            <Link to="/events/builder" className="ev-cta-btn">
               Create your first invitation
-            </a>
+            </Link>
           </div>
         )}
 

@@ -85,15 +85,8 @@
 /* ---- Main content ---- */
 
 .ev-main {
-  padding-top: 2.5rem;
+  padding-top: 3rem;
   padding-bottom: 6rem;
-}
-
-.ev-page-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 2rem;
-  color: var(--navy);
-  margin-bottom: 2.5rem;
 }
 
 /* ---- Sections ---- */
@@ -404,12 +397,7 @@
   }
 
   .ev-main {
-    padding-top: 1.75rem;
-  }
-
-  .ev-page-title {
-    font-size: 1.6rem;
-    margin-bottom: 1.75rem;
+    padding-top: 2rem;
   }
 
   .ev-card {

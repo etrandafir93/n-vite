@@ -11,7 +11,8 @@
       "WebFetch(domain:www.inviteme.ro)",
       "Bash(taskkill:*)",
       "Bash(powershell:*)",
-      "WebFetch(domain:maps.app.goo.gl)"
+      "WebFetch(domain:maps.app.goo.gl)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

@@ -11,6 +11,7 @@ import SportyInvitation from './pages/invitation/Sporty'
 import NaturalInvitation from './pages/invitation/Natural'
 import Invitation from './pages/guests/Invitation'
 import EventsDashboard from './pages/events/EventsDashboard'
+import EventBuilder from './pages/events/EventBuilder'
 
 function Home() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/invitation/:slug/sporty" element={<SportyInvitation />} />
         <Route path="/invitation/:slug/natural" element={<NaturalInvitation />} />
         <Route path="/events" element={<EventsDashboard />} />
+        <Route path="/events/builder" element={<EventBuilder />} />
       </Routes>
     </BrowserRouter>
   )

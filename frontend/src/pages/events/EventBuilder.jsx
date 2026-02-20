@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import './EventBuilder.css'
 
 const EMPTY_FORM = {
@@ -68,6 +68,67 @@ function Section({ title, subtitle, children }) {
         {subtitle && <p className="eb-section__subtitle">{subtitle}</p>}
       </div>
       <div className="eb-section__body">{children}</div>
+    </div>
+  )
+}
+
+function ImageUpload({ value, onChange, label }) {
+  const [uploading, setUploading] = useState(false)
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const res = await fetch('/api/v2/upload/image', {
+        method: 'POST',
+        body: formData,
+      })
+      if (!res.ok) throw new Error('Upload failed')
+      const data = await res.json()
+      onChange(data.url)
+    } catch (err) {
+      console.error('Upload error:', err)
+      alert('Failed to upload image. Please try again.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div className="eb-image-upload">
+      {value && (
+        <div className="eb-image-preview">
+          <img src={value} alt="Preview" />
+          <button
+            type="button"
+            className="eb-image-remove"
+            onClick={() => onChange('')}
+            title="Remove image"
+          >
+            ×
+          </button>
+        </div>
+      )}
+      <label className="eb-upload-btn">
+        {uploading ? 'Uploading...' : value ? 'Change Image' : `Upload ${label}`}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          disabled={uploading}
+          style={{ display: 'none' }}
+        />
+      </label>
+      {value && (
+        <p className="eb-image-url">
+          <small>{value}</small>
+        </p>
+      )}
     </div>
   )
 }
@@ -157,17 +218,13 @@ export default function EventBuilder() {
     <div className="eb-page">
       <header className="eb-header">
         <div className="eb-header__inner container">
-          <a href="/v2/events" className="eb-back">← My Invitations</a>
-          <a href="/v2" className="eb-logo">n<span>·</span>vite</a>
+          <Link to="/events" className="eb-back">← My Invitations</Link>
+          <Link to="/" className="eb-logo">n<span>·</span>vite</Link>
           <div className="eb-header__right" />
         </div>
       </header>
 
       <main className="eb-main container">
-        <h1 className="eb-page-title">
-          {isEdit ? 'Edit Invitation' : 'Create Invitation'}
-        </h1>
-
         {error && <div className="eb-error">{error}</div>}
 
         <form onSubmit={handleSubmit} noValidate>
@@ -198,14 +255,12 @@ export default function EventBuilder() {
           </Section>
 
           <Section title="Date & Visuals" subtitle="When is the event, and how it will look">
-            <div className="eb-grid-2">
-              <Field label="Event Date & Time" required>
-                <Input type="datetime-local" value={form.eventDateTime} onChange={set('eventDateTime')} required />
-              </Field>
-              <Field label="Background Image URL" hint="Paste a direct image URL for the hero photo">
-                <Input value={form.backgroundImageUrl} onChange={set('backgroundImageUrl')} placeholder="https://..." />
-              </Field>
-            </div>
+            <Field label="Event Date & Time" required>
+              <Input type="datetime-local" value={form.eventDateTime} onChange={set('eventDateTime')} required />
+            </Field>
+            <Field label="Background Image" hint="Hero image for the invitation">
+              <ImageUpload value={form.backgroundImageUrl} onChange={set('backgroundImageUrl')} label="Background" />
+            </Field>
           </Section>
 
           <Section title="Ceremony" subtitle="Church or ceremony venue details">
@@ -216,13 +271,13 @@ export default function EventBuilder() {
               <Field label="Address">
                 <Input value={form.ceremonyAddress} onChange={set('ceremonyAddress')} placeholder="e.g. 123 Church Street" />
               </Field>
-              <Field label="Time" hint="e.g. 2:00 PM">
-                <Input value={form.ceremonyTime} onChange={set('ceremonyTime')} placeholder="2:00 PM" />
-              </Field>
-              <Field label="Photo URL" hint="Image of the ceremony venue">
-                <Input value={form.ceremonyPhotoUrl} onChange={set('ceremonyPhotoUrl')} placeholder="https://..." />
+              <Field label="Time">
+                <Input type="time" value={form.ceremonyTime} onChange={set('ceremonyTime')} />
               </Field>
             </div>
+            <Field label="Ceremony Photo" hint="Image of the ceremony venue">
+              <ImageUpload value={form.ceremonyPhotoUrl} onChange={set('ceremonyPhotoUrl')} label="Photo" />
+            </Field>
             <Field label="Map Embed URL" hint='Google Maps embed URL — from Google Maps share → Embed a map → copy src="..."'>
               <Input value={form.ceremonyMapUrl} onChange={set('ceremonyMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
             </Field>
@@ -236,26 +291,26 @@ export default function EventBuilder() {
               <Field label="Address">
                 <Input value={form.receptionAddress} onChange={set('receptionAddress')} placeholder="e.g. 456 Elm Avenue" />
               </Field>
-              <Field label="Time" hint="e.g. 6:00 PM">
-                <Input value={form.receptionTime} onChange={set('receptionTime')} placeholder="6:00 PM" />
-              </Field>
-              <Field label="Photo URL" hint="Image of the reception venue">
-                <Input value={form.receptionPhotoUrl} onChange={set('receptionPhotoUrl')} placeholder="https://..." />
+              <Field label="Time">
+                <Input type="time" value={form.receptionTime} onChange={set('receptionTime')} />
               </Field>
             </div>
+            <Field label="Reception Photo" hint="Image of the reception venue">
+              <ImageUpload value={form.receptionPhotoUrl} onChange={set('receptionPhotoUrl')} label="Photo" />
+            </Field>
             <Field label="Map Embed URL" hint='Google Maps embed URL — from Google Maps share → Embed a map → copy src="..."'>
               <Input value={form.receptionMapUrl} onChange={set('receptionMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
             </Field>
           </Section>
 
           <Section title="RSVP" subtitle="When should guests respond by?">
-            <Field label="RSVP Deadline" hint="e.g. August 1, 2025">
-              <Input value={form.rsvpDeadline} onChange={set('rsvpDeadline')} placeholder="August 1, 2025" />
+            <Field label="RSVP Deadline">
+              <Input type="date" value={form.rsvpDeadline} onChange={set('rsvpDeadline')} />
             </Field>
           </Section>
 
           <div className="eb-actions">
-            <a href="/v2/events" className="eb-btn eb-btn--ghost">Cancel</a>
+            <Link to="/events" className="eb-btn eb-btn--ghost">Cancel</Link>
             <button type="submit" className="eb-btn eb-btn--primary" disabled={saving}>
               {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Create Invitation'}
             </button>
