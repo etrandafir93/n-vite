@@ -18,17 +18,17 @@ public enum EventStatus {
 
 ### Creating a Draft (Preview)
 
-1. User fills out the invitation form in `/v2/events/builder`
+1. User fills out the invitation form in `/events/builder`
 2. Clicks **Preview** button (not Save)
 3. Event is saved/updated with `status: DRAFT`
-   - New event: `POST /api/v2/events` with `status: DRAFT`
-   - Editing existing: `PUT /api/v2/events/{ref}` with `status: DRAFT`
-4. Preview opens in new tab at `/v2/invitations/{ref}`
-5. User is redirected to `/v2/events` dashboard
+   - New event: `POST /api/events` with `status: DRAFT`
+   - Editing existing: `PUT /api/events/{ref}` with `status: DRAFT`
+4. Preview opens in new tab at `/invitations/{ref}`
+5. User is redirected to `/events` dashboard
 
 ### Publishing a Draft (Making it Live)
 
-1. User edits the draft from `/v2/events` dashboard
+1. User edits the draft from `/events` dashboard
 2. Clicks **Save** button (or **Create Invitation** for new events)
 3. Event status changes from `DRAFT` → `LIVE`
 4. Event is now publicly shareable
@@ -61,8 +61,8 @@ public enum EventStatus {
 - Defaults to `LIVE` if null (for backward compatibility with old events)
 
 **API Endpoints** (`EventBuilderV2.java`):
-- `POST /api/v2/events` - Creates event with provided status
-- `PUT /api/v2/events/{ref}` - Updates event including status
+- `POST /api/events` - Creates event with provided status
+- `PUT /api/events/{ref}` - Updates event including status
 - Both endpoints accept `status` in the request body
 
 **Event List API** (`UpcomingEventsUI.java`):
@@ -91,7 +91,7 @@ public enum EventStatus {
 ```
 1. User → Fills form → Clicks "Preview"
 2. System → Creates event (status: DRAFT, ref: "john-and-jane")
-3. Browser → Opens /v2/invitations/john-and-jane in new tab
+3. Browser → Opens /invitations/john-and-jane in new tab
 4. Dashboard → Shows event with "Draft" badge, no share button
 5. User → Clicks "Edit" → Makes changes → Clicks "Save"
 6. System → Updates event (status: LIVE)
@@ -128,5 +128,5 @@ Events are stored in MongoDB `events` collection with an optional `status` field
 - **No duplicate events**: Preview doesn't create a new event, it just toggles the status
 - **Backward compatibility**: Old events without `status` field default to `LIVE`
 - **Share button**: Only visible for `LIVE` events
-- **URL structure**: Both drafts and live events use the same URL pattern: `/v2/invitations/{ref}`
-- **Theme support**: Preview respects the selected theme (classic, romantic, sporty, natural)
+- **URL structure**: Both drafts and live events use the same URL pattern: `/invitations/{ref}`
+- **Theme support**: Preview respects the selected theme (classic, romantic, modern, natural)

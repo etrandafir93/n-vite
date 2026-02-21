@@ -14,7 +14,8 @@
       "WebFetch(domain:maps.app.goo.gl)",
       "Bash(npm run build:*)",
       "Bash(mvnw.cmd compile:*)",
-      "Bash(.mvnw.cmd compile)"
+      "Bash(.mvnw.cmd compile)",
+      "Bash(del \"src\\main\\java\\tech\\nvite\\guest\\InvitationAudienceUI.java\")"
     ],
     "deny": [],
     "ask": []

@@ -1,7 +1,6 @@
 package tech.nvite.host;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import tech.nvite.infra.storage.GoogleCloudStorage;
 
-@Slf4j
 @RestController
-@RequestMapping("api/v2/upload")
+@RequestMapping("api/upload")
 @RequiredArgsConstructor
 class ImageUploadV2 {
 
@@ -24,8 +22,6 @@ class ImageUploadV2 {
   @PostMapping("/image")
   @ResponseStatus(HttpStatus.OK)
   public ImageUploadResponse uploadImage(@RequestParam("file") MultipartFile file) {
-    log.info("Uploading image: {} (size: {} bytes)", file.getOriginalFilename(), file.getSize());
-
     if (file.isEmpty()) {
       throw new IllegalArgumentException("File is empty");
     }
@@ -43,8 +39,6 @@ class ImageUploadV2 {
     }
 
     String url = storage.uploadFile(file);
-    log.info("Image uploaded successfully: {}", url);
-
     return new ImageUploadResponse(url);
   }
 }

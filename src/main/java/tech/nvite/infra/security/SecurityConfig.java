@@ -21,14 +21,16 @@ class SecurityConfig {
                     .permitAll() // temp workaround to start api testing sooner
                     .requestMatchers(
                         "/",
+                        "/index.html",
                         "/login",
                         "/invitations/**",
+                        "/invitation/**",
+                        "/events/**",
                         "/icons/**",
                         "/css/**",
                         "/js/**",
                         "/images/**",
-                        "/v2",
-                        "/v2/**")
+                        "/assets/**")
                     .permitAll()
                     .requestMatchers(
                         "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**")
@@ -37,12 +39,12 @@ class SecurityConfig {
                     .authenticated())
         .cors(cors -> cors.configure(http))
         .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
-        .oauth2Login(oauth2 -> oauth2.loginPage("/").defaultSuccessUrl("/v2/events", true))
+        .oauth2Login(oauth2 -> oauth2.loginPage("/login").defaultSuccessUrl("/events", true))
         .logout(
             logout ->
                 logout
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/v2")
+                    .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID"));

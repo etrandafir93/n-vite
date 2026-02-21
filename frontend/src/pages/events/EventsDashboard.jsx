@@ -150,7 +150,7 @@ function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
   }
   const [copied, setCopied] = useState(false)
   const wrapperRef = useRef(null)
-  const url = `${window.location.origin}/v2/invitations/${reference}`
+  const url = `${window.location.origin}/invitations/${reference}`
   const text = `You're invited to ${groomName} & ${brideName}'s wedding! 💍`
 
   useEffect(() => {
@@ -259,7 +259,7 @@ function EventCard({ event, onDelete, onEnable }) {
         className={`ev-card${isPast ? ' ev-card--past' : ''}${isDraft ? ' ev-card--draft' : ''}`}
         style={shareOpen ? { zIndex: 10 } : undefined}
       >
-        <Link to={`/v2/invitations/${event.reference}`} className="ev-card__body">
+        <Link to={`/invitations/${event.reference}`} className="ev-card__body">
           <div className="ev-card__header">
             <h3 className="ev-card__names">
               {event.groomName} &amp; {event.brideName}
@@ -273,7 +273,7 @@ function EventCard({ event, onDelete, onEnable }) {
         </Link>
         <div className="ev-card__actions">
           <a
-            href={`/v2/invitations/${event.reference}`}
+            href={`/invitations/${event.reference}`}
             target="_blank"
             rel="noreferrer"
             className="ev-btn"

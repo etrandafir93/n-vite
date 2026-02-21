@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ClassicInvitation from '../invitation/Classic'
 import RomanticInvitation from '../invitation/Romantic'
-import SportyInvitation from '../invitation/Sporty'
+import ModernInvitation from '../invitation/Modern'
 import NaturalInvitation from '../invitation/Natural'
 
 const THEME_COMPONENTS = {
   classic: ClassicInvitation,
   romantic: RomanticInvitation,
-  sporty: SportyInvitation,
+  modern: ModernInvitation,
   natural: NaturalInvitation,
 }
 
@@ -18,7 +18,7 @@ export default function Invitation() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`/api/v2/invitations/${ref}`)
+    fetch(`/api/invitations/${ref}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')

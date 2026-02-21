@@ -86,7 +86,7 @@ function ImageUpload({ value, onChange, label }) {
     formData.append('file', file)
 
     try {
-      const res = await fetch('/api/v2/upload/image', {
+      const res = await fetch('/api/upload/image', {
         method: 'POST',
         body: formData,
       })
@@ -148,7 +148,7 @@ export default function EventBuilder() {
   useEffect(() => {
     if (!eventReference) return
     setLoading(true)
-    fetch(`/api/v2/events/${eventReference}/form`)
+    fetch(`/api/events/${eventReference}/form`)
       .then(r => {
         if (!r.ok) throw new Error('Failed to load')
         return r.json()
@@ -208,7 +208,7 @@ export default function EventBuilder() {
       } else {
         // Draft doesn't exist, create it first, then enable it
         const draftPayload = preparePayload('DRAFT')
-        const createRes = await fetch('/api/v2/events', {
+        const createRes = await fetch('/api/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(draftPayload),
@@ -240,7 +240,7 @@ export default function EventBuilder() {
     setError(null)
 
     const payload = preparePayload('DRAFT')
-    const url = isEdit ? `/api/v2/events/${eventReference}` : '/api/v2/events'
+    const url = isEdit ? `/api/events/${eventReference}` : '/api/events'
     const method = isEdit ? 'PUT' : 'POST'
 
     try {
@@ -258,9 +258,8 @@ export default function EventBuilder() {
       console.log('Preview response:', data)
       // Open preview in new window
       const reference = data.value || data
-      window.open(`/v2/invitations/${reference}`, '_blank')
-      // Navigate to events dashboard
-      navigate('/events')
+      window.open(`/invitations/${reference}`, '_blank')
+      setSaving(false)
     } catch (err) {
       console.error('Preview error:', err)
       setError('Failed to create preview. Please check the form and try again.')
@@ -376,7 +375,7 @@ export default function EventBuilder() {
               {[
                 { value: 'classic', label: 'Classic' },
                 { value: 'romantic', label: 'Romantic' },
-                { value: 'sporty', label: 'Sporty' },
+                { value: 'modern', label: 'Modern' },
                 { value: 'natural', label: 'Natural' },
               ].map(theme => (
                 <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
@@ -390,7 +389,7 @@ export default function EventBuilder() {
                   />
                   <span className="eb-theme-label">{theme.label}</span>
                   <a
-                    href={`/v2/invitations/joe-and-jane?theme=${theme.value}`}
+                    href={`/invitations/joe-and-jane?theme=${theme.value}`}
                     target="_blank"
                     rel="noreferrer"
                     className="eb-theme-demo"

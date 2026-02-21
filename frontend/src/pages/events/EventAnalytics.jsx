@@ -9,7 +9,7 @@ export default function EventAnalytics() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch(`/api/events/${reference}/analytics`)
+    fetch(`/api/events/${reference}/dashboard`)
       .then(r => {
         if (!r.ok) throw new Error('Failed to load analytics')
         return r.json()

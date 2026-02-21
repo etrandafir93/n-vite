@@ -37,7 +37,8 @@ build/
 /frontend/dist/
 
 ### Generated frontend build output ###
-/src/main/resources/static/v2/
+/src/main/resources/static/assets/
+/src/main/resources/static/index.html
 /frontend/node/node.exe
 /frontend/node/npm
 /frontend/node/npm.cmd

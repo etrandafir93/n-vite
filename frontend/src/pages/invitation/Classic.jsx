@@ -277,7 +277,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
     const ref = invitationRef || slug
     if (!ref) return
 
-    fetch(`/api/v2/invitations/${ref}`)
+    fetch(`/api/invitations/${ref}`)
       .then(r => r.json())
       .then(setInv)
       .catch(console.error)
@@ -351,7 +351,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                 <p className="cl-event__name">{inv.ceremonyVenue}</p>
                 <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>
                 <span className="cl-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer">View on map</a>}
+                {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
               </div>
             </div>
             <div className="cl-event">
@@ -361,7 +361,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                 <p className="cl-event__name">{inv.receptionVenue}</p>
                 <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>
                 <span className="cl-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer">View on map</a>}
+                {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
               </div>
             </div>
           </div>

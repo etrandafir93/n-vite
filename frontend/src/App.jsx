@@ -7,7 +7,7 @@ import Pricing from './components/Pricing'
 import Footer from './components/Footer'
 import ClassicInvitation from './pages/invitation/Classic'
 import RomanticInvitation from './pages/invitation/Romantic'
-import SportyInvitation from './pages/invitation/Sporty'
+import ModernInvitation from './pages/invitation/Modern'
 import NaturalInvitation from './pages/invitation/Natural'
 import Invitation from './pages/guests/Invitation'
 import EventsDashboard from './pages/events/EventsDashboard'
@@ -31,14 +31,14 @@ function Home() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/v2">
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/invitations/:ref" element={<Invitation />} />
         <Route path="/invitations/:ref/:theme" element={<Invitation />} />
         <Route path="/invitation/:slug/classic" element={<ClassicInvitation />} />
         <Route path="/invitation/:slug/romantic" element={<RomanticInvitation />} />
-        <Route path="/invitation/:slug/sporty" element={<SportyInvitation />} />
+        <Route path="/invitation/:slug/modern" element={<ModernInvitation />} />
         <Route path="/invitation/:slug/natural" element={<NaturalInvitation />} />
         <Route path="/events" element={<EventsDashboard />} />
         <Route path="/events/builder" element={<EventBuilder />} />
