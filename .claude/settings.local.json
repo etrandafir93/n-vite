@@ -12,7 +12,9 @@
       "Bash(taskkill:*)",
       "Bash(powershell:*)",
       "WebFetch(domain:maps.app.goo.gl)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(mvnw.cmd compile:*)",
+      "Bash(.mvnw.cmd compile)"
     ],
     "deny": [],
     "ask": []

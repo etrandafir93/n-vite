@@ -42,7 +42,7 @@ export default function App() {
         <Route path="/invitation/:slug/natural" element={<NaturalInvitation />} />
         <Route path="/events" element={<EventsDashboard />} />
         <Route path="/events/builder" element={<EventBuilder />} />
-        <Route path="/events/dashboard/:reference" element={<EventAnalytics />} />
+        <Route path="/events/:reference/dashboard" element={<EventAnalytics />} />
       </Routes>
     </BrowserRouter>
   )

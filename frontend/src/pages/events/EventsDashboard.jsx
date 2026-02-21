@@ -292,7 +292,7 @@ function EventCard({ event, onDelete, onEnable }) {
           </Link>
           {!isDraft && (
             <Link
-              to={`/events/dashboard/${event.reference}`}
+              to={`/events/${event.reference}/dashboard`}
               className="ev-btn ev-btn--info"
               title="View analytics"
             >

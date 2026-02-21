@@ -38,4 +38,10 @@ class V2PageController {
     log.info("Serving V2 events builder");
     return "forward:/v2/index.html";
   }
+
+  @GetMapping("/v2/events/{ref}/dashboard")
+  String eventDashboard(@PathVariable String ref) {
+    log.info("Serving V2 event dashboard for reference: {}", ref);
+    return "forward:/v2/index.html";
+  }
 }

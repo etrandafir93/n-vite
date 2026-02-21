@@ -125,8 +125,10 @@ class EventDashboardUI {
               example = "Ion-and-Maria")
           @PathVariable("reference")
           String reference) {
+    log.info("GET /api/events/{} - Fetching event details", reference);
     var eventReference = new EventReference(reference);
     var event = events.findOrThrow(eventReference);
+    log.debug("Found event: {}", event.reference());
 
     var visitList =
         visits
@@ -137,9 +139,95 @@ class EventDashboardUI {
         rspvs.findAllByEventReference(reference).stream()
             .map(r -> new EventInteraction(r.guest(), r.partnerName(), r.timestamp(), r.answer()));
 
-    return concat(visitList, rspvList)
-        .sorted(comparing(EventInteraction::timestamp).reversed())
-        .collect(collectingAndThen(toUnmodifiableList(), rsvps -> new EventDetails(event, rsvps)));
+    var result =
+        concat(visitList, rspvList)
+            .sorted(comparing(EventInteraction::timestamp).reversed())
+            .collect(
+                collectingAndThen(toUnmodifiableList(), rsvps -> new EventDetails(event, rsvps)));
+
+    log.info(
+        "Event details for {}: {} interactions, {} accepted, {} declined, {} visited",
+        reference,
+        result.interactions.size(),
+        result.acceptedCount,
+        result.declinedCount,
+        result.visitedCount);
+
+    return result;
+  }
+
+  @GetMapping("api/events/{reference}/analytics")
+  @Operation(
+      summary = "Get Event Analytics",
+      description =
+          "Retrieve analytics data for an event including stats, responses, and visit history.")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Event analytics retrieved successfully",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = EventAnalyticsDTO.class))),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Event not found",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class))),
+      })
+  @ResponseBody
+  public EventAnalyticsDTO getEventAnalytics(
+      @Parameter(
+              description = "Reference ID of the event",
+              required = true,
+              example = "Ion-and-Maria")
+          @PathVariable("reference")
+          String reference) {
+    log.info("GET /api/events/{}/analytics - Fetching analytics", reference);
+    var eventDetails = getEvent(reference);
+    var event = eventDetails.event();
+
+    var stats =
+        new AnalyticsStats(
+            eventDetails.interactions().size(),
+            eventDetails.acceptedCount(),
+            eventDetails.declinedCount(),
+            eventDetails.interactions().size()
+                - eventDetails.acceptedCount()
+                - eventDetails.declinedCount(),
+            eventDetails.visitedCount());
+
+    var responses =
+        eventDetails.interactions().stream()
+            .filter(i -> "ACCEPTED".equalsIgnoreCase(i.action()) || "DECLINED".equalsIgnoreCase(i.action()))
+            .map(
+                i ->
+                    new GuestResponse(
+                        i.guest(),
+                        "ACCEPTED".equalsIgnoreCase(i.action()),
+                        null,
+                        i.partnerName() != null,
+                        null,
+                        i.timestamp()))
+            .toList();
+
+    var visitsList =
+        eventDetails.interactions().stream()
+            .filter(i -> "VISITED".equalsIgnoreCase(i.action()))
+            .map(i -> new VisitEntry(i.guest(), i.timestamp()))
+            .toList();
+
+    log.info(
+        "Analytics for {}: {} total interactions, {} responses, {} visits",
+        reference,
+        stats.totalInvited(),
+        responses.size(),
+        visitsList.size());
+
+    return new EventAnalyticsDTO(event, stats, responses, visitsList);
   }
 
   @Schema(
@@ -190,4 +278,33 @@ class EventDashboardUI {
       @Schema(description = "Timestamp of the interaction") Instant timestamp,
       @Schema(description = "Type of action performed. One of: [ACCEPTED | VISITED | DECLINED]")
           String action) {}
+
+  @Schema(description = "Analytics data for an event")
+  public record EventAnalyticsDTO(
+      @Schema(description = "Event details") Event event,
+      @Schema(description = "Statistical summary") AnalyticsStats stats,
+      @Schema(description = "Guest responses") List<GuestResponse> responses,
+      @Schema(description = "Visit history") List<VisitEntry> visits) {}
+
+  @Schema(description = "Statistical summary of event responses")
+  public record AnalyticsStats(
+      @Schema(description = "Total number of invitations sent") int totalInvited,
+      @Schema(description = "Number of accepted responses") int accepted,
+      @Schema(description = "Number of declined responses") int declined,
+      @Schema(description = "Number of pending responses") int pending,
+      @Schema(description = "Total number of invitation views") int totalViews) {}
+
+  @Schema(description = "Guest response details")
+  public record GuestResponse(
+      @Schema(description = "Name of the guest") String guestName,
+      @Schema(description = "Whether the guest is attending") boolean attending,
+      @Schema(description = "Menu preference", nullable = true) @Nullable String menuPreference,
+      @Schema(description = "Whether the guest has a plus one") boolean plusOne,
+      @Schema(description = "Number of children", nullable = true) @Nullable Integer children,
+      @Schema(description = "Response timestamp") Instant timestamp) {}
+
+  @Schema(description = "Visit entry for tracking invitation views")
+  public record VisitEntry(
+      @Schema(description = "Visitor identifier") String visitor,
+      @Schema(description = "Visit timestamp") Instant timestamp) {}
 }
