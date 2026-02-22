@@ -1,4 +1,4 @@
-package tech.nvite.host;
+package tech.nvite.host.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

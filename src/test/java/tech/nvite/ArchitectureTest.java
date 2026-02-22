@@ -37,17 +37,6 @@ class ArchitectureTest {
   }
 
   @Test
-  void useCasesMustLiveInUseCasesPackage() {
-    classes()
-        .that()
-        .areAnnotatedWith(UseCase.class)
-        .should()
-        .resideInAPackage("..usecases..")
-        .because("Use cases should be in the domain.usecases package")
-        .check(classes);
-  }
-
-  @Test
   void useCasesCanOnlyDependOnDomain() {
     classes()
         .that()

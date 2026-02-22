@@ -1,11 +1,11 @@
-package tech.nvite.host;
+package tech.nvite.host.api;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import tech.nvite.domain.Event;
-import tech.nvite.usecases.CreateEventUseCase;
-import tech.nvite.usecases.EditEventUseCase;
-import tech.nvite.usecases.SeeEventUseCase;
+import tech.nvite.host.CreateEventUseCase;
+import tech.nvite.host.EditEventUseCase;
+import tech.nvite.host.SeeEventUseCase;
 
 @Mapper(componentModel = "spring")
 public interface EventBuilderMapper {

@@ -1,4 +1,4 @@
-package tech.nvite.host;
+package tech.nvite.host.api;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import tech.nvite.usecases.CreateEventUseCase;
-import tech.nvite.usecases.DeleteEventUseCase;
-import tech.nvite.usecases.EditEventUseCase;
-import tech.nvite.usecases.EnableEventUseCase;
-import tech.nvite.usecases.SeeEventDashboardUseCase;
-import tech.nvite.usecases.SeeEventUseCase;
-import tech.nvite.usecases.SeeUpcomingEventsUseCase;
+import tech.nvite.host.CreateEventUseCase;
+import tech.nvite.host.DeleteEventUseCase;
+import tech.nvite.host.EditEventUseCase;
+import tech.nvite.host.EnableEventUseCase;
+import tech.nvite.host.SeeEventDashboardUseCase;
+import tech.nvite.host.SeeEventUseCase;
+import tech.nvite.host.SeeUpcomingEventsUseCase;
 
 @RestController
 @RequestMapping("api/events")

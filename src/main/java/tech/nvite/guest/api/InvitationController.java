@@ -1,4 +1,4 @@
-package tech.nvite.guest;
+package tech.nvite.guest.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.nvite.usecases.RsvpInvitationUseCase;
-import tech.nvite.usecases.VisitInvitationUseCase;
+import tech.nvite.guest.RsvpInvitationUseCase;
+import tech.nvite.guest.VisitInvitationUseCase;
 
 @RestController
 @RequestMapping("api/invitations/{ref}")

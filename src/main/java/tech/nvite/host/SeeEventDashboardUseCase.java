@@ -1,4 +1,4 @@
-package tech.nvite.usecases;
+package tech.nvite.host;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.collectingAndThen;

@@ -1,4 +1,4 @@
-package tech.nvite.guest;
+package tech.nvite.guest.api;
 
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;

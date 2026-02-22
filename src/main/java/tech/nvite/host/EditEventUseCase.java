@@ -1,4 +1,4 @@
-package tech.nvite.usecases;
+package tech.nvite.host;
 
 import com.mongodb.lang.Nullable;
 import java.time.Instant;

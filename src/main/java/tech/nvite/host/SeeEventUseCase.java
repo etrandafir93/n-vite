@@ -1,10 +1,10 @@
-package tech.nvite.usecases;
+package tech.nvite.host;
 
 import java.time.Instant;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import tech.nvite.domain.Events;
-import tech.nvite.host.EventBuilderMapper;
+import tech.nvite.host.api.EventBuilderMapper;
 import tech.nvite.infra.UseCase;
 
 @UseCase

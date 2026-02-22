@@ -1,4 +1,4 @@
-package tech.nvite.host;
+package tech.nvite.host.api;
 
 import jakarta.annotation.Nullable;
 import java.time.Instant;

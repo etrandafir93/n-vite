@@ -1,4 +1,4 @@
-package tech.nvite.usecases;
+package tech.nvite.guest;
 
 import java.util.Optional;
 import java.util.function.Function;

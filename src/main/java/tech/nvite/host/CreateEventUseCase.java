@@ -1,4 +1,4 @@
-package tech.nvite.usecases;
+package tech.nvite.host;
 
 import jakarta.annotation.Nullable;
 import java.time.Instant;

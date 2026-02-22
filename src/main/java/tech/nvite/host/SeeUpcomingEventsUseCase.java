@@ -1,4 +1,4 @@
-package tech.nvite.usecases;
+package tech.nvite.host;
 
 import java.time.Instant;
 import java.util.List;
