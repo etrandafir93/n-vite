@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 import java.util.stream.Stream;
 import org.springframework.data.mongodb.repository.MongoRepository;

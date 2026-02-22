@@ -1,4 +1,4 @@
-package tech.nvite.app;
+package tech.nvite.infra;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,13 +1,12 @@
-package tech.nvite.host;
+package tech.nvite.guest;
 
 import java.time.Instant;
-import tech.nvite.domain.model.EventStatus;
 
-record EventFormResponse(
-    String eventReference,
-    String groomName,
+record InvitationDetails(
     String brideName,
-    Instant eventDateTime,
+    String groomName,
+    Instant eventDate,
+    String eventReference,
     String backgroundImageUrl,
     String groomParents,
     String brideParents,
@@ -23,5 +22,4 @@ record EventFormResponse(
     String receptionPhotoUrl,
     String receptionMapUrl,
     String rsvpDeadline,
-    String theme,
-    EventStatus status) {}
+    String theme) {}

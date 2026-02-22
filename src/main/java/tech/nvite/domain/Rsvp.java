@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 import jakarta.annotation.Nullable;
 import java.time.Instant;
@@ -13,12 +13,12 @@ public record Rsvp(
     String eventReference,
     String answer,
     @Nullable String partnerName) {
-  public Rsvp(String guest, EventReference eventReference, RsvpAnswer answer, String partnerName) {
+  public Rsvp(String guest, String eventReference, RsvpAnswer answer, String partnerName) {
     this(
         null,
         Instant.now(),
         guest,
-        eventReference.value(),
+        eventReference,
         switch (answer) {
           case RsvpAnswer.Accepted __ -> "ACCEPTED";
           case RsvpAnswer.Declined __ -> "DECLINED";

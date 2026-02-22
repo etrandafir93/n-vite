@@ -219,11 +219,14 @@ export default function EventBuilder() {
 
     try {
       if (isEdit) {
-        // Draft already exists, just enable it
-        const res = await fetch(`/api/events/${eventReference}/enable`, {
-          method: 'PATCH',
+        // Update the event first
+        const payload = preparePayload('LIVE')
+        const updateRes = await fetch(`/api/events/${eventReference}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         })
-        if (!res.ok) throw new Error('Failed to enable invitation')
+        if (!updateRes.ok) throw new Error('Failed to update invitation')
       } else {
         // Draft doesn't exist, create it first, then enable it
         const draftPayload = preparePayload('DRAFT')
@@ -234,11 +237,10 @@ export default function EventBuilder() {
         })
         if (!createRes.ok) throw new Error('Failed to create draft')
 
-        const data = await createRes.json()
-        const reference = data.value || data
+        const eventReference = await createRes.text()
 
         // Now enable the draft
-        const enableRes = await fetch(`/api/events/${reference}/enable`, {
+        const enableRes = await fetch(`/api/events/${eventReference}/enable`, {
           method: 'PATCH',
         })
         if (!enableRes.ok) throw new Error('Failed to enable invitation')
@@ -271,11 +273,10 @@ export default function EventBuilder() {
         console.error('Preview error:', errorText)
         throw new Error('Preview failed')
       }
-      const data = await res.json()
-      console.log('Preview response:', data)
+      const eventReference = await res.text()
+      console.log('Preview response:', eventReference)
       // Open preview in new window
-      const reference = data.value || data
-      window.open(`/invitations/${reference}`, '_blank')
+      window.open(`/invitations/${eventReference}`, '_blank')
       setSaving(false)
     } catch (err) {
       console.error('Preview error:', err)

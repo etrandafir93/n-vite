@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
@@ -21,7 +21,7 @@ public record Event(
     @NonNull Instant eventDateTime,
     @With String backgroundImage,
     @With LocalDateTime created,
-    @With @Id EventReference reference,
+    @With @Id String eventReference,
     String createdBy,
     String groomParents,
     String brideParents,

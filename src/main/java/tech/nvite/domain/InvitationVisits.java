@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 import java.time.Instant;
 import java.util.stream.Stream;
@@ -11,16 +11,16 @@ public class InvitationVisits {
 
   private final InvitationVisitsMongoRepository repository;
 
-  public void add(InvitationVisitor visitor, EventReference event) {
+  public void add(InvitationVisitor visitor, String eventReference) {
     String visitorName =
         switch (visitor) {
           case InvitationVisitor.NamedGuest(String name) -> name;
           case InvitationVisitor.Anonymous __ -> "ANONYMOUS";
         };
-    repository.save(new InvitationVisit(Instant.now(), visitorName, event.value()));
+    repository.save(new InvitationVisit(Instant.now(), visitorName, eventReference));
   }
 
-  public Stream<InvitationVisit> find(EventReference ref) {
-    return repository.findAllByEventRef(ref.value());
+  public Stream<InvitationVisit> find(String eventReference) {
+    return repository.findAllByEventRef(eventReference);
   }
 }

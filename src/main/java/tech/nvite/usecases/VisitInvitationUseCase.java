@@ -1,14 +1,14 @@
-package tech.nvite.domain.usecases;
+package tech.nvite.usecases;
 
+import java.util.Optional;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.nvite.app.UseCase;
-import tech.nvite.domain.model.Event;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.model.Events;
-import tech.nvite.domain.model.InvitationVisitor;
-import tech.nvite.domain.model.InvitationVisits;
+import tech.nvite.domain.Event;
+import tech.nvite.domain.Events;
+import tech.nvite.domain.InvitationVisitor;
+import tech.nvite.domain.InvitationVisits;
+import tech.nvite.infra.UseCase;
 
 @Slf4j
 @UseCase
@@ -23,11 +23,17 @@ public class VisitInvitationUseCase
   public Response apply(Request req) {
     log.info("Visiting invitation {}", req);
     Event evt = events.findOrThrow(req.eventReference);
-    invitationVisitors.add(req.viewer(), req.eventReference());
+
+    InvitationVisitor viewer =
+        Optional.ofNullable(req.viewer)
+            .map(InvitationVisitor::withName)
+            .orElseGet(InvitationVisitor::anonymous);
+
+    invitationVisitors.add(viewer, req.eventReference);
     return new Response(evt);
   }
 
-  public record Request(EventReference eventReference, InvitationVisitor viewer) {}
+  public record Request(String eventReference, String viewer) {}
 
   public record Response(Event evt) {}
 }

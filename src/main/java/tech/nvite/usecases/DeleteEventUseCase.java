@@ -1,11 +1,10 @@
-package tech.nvite.domain.usecases;
+package tech.nvite.usecases;
 
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.nvite.app.UseCase;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.model.Events;
+import tech.nvite.domain.Events;
+import tech.nvite.infra.UseCase;
 import tech.nvite.infra.storage.GoogleCloudStorage;
 
 @Slf4j
@@ -19,16 +18,16 @@ public class DeleteEventUseCase implements Consumer<DeleteEventUseCase.Request> 
   @Override
   public void accept(DeleteEventUseCase.Request req) {
     log.info("Deleting event {}", req);
-    var event = events.findOrThrow(req.reference());
+    var event = events.findOrThrow(req.eventReference());
 
-    events.delete(req.reference());
+    events.delete(req.eventReference());
 
     //        if (event.backgroundImage() != null) {
     //            storage.delete(event.backgroundImage());
     //        }
 
-    log.info("Event deleted {}", req.reference());
+    log.info("Event deleted {}", req.eventReference());
   }
 
-  public record Request(EventReference reference) {}
+  public record Request(String eventReference) {}
 }

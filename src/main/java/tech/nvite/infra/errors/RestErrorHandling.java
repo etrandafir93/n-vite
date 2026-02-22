@@ -1,4 +1,4 @@
-package tech.nvite.app.errors;
+package tech.nvite.infra.errors;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

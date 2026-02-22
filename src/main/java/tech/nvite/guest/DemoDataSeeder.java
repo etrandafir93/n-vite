@@ -6,9 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import tech.nvite.domain.model.Event;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.model.Events;
+import tech.nvite.domain.Event;
+import tech.nvite.domain.Events;
 
 @Slf4j
 @Component
@@ -21,9 +20,7 @@ class DemoDataSeeder {
 
   @EventListener(ApplicationStartedEvent.class)
   void seedDemoData() {
-    EventReference ref = new EventReference(DEMO_REF);
-
-    if (events.find(ref).isPresent()) {
+    if (events.find(DEMO_REF).isPresent()) {
       log.info("Demo data for '{}' already exists, skipping seed.", DEMO_REF);
       return;
     }
@@ -32,7 +29,7 @@ class DemoDataSeeder {
 
     var event =
         Event.builder()
-            .reference(ref)
+            .eventReference(DEMO_REF)
             .groomName("Joe Doe")
             .brideName("Jane Doe")
             .eventDateTime(Instant.parse("2025-09-13T14:00:00Z"))

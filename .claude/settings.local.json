@@ -16,7 +16,8 @@
       "Bash(mvnw.cmd compile:*)",
       "Bash(.mvnw.cmd compile)",
       "Bash(del \"src\\main\\java\\tech\\nvite\\guest\\InvitationAudienceUI.java\")",
-      "Bash(./mvnw.cmd test:*)"
+      "Bash(./mvnw.cmd test:*)",
+      "Bash(del \"D:\\repos\\n-vite\\src\\main\\java\\tech\\nvite\\domain\\EventReference.java\")"
     ],
     "deny": [],
     "ask": []

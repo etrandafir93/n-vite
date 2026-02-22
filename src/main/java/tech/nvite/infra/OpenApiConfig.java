@@ -1,4 +1,4 @@
-package tech.nvite.app;
+package tech.nvite.infra;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

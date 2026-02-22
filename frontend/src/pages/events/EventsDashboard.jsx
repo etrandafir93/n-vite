@@ -246,8 +246,10 @@ function EventCard({ event, onDelete, onEnable }) {
     fetch(`/api/events/${event.reference}/enable`, {
       method: 'PATCH',
     })
-      .then(r => r.json())
-      .then(() => onEnable(event.reference))
+      .then(() => {
+        onEnable(event.reference)
+        window.location.reload()
+      })
       .catch(console.error)
   }
 

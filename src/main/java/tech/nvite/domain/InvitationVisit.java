@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 import jakarta.annotation.Nullable;
 import java.time.Instant;

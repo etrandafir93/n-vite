@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 public sealed interface InvitationVisitor
     permits InvitationVisitor.NamedGuest, InvitationVisitor.Anonymous {

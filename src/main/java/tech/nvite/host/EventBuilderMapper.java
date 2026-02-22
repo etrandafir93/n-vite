@@ -2,27 +2,27 @@ package tech.nvite.host;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import tech.nvite.domain.model.Event;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.usecases.CreateEventUseCase;
-import tech.nvite.domain.usecases.EditEventUseCase;
+import tech.nvite.domain.Event;
+import tech.nvite.usecases.CreateEventUseCase;
+import tech.nvite.usecases.EditEventUseCase;
+import tech.nvite.usecases.SeeEventUseCase;
 
 @Mapper(componentModel = "spring")
-interface EventBuilderMapper {
+public interface EventBuilderMapper {
 
-  @Mapping(source = "reference.value", target = "eventReference")
+  @Mapping(source = "eventReference", target = "eventReference")
   @Mapping(source = "eventLocation", target = "ceremonyVenue")
   @Mapping(source = "eventReception", target = "receptionVenue")
   @Mapping(source = "backgroundImage", target = "backgroundImageUrl")
-  EventFormResponse toFormResponse(Event event);
+  SeeEventUseCase.EventFormResponse toFormResponse(Event event);
 
   CreateEventUseCase.Request toCreateRequest(EventFormRequest req);
 
-  @Mapping(target = "reference", ignore = true)
-  EditEventUseCase.Request toEditRequest(EventFormRequest req);
+  @Mapping(target = "eventReference", source = "eventReference")
+  EditEventUseCase.Request toEditRequest(EventFormRequest req, String eventReference);
 
   default EditEventUseCase.Request toEditRequestWithReference(
-      EventFormRequest req, EventReference reference) {
-    return toEditRequest(req).withReference(reference);
+      EventFormRequest req, String eventReference) {
+    return toEditRequest(req, eventReference);
   }
 }

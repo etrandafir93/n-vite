@@ -1,4 +1,4 @@
-package tech.nvite.domain.model;
+package tech.nvite.domain;
 
 public sealed interface RsvpAnswer permits RsvpAnswer.Accepted, RsvpAnswer.Declined {
 

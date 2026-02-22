@@ -1,6 +1,5 @@
 package tech.nvite.guest;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,49 +8,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.model.InvitationVisitor;
-import tech.nvite.domain.model.RsvpAnswer;
-import tech.nvite.domain.usecases.RsvpInvitationUseCase;
-import tech.nvite.domain.usecases.VisitInvitationUseCase;
+import tech.nvite.usecases.RsvpInvitationUseCase;
+import tech.nvite.usecases.VisitInvitationUseCase;
 
 @RestController
 @RequestMapping("api/invitations/{ref}")
 @RequiredArgsConstructor
-class InvitationAudience {
+class InvitationController {
 
   private final VisitInvitationUseCase visitInvitationUseCase;
   private final RsvpInvitationUseCase rsvpInvitationUseCase;
   private final InvitationMapper invitationMapper;
 
   @GetMapping
-  public InvitationDetailsDto invitationDetails(
+  public InvitationDetails invitationDetails(
       @PathVariable String ref, @RequestParam(required = false) String guest) {
-    InvitationVisitor viewer =
-        Optional.ofNullable(guest)
-            .map(InvitationVisitor::withName)
-            .orElseGet(InvitationVisitor::anonymous);
-    var request = new VisitInvitationUseCase.Request(new EventReference(ref), viewer);
+    var request = new VisitInvitationUseCase.Request(ref, guest);
     var response = visitInvitationUseCase.apply(request);
     return invitationMapper.toDto(response.evt());
   }
 
   @PostMapping("/responses")
-  public void rsvp(@PathVariable String ref, @RequestBody RsvpRequestDto rsvpRequest) {
-    var rsvpAnswer =
-        "ACCEPTED".equalsIgnoreCase(rsvpRequest.answer())
-            ? new RsvpAnswer.Accepted()
-            : new RsvpAnswer.Declined();
-
+  public void rsvp(@PathVariable String ref, @RequestBody RsvpRequest rsvpRequest) {
     var request =
         new RsvpInvitationUseCase.Request(
-            new EventReference(ref),
-            rsvpRequest.guestName(),
-            rsvpAnswer,
-            rsvpRequest.partnerName());
+            ref, rsvpRequest.guestName(), rsvpRequest.answer, rsvpRequest.partnerName());
 
     rsvpInvitationUseCase.apply(request);
   }
 
-  public record RsvpRequestDto(String guestName, String answer, String partnerName) {}
+  public record RsvpRequest(String guestName, String answer, String partnerName) {}
 }

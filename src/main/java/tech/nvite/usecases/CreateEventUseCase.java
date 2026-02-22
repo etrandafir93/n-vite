@@ -1,30 +1,31 @@
-package tech.nvite.domain.usecases;
+package tech.nvite.usecases;
 
-import com.mongodb.lang.Nullable;
+import jakarta.annotation.Nullable;
 import java.time.Instant;
+import java.util.UUID;
 import java.util.function.Function;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.With;
 import lombok.extern.slf4j.Slf4j;
-import tech.nvite.app.UseCase;
-import tech.nvite.domain.model.Event;
-import tech.nvite.domain.model.EventReference;
-import tech.nvite.domain.model.EventStatus;
-import tech.nvite.domain.model.Events;
+import tech.nvite.domain.Event;
+import tech.nvite.domain.EventStatus;
+import tech.nvite.domain.Events;
+import tech.nvite.infra.UseCase;
+import tech.nvite.infra.security.CurrentUser;
 
 @Slf4j
 @UseCase
 @RequiredArgsConstructor
-public class EditEventUseCase implements Function<EditEventUseCase.Request, EventReference> {
+public class CreateEventUseCase implements Function<CreateEventUseCase.Request, String> {
 
   private final Events events;
+  private final CurrentUser currentUser;
 
   @Override
-  public EventReference apply(EditEventUseCase.Request req) {
-    log.info("Editing event {}", req.reference());
-    var existing = events.findOrThrow(req.reference());
+  public String apply(CreateEventUseCase.Request req) {
+    log.info("Creating event for {} and {}", req.groomName(), req.brideName());
 
+    var eventReference = newEventReference(req.brideName(), req.groomName());
     var evt =
         Event.builder()
             .groomName(req.groomName())
@@ -46,19 +47,22 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
             .theme(req.theme())
-            .status(req.status() != null ? req.status() : existing.status())
-            .reference(req.reference())
-            .createdBy(existing.createdBy())
-            .created(existing.created())
+            .status(req.status() != null ? req.status() : EventStatus.LIVE)
+            .eventReference(eventReference)
+            .createdBy(currentUser.get().id())
             .build();
 
-    EventReference ref = events.edit(evt);
-    log.info("Event edited {}", ref.value());
-    return ref;
+    events.create(evt);
+    log.info("Event created eventReference={}", eventReference);
+    return eventReference;
+  }
+
+  private String newEventReference(String bride, String groom) {
+    String slug = "%s-and-%s".formatted(bride.replace(" ", ""), groom.replace(" ", ""));
+    return events.find(slug).isPresent() ? UUID.randomUUID().toString() : slug;
   }
 
   public record Request(
-      @With @NonNull EventReference reference,
       @NonNull String groomName,
       @NonNull String brideName,
       @NonNull Instant eventDateTime,
@@ -70,12 +74,12 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Even
       String ceremonyAddress,
       String ceremonyTime,
       String ceremonyPhotoUrl,
-      String ceremonyMapUrl,
+      @Nullable String ceremonyMapUrl,
       @NonNull String receptionVenue,
       String receptionAddress,
       String receptionTime,
       String receptionPhotoUrl,
-      String receptionMapUrl,
+      @Nullable String receptionMapUrl,
       String rsvpDeadline,
       @Nullable String theme,
       @NonNull EventStatus status) {}

@@ -3,7 +3,7 @@ package tech.nvite.host;
 import jakarta.annotation.Nullable;
 import java.time.Instant;
 import lombok.NonNull;
-import tech.nvite.domain.model.EventStatus;
+import tech.nvite.domain.EventStatus;
 
 record EventFormRequest(
     @NonNull String groomName,

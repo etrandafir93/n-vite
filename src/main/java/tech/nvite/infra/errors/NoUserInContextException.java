@@ -1,4 +1,4 @@
-package tech.nvite.app.errors;
+package tech.nvite.infra.errors;
 
 public class NoUserInContextException extends RuntimeException {
   public NoUserInContextException() {
