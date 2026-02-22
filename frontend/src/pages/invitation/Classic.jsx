@@ -200,7 +200,9 @@ const css = `
   .cl-btn-secondary:hover { border-color:rgba(201,169,110,0.4); color:#555; }
 `
 
-function RsvpForm({ rsvpDeadline }) {
+function RsvpForm({ rsvpDeadline, invitationRef }) {
+  const [guestName, setGuestName]   = useState('')
+  const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending]   = useState(null)
   const [menu, setMenu]             = useState(null)
   const [plusOne, setPlusOne]       = useState(null)
@@ -208,9 +210,66 @@ function RsvpForm({ rsvpDeadline }) {
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport]   = useState(null)
   const [notes, setNotes]           = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted]   = useState(false)
+
+  const handleSubmit = async (answer) => {
+    if (!guestName.trim()) {
+      alert('Please enter your name')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestName: guestName.trim(),
+          answer,
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit RSVP')
+      }
+
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Error submitting RSVP:', error)
+      alert('Failed to submit RSVP. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="cl-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+        <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: '#1c1c1c', marginBottom: '1rem' }}>
+          Thank You!
+        </h3>
+        <p style={{ fontSize: '.9rem', color: '#666', lineHeight: '1.6' }}>
+          Your response has been recorded. We look forward to celebrating with you!
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="cl-form">
+      <div className="cl-field">
+        <label className="cl-label">Your Name *</label>
+        <input
+          className="cl-number-input"
+          type="text"
+          placeholder="Enter your full name"
+          value={guestName}
+          onChange={e => setGuestName(e.target.value)}
+          style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
+        />
+      </div>
       <div className="cl-field">
         <label className="cl-label">Will you attend?</label>
         <div className="cl-toggle-row">
@@ -219,18 +278,28 @@ function RsvpForm({ rsvpDeadline }) {
         </div>
       </div>
       <div className="cl-field">
+        <label className="cl-label">Attending with a +1?</label>
+        <div className="cl-toggle-row">
+          <button className={`cl-toggle-btn${plusOne==='yes'?' active':''}`} onClick={()=>setPlusOne('yes')}>Yes</button>
+          <button className={`cl-toggle-btn${plusOne==='no'?' active':''}`}  onClick={()=>setPlusOne('no')}>No</button>
+        </div>
+        {plusOne === 'yes' && (
+          <input
+            className="cl-number-input"
+            type="text"
+            placeholder="Partner's name"
+            value={partnerName}
+            onChange={e => setPartnerName(e.target.value)}
+            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+          />
+        )}
+      </div>
+      <div className="cl-field">
         <label className="cl-label">Menu Preference</label>
         <div className="cl-menu-row">
           {['Meat','Fish','Vegetarian'].map(m=>(
             <button key={m} className={`cl-menu-btn${menu===m?' active':''}`} onClick={()=>setMenu(m)}>{m}</button>
           ))}
-        </div>
-      </div>
-      <div className="cl-field">
-        <label className="cl-label">Attending with a +1?</label>
-        <div className="cl-toggle-row">
-          <button className={`cl-toggle-btn${plusOne==='yes'?' active':''}`} onClick={()=>setPlusOne('yes')}>Yes</button>
-          <button className={`cl-toggle-btn${plusOne==='no'?' active':''}`}  onClick={()=>setPlusOne('no')}>No</button>
         </div>
       </div>
       <div className="cl-field">
@@ -258,8 +327,20 @@ function RsvpForm({ rsvpDeadline }) {
         <textarea className="cl-textarea" placeholder="Dietary restrictions, special requests, or a note for the couple..." value={notes} onChange={e=>setNotes(e.target.value)}/>
       </div>
       <div className="cl-cta-row">
-        <button className="cl-btn-primary">Accept Invitation</button>
-        <button className="cl-btn-secondary">Decline</button>
+        <button
+          className="cl-btn-primary"
+          onClick={() => handleSubmit('ACCEPTED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Accept Invitation'}
+        </button>
+        <button
+          className="cl-btn-secondary"
+          onClick={() => handleSubmit('DECLINED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Decline'}
+        </button>
       </div>
     </div>
   )
@@ -380,7 +461,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
             <h2 className="cl-rsvp__title">Kindly Reply</h2>
             {inv.rsvpDeadline && <p className="cl-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
-          <RsvpForm rsvpDeadline={inv.rsvpDeadline}/>
+          <RsvpForm rsvpDeadline={inv.rsvpDeadline} invitationRef={invitationRef || slug}/>
         </div>
       </div>
     </div>

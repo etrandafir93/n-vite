@@ -1,11 +1,11 @@
-package tech.nvite.infra;
+package tech.nvite.infra.security;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-class V2PageController {
+class PageForwards {
 
   @GetMapping("/")
   String home() {

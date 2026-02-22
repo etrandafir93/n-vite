@@ -215,7 +215,9 @@ const css = `
   .nat-btn-secondary:hover { border-color: rgba(122,158,126,0.4); color: #5a7d5e; }
 `
 
-function RsvpForm() {
+function RsvpForm({ invitationRef }) {
+  const [guestName, setGuestName] = useState('')
+  const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
   const [menu, setMenu] = useState(null)
   const [plusOne, setPlusOne] = useState(null)
@@ -223,9 +225,66 @@ function RsvpForm() {
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport] = useState(null)
   const [notes, setNotes] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = async (answer) => {
+    if (!guestName.trim()) {
+      alert('Please enter your name')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestName: guestName.trim(),
+          answer,
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit RSVP')
+      }
+
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Error submitting RSVP:', error)
+      alert('Failed to submit RSVP. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="nat-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+        <h3 style={{ fontSize: '1.8rem', fontWeight: '600', color: '#2d5016', marginBottom: '1rem' }}>
+          Thank You!
+        </h3>
+        <p style={{ fontSize: '.9rem', color: '#5a7a3c', lineHeight: '1.6' }}>
+          Your response has been received. We look forward to seeing you!
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="nat-form">
+      <div className="nat-field">
+        <label className="nat-label">Your Name *</label>
+        <input
+          className="nat-number-input"
+          type="text"
+          placeholder="Enter your full name"
+          value={guestName}
+          onChange={e => setGuestName(e.target.value)}
+          style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
+        />
+      </div>
       <div className="nat-field">
         <label className="nat-label">Will you attend?</label>
         <div className="nat-toggle-row">
@@ -234,18 +293,28 @@ function RsvpForm() {
         </div>
       </div>
       <div className="nat-field">
+        <label className="nat-label">Bringing a +1?</label>
+        <div className="nat-toggle-row">
+          <button className={`nat-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+          <button className={`nat-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+        </div>
+        {plusOne === 'yes' && (
+          <input
+            className="nat-number-input"
+            type="text"
+            placeholder="Partner's name"
+            value={partnerName}
+            onChange={e => setPartnerName(e.target.value)}
+            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+          />
+        )}
+      </div>
+      <div className="nat-field">
         <label className="nat-label">Menu preference</label>
         <div className="nat-menu-row">
           {['Meat', 'Fish', 'Vegetarian'].map(m => (
             <button key={m} className={`nat-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
           ))}
-        </div>
-      </div>
-      <div className="nat-field">
-        <label className="nat-label">Bringing a +1?</label>
-        <div className="nat-toggle-row">
-          <button className={`nat-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`nat-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
         </div>
       </div>
       <div className="nat-field">
@@ -275,8 +344,20 @@ function RsvpForm() {
         <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="nat-cta-row">
-        <button className="nat-btn-primary">Accept Invitation</button>
-        <button className="nat-btn-secondary">Decline</button>
+        <button
+          className="nat-btn-primary"
+          onClick={() => handleSubmit('ACCEPTED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Accept Invitation'}
+        </button>
+        <button
+          className="nat-btn-secondary"
+          onClick={() => handleSubmit('DECLINED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Decline'}
+        </button>
       </div>
     </div>
   )
@@ -395,7 +476,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
             <h2 className="nat-rsvp__title">Kindly Reply</h2>
             {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
-          <RsvpForm />
+          <RsvpForm invitationRef={invitationRef || slug} />
         </div>
       </div>
     </div>

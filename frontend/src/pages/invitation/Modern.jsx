@@ -204,7 +204,9 @@ const css = `
   .mdn-btn-secondary:hover { border-color: rgba(74,104,128,0.5); color: #8ab0c8; }
 `
 
-function RsvpForm() {
+function RsvpForm({ invitationRef }) {
+  const [guestName, setGuestName] = useState('')
+  const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
   const [menu, setMenu] = useState(null)
   const [plusOne, setPlusOne] = useState(null)
@@ -212,37 +214,104 @@ function RsvpForm() {
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport] = useState(null)
   const [notes, setNotes] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = async (answer) => {
+    if (!guestName.trim()) {
+      alert('Please enter your name')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestName: guestName.trim(),
+          answer,
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit RSVP')
+      }
+
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Error submitting RSVP:', error)
+      alert('Failed to submit RSVP. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="mdn-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+        <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#fff', marginBottom: '1rem', textTransform: 'uppercase' }}>
+          Confirmed!
+        </h3>
+        <p style={{ fontSize: '.9rem', color: '#6a90b0', lineHeight: '1.6' }}>
+          Your response has been recorded. See you soon!
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="mdn-form">
       <div className="mdn-field">
-        <label className="mdn-label">Will you attend?</label>
-        <div className="mdn-toggle-row">
-          <button className={`spt-toggle-btn${attending === 'yes' ? ' active' : ''}`} onClick={() => setAttending('yes')}>Yes, I'm in</button>
-          <button className={`spt-toggle-btn${attending === 'no' ? ' active' : ''}`} onClick={() => setAttending('no')}>Can't make it</button>
-        </div>
+        <label className="mdn-label">Your Name *</label>
+        <input
+          className="mdn-number-input"
+          type="text"
+          placeholder="Enter your full name"
+          value={guestName}
+          onChange={e => setGuestName(e.target.value)}
+          style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
+        />
       </div>
       <div className="mdn-field">
-        <label className="mdn-label">Menu preference</label>
-        <div className="mdn-menu-row">
-          {['Meat', 'Fish', 'Vegetarian'].map(m => (
-            <button key={m} className={`spt-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
-          ))}
+        <label className="mdn-label">Will you attend?</label>
+        <div className="mdn-toggle-row">
+          <button className={`mdn-toggle-btn${attending === 'yes' ? ' active' : ''}`} onClick={() => setAttending('yes')}>Yes, I'm in</button>
+          <button className={`mdn-toggle-btn${attending === 'no' ? ' active' : ''}`} onClick={() => setAttending('no')}>Can't make it</button>
         </div>
       </div>
       <div className="mdn-field">
         <label className="mdn-label">Coming with a +1?</label>
         <div className="mdn-toggle-row">
-          <button className={`spt-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`spt-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+          <button className={`mdn-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+          <button className={`mdn-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+        </div>
+        {plusOne === 'yes' && (
+          <input
+            className="mdn-number-input"
+            type="text"
+            placeholder="Partner's name"
+            value={partnerName}
+            onChange={e => setPartnerName(e.target.value)}
+            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+          />
+        )}
+      </div>
+      <div className="mdn-field">
+        <label className="mdn-label">Menu preference</label>
+        <div className="mdn-menu-row">
+          {['Meat', 'Fish', 'Vegetarian'].map(m => (
+            <button key={m} className={`mdn-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
+          ))}
         </div>
       </div>
       <div className="mdn-field">
         <label className="mdn-label">Bringing kids?</label>
         <div className="mdn-children-row">
           <div className="mdn-toggle-row">
-            <button className={`spt-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
-            <button className={`spt-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+            <button className={`mdn-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
+            <button className={`mdn-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
           </div>
           {children === 'yes' && (
             <>
@@ -255,8 +324,8 @@ function RsvpForm() {
       <div className="mdn-field">
         <label className="mdn-label">Need transportation?</label>
         <div className="mdn-toggle-row">
-          <button className={`spt-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes</button>
-          <button className={`spt-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No</button>
+          <button className={`mdn-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes</button>
+          <button className={`mdn-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No</button>
         </div>
       </div>
       <div className="mdn-field">
@@ -264,8 +333,20 @@ function RsvpForm() {
         <textarea className="mdn-textarea" placeholder="Anything you'd like us to know..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="mdn-cta-row">
-        <button className="mdn-btn-primary">Accept</button>
-        <button className="mdn-btn-secondary">Decline</button>
+        <button
+          className="mdn-btn-primary"
+          onClick={() => handleSubmit('ACCEPTED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Accept'}
+        </button>
+        <button
+          className="mdn-btn-secondary"
+          onClick={() => handleSubmit('DECLINED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Decline'}
+        </button>
       </div>
     </div>
   )
@@ -403,7 +484,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
             <h2 className="mdn-rsvp__title">Your <span>Response</span></h2>
             {inv.rsvpDeadline && <p className="mdn-rsvp__sub">Deadline · {inv.rsvpDeadline}</p>}
           </div>
-          <RsvpForm />
+          <RsvpForm invitationRef={invitationRef || slug} />
         </div>
       </div>
     </div>

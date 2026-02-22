@@ -81,6 +81,22 @@ function ImageUpload({ value, onChange, label }) {
     const file = e.target.files?.[0]
     if (!file) return
 
+    // Validate file type on frontend
+    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp']
+    if (!validTypes.includes(file.type)) {
+      alert('Please upload a PNG, JPG, JPEG, or BMP image.')
+      e.target.value = '' // Reset the file input
+      return
+    }
+
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024 // 10MB
+    if (file.size > maxSize) {
+      alert('Image size must be less than 10MB.')
+      e.target.value = '' // Reset the file input
+      return
+    }
+
     setUploading(true)
     const formData = new FormData()
     formData.append('file', file)
@@ -90,14 +106,18 @@ function ImageUpload({ value, onChange, label }) {
         method: 'POST',
         body: formData,
       })
-      if (!res.ok) throw new Error('Upload failed')
+      if (!res.ok) {
+        const errorText = await res.text()
+        throw new Error(errorText || 'Upload failed')
+      }
       const data = await res.json()
       onChange(data.url)
     } catch (err) {
       console.error('Upload error:', err)
-      alert('Failed to upload image. Please try again.')
+      alert(err.message || 'Failed to upload image. Please try again.')
     } finally {
       setUploading(false)
+      e.target.value = '' // Reset the file input
     }
   }
 
@@ -120,7 +140,7 @@ function ImageUpload({ value, onChange, label }) {
         {uploading ? 'Uploading...' : value ? 'Change Image' : `Upload ${label}`}
         <input
           type="file"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/jpg,image/bmp"
           onChange={handleFileChange}
           disabled={uploading}
           style={{ display: 'none' }}

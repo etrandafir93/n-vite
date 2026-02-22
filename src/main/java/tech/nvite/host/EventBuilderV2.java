@@ -176,13 +176,21 @@ class EventBuilderV2 {
     int declinedCount = countAction(interactions, "DECLINED");
     int visitedCount = countAction(interactions, "VISITED");
 
+    // Calculate total people attending (guests + partners)
+    int peopleAttending =
+        interactions.stream()
+            .filter(i -> "ACCEPTED".equalsIgnoreCase(i.action()))
+            .mapToInt(i -> 1 + (i.partnerName() != null ? 1 : 0))
+            .sum();
+
     var stats =
         new AnalyticsStats(
             interactions.size(),
             acceptedCount,
             declinedCount,
             interactions.size() - acceptedCount - declinedCount,
-            visitedCount);
+            visitedCount,
+            peopleAttending);
 
     var responses =
         interactions.stream()
@@ -197,6 +205,7 @@ class EventBuilderV2 {
                         "ACCEPTED".equalsIgnoreCase(i.action()),
                         null,
                         i.partnerName() != null,
+                        i.partnerName(),
                         null,
                         i.timestamp()))
             .toList();
@@ -228,13 +237,19 @@ class EventBuilderV2 {
       Event event, AnalyticsStats stats, List<GuestResponse> responses, List<VisitEntry> visits) {}
 
   public record AnalyticsStats(
-      int totalInvited, int accepted, int declined, int pending, int totalViews) {}
+      int totalInvited,
+      int accepted,
+      int declined,
+      int pending,
+      int totalViews,
+      int peopleAttending) {}
 
   public record GuestResponse(
       String guestName,
       boolean attending,
       @Nullable String menuPreference,
       boolean plusOne,
+      @Nullable String partnerName,
       @Nullable Integer children,
       Instant timestamp) {}
 

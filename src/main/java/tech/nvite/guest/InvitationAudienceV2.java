@@ -2,14 +2,12 @@ package tech.nvite.guest;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import tech.nvite.domain.model.EventReference;
 import tech.nvite.domain.model.InvitationVisitor;
@@ -26,7 +24,7 @@ public class InvitationAudienceV2 {
   private final RsvpInvitationUseCase rsvpInvitationUseCase;
   private final InvitationMapper invitationMapper;
 
-  @GetMapping(produces = "application/json")
+  @GetMapping
   public InvitationDetailsDto invitationDetails(
       @PathVariable String ref, @RequestParam(required = false) String guest) {
     InvitationVisitor viewer =
@@ -39,7 +37,6 @@ public class InvitationAudienceV2 {
   }
 
   @PostMapping("/responses")
-  @ResponseStatus(HttpStatus.CREATED)
   public void rsvp(@PathVariable String ref, @RequestBody RsvpRequestDto rsvpRequest) {
     var rsvpAnswer =
         "ACCEPTED".equalsIgnoreCase(rsvpRequest.answer())

@@ -148,6 +148,11 @@
   color: #ea580c;
 }
 
+.ea-stat-card__icon--teal {
+  background: #f0fdfa;
+  color: #0d9488;
+}
+
 .ea-stat-card__content {
   flex: 1;
 }
@@ -329,6 +334,54 @@
 
 .ea-table tbody tr:hover {
   background: var(--light-bg);
+}
+
+.ea-table tbody tr.ea-row-expanded {
+  background: rgba(124, 58, 237, 0.04);
+}
+
+.ea-table tbody tr.ea-row-details {
+  background: var(--light-bg);
+  border-left: 3px solid #7c3aed;
+}
+
+.ea-table tbody tr.ea-row-details:hover {
+  background: var(--light-bg);
+}
+
+.ea-table tbody tr.ea-row-details td {
+  padding: 0;
+  border-bottom: 1px solid var(--light-bg2);
+}
+
+.ea-details-content {
+  padding: 1.5rem 1rem;
+}
+
+.ea-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.ea-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ea-detail-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.ea-detail-value {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  font-weight: 500;
 }
 
 .ea-badge {

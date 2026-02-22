@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Slf4j
 @Component
-public class HttpLoggingInterceptor implements HandlerInterceptor {
+class HttpLoggingInterceptor implements HandlerInterceptor {
 
   @Override
   public boolean preHandle(

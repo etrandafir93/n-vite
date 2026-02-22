@@ -216,7 +216,9 @@ const css = `
   .rom-btn-secondary:hover { border-color: rgba(184,86,112,0.4); color: #7a2040; }
 `
 
-function RsvpForm() {
+function RsvpForm({ invitationRef }) {
+  const [guestName, setGuestName] = useState('')
+  const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
   const [menu, setMenu] = useState(null)
   const [plusOne, setPlusOne] = useState(null)
@@ -224,9 +226,66 @@ function RsvpForm() {
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport] = useState(null)
   const [notes, setNotes] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = async (answer) => {
+    if (!guestName.trim()) {
+      alert('Please enter your name')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestName: guestName.trim(),
+          answer,
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit RSVP')
+      }
+
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Error submitting RSVP:', error)
+      alert('Failed to submit RSVP. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="rom-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+        <h3 style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.8rem', color: '#b85670', marginBottom: '1rem' }}>
+          Thank You!
+        </h3>
+        <p style={{ fontSize: '.9rem', color: '#9b7080', lineHeight: '1.6' }}>
+          Your response has been recorded with love. We look forward to celebrating with you!
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="rom-form">
+      <div className="rom-field">
+        <label className="rom-label">Your Name *</label>
+        <input
+          className="rom-number-input"
+          type="text"
+          placeholder="Enter your full name"
+          value={guestName}
+          onChange={e => setGuestName(e.target.value)}
+          style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
+        />
+      </div>
       <div className="rom-field">
         <label className="rom-label">Will you be joining us?</label>
         <div className="rom-toggle-row">
@@ -235,18 +294,28 @@ function RsvpForm() {
         </div>
       </div>
       <div className="rom-field">
+        <label className="rom-label">Will you bring a +1?</label>
+        <div className="rom-toggle-row">
+          <button className={`rom-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+          <button className={`rom-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+        </div>
+        {plusOne === 'yes' && (
+          <input
+            className="rom-number-input"
+            type="text"
+            placeholder="Partner's name"
+            value={partnerName}
+            onChange={e => setPartnerName(e.target.value)}
+            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+          />
+        )}
+      </div>
+      <div className="rom-field">
         <label className="rom-label">Your menu preference</label>
         <div className="rom-menu-row">
           {['Meat', 'Fish', 'Vegetarian'].map(m => (
             <button key={m} className={`rom-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
           ))}
-        </div>
-      </div>
-      <div className="rom-field">
-        <label className="rom-label">Will you bring a +1?</label>
-        <div className="rom-toggle-row">
-          <button className={`rom-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`rom-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
         </div>
       </div>
       <div className="rom-field">
@@ -276,8 +345,20 @@ function RsvpForm() {
         <textarea className="rom-textarea" placeholder="Dietary needs, special requests, or a loving note..." value={notes} onChange={e => setNotes(e.target.value)} />
       </div>
       <div className="rom-cta-row">
-        <button className="rom-btn-primary">Accept with Love</button>
-        <button className="rom-btn-secondary">Decline</button>
+        <button
+          className="rom-btn-primary"
+          onClick={() => handleSubmit('ACCEPTED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Accept with Love'}
+        </button>
+        <button
+          className="rom-btn-secondary"
+          onClick={() => handleSubmit('DECLINED')}
+          disabled={submitting}
+        >
+          {submitting ? 'Submitting...' : 'Decline'}
+        </button>
       </div>
     </div>
   )
@@ -395,7 +476,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
             <h2 className="rom-rsvp__title">Kindly Reply</h2>
             {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
           </div>
-          <RsvpForm />
+          <RsvpForm invitationRef={invitationRef || slug} />
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ export default function EventAnalytics() {
   const [analytics, setAnalytics] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [expandedRows, setExpandedRows] = useState(new Set())
 
   useEffect(() => {
     fetch(`/api/events/${reference}/dashboard`)
@@ -45,6 +46,18 @@ export default function EventAnalytics() {
 
   const { event, stats, responses, visits } = analytics
 
+  const toggleRow = (idx) => {
+    setExpandedRows(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(idx)) {
+        newSet.delete(idx)
+      } else {
+        newSet.add(idx)
+      }
+      return newSet
+    })
+  }
+
   // Calculate percentages for pie chart
   const total = stats.totalInvited || 1
   const acceptedPct = ((stats.accepted / total) * 100).toFixed(1)
@@ -72,15 +85,12 @@ export default function EventAnalytics() {
           <div className="ea-stat-card">
             <div className="ea-stat-card__icon ea-stat-card__icon--blue">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
             <div className="ea-stat-card__content">
               <div className="ea-stat-card__value">{stats.totalInvited}</div>
-              <div className="ea-stat-card__label">Total Invited</div>
+              <div className="ea-stat-card__label">Invitations Sent</div>
             </div>
           </div>
 
@@ -93,6 +103,21 @@ export default function EventAnalytics() {
             <div className="ea-stat-card__content">
               <div className="ea-stat-card__value">{stats.accepted}</div>
               <div className="ea-stat-card__label">Accepted</div>
+            </div>
+          </div>
+
+          <div className="ea-stat-card">
+            <div className="ea-stat-card__icon ea-stat-card__icon--teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <div className="ea-stat-card__content">
+              <div className="ea-stat-card__value">{stats.peopleAttending}</div>
+              <div className="ea-stat-card__label">People Attending</div>
             </div>
           </div>
 
@@ -250,28 +275,92 @@ export default function EventAnalytics() {
               <table className="ea-table">
                 <thead>
                   <tr>
+                    <th style={{ width: '40px' }}></th>
                     <th>Guest Name</th>
                     <th>Response</th>
-                    <th>Menu</th>
                     <th>Plus One</th>
-                    <th>Children</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {responses.map((response, idx) => (
-                    <tr key={idx}>
-                      <td>{response.guestName || 'Anonymous'}</td>
-                      <td>
-                        <span className={`ea-badge ea-badge--${response.attending ? 'success' : 'danger'}`}>
-                          {response.attending ? 'Accepted' : 'Declined'}
-                        </span>
-                      </td>
-                      <td>{response.menuPreference || '-'}</td>
-                      <td>{response.plusOne ? 'Yes' : 'No'}</td>
-                      <td>{response.children || '-'}</td>
-                      <td>{new Date(response.timestamp).toLocaleDateString()}</td>
-                    </tr>
+                    <>
+                      <tr
+                        key={idx}
+                        onClick={() => toggleRow(idx)}
+                        style={{ cursor: 'pointer' }}
+                        className={expandedRows.has(idx) ? 'ea-row-expanded' : ''}
+                      >
+                        <td>
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            style={{
+                              width: '16px',
+                              height: '16px',
+                              transition: 'transform 0.2s',
+                              transform: expandedRows.has(idx) ? 'rotate(90deg)' : 'rotate(0deg)'
+                            }}
+                          >
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
+                        </td>
+                        <td>{response.guestName || 'Anonymous'}</td>
+                        <td>
+                          <span className={`ea-badge ea-badge--${response.attending ? 'success' : 'danger'}`}>
+                            {response.attending ? 'Accepted' : 'Declined'}
+                          </span>
+                        </td>
+                        <td>{response.plusOne ? 'Yes' : 'No'}</td>
+                        <td>{new Date(response.timestamp).toLocaleDateString()}</td>
+                      </tr>
+                      {expandedRows.has(idx) && (
+                        <tr key={`${idx}-details`} className="ea-row-details">
+                          <td colSpan="5">
+                            <div className="ea-details-content">
+                              <div className="ea-details-grid">
+                                <div className="ea-detail-item">
+                                  <span className="ea-detail-label">Guest Name:</span>
+                                  <span className="ea-detail-value">{response.guestName || 'Anonymous'}</span>
+                                </div>
+                                {response.partnerName && (
+                                  <div className="ea-detail-item">
+                                    <span className="ea-detail-label">Partner Name:</span>
+                                    <span className="ea-detail-value">{response.partnerName}</span>
+                                  </div>
+                                )}
+                                <div className="ea-detail-item">
+                                  <span className="ea-detail-label">Response:</span>
+                                  <span className="ea-detail-value">
+                                    <span className={`ea-badge ea-badge--${response.attending ? 'success' : 'danger'}`}>
+                                      {response.attending ? 'Accepted' : 'Declined'}
+                                    </span>
+                                  </span>
+                                </div>
+                                {response.menuPreference && (
+                                  <div className="ea-detail-item">
+                                    <span className="ea-detail-label">Menu Preference:</span>
+                                    <span className="ea-detail-value">{response.menuPreference}</span>
+                                  </div>
+                                )}
+                                {response.children && (
+                                  <div className="ea-detail-item">
+                                    <span className="ea-detail-label">Children:</span>
+                                    <span className="ea-detail-value">{response.children}</span>
+                                  </div>
+                                )}
+                                <div className="ea-detail-item">
+                                  <span className="ea-detail-label">Submitted:</span>
+                                  <span className="ea-detail-value">{new Date(response.timestamp).toLocaleString()}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))}
                 </tbody>
               </table>
