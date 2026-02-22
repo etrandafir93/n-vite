@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import tech.nvite.domain.model.Event;
 
 @Mapper(componentModel = "spring")
-public interface InvitationMapper {
+interface InvitationMapper {
 
   @Mapping(source = "eventDateTime", target = "eventDate")
   @Mapping(source = "eventLocation", target = "ceremonyVenue")

@@ -3,7 +3,7 @@ package tech.nvite.host;
 import java.time.Instant;
 import tech.nvite.domain.model.EventStatus;
 
-public record EventFormResponse(
+record EventFormResponse(
     String eventReference,
     String groomName,
     String brideName,

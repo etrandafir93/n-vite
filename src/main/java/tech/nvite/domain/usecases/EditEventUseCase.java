@@ -1,19 +1,17 @@
 package tech.nvite.domain.usecases;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.mongodb.lang.Nullable;
 import java.time.Instant;
 import java.util.function.Function;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 import tech.nvite.app.UseCase;
 import tech.nvite.domain.model.Event;
 import tech.nvite.domain.model.EventReference;
+import tech.nvite.domain.model.EventStatus;
 import tech.nvite.domain.model.Events;
-import tech.nvite.infra.security.CurrentUser;
-import tech.nvite.infra.storage.GoogleCloudStorage;
 
 @Slf4j
 @UseCase
@@ -21,70 +19,64 @@ import tech.nvite.infra.storage.GoogleCloudStorage;
 public class EditEventUseCase implements Function<EditEventUseCase.Request, EventReference> {
 
   private final Events events;
-  private final CurrentUser currentUser;
-  private final GoogleCloudStorage storage;
 
   @Override
   public EventReference apply(EditEventUseCase.Request req) {
-    log.info("Editing event {}", req);
-    String imageUrl = storage.uploadFile(req.eventBackgroundImage());
+    log.info("Editing event {}", req.reference());
+    var existing = events.findOrThrow(req.reference());
+
     var evt =
-        new Event(
-                req.groomName(),
-                req.brideName(),
-                req.eventLocation(),
-                req.eventReception(),
-                req.eventDateTime(),
-                imageUrl)
-            .withReference(req.reference())
-            .withCreatedBy(currentUser.get().id());
+        Event.builder()
+            .groomName(req.groomName())
+            .brideName(req.brideName())
+            .eventDateTime(req.eventDateTime())
+            .backgroundImage(req.backgroundImageUrl())
+            .eventLocation(req.ceremonyVenue())
+            .eventReception(req.receptionVenue())
+            .groomParents(req.groomParents())
+            .brideParents(req.brideParents())
+            .godparents(req.godparents())
+            .ceremonyAddress(req.ceremonyAddress())
+            .ceremonyTime(req.ceremonyTime())
+            .ceremonyPhotoUrl(req.ceremonyPhotoUrl())
+            .ceremonyMapUrl(req.ceremonyMapUrl())
+            .receptionAddress(req.receptionAddress())
+            .receptionTime(req.receptionTime())
+            .receptionPhotoUrl(req.receptionPhotoUrl())
+            .receptionMapUrl(req.receptionMapUrl())
+            .rsvpDeadline(req.rsvpDeadline())
+            .theme(req.theme())
+            .status(req.status() != null ? req.status() : existing.status())
+            .reference(req.reference())
+            .createdBy(existing.createdBy())
+            .created(existing.created())
+            .build();
 
     EventReference ref = events.edit(evt);
     log.info("Event edited {}", ref.value());
     return ref;
   }
 
-  @Schema(description = "Request body for editing existing wedding event")
   public record Request(
-      EventReference reference,
-      @NotBlank(message = "Groom name is required")
-          @Size(
-              min = 3,
-              max = 22,
-              message = "Groom name must be between {min} and {max} characters")
-          @Schema(description = "Name of the groom", example = "John Doe")
-          String groomName,
-      @NotBlank(message = "Bride name is required")
-          @Size(
-              min = 3,
-              max = 22,
-              message = "Bride name must be between {min} and {max} characters")
-          @Schema(description = "Name of the bride", example = "Jane Smith")
-          String brideName,
-      @NotBlank(message = "Event Location is required")
-          @Size(
-              min = 3,
-              max = 44,
-              message = "Event Location must be between {min} and {max} characters")
-          @Schema(description = "Location of the wedding event", example = "Central Park, NY")
-          String eventLocation,
-      @NotBlank(message = "Event Reception name is required")
-          @Size(
-              min = 3,
-              max = 44,
-              message = "Event Reception must be between {min} and {max} characters")
-          @Schema(
-              description = "Reception details of the wedding event",
-              example = "Rooftop Dinner")
-          String eventReception,
-      @NotBlank(message = "Event Date name is required")
-          @Size(
-              min = 3,
-              max = 44,
-              message = "Event Date must be between {min} and {max} characters")
-          @Schema(
-              description = "Date and time of the wedding event",
-              example = "2024-07-24T14:00:00")
-          Instant eventDateTime,
-      MultipartFile eventBackgroundImage) {}
+      @With @NonNull EventReference reference,
+      @NonNull String groomName,
+      @NonNull String brideName,
+      @NonNull Instant eventDateTime,
+      @NonNull String backgroundImageUrl,
+      String groomParents,
+      String brideParents,
+      String godparents,
+      @NonNull String ceremonyVenue,
+      String ceremonyAddress,
+      String ceremonyTime,
+      String ceremonyPhotoUrl,
+      String ceremonyMapUrl,
+      @NonNull String receptionVenue,
+      String receptionAddress,
+      String receptionTime,
+      String receptionPhotoUrl,
+      String receptionMapUrl,
+      String rsvpDeadline,
+      @Nullable String theme,
+      @NonNull EventStatus status) {}
 }

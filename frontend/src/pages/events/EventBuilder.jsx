@@ -74,7 +74,7 @@ function Section({ title, subtitle, children }) {
   )
 }
 
-function ImageUpload({ value, onChange, label }) {
+function ImageUpload({ value, onChange, label, required }) {
   const [uploading, setUploading] = useState(false)
 
   const handleFileChange = async (e) => {
@@ -137,12 +137,13 @@ function ImageUpload({ value, onChange, label }) {
         </div>
       )}
       <label className="eb-upload-btn">
-        {uploading ? 'Uploading...' : value ? 'Change Image' : `Upload ${label}`}
+        {uploading ? 'Uploading...' : value ? 'Change Image' : `Upload ${label}${required ? ' *' : ''}`}
         <input
           type="file"
           accept="image/png,image/jpeg,image/jpg,image/bmp"
           onChange={handleFileChange}
           disabled={uploading}
+          required={required && !value}
           style={{ display: 'none' }}
         />
       </label>
@@ -219,10 +220,8 @@ export default function EventBuilder() {
     try {
       if (isEdit) {
         // Draft already exists, just enable it
-        const res = await fetch(`/api/events/${eventReference}`, {
+        const res = await fetch(`/api/events/${eventReference}/enable`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'LIVE' }),
         })
         if (!res.ok) throw new Error('Failed to enable invitation')
       } else {
@@ -239,10 +238,8 @@ export default function EventBuilder() {
         const reference = data.value || data
 
         // Now enable the draft
-        const enableRes = await fetch(`/api/events/${reference}`, {
+        const enableRes = await fetch(`/api/events/${reference}/enable`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'LIVE' }),
         })
         if (!enableRes.ok) throw new Error('Failed to enable invitation')
       }
@@ -339,8 +336,8 @@ export default function EventBuilder() {
             <Field label="Event Date & Time" required>
               <Input type="datetime-local" value={form.eventDateTime} onChange={set('eventDateTime')} required />
             </Field>
-            <Field label="Background Image" hint="Hero image for the invitation">
-              <ImageUpload value={form.backgroundImageUrl} onChange={set('backgroundImageUrl')} label="Background" />
+            <Field label="Background Image" required hint="Hero image for the invitation">
+              <ImageUpload value={form.backgroundImageUrl} onChange={set('backgroundImageUrl')} label="Background" required />
             </Field>
           </Section>
 

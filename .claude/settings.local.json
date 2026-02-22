@@ -15,7 +15,8 @@
       "Bash(npm run build:*)",
       "Bash(mvnw.cmd compile:*)",
       "Bash(.mvnw.cmd compile)",
-      "Bash(del \"src\\main\\java\\tech\\nvite\\guest\\InvitationAudienceUI.java\")"
+      "Bash(del \"src\\main\\java\\tech\\nvite\\guest\\InvitationAudienceUI.java\")",
+      "Bash(./mvnw.cmd test:*)"
     ],
     "deny": [],
     "ask": []

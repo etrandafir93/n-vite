@@ -1,6 +1,5 @@
 package tech.nvite.domain.usecases;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +30,5 @@ public class DeleteEventUseCase implements Consumer<DeleteEventUseCase.Request> 
     log.info("Event deleted {}", req.reference());
   }
 
-  @Schema(description = "Request body for deleting existing wedding event")
   public record Request(EventReference reference) {}
 }

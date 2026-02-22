@@ -243,10 +243,8 @@ function EventCard({ event, onDelete, onEnable }) {
   }
 
   const handleEnable = () => {
-    fetch(`/api/events/${event.reference}`, {
+    fetch(`/api/events/${event.reference}/enable`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: 'LIVE' })
     })
       .then(r => r.json())
       .then(() => onEnable(event.reference))

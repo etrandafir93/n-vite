@@ -18,7 +18,7 @@ import tech.nvite.domain.usecases.VisitInvitationUseCase;
 @RestController
 @RequestMapping("api/invitations/{ref}")
 @RequiredArgsConstructor
-public class InvitationAudienceV2 {
+class InvitationAudience {
 
   private final VisitInvitationUseCase visitInvitationUseCase;
   private final RsvpInvitationUseCase rsvpInvitationUseCase;

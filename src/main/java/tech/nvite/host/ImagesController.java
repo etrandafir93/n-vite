@@ -11,7 +11,7 @@ import tech.nvite.infra.storage.GoogleCloudStorage;
 @RestController
 @RequestMapping("api/upload")
 @RequiredArgsConstructor
-class ImageUploadV2 {
+class ImagesController {
 
   private final GoogleCloudStorage storage;
 
