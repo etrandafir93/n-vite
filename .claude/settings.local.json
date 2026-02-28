@@ -18,7 +18,15 @@
       "Bash(del \"src\\main\\java\\tech\\nvite\\guest\\InvitationAudienceUI.java\")",
       "Bash(./mvnw.cmd test:*)",
       "Bash(del \"D:\\repos\\n-vite\\src\\main\\java\\tech\\nvite\\domain\\EventReference.java\")",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(mvn clean:*)",
+      "Bash(chmod:*)",
+      "Bash(./mvnw:*)",
+      "Bash(JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-17.0.17\" ./mvnw clean install:*)",
+      "Bash(export JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-21.0.9\")",
+      "Bash(export PATH=\"$JAVA_HOME/bin:$PATH\")",
+      "Bash(java -version:*)",
+      "Bash(xargs cat:*)"
     ],
     "deny": [],
     "ask": []

@@ -1987,3 +1987,6 @@ build/
 # Ignore NUL files
 NUL
 nul
+
+# OpenAPI Generated Sources
+target/generated-sources/
