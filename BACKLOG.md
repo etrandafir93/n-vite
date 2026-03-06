@@ -5,15 +5,28 @@
 
 ---
 
-## 🐛 Bug Fixes
+## 📋 Feature Development — Organized by Vertical Slices
 
-- [x] **Fix "Enable" button visibility logic on dashboard** — when a draft event exists, the button visibility is inverted: already published (LIVE) events incorrectly show an "Enable" button, while the draft event (which actually needs to be enabled/published) doesn't show the button at all; the logic needs to be fixed so only DRAFT events show the "Enable" button, not LIVE ones
+### 📝 Invitation Lifecycle (Draft → Live → Past)
+
+**Draft Mode**
+- [x] **Fix "Enable" button visibility logic on dashboard** — ✅ COMPLETE — only DRAFT events show the "Enable" button, not LIVE ones
+- [ ] **Hide share button on dashboard for DRAFT invitations** — draft invitations should not show the share button on the dashboard; only LIVE invitations can be shared
+- [ ] **Disable RSVP form on DRAFT invitations** — when viewing a draft invitation directly via URL, the RSVP form should be disabled or show a message like "This invitation is not yet published" instead of allowing guests to accept/decline
+- [ ] **Change default status for new invitations to DRAFT** — when creating a new invitation via "Save" button, it should be created as DRAFT by default (not LIVE); hosts must explicitly click "Enable" to make it LIVE; this ensures hosts review their invitation before sharing it
+
+**Live Mode**
+- [x] **Dynamic content rendering** — ✅ COMPLETE — hide empty sections conditionally (family sections, ceremony/reception, navigation links, etc.)
+
+**Past Events**
+- [x] **Show thank you message for past events** — ✅ COMPLETE — replace RSVP form with thank-you message when event date has passed
+- [ ] *(Future)* **Allow guests to upload photos/videos to past event pages** — post-event, the page could serve as a memory board where guests contribute media
 
 ---
 
-## 🎨 Invitation Page Redesign
+### 🎨 Guest-Facing Invitation Page
 
-The reference/inspiration for the redesign is **rivals.invite.me** — check it for animations, countdown style, and sticky nav behavior.
+**Redesign** — Reference: **rivals.invite.me** for animations, countdown, and sticky nav
 
 - [ ] **Mobile-first layout** — most guests open invitations on their phones; the desktop layout should be secondary; current layout feels "shrunk" and needs more breathing room and whitespace
 - [ ] **Add entrance animations** — page elements should animate in on load, similar to rivals.invite.me
@@ -23,39 +36,21 @@ The reference/inspiration for the redesign is **rivals.invite.me** — check it 
 
 ---
 
-## ⚙️ Dynamic Content Logic
-
-- [x] **Hide empty sections conditionally** — ✅ COMPLETE — implemented conditional rendering for all invitation themes:
-  - Family sections (groom parents, bride parents, godparents) only show when data is provided
-  - Entire "Families" section is hidden if all family fields are empty
-  - Ceremony section only shows when ceremony venue is provided
-  - Reception section only shows when reception venue is provided
-  - Entire "Celebrations" section is hidden if both ceremony and reception are empty
-  - Navigation links are hidden for sections that don't exist
-  - Missing addresses and times are handled gracefully (date still shows, fields are optional)
-  - Map links only appear when provided
-  - Single event cards are centered (when only ceremony OR only reception exists)
-  - Applied to all 4 themes: Classic, Romantic, Modern, and Natural
-- [x] **Show "thank you" message instead of RSVP form for past events** — ✅ COMPLETE — implemented past event detection: when an event date has passed, the RSVP form is automatically replaced with a styled thank-you message appropriate to each theme; applied to all 4 themes: Classic, Romantic, Modern, and Natural
-- [ ] *(Future)* **Allow guests to upload photos/videos to past event pages** — post-event, the page could serve as a memory board where guests contribute media
-
----
-
-## 📋 RSVP Form Enhancements
+### 📋 RSVP Experience (Guest Journey)
 
 - [ ] **Implement conditional logic in the RSVP form** — use dropdowns that reveal follow-up fields based on the guest's answer; example flow: "Do you have allergies?" → Yes → text field appears to specify; fields should stay hidden until triggered
 - [ ] **Allow hosts to define custom menu choices** — hosts should be able to set the specific options guests pick from (e.g. meat, vegetarian, vegan); this must be configurable per event, not hardcoded
 
 ---
 
-## 📊 Dashboard Improvements
+### 📊 Host Dashboard & Analytics
 
 - [ ] **Show full accepted/declined guest details** — currently the dashboard doesn't fully surface per-guest info; hosts need to see: attendance status, plus-one details, and menu selection for each guest
 - [ ] **Implement guest data export** — hosts need to export the complete guest list to Excel (or similar); the export must include all collected fields (name, attendance, plus-ones, menu choice, allergies, etc.), not just names
 
 ---
 
-## 🗺️ Event Creation Flow
+### 🗺️ Event Creation & Editing (Host Journey)
 
 - [ ] **Simplify location input** — current text input is too bare; integrate Google Maps so hosts can search and pin a location rather than typing a raw address
 - [ ] **Support flexible event type combinations** — an event should be configurable as: ceremony only, reception only, or ceremony + reception; the creation flow and invitation page must both adapt to whatever combination is selected
