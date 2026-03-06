@@ -36,7 +36,7 @@ The reference/inspiration for the redesign is **rivals.invite.me** — check it 
   - Map links only appear when provided
   - Single event cards are centered (when only ceremony OR only reception exists)
   - Applied to all 4 themes: Classic, Romantic, Modern, and Natural
-- [ ] **Show "thank you" message instead of RSVP form for past events** — once an event date has passed, the RSVP form should be replaced with a thank-you / post-event message
+- [x] **Show "thank you" message instead of RSVP form for past events** — ✅ COMPLETE — implemented past event detection: when an event date has passed, the RSVP form is automatically replaced with a styled thank-you message appropriate to each theme; applied to all 4 themes: Classic, Romantic, Modern, and Natural
 - [ ] *(Future)* **Allow guests to upload photos/videos to past event pages** — post-event, the page could serve as a memory board where guests contribute media
 
 ---

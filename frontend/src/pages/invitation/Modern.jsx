@@ -374,6 +374,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
   if (!inv) return <div className="mdn-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
   const year = inv.eventDate ? new Date(inv.eventDate).getUTCFullYear() : ''
+  const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
     <div className="mdn-page">
@@ -498,12 +499,29 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="mdn-rsvp" id="rsvp">
         <div className="mdn-wrap">
-          <div className="mdn-rsvp__head">
-            <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>RSVP</div>
-            <h2 className="mdn-rsvp__title">Your <span>Response</span></h2>
-            {inv.rsvpDeadline && <p className="mdn-rsvp__sub">Deadline · {inv.rsvpDeadline}</p>}
-          </div>
-          <RsvpForm invitationRef={invitationRef || slug} />
+          {isPastEvent ? (
+            <div className="mdn-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>THANK YOU</div>
+              <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#fff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                Thank <span style={{color: '#f5a623'}}>You</span>
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#6a90b0', lineHeight: '1.6', marginBottom: '1rem' }}>
+                We hope you enjoyed celebrating with us!
+              </p>
+              <p style={{ fontSize: '.85rem', color: '#4a6880', lineHeight: '1.6' }}>
+                Your presence made our special day even more memorable.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mdn-rsvp__head">
+                <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>RSVP</div>
+                <h2 className="mdn-rsvp__title">Your <span>Response</span></h2>
+                {inv.rsvpDeadline && <p className="mdn-rsvp__sub">Deadline · {inv.rsvpDeadline}</p>}
+              </div>
+              <RsvpForm invitationRef={invitationRef || slug} />
+            </>
+          )}
         </div>
       </div>
     </div>

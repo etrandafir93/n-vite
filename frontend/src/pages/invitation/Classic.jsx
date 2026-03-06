@@ -368,6 +368,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
   if (!inv) return <div className="cl-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
   const heroGradient = 'linear-gradient(to bottom, rgba(10,8,5,.55) 0%, rgba(10,8,5,.3) 40%, rgba(10,8,5,.72) 100%)'
+  const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
     <div className="cl-page">
@@ -471,16 +472,37 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="cl-rsvp" id="rsvp">
         <div className="cl-wrap">
-          <div className="cl-rsvp__head">
-            <div className="cl-divider" style={{maxWidth:200,margin:'0 auto 1.5rem'}}>
-              <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
-              <span className="cl-divider__gem">·</span>
-              <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
+          {isPastEvent ? (
+            <div className="cl-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="cl-divider" style={{maxWidth:200,margin:'0 auto 1.5rem'}}>
+                <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
+                <span className="cl-divider__gem">·</span>
+                <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
+              </div>
+              <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: '#1c1c1c', marginBottom: '1rem' }}>
+                Thank You
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#666', lineHeight: '1.6', marginBottom: '1rem' }}>
+                We hope you enjoyed celebrating with us!
+              </p>
+              <p style={{ fontSize: '.85rem', color: '#888', lineHeight: '1.6' }}>
+                Your presence made our special day even more memorable.
+              </p>
             </div>
-            <h2 className="cl-rsvp__title">Kindly Reply</h2>
-            {inv.rsvpDeadline && <p className="cl-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
-          </div>
-          <RsvpForm rsvpDeadline={inv.rsvpDeadline} invitationRef={invitationRef || slug}/>
+          ) : (
+            <>
+              <div className="cl-rsvp__head">
+                <div className="cl-divider" style={{maxWidth:200,margin:'0 auto 1.5rem'}}>
+                  <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
+                  <span className="cl-divider__gem">·</span>
+                  <div className="cl-divider__line" style={{background:'#ddd4c0'}}/>
+                </div>
+                <h2 className="cl-rsvp__title">Kindly Reply</h2>
+                {inv.rsvpDeadline && <p className="cl-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
+              </div>
+              <RsvpForm rsvpDeadline={inv.rsvpDeadline} invitationRef={invitationRef || slug}/>
+            </>
+          )}
         </div>
       </div>
     </div>

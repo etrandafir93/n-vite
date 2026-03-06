@@ -384,6 +384,8 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
 
   if (!inv) return <div className="nat-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
+  const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
+
   return (
     <div className="nat-page">
       <style>{css}</style>
@@ -490,12 +492,29 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="nat-rsvp" id="rsvp">
         <div className="nat-wrap">
-          <div className="nat-rsvp__head">
-            <div className="nat-rsvp__leaves">···</div>
-            <h2 className="nat-rsvp__title">Kindly Reply</h2>
-            {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
-          </div>
-          <RsvpForm invitationRef={invitationRef || slug} />
+          {isPastEvent ? (
+            <div className="nat-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="nat-rsvp__leaves" style={{marginBottom: '1rem'}}>···</div>
+              <h3 style={{ fontSize: '1.8rem', fontWeight: '600', color: '#2d5016', marginBottom: '1rem' }}>
+                Thank You
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#5a6e4a', lineHeight: '1.6', marginBottom: '1rem' }}>
+                We hope you enjoyed celebrating with us!
+              </p>
+              <p style={{ fontSize: '.85rem', color: '#6d7d5d', lineHeight: '1.6' }}>
+                Your presence made our special day even more memorable.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="nat-rsvp__head">
+                <div className="nat-rsvp__leaves">···</div>
+                <h2 className="nat-rsvp__title">Kindly Reply</h2>
+                {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
+              </div>
+              <RsvpForm invitationRef={invitationRef || slug} />
+            </>
+          )}
         </div>
       </div>
     </div>

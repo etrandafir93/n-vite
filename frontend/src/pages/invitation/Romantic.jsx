@@ -388,6 +388,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
   if (!inv) return <div className="rom-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
   const heroOverlay = 'linear-gradient(to bottom, rgba(240,200,215,0.15) 0%, rgba(180,80,110,0.12) 30%, rgba(60,15,35,0.65) 65%, rgba(40,10,25,0.88) 100%)'
+  const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
     <div className="rom-page">
@@ -490,12 +491,29 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="rom-rsvp" id="rsvp">
         <div className="rom-wrap">
-          <div className="rom-rsvp__head">
-            <div className="rom-rsvp__petals">···</div>
-            <h2 className="rom-rsvp__title">Kindly Reply</h2>
-            {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
-          </div>
-          <RsvpForm invitationRef={invitationRef || slug} />
+          {isPastEvent ? (
+            <div className="rom-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="rom-rsvp__petals" style={{marginBottom: '1rem'}}>···</div>
+              <h3 style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.8rem', color: '#b85670', marginBottom: '1rem' }}>
+                Thank You
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#9b7080', lineHeight: '1.6', marginBottom: '1rem' }}>
+                We hope you enjoyed celebrating with us!
+              </p>
+              <p style={{ fontSize: '.85rem', color: '#b09098', lineHeight: '1.6' }}>
+                Your presence made our special day even more memorable.
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="rom-rsvp__head">
+                <div className="rom-rsvp__petals">···</div>
+                <h2 className="rom-rsvp__title">Kindly Reply</h2>
+                {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
+              </div>
+              <RsvpForm invitationRef={invitationRef || slug} />
+            </>
+          )}
         </div>
       </div>
     </div>
