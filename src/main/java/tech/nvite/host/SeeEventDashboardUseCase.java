@@ -35,8 +35,10 @@ public class SeeEventDashboardUseCase
             .find(eventReference)
             .map(v -> new EventInteraction(v.visitorName(), null, v.visitTime(), "VISITED"));
 
+    var allRsvps = rsvps.findAllByEventReference(eventReference);
+
     var rsvpList =
-        rsvps.findAllByEventReference(eventReference).stream()
+        allRsvps.stream()
             .map(r -> new EventInteraction(r.guest(), r.partnerName(), r.timestamp(), r.answer()));
 
     var interactions =
@@ -64,21 +66,20 @@ public class SeeEventDashboardUseCase
             peopleAttending);
 
     var responses =
-        interactions.stream()
-            .filter(
-                i ->
-                    "ACCEPTED".equalsIgnoreCase(i.action())
-                        || "DECLINED".equalsIgnoreCase(i.action()))
+        allRsvps.stream()
             .map(
-                i ->
+                r ->
                     new GuestResponse(
-                        i.guest(),
-                        "ACCEPTED".equalsIgnoreCase(i.action()),
-                        null,
-                        i.partnerName() != null,
-                        i.partnerName(),
-                        null,
-                        i.timestamp()))
+                        r.guest(),
+                        "ACCEPTED".equalsIgnoreCase(r.answer()),
+                        r.menuPreference(),
+                        r.partnerName() != null,
+                        r.partnerName(),
+                        r.children(),
+                        r.transport(),
+                        r.notes(),
+                        r.timestamp()))
+            .sorted(comparing(GuestResponse::timestamp).reversed())
             .toList();
 
     var visitsList =
@@ -121,6 +122,8 @@ public class SeeEventDashboardUseCase
       boolean plusOne,
       @Nullable String partnerName,
       @Nullable Integer children,
+      @Nullable Boolean transport,
+      @Nullable String notes,
       Instant timestamp) {}
 
   public record VisitEntry(String visitor, Instant timestamp) {}

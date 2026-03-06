@@ -228,7 +228,11 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
         body: JSON.stringify({
           guestName: guestName.trim(),
           answer,
-          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null,
+          menuPreference: menu,
+          children: children === 'yes' ? parseInt(childCount) : null,
+          transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          notes: notes.trim() || null
         })
       })
 
@@ -278,71 +282,93 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
           <button className={`cl-toggle-btn${attending==='no'?' active':''}`}  onClick={()=>setAttending('no')}>Unable to attend</button>
         </div>
       </div>
-      <div className="cl-field">
-        <label className="cl-label">Attending with a +1?</label>
-        <div className="cl-toggle-row">
-          <button className={`cl-toggle-btn${plusOne==='yes'?' active':''}`} onClick={()=>setPlusOne('yes')}>Yes</button>
-          <button className={`cl-toggle-btn${plusOne==='no'?' active':''}`}  onClick={()=>setPlusOne('no')}>No</button>
-        </div>
-        {plusOne === 'yes' && (
-          <input
-            className="cl-number-input"
-            type="text"
-            placeholder="Partner's name"
-            value={partnerName}
-            onChange={e => setPartnerName(e.target.value)}
-            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
-          />
-        )}
-      </div>
-      <div className="cl-field">
-        <label className="cl-label">Menu Preference</label>
-        <div className="cl-menu-row">
-          {['Meat','Fish','Vegetarian'].map(m=>(
-            <button key={m} className={`cl-menu-btn${menu===m?' active':''}`} onClick={()=>setMenu(m)}>{m}</button>
-          ))}
-        </div>
-      </div>
-      <div className="cl-field">
-        <label className="cl-label">Bringing children?</label>
-        <div className="cl-children-row">
-          <div className="cl-toggle-row">
-            <button className={`cl-toggle-btn${children==='yes'?' active':''}`} onClick={()=>setChildren('yes')}>Yes</button>
-            <button className={`cl-toggle-btn${children==='no'?' active':''}`}  onClick={()=>setChildren('no')}>No</button>
+
+      {attending === 'yes' && (
+        <>
+          <div className="cl-field">
+            <label className="cl-label">Attending with a +1?</label>
+            <div className="cl-toggle-row">
+              <button className={`cl-toggle-btn${plusOne==='yes'?' active':''}`} onClick={()=>setPlusOne('yes')}>Yes</button>
+              <button className={`cl-toggle-btn${plusOne==='no'?' active':''}`}  onClick={()=>setPlusOne('no')}>No</button>
+            </div>
+            {plusOne === 'yes' && (
+              <input
+                className="cl-number-input"
+                type="text"
+                placeholder="Partner's name"
+                value={partnerName}
+                onChange={e => setPartnerName(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
-          {children==='yes'&&(<>
-            <span className="cl-child-label">How many?</span>
-            <input className="cl-number-input" type="number" min={1} max={10} value={childCount} onChange={e=>setChildCount(e.target.value)}/>
-          </>)}
+          <div className="cl-field">
+            <label className="cl-label">Menu Preference</label>
+            <div className="cl-menu-row">
+              {['Meat','Fish','Vegetarian'].map(m=>(
+                <button key={m} className={`cl-menu-btn${menu===m?' active':''}`} onClick={()=>setMenu(m)}>{m}</button>
+              ))}
+            </div>
+          </div>
+          <div className="cl-field">
+            <label className="cl-label">Bringing children?</label>
+            <div className="cl-children-row">
+              <div className="cl-toggle-row">
+                <button className={`cl-toggle-btn${children==='yes'?' active':''}`} onClick={()=>setChildren('yes')}>Yes</button>
+                <button className={`cl-toggle-btn${children==='no'?' active':''}`}  onClick={()=>setChildren('no')}>No</button>
+              </div>
+              {children==='yes'&&(<>
+                <span className="cl-child-label">How many?</span>
+                <input className="cl-number-input" type="number" min={1} max={10} value={childCount} onChange={e=>setChildCount(e.target.value)}/>
+              </>)}
+            </div>
+          </div>
+          <div className="cl-field">
+            <label className="cl-label">Do you need transportation?</label>
+            <div className="cl-toggle-row">
+              <button className={`cl-toggle-btn${transport==='yes'?' active':''}`} onClick={()=>setTransport('yes')}>Yes please</button>
+              <button className={`cl-toggle-btn${transport==='no'?' active':''}`}  onClick={()=>setTransport('no')}>No, thank you</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {attending === 'no' && (
+        <div className="cl-field">
+          <label className="cl-label">Message (Optional)</label>
+          <textarea className="cl-textarea" placeholder="Let the couple know why you can't attend..." value={notes} onChange={e=>setNotes(e.target.value)}/>
         </div>
-      </div>
-      <div className="cl-field">
-        <label className="cl-label">Do you need transportation?</label>
-        <div className="cl-toggle-row">
-          <button className={`cl-toggle-btn${transport==='yes'?' active':''}`} onClick={()=>setTransport('yes')}>Yes please</button>
-          <button className={`cl-toggle-btn${transport==='no'?' active':''}`}  onClick={()=>setTransport('no')}>No, thank you</button>
+      )}
+
+      {attending === 'yes' && (
+        <div className="cl-field">
+          <label className="cl-label">Questions or Comments (Optional)</label>
+          <textarea className="cl-textarea" placeholder="Dietary restrictions, special requests, or a note for the couple..." value={notes} onChange={e=>setNotes(e.target.value)}/>
         </div>
-      </div>
-      <div className="cl-field">
-        <label className="cl-label">Questions or Comments</label>
-        <textarea className="cl-textarea" placeholder="Dietary restrictions, special requests, or a note for the couple..." value={notes} onChange={e=>setNotes(e.target.value)}/>
-      </div>
-      <div className="cl-cta-row">
-        <button
-          className="cl-btn-primary"
-          onClick={() => handleSubmit('ACCEPTED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Accept Invitation'}
-        </button>
-        <button
-          className="cl-btn-secondary"
-          onClick={() => handleSubmit('DECLINED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Decline'}
-        </button>
-      </div>
+      )}
+
+      {attending && (
+        <div className="cl-cta-row">
+          {attending === 'yes' && (
+            <button
+              className="cl-btn-primary"
+              onClick={() => handleSubmit('ACCEPTED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Accept Invitation'}
+            </button>
+          )}
+          {attending === 'no' && (
+            <button
+              className="cl-btn-secondary"
+              onClick={() => handleSubmit('DECLINED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Decline'}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

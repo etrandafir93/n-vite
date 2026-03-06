@@ -12,8 +12,20 @@ public record Rsvp(
     String guest,
     String eventReference,
     String answer,
-    @Nullable String partnerName) {
-  public Rsvp(String guest, String eventReference, RsvpAnswer answer, String partnerName) {
+    @Nullable String partnerName,
+    @Nullable String menuPreference,
+    @Nullable Integer children,
+    @Nullable Boolean transport,
+    @Nullable String notes) {
+  public Rsvp(
+      String guest,
+      String eventReference,
+      RsvpAnswer answer,
+      String partnerName,
+      String menuPreference,
+      Integer children,
+      Boolean transport,
+      String notes) {
     this(
         null,
         Instant.now(),
@@ -23,6 +35,10 @@ public record Rsvp(
           case RsvpAnswer.Accepted __ -> "ACCEPTED";
           case RsvpAnswer.Declined __ -> "DECLINED";
         },
-        partnerName);
+        partnerName,
+        menuPreference,
+        children,
+        transport,
+        notes);
   }
 }

@@ -232,7 +232,11 @@ function RsvpForm({ invitationRef }) {
         body: JSON.stringify({
           guestName: guestName.trim(),
           answer,
-          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null,
+          menuPreference: menu,
+          children: children === 'yes' ? parseInt(childCount) : null,
+          transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          notes: notes.trim() || null
         })
       })
 
@@ -282,73 +286,95 @@ function RsvpForm({ invitationRef }) {
           <button className={`mdn-toggle-btn${attending === 'no' ? ' active' : ''}`} onClick={() => setAttending('no')}>Can't make it</button>
         </div>
       </div>
-      <div className="mdn-field">
-        <label className="mdn-label">Coming with a +1?</label>
-        <div className="mdn-toggle-row">
-          <button className={`mdn-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`mdn-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
-        </div>
-        {plusOne === 'yes' && (
-          <input
-            className="mdn-number-input"
-            type="text"
-            placeholder="Partner's name"
-            value={partnerName}
-            onChange={e => setPartnerName(e.target.value)}
-            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
-          />
-        )}
-      </div>
-      <div className="mdn-field">
-        <label className="mdn-label">Menu preference</label>
-        <div className="mdn-menu-row">
-          {['Meat', 'Fish', 'Vegetarian'].map(m => (
-            <button key={m} className={`mdn-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
-          ))}
-        </div>
-      </div>
-      <div className="mdn-field">
-        <label className="mdn-label">Bringing kids?</label>
-        <div className="mdn-children-row">
-          <div className="mdn-toggle-row">
-            <button className={`mdn-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
-            <button className={`mdn-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+
+      {attending === 'yes' && (
+        <>
+          <div className="mdn-field">
+            <label className="mdn-label">Coming with a +1?</label>
+            <div className="mdn-toggle-row">
+              <button className={`mdn-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+              <button className={`mdn-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+            </div>
+            {plusOne === 'yes' && (
+              <input
+                className="mdn-number-input"
+                type="text"
+                placeholder="Partner's name"
+                value={partnerName}
+                onChange={e => setPartnerName(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
-          {children === 'yes' && (
-            <>
-              <span className="mdn-child-label">How many?</span>
-              <input className="mdn-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
-            </>
+          <div className="mdn-field">
+            <label className="mdn-label">Menu preference</label>
+            <div className="mdn-menu-row">
+              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+                <button key={m} className={`mdn-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
+              ))}
+            </div>
+          </div>
+          <div className="mdn-field">
+            <label className="mdn-label">Bringing kids?</label>
+            <div className="mdn-children-row">
+              <div className="mdn-toggle-row">
+                <button className={`mdn-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
+                <button className={`mdn-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+              </div>
+              {children === 'yes' && (
+                <>
+                  <span className="mdn-child-label">How many?</span>
+                  <input className="mdn-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
+                </>
+              )}
+            </div>
+          </div>
+          <div className="mdn-field">
+            <label className="mdn-label">Need transportation?</label>
+            <div className="mdn-toggle-row">
+              <button className={`mdn-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes</button>
+              <button className={`mdn-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {attending === 'no' && (
+        <div className="mdn-field">
+          <label className="mdn-label">Message (Optional)</label>
+          <textarea className="mdn-textarea" placeholder="Let the couple know why you can't attend..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending === 'yes' && (
+        <div className="mdn-field">
+          <label className="mdn-label">Questions or comments (Optional)</label>
+          <textarea className="mdn-textarea" placeholder="Anything you'd like us to know..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending && (
+        <div className="mdn-cta-row">
+          {attending === 'yes' && (
+            <button
+              className="mdn-btn-primary"
+              onClick={() => handleSubmit('ACCEPTED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Accept'}
+            </button>
+          )}
+          {attending === 'no' && (
+            <button
+              className="mdn-btn-secondary"
+              onClick={() => handleSubmit('DECLINED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Decline'}
+            </button>
           )}
         </div>
-      </div>
-      <div className="mdn-field">
-        <label className="mdn-label">Need transportation?</label>
-        <div className="mdn-toggle-row">
-          <button className={`mdn-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes</button>
-          <button className={`mdn-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No</button>
-        </div>
-      </div>
-      <div className="mdn-field">
-        <label className="mdn-label">Questions or comments</label>
-        <textarea className="mdn-textarea" placeholder="Anything you'd like us to know..." value={notes} onChange={e => setNotes(e.target.value)} />
-      </div>
-      <div className="mdn-cta-row">
-        <button
-          className="mdn-btn-primary"
-          onClick={() => handleSubmit('ACCEPTED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Accept'}
-        </button>
-        <button
-          className="mdn-btn-secondary"
-          onClick={() => handleSubmit('DECLINED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Decline'}
-        </button>
-      </div>
+      )}
     </div>
   )
 }

@@ -244,7 +244,11 @@ function RsvpForm({ invitationRef }) {
         body: JSON.stringify({
           guestName: guestName.trim(),
           answer,
-          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null,
+          menuPreference: menu,
+          children: children === 'yes' ? parseInt(childCount) : null,
+          transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          notes: notes.trim() || null
         })
       })
 
@@ -294,73 +298,95 @@ function RsvpForm({ invitationRef }) {
           <button className={`rom-toggle-btn${attending === 'no' ? ' active' : ''}`} onClick={() => setAttending('no')}>Unable to attend</button>
         </div>
       </div>
-      <div className="rom-field">
-        <label className="rom-label">Will you bring a +1?</label>
-        <div className="rom-toggle-row">
-          <button className={`rom-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`rom-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
-        </div>
-        {plusOne === 'yes' && (
-          <input
-            className="rom-number-input"
-            type="text"
-            placeholder="Partner's name"
-            value={partnerName}
-            onChange={e => setPartnerName(e.target.value)}
-            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
-          />
-        )}
-      </div>
-      <div className="rom-field">
-        <label className="rom-label">Your menu preference</label>
-        <div className="rom-menu-row">
-          {['Meat', 'Fish', 'Vegetarian'].map(m => (
-            <button key={m} className={`rom-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
-          ))}
-        </div>
-      </div>
-      <div className="rom-field">
-        <label className="rom-label">Are you bringing little ones?</label>
-        <div className="rom-children-row">
-          <div className="rom-toggle-row">
-            <button className={`rom-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
-            <button className={`rom-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+
+      {attending === 'yes' && (
+        <>
+          <div className="rom-field">
+            <label className="rom-label">Will you bring a +1?</label>
+            <div className="rom-toggle-row">
+              <button className={`rom-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+              <button className={`rom-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+            </div>
+            {plusOne === 'yes' && (
+              <input
+                className="rom-number-input"
+                type="text"
+                placeholder="Partner's name"
+                value={partnerName}
+                onChange={e => setPartnerName(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
-          {children === 'yes' && (
-            <>
-              <span className="rom-child-label">How many?</span>
-              <input className="rom-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
-            </>
+          <div className="rom-field">
+            <label className="rom-label">Your menu preference</label>
+            <div className="rom-menu-row">
+              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+                <button key={m} className={`rom-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
+              ))}
+            </div>
+          </div>
+          <div className="rom-field">
+            <label className="rom-label">Are you bringing little ones?</label>
+            <div className="rom-children-row">
+              <div className="rom-toggle-row">
+                <button className={`rom-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
+                <button className={`rom-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+              </div>
+              {children === 'yes' && (
+                <>
+                  <span className="rom-child-label">How many?</span>
+                  <input className="rom-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
+                </>
+              )}
+            </div>
+          </div>
+          <div className="rom-field">
+            <label className="rom-label">Do you need transportation?</label>
+            <div className="rom-toggle-row">
+              <button className={`rom-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes, please</button>
+              <button className={`rom-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No, thank you</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {attending === 'no' && (
+        <div className="rom-field">
+          <label className="rom-label">Message (Optional)</label>
+          <textarea className="rom-textarea" placeholder="Let the couple know why you can't attend..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending === 'yes' && (
+        <div className="rom-field">
+          <label className="rom-label">Any wishes or questions for us? (Optional)</label>
+          <textarea className="rom-textarea" placeholder="Dietary needs, special requests, or a loving note..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending && (
+        <div className="rom-cta-row">
+          {attending === 'yes' && (
+            <button
+              className="rom-btn-primary"
+              onClick={() => handleSubmit('ACCEPTED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Accept with Love'}
+            </button>
+          )}
+          {attending === 'no' && (
+            <button
+              className="rom-btn-secondary"
+              onClick={() => handleSubmit('DECLINED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Decline'}
+            </button>
           )}
         </div>
-      </div>
-      <div className="rom-field">
-        <label className="rom-label">Do you need transportation?</label>
-        <div className="rom-toggle-row">
-          <button className={`rom-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes, please</button>
-          <button className={`rom-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No, thank you</button>
-        </div>
-      </div>
-      <div className="rom-field">
-        <label className="rom-label">Any wishes or questions for us?</label>
-        <textarea className="rom-textarea" placeholder="Dietary needs, special requests, or a loving note..." value={notes} onChange={e => setNotes(e.target.value)} />
-      </div>
-      <div className="rom-cta-row">
-        <button
-          className="rom-btn-primary"
-          onClick={() => handleSubmit('ACCEPTED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Accept with Love'}
-        </button>
-        <button
-          className="rom-btn-secondary"
-          onClick={() => handleSubmit('DECLINED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Decline'}
-        </button>
-      </div>
+      )}
     </div>
   )
 }

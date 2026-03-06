@@ -28,13 +28,30 @@ public class RsvpInvitationUseCase
           default -> throw new IllegalArgumentException("Invalid RSVP answer: " + req.rsvp);
         };
 
-    var saved = rsvp.save(new Rsvp(req.name, req.eventReference, answer, req.partnerName()));
+    var saved =
+        rsvp.save(
+            new Rsvp(
+                req.name,
+                req.eventReference,
+                answer,
+                req.partnerName(),
+                req.menuPreference(),
+                req.children(),
+                req.transport(),
+                req.notes()));
     log.info("RSVP saved {}", saved.id());
     return new Response(saved.id());
   }
 
   public record Request(
-      @With String eventReference, String name, String rsvp, String partnerName) {}
+      @With String eventReference,
+      String name,
+      String rsvp,
+      String partnerName,
+      String menuPreference,
+      Integer children,
+      Boolean transport,
+      String notes) {}
 
   public record Response(String rsvpId) {}
 }

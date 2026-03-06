@@ -243,7 +243,11 @@ function RsvpForm({ invitationRef }) {
         body: JSON.stringify({
           guestName: guestName.trim(),
           answer,
-          partnerName: plusOne === 'yes' ? partnerName.trim() : null
+          partnerName: plusOne === 'yes' ? partnerName.trim() : null,
+          menuPreference: menu,
+          children: children === 'yes' ? parseInt(childCount) : null,
+          transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          notes: notes.trim() || null
         })
       })
 
@@ -293,73 +297,95 @@ function RsvpForm({ invitationRef }) {
           <button className={`nat-toggle-btn${attending === 'no' ? ' active' : ''}`} onClick={() => setAttending('no')}>Unable to attend</button>
         </div>
       </div>
-      <div className="nat-field">
-        <label className="nat-label">Bringing a +1?</label>
-        <div className="nat-toggle-row">
-          <button className={`nat-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
-          <button className={`nat-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
-        </div>
-        {plusOne === 'yes' && (
-          <input
-            className="nat-number-input"
-            type="text"
-            placeholder="Partner's name"
-            value={partnerName}
-            onChange={e => setPartnerName(e.target.value)}
-            style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
-          />
-        )}
-      </div>
-      <div className="nat-field">
-        <label className="nat-label">Menu preference</label>
-        <div className="nat-menu-row">
-          {['Meat', 'Fish', 'Vegetarian'].map(m => (
-            <button key={m} className={`nat-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
-          ))}
-        </div>
-      </div>
-      <div className="nat-field">
-        <label className="nat-label">Bringing children?</label>
-        <div className="nat-children-row">
-          <div className="nat-toggle-row">
-            <button className={`nat-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
-            <button className={`nat-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+
+      {attending === 'yes' && (
+        <>
+          <div className="nat-field">
+            <label className="nat-label">Bringing a +1?</label>
+            <div className="nat-toggle-row">
+              <button className={`nat-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
+              <button className={`nat-toggle-btn${plusOne === 'no' ? ' active' : ''}`} onClick={() => setPlusOne('no')}>No</button>
+            </div>
+            {plusOne === 'yes' && (
+              <input
+                className="nat-number-input"
+                type="text"
+                placeholder="Partner's name"
+                value={partnerName}
+                onChange={e => setPartnerName(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
-          {children === 'yes' && (
-            <>
-              <span className="nat-child-label">How many?</span>
-              <input className="nat-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
-            </>
+          <div className="nat-field">
+            <label className="nat-label">Menu preference</label>
+            <div className="nat-menu-row">
+              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+                <button key={m} className={`nat-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
+              ))}
+            </div>
+          </div>
+          <div className="nat-field">
+            <label className="nat-label">Bringing children?</label>
+            <div className="nat-children-row">
+              <div className="nat-toggle-row">
+                <button className={`nat-toggle-btn${children === 'yes' ? ' active' : ''}`} onClick={() => setChildren('yes')}>Yes</button>
+                <button className={`nat-toggle-btn${children === 'no' ? ' active' : ''}`} onClick={() => setChildren('no')}>No</button>
+              </div>
+              {children === 'yes' && (
+                <>
+                  <span className="nat-child-label">How many?</span>
+                  <input className="nat-number-input" type="number" min={1} max={10} value={childCount} onChange={e => setChildCount(e.target.value)} />
+                </>
+              )}
+            </div>
+          </div>
+          <div className="nat-field">
+            <label className="nat-label">Do you need transportation?</label>
+            <div className="nat-toggle-row">
+              <button className={`nat-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes, please</button>
+              <button className={`nat-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No, thank you</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {attending === 'no' && (
+        <div className="nat-field">
+          <label className="nat-label">Message (Optional)</label>
+          <textarea className="nat-textarea" placeholder="Let the couple know why you can't attend..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending === 'yes' && (
+        <div className="nat-field">
+          <label className="nat-label">Questions or comments (Optional)</label>
+          <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {attending && (
+        <div className="nat-cta-row">
+          {attending === 'yes' && (
+            <button
+              className="nat-btn-primary"
+              onClick={() => handleSubmit('ACCEPTED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Accept Invitation'}
+            </button>
+          )}
+          {attending === 'no' && (
+            <button
+              className="nat-btn-secondary"
+              onClick={() => handleSubmit('DECLINED')}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting...' : 'Decline'}
+            </button>
           )}
         </div>
-      </div>
-      <div className="nat-field">
-        <label className="nat-label">Do you need transportation?</label>
-        <div className="nat-toggle-row">
-          <button className={`nat-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes, please</button>
-          <button className={`nat-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No, thank you</button>
-        </div>
-      </div>
-      <div className="nat-field">
-        <label className="nat-label">Questions or comments</label>
-        <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
-      </div>
-      <div className="nat-cta-row">
-        <button
-          className="nat-btn-primary"
-          onClick={() => handleSubmit('ACCEPTED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Accept Invitation'}
-        </button>
-        <button
-          className="nat-btn-secondary"
-          onClick={() => handleSubmit('DECLINED')}
-          disabled={submitting}
-        >
-          {submitting ? 'Submitting...' : 'Decline'}
-        </button>
-      </div>
+      )}
     </div>
   )
 }

@@ -45,8 +45,8 @@
 
 ### 📊 Host Dashboard & Analytics
 
-- [ ] **Show full accepted/declined guest details** — currently the dashboard doesn't fully surface per-guest info; hosts need to see: attendance status, plus-one details, and menu selection for each guest
-- [ ] **Implement guest data export** — hosts need to export the complete guest list to Excel (or similar); the export must include all collected fields (name, attendance, plus-ones, menu choice, allergies, etc.), not just names
+- [x] **Show full accepted/declined guest details** — ✅ COMPLETE — the dashboard now shows full guest information including: attendance status (accepted/declined), plus-one details (yes/no and partner name), menu preference, children count, transportation needs, and notes; all fields are displayed in an expandable details view with menu preference also shown as a table column
+- [ ] **Implement guest data export** — hosts need to export the complete guest list to Excel (or similar); the export must include all collected fields (name, attendance, plus-ones, menu choice, children, transport, notes, etc.)
 
 ---
 
@@ -89,6 +89,10 @@
 - [ ] **Configure Swagger UI for API documentation** — set up springdoc-openapi or similar library to serve interactive API documentation at /swagger-ui.html; this allows developers and frontend teams to explore and test endpoints directly
 - [ ] **Add OpenAPI annotations to all endpoints** — use @Operation, @ApiResponse, @Schema annotations to enrich the generated OpenAPI spec with descriptions, examples, and validation constraints
 - [ ] **Generate API client libraries from OpenAPI spec (optional)** — use OpenAPI Generator to produce TypeScript/JavaScript client for the frontend; this ensures type safety and reduces manual API integration work
+
+### Developer Experience
+
+- [ ] **Enable backend hot reload with Spring Boot DevTools** — currently developers need to run `mvn clean install` after every backend code change to see the results; integrate Spring Boot DevTools to enable automatic application restart when Java files change (much faster than full rebuild); optionally configure LiveReload browser extension for automatic browser refresh when changes are detected; this will match the frontend's hot reload experience and significantly speed up the development workflow
 
 ### CI/CD & Automation
 

@@ -32,10 +32,24 @@ class InvitationController {
   public void rsvp(@PathVariable String ref, @RequestBody RsvpRequest rsvpRequest) {
     var request =
         new RsvpInvitationUseCase.Request(
-            ref, rsvpRequest.guestName(), rsvpRequest.answer, rsvpRequest.partnerName());
+            ref,
+            rsvpRequest.guestName(),
+            rsvpRequest.answer,
+            rsvpRequest.partnerName(),
+            rsvpRequest.menuPreference(),
+            rsvpRequest.children(),
+            rsvpRequest.transport(),
+            rsvpRequest.notes());
 
     rsvpInvitationUseCase.apply(request);
   }
 
-  public record RsvpRequest(String guestName, String answer, String partnerName) {}
+  public record RsvpRequest(
+      String guestName,
+      String answer,
+      String partnerName,
+      String menuPreference,
+      Integer children,
+      Boolean transport,
+      String notes) {}
 }

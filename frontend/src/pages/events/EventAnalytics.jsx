@@ -58,6 +58,20 @@ export default function EventAnalytics() {
     })
   }
 
+  // Combine visits and RSVP responses into a single activity feed
+  const recentActivity = [
+    ...(visits || []).map(v => ({
+      type: 'visit',
+      visitor: v.visitor,
+      timestamp: v.timestamp
+    })),
+    ...(responses || []).map(r => ({
+      type: r.attending ? 'accepted' : 'declined',
+      guestName: r.guestName,
+      timestamp: r.timestamp
+    }))
+  ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+
   // Calculate percentages for pie chart
   const total = stats.totalInvited || 1
   const acceptedPct = ((stats.accepted / total) * 100).toFixed(1)
@@ -245,18 +259,35 @@ export default function EventAnalytics() {
           <div className="ea-card">
             <h2 className="ea-card__title">Recent Activity</h2>
             <div className="ea-activity-list">
-              {visits && visits.length > 0 ? (
-                visits.slice(0, 10).map((visit, idx) => (
+              {recentActivity && recentActivity.length > 0 ? (
+                recentActivity.slice(0, 10).map((activity, idx) => (
                   <div key={idx} className="ea-activity-item">
                     <div className="ea-activity-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
+                      {activity.type === 'visit' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                      {activity.type === 'accepted' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#1a8a3a" strokeWidth="2">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                      {activity.type === 'declined' && (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#b03a2e" strokeWidth="2">
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      )}
                     </div>
                     <div className="ea-activity-content">
-                      <div className="ea-activity-text">Invitation viewed</div>
-                      <div className="ea-activity-time">{new Date(visit.timestamp).toLocaleString()}</div>
+                      <div className="ea-activity-text">
+                        {activity.type === 'visit' && `${activity.visitor || 'Guest'} viewed invitation`}
+                        {activity.type === 'accepted' && `${activity.guestName || 'Guest'} accepted`}
+                        {activity.type === 'declined' && `${activity.guestName || 'Guest'} declined`}
+                      </div>
+                      <div className="ea-activity-time">{new Date(activity.timestamp).toLocaleString()}</div>
                     </div>
                   </div>
                 ))
@@ -279,6 +310,7 @@ export default function EventAnalytics() {
                     <th>Guest Name</th>
                     <th>Response</th>
                     <th>Plus One</th>
+                    <th>Menu</th>
                     <th>Date</th>
                   </tr>
                 </thead>
@@ -314,16 +346,17 @@ export default function EventAnalytics() {
                           </span>
                         </td>
                         <td>{response.plusOne ? 'Yes' : 'No'}</td>
+                        <td>{response.menuPreference || '—'}</td>
                         <td>{new Date(response.timestamp).toLocaleDateString()}</td>
                       </tr>
                       {expandedRows.has(idx) && (
                         <tr key={`${idx}-details`} className="ea-row-details">
-                          <td colSpan="5">
+                          <td colSpan="6">
                             <div className="ea-details-content">
                               <div className="ea-details-grid">
                                 <div className="ea-detail-item">
-                                  <span className="ea-detail-label">Guest Name:</span>
-                                  <span className="ea-detail-value">{response.guestName || 'Anonymous'}</span>
+                                  <span className="ea-detail-label">Plus One:</span>
+                                  <span className="ea-detail-value">{response.plusOne ? 'Yes' : 'No'}</span>
                                 </div>
                                 {response.partnerName && (
                                   <div className="ea-detail-item">
@@ -331,24 +364,26 @@ export default function EventAnalytics() {
                                     <span className="ea-detail-value">{response.partnerName}</span>
                                   </div>
                                 )}
-                                <div className="ea-detail-item">
-                                  <span className="ea-detail-label">Response:</span>
-                                  <span className="ea-detail-value">
-                                    <span className={`ea-badge ea-badge--${response.attending ? 'success' : 'danger'}`}>
-                                      {response.attending ? 'Accepted' : 'Declined'}
-                                    </span>
-                                  </span>
-                                </div>
                                 {response.menuPreference && (
                                   <div className="ea-detail-item">
                                     <span className="ea-detail-label">Menu Preference:</span>
                                     <span className="ea-detail-value">{response.menuPreference}</span>
                                   </div>
                                 )}
-                                {response.children && (
+                                <div className="ea-detail-item">
+                                  <span className="ea-detail-label">Children:</span>
+                                  <span className="ea-detail-value">{response.children || 0}</span>
+                                </div>
+                                <div className="ea-detail-item">
+                                  <span className="ea-detail-label">Transportation:</span>
+                                  <span className="ea-detail-value">
+                                    {response.transport === true ? 'Needs transport' : response.transport === false ? 'No transport needed' : 'Not specified'}
+                                  </span>
+                                </div>
+                                {response.notes && (
                                   <div className="ea-detail-item">
-                                    <span className="ea-detail-label">Children:</span>
-                                    <span className="ea-detail-value">{response.children}</span>
+                                    <span className="ea-detail-label">Message:</span>
+                                    <span className="ea-detail-value">{response.notes}</span>
                                   </div>
                                 )}
                                 <div className="ea-detail-item">

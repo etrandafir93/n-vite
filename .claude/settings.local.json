@@ -27,7 +27,9 @@
       "Bash(export PATH=\"$JAVA_HOME/bin:$PATH\")",
       "Bash(java -version:*)",
       "Bash(xargs cat:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(./mvnw.cmd clean:*)",
+      "Bash(JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-17.0.17\" ./mvnw compile:*)"
     ],
     "deny": [],
     "ask": []
