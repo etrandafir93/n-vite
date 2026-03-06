@@ -94,3 +94,7 @@ The reference/inspiration for the redesign is **rivals.invite.me** — check it 
 - [ ] **Configure Swagger UI for API documentation** — set up springdoc-openapi or similar library to serve interactive API documentation at /swagger-ui.html; this allows developers and frontend teams to explore and test endpoints directly
 - [ ] **Add OpenAPI annotations to all endpoints** — use @Operation, @ApiResponse, @Schema annotations to enrich the generated OpenAPI spec with descriptions, examples, and validation constraints
 - [ ] **Generate API client libraries from OpenAPI spec (optional)** — use OpenAPI Generator to produce TypeScript/JavaScript client for the frontend; this ensures type safety and reduces manual API integration work
+
+### CI/CD & Automation
+
+- [ ] **GitHub Action to post BACKLOG.md updates to Slack** — create a GitHub Actions workflow that triggers on every commit to the main/master branch, reads the BACKLOG.md file, and posts it to a designated Slack channel for team visibility and progress tracking; this ensures the team stays informed about completed tasks and current priorities without manually checking the repository
