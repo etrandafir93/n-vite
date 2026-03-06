@@ -7,7 +7,7 @@
 
 ## 🐛 Bug Fixes
 
-- [ ] **Fix missing "Enable" button for draft events** — currently, draft events on the dashboard have no way to be published; the button is absent and needs to be added back
+- [x] **Fix "Enable" button visibility logic on dashboard** — when a draft event exists, the button visibility is inverted: already published (LIVE) events incorrectly show an "Enable" button, while the draft event (which actually needs to be enabled/published) doesn't show the button at all; the logic needs to be fixed so only DRAFT events show the "Enable" button, not LIVE ones
 
 ---
 

@@ -218,9 +218,10 @@ export default function EventBuilder() {
     setError(null)
 
     try {
+      const payload = preparePayload('LIVE')
+
       if (isEdit) {
-        // Update the event first
-        const payload = preparePayload('LIVE')
+        // Update existing event
         const updateRes = await fetch(`/api/events/${eventReference}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -228,22 +229,13 @@ export default function EventBuilder() {
         })
         if (!updateRes.ok) throw new Error('Failed to update invitation')
       } else {
-        // Draft doesn't exist, create it first, then enable it
-        const draftPayload = preparePayload('DRAFT')
+        // Create new event as LIVE
         const createRes = await fetch('/api/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(draftPayload),
+          body: JSON.stringify(payload),
         })
-        if (!createRes.ok) throw new Error('Failed to create draft')
-
-        const eventReference = await createRes.text()
-
-        // Now enable the draft
-        const enableRes = await fetch(`/api/events/${eventReference}/enable`, {
-          method: 'PATCH',
-        })
-        if (!enableRes.ok) throw new Error('Failed to enable invitation')
+        if (!createRes.ok) throw new Error('Failed to create invitation')
       }
 
       navigate('/events')

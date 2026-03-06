@@ -26,7 +26,8 @@
       "Bash(export JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-21.0.9\")",
       "Bash(export PATH=\"$JAVA_HOME/bin:$PATH\")",
       "Bash(java -version:*)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
