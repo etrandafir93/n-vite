@@ -121,6 +121,7 @@ const css = `
     background: #122033; border: 1px solid #1a2e42; overflow: hidden;
     position: relative;
   }
+  .mdn-event:only-child { grid-column: 1 / -1; max-width: 500px; margin: 0 auto; }
   .mdn-event__photo { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
   .mdn-event__body { padding: 1.4rem; position: relative; }
   .mdn-event__body::before {
@@ -420,60 +421,78 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
 
       <nav className="mdn-nav">
         <div className="mdn-nav__inner">
-          <a href="#families" className="mdn-nav__link">Families</a>
-          <a href="#schedule" className="mdn-nav__link">Schedule</a>
+          {(inv.groomParents || inv.brideParents || inv.godparents) && (
+            <a href="#families" className="mdn-nav__link">Families</a>
+          )}
+          {(inv.ceremonyVenue || inv.receptionVenue) && (
+            <a href="#schedule" className="mdn-nav__link">Schedule</a>
+          )}
           <a href="#rsvp" className="mdn-nav__link">RSVP</a>
         </div>
       </nav>
 
       {/* Families */}
       <div className="mdn-wrap">
-        <div className="mdn-section" id="families">
-          <div className="mdn-section-label">Families</div>
-          <div className="mdn-families">
-            <div className="mdn-family-card">
-              <span className="mdn-family-card__role">Parents of the Groom</span>
-              <p className="mdn-family-card__name">{inv.groomParents}</p>
+        {(inv.groomParents || inv.brideParents || inv.godparents) && (
+          <div className="mdn-section" id="families">
+            <div className="mdn-section-label">Families</div>
+            <div className="mdn-families">
+              {inv.groomParents && (
+                <div className="mdn-family-card">
+                  <span className="mdn-family-card__role">Parents of the Groom</span>
+                  <p className="mdn-family-card__name">{inv.groomParents}</p>
+                </div>
+              )}
+              {inv.brideParents && (
+                <div className="mdn-family-card">
+                  <span className="mdn-family-card__role">Parents of the Bride</span>
+                  <p className="mdn-family-card__name">{inv.brideParents}</p>
+                </div>
+              )}
+              {inv.godparents && (
+                <div className="mdn-family-card">
+                  <span className="mdn-family-card__role">Godparents</span>
+                  <p className="mdn-family-card__name">{inv.godparents}</p>
+                </div>
+              )}
             </div>
-            <div className="mdn-family-card">
-              <span className="mdn-family-card__role">Parents of the Bride</span>
-              <p className="mdn-family-card__name">{inv.brideParents}</p>
-            </div>
-            {inv.godparents && (
-              <div className="mdn-family-card">
-                <span className="mdn-family-card__role">Godparents</span>
-                <p className="mdn-family-card__name">{inv.godparents}</p>
-              </div>
-            )}
           </div>
-        </div>
+        )}
 
         {/* Events */}
-        <div className="mdn-section" id="schedule">
-          <div className="mdn-section-label">Schedule</div>
-          <div className="mdn-events">
-            <div className="mdn-event">
-              {inv.ceremonyPhotoUrl && <img className="mdn-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
-              <div className="mdn-event__body">
-                <span className="mdn-event__type">Ceremony</span>
-                <p className="mdn-event__name">{inv.ceremonyVenue}</p>
-                <p className="mdn-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="mdn-event__time">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <a className="mdn-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
-            </div>
-            <div className="mdn-event">
-              {inv.receptionPhotoUrl && <img className="mdn-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
-              <div className="mdn-event__body">
-                <span className="mdn-event__type">Reception</span>
-                <p className="mdn-event__name">{inv.receptionVenue}</p>
-                <p className="mdn-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="mdn-event__time">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <a className="mdn-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
+        {(inv.ceremonyVenue || inv.receptionVenue) && (
+          <div className="mdn-section" id="schedule">
+            <div className="mdn-section-label">Schedule</div>
+            <div className="mdn-events">
+              {inv.ceremonyVenue && (
+                <div className="mdn-event">
+                  {inv.ceremonyPhotoUrl && <img className="mdn-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
+                  <div className="mdn-event__body">
+                    <span className="mdn-event__type">Ceremony</span>
+                    <p className="mdn-event__name">{inv.ceremonyVenue}</p>
+                    {inv.ceremonyAddress && <p className="mdn-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.ceremonyAddress && <p className="mdn-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.ceremonyTime && <span className="mdn-event__time">{inv.ceremonyTime}</span>}
+                    {inv.ceremonyMapUrl && <a className="mdn-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
+              {inv.receptionVenue && (
+                <div className="mdn-event">
+                  {inv.receptionPhotoUrl && <img className="mdn-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
+                  <div className="mdn-event__body">
+                    <span className="mdn-event__type">Reception</span>
+                    <p className="mdn-event__name">{inv.receptionVenue}</p>
+                    {inv.receptionAddress && <p className="mdn-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.receptionAddress && <p className="mdn-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.receptionTime && <span className="mdn-event__time">{inv.receptionTime}</span>}
+                    {inv.receptionMapUrl && <a className="mdn-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* RSVP */}

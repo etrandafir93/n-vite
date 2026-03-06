@@ -25,7 +25,17 @@ The reference/inspiration for the redesign is **rivals.invite.me** — check it 
 
 ## ⚙️ Dynamic Content Logic
 
-- [ ] **Hide empty sections conditionally** — if a host hasn't filled in a section (e.g. godparents), that section must not render at all on the guest-facing invitation page
+- [x] **Hide empty sections conditionally** — ✅ COMPLETE — implemented conditional rendering for all invitation themes:
+  - Family sections (groom parents, bride parents, godparents) only show when data is provided
+  - Entire "Families" section is hidden if all family fields are empty
+  - Ceremony section only shows when ceremony venue is provided
+  - Reception section only shows when reception venue is provided
+  - Entire "Celebrations" section is hidden if both ceremony and reception are empty
+  - Navigation links are hidden for sections that don't exist
+  - Missing addresses and times are handled gracefully (date still shows, fields are optional)
+  - Map links only appear when provided
+  - Single event cards are centered (when only ceremony OR only reception exists)
+  - Applied to all 4 themes: Classic, Romantic, Modern, and Natural
 - [ ] **Show "thank you" message instead of RSVP form for past events** — once an event date has passed, the RSVP form should be replaced with a thank-you / post-event message
 - [ ] *(Future)* **Allow guests to upload photos/videos to past event pages** — post-event, the page could serve as a memory board where guests contribute media
 

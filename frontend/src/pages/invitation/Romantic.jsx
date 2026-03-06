@@ -128,6 +128,7 @@ const css = `
     background: #fff; border-radius: 20px; overflow: hidden;
     border: 1px solid #f0dde6; box-shadow: 0 4px 24px rgba(184,86,112,0.08);
   }
+  .rom-event:only-child { grid-column: 1 / -1; max-width: 500px; margin: 0 auto; }
   .rom-event__photo { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
   .rom-event__body { padding: 1.4rem; }
   .rom-event__type {
@@ -412,60 +413,78 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
 
       <nav className="rom-nav">
         <div className="rom-nav__inner">
-          <a href="#families" className="rom-nav__link">Families</a>
-          <a href="#celebrations" className="rom-nav__link">Celebrations</a>
+          {(inv.groomParents || inv.brideParents || inv.godparents) && (
+            <a href="#families" className="rom-nav__link">Families</a>
+          )}
+          {(inv.ceremonyVenue || inv.receptionVenue) && (
+            <a href="#celebrations" className="rom-nav__link">Celebrations</a>
+          )}
           <a href="#rsvp" className="rom-nav__link">RSVP</a>
         </div>
       </nav>
 
       {/* Families */}
       <div className="rom-wrap">
-        <div className="rom-section" id="families">
-          <p className="rom-section__title">~ With the blessings of their families ~</p>
-          <div className="rom-families">
-            <div className="rom-family-card">
-              <span className="rom-family-card__role">Parents of the Groom</span>
-              <p className="rom-family-card__name">{inv.groomParents}</p>
+        {(inv.groomParents || inv.brideParents || inv.godparents) && (
+          <div className="rom-section" id="families">
+            <p className="rom-section__title">~ With the blessings of their families ~</p>
+            <div className="rom-families">
+              {inv.groomParents && (
+                <div className="rom-family-card">
+                  <span className="rom-family-card__role">Parents of the Groom</span>
+                  <p className="rom-family-card__name">{inv.groomParents}</p>
+                </div>
+              )}
+              {inv.brideParents && (
+                <div className="rom-family-card">
+                  <span className="rom-family-card__role">Parents of the Bride</span>
+                  <p className="rom-family-card__name">{inv.brideParents}</p>
+                </div>
+              )}
+              {inv.godparents && (
+                <div className="rom-family-card">
+                  <span className="rom-family-card__role">Godparents</span>
+                  <p className="rom-family-card__name">{inv.godparents}</p>
+                </div>
+              )}
             </div>
-            <div className="rom-family-card">
-              <span className="rom-family-card__role">Parents of the Bride</span>
-              <p className="rom-family-card__name">{inv.brideParents}</p>
-            </div>
-            {inv.godparents && (
-              <div className="rom-family-card">
-                <span className="rom-family-card__role">Godparents</span>
-                <p className="rom-family-card__name">{inv.godparents}</p>
-              </div>
-            )}
           </div>
-        </div>
+        )}
 
         {/* Events */}
-        <div className="rom-section" id="celebrations">
-          <p className="rom-section__title">~ The day's celebrations ~</p>
-          <div className="rom-events">
-            <div className="rom-event">
-              {inv.ceremonyPhotoUrl && <img className="rom-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
-              <div className="rom-event__body">
-                <span className="rom-event__type">Holy Ceremony</span>
-                <p className="rom-event__name">{inv.ceremonyVenue}</p>
-                <p className="rom-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="rom-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <a className="rom-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
-            </div>
-            <div className="rom-event">
-              {inv.receptionPhotoUrl && <img className="rom-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
-              <div className="rom-event__body">
-                <span className="rom-event__type">Reception &amp; Dinner</span>
-                <p className="rom-event__name">{inv.receptionVenue}</p>
-                <p className="rom-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="rom-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <a className="rom-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
+        {(inv.ceremonyVenue || inv.receptionVenue) && (
+          <div className="rom-section" id="celebrations">
+            <p className="rom-section__title">~ The day's celebrations ~</p>
+            <div className="rom-events">
+              {inv.ceremonyVenue && (
+                <div className="rom-event">
+                  {inv.ceremonyPhotoUrl && <img className="rom-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
+                  <div className="rom-event__body">
+                    <span className="rom-event__type">Holy Ceremony</span>
+                    <p className="rom-event__name">{inv.ceremonyVenue}</p>
+                    {inv.ceremonyAddress && <p className="rom-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.ceremonyAddress && <p className="rom-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.ceremonyTime && <span className="rom-event__time-pill">{inv.ceremonyTime}</span>}
+                    {inv.ceremonyMapUrl && <a className="rom-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
+              {inv.receptionVenue && (
+                <div className="rom-event">
+                  {inv.receptionPhotoUrl && <img className="rom-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
+                  <div className="rom-event__body">
+                    <span className="rom-event__type">Reception &amp; Dinner</span>
+                    <p className="rom-event__name">{inv.receptionVenue}</p>
+                    {inv.receptionAddress && <p className="rom-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.receptionAddress && <p className="rom-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.receptionTime && <span className="rom-event__time-pill">{inv.receptionTime}</span>}
+                    {inv.receptionMapUrl && <a className="rom-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* RSVP */}

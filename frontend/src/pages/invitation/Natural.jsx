@@ -128,6 +128,7 @@ const css = `
     background: #fff; border-radius: 16px; overflow: hidden;
     border: 1px solid #e8e0d4; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   }
+  .nat-event:only-child { grid-column: 1 / -1; max-width: 500px; margin: 0 auto; }
   .nat-event__photo { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
   .nat-event__body { padding: 1.4rem; }
   .nat-event__type {
@@ -412,60 +413,78 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
 
       <nav className="nat-nav">
         <div className="nat-nav__inner">
-          <a href="#families" className="nat-nav__link">Families</a>
-          <a href="#celebrations" className="nat-nav__link">Celebrations</a>
+          {(inv.groomParents || inv.brideParents || inv.godparents) && (
+            <a href="#families" className="nat-nav__link">Families</a>
+          )}
+          {(inv.ceremonyVenue || inv.receptionVenue) && (
+            <a href="#celebrations" className="nat-nav__link">Celebrations</a>
+          )}
           <a href="#rsvp" className="nat-nav__link">RSVP</a>
         </div>
       </nav>
 
       {/* Families */}
       <div className="nat-wrap">
-        <div className="nat-section" id="families">
-          <p className="nat-section__title">With the Blessings of</p>
-          <div className="nat-families">
-            <div className="nat-family-card">
-              <span className="nat-family-card__role">Parents of the Groom</span>
-              <p className="nat-family-card__name">{inv.groomParents}</p>
+        {(inv.groomParents || inv.brideParents || inv.godparents) && (
+          <div className="nat-section" id="families">
+            <p className="nat-section__title">With the Blessings of</p>
+            <div className="nat-families">
+              {inv.groomParents && (
+                <div className="nat-family-card">
+                  <span className="nat-family-card__role">Parents of the Groom</span>
+                  <p className="nat-family-card__name">{inv.groomParents}</p>
+                </div>
+              )}
+              {inv.brideParents && (
+                <div className="nat-family-card">
+                  <span className="nat-family-card__role">Parents of the Bride</span>
+                  <p className="nat-family-card__name">{inv.brideParents}</p>
+                </div>
+              )}
+              {inv.godparents && (
+                <div className="nat-family-card">
+                  <span className="nat-family-card__role">Godparents</span>
+                  <p className="nat-family-card__name">{inv.godparents}</p>
+                </div>
+              )}
             </div>
-            <div className="nat-family-card">
-              <span className="nat-family-card__role">Parents of the Bride</span>
-              <p className="nat-family-card__name">{inv.brideParents}</p>
-            </div>
-            {inv.godparents && (
-              <div className="nat-family-card">
-                <span className="nat-family-card__role">Godparents</span>
-                <p className="nat-family-card__name">{inv.godparents}</p>
-              </div>
-            )}
           </div>
-        </div>
+        )}
 
         {/* Events */}
-        <div className="nat-section" id="celebrations">
-          <p className="nat-section__title">The Celebrations</p>
-          <div className="nat-events">
-            <div className="nat-event">
-              {inv.ceremonyPhotoUrl && <img className="nat-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
-              <div className="nat-event__body">
-                <span className="nat-event__type">Ceremony</span>
-                <p className="nat-event__name">{inv.ceremonyVenue}</p>
-                <p className="nat-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="nat-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <a className="nat-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
-            </div>
-            <div className="nat-event">
-              {inv.receptionPhotoUrl && <img className="nat-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
-              <div className="nat-event__body">
-                <span className="nat-event__type">Reception &amp; Dinner</span>
-                <p className="nat-event__name">{inv.receptionVenue}</p>
-                <p className="nat-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>
-                <span className="nat-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <a className="nat-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
+        {(inv.ceremonyVenue || inv.receptionVenue) && (
+          <div className="nat-section" id="celebrations">
+            <p className="nat-section__title">The Celebrations</p>
+            <div className="nat-events">
+              {inv.ceremonyVenue && (
+                <div className="nat-event">
+                  {inv.ceremonyPhotoUrl && <img className="nat-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue} />}
+                  <div className="nat-event__body">
+                    <span className="nat-event__type">Ceremony</span>
+                    <p className="nat-event__name">{inv.ceremonyVenue}</p>
+                    {inv.ceremonyAddress && <p className="nat-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.ceremonyAddress && <p className="nat-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.ceremonyTime && <span className="nat-event__time-pill">{inv.ceremonyTime}</span>}
+                    {inv.ceremonyMapUrl && <a className="nat-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
+              {inv.receptionVenue && (
+                <div className="nat-event">
+                  {inv.receptionPhotoUrl && <img className="nat-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue} />}
+                  <div className="nat-event__body">
+                    <span className="nat-event__type">Reception &amp; Dinner</span>
+                    <p className="nat-event__name">{inv.receptionVenue}</p>
+                    {inv.receptionAddress && <p className="nat-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
+                    {!inv.receptionAddress && <p className="nat-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.receptionTime && <span className="nat-event__time-pill">{inv.receptionTime}</span>}
+                    {inv.receptionMapUrl && <a className="nat-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* RSVP */}

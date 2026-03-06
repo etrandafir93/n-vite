@@ -122,6 +122,7 @@ const css = `
     background: #fff; border: 1px solid #e8e2d8;
     box-shadow: 0 2px 16px rgba(0,0,0,.05); overflow: hidden;
   }
+  .cl-event:only-child { grid-column: 1 / -1; max-width: 500px; margin: 0 auto; }
   .cl-event__photo {
     width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;
   }
@@ -393,60 +394,78 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
 
       <nav className="cl-nav">
         <div className="cl-nav__inner">
-          <a href="#families" className="cl-nav__link">Families</a>
-          <a href="#celebrations" className="cl-nav__link">Celebrations</a>
+          {(inv.groomParents || inv.brideParents || inv.godparents) && (
+            <a href="#families" className="cl-nav__link">Families</a>
+          )}
+          {(inv.ceremonyVenue || inv.receptionVenue) && (
+            <a href="#celebrations" className="cl-nav__link">Celebrations</a>
+          )}
           <a href="#rsvp" className="cl-nav__link">RSVP</a>
         </div>
       </nav>
 
       <div className="cl-wrap">
         {/* Families */}
-        <div className="cl-section" id="families">
-          <p className="cl-section__title">With the Blessings of</p>
-          <div className="cl-families">
-            <div className="cl-family-card">
-              <span className="cl-family-card__role">Parents of the Groom</span>
-              <p className="cl-family-card__name">{inv.groomParents}</p>
+        {(inv.groomParents || inv.brideParents || inv.godparents) && (
+          <div className="cl-section" id="families">
+            <p className="cl-section__title">With the Blessings of</p>
+            <div className="cl-families">
+              {inv.groomParents && (
+                <div className="cl-family-card">
+                  <span className="cl-family-card__role">Parents of the Groom</span>
+                  <p className="cl-family-card__name">{inv.groomParents}</p>
+                </div>
+              )}
+              {inv.brideParents && (
+                <div className="cl-family-card">
+                  <span className="cl-family-card__role">Parents of the Bride</span>
+                  <p className="cl-family-card__name">{inv.brideParents}</p>
+                </div>
+              )}
+              {inv.godparents && (
+                <div className="cl-family-card">
+                  <span className="cl-family-card__role">Godparents</span>
+                  <p className="cl-family-card__name">{inv.godparents}</p>
+                </div>
+              )}
             </div>
-            <div className="cl-family-card">
-              <span className="cl-family-card__role">Parents of the Bride</span>
-              <p className="cl-family-card__name">{inv.brideParents}</p>
-            </div>
-            {inv.godparents && (
-              <div className="cl-family-card">
-                <span className="cl-family-card__role">Godparents</span>
-                <p className="cl-family-card__name">{inv.godparents}</p>
-              </div>
-            )}
           </div>
-        </div>
+        )}
 
         {/* Events */}
-        <div className="cl-section" id="celebrations">
-          <p className="cl-section__title">Order of Celebrations</p>
-          <div className="cl-events">
-            <div className="cl-event">
-              {inv.ceremonyPhotoUrl && <img className="cl-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue}/>}
-              <div className="cl-event__body">
-                <span className="cl-event__type">Holy Ceremony</span>
-                <p className="cl-event__name">{inv.ceremonyVenue}</p>
-                <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>
-                <span className="cl-event__time-pill">{inv.ceremonyTime}</span>
-                {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
-            </div>
-            <div className="cl-event">
-              {inv.receptionPhotoUrl && <img className="cl-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue}/>}
-              <div className="cl-event__body">
-                <span className="cl-event__type">Reception &amp; Dinner</span>
-                <p className="cl-event__name">{inv.receptionVenue}</p>
-                <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>
-                <span className="cl-event__time-pill">{inv.receptionTime}</span>
-                {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
-              </div>
+        {(inv.ceremonyVenue || inv.receptionVenue) && (
+          <div className="cl-section" id="celebrations">
+            <p className="cl-section__title">Order of Celebrations</p>
+            <div className="cl-events">
+              {inv.ceremonyVenue && (
+                <div className="cl-event">
+                  {inv.ceremonyPhotoUrl && <img className="cl-event__photo" src={inv.ceremonyPhotoUrl} alt={inv.ceremonyVenue}/>}
+                  <div className="cl-event__body">
+                    <span className="cl-event__type">Holy Ceremony</span>
+                    <p className="cl-event__name">{inv.ceremonyVenue}</p>
+                    {inv.ceremonyAddress && <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>}
+                    {!inv.ceremonyAddress && <p className="cl-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.ceremonyTime && <span className="cl-event__time-pill">{inv.ceremonyTime}</span>}
+                    {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
+              {inv.receptionVenue && (
+                <div className="cl-event">
+                  {inv.receptionPhotoUrl && <img className="cl-event__photo" src={inv.receptionPhotoUrl} alt={inv.receptionVenue}/>}
+                  <div className="cl-event__body">
+                    <span className="cl-event__type">Reception &amp; Dinner</span>
+                    <p className="cl-event__name">{inv.receptionVenue}</p>
+                    {inv.receptionAddress && <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>}
+                    {!inv.receptionAddress && <p className="cl-event__detail">{fmtDate(inv.eventDate)}</p>}
+                    {inv.receptionTime && <span className="cl-event__time-pill">{inv.receptionTime}</span>}
+                    {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* RSVP */}
