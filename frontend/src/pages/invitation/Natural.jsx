@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useCountdown } from './useCountdown'
 
 function fmtDate(iso) {
   if (!iso) return ''
@@ -61,6 +62,14 @@ const css = `
     font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(168,197,171,0.85); font-weight: 500;
   }
+
+  /* Countdown */
+  .nat-countdown { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.75rem; }
+  .nat-countdown__unit { text-align: center; }
+  .nat-countdown__num { display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; color: #fff; line-height: 1; font-weight: 400; }
+  .nat-countdown__label { display: block; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(168,197,171,0.65); margin-top: 0.3rem; }
+  .nat-countdown__sep { font-size: 1.4rem; color: rgba(168,197,171,0.4); align-self: center; padding-bottom: 0.6rem; }
+  @media(max-width:600px){ .nat-countdown { gap: 1rem; } .nat-countdown__num { font-size: 1.7rem; } }
 
   /* Navigation */
   .nat-nav {
@@ -412,6 +421,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
 
   const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
+  const countdown = useCountdown(inv.eventDate)
 
   return (
     <div className="nat-page">
@@ -430,6 +440,29 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
             {inv.brideName}
           </h1>
           <p className="nat-hero__date">{fmtDate(inv.eventDate)}</p>
+          {countdown && (
+            <div className="nat-countdown">
+              <div className="nat-countdown__unit">
+                <span className="nat-countdown__num">{String(countdown.days).padStart(2,'0')}</span>
+                <span className="nat-countdown__label">Days</span>
+              </div>
+              <span className="nat-countdown__sep">·</span>
+              <div className="nat-countdown__unit">
+                <span className="nat-countdown__num">{String(countdown.hours).padStart(2,'0')}</span>
+                <span className="nat-countdown__label">Hours</span>
+              </div>
+              <span className="nat-countdown__sep">·</span>
+              <div className="nat-countdown__unit">
+                <span className="nat-countdown__num">{String(countdown.minutes).padStart(2,'0')}</span>
+                <span className="nat-countdown__label">Min</span>
+              </div>
+              <span className="nat-countdown__sep">·</span>
+              <div className="nat-countdown__unit">
+                <span className="nat-countdown__num">{String(countdown.seconds).padStart(2,'0')}</span>
+                <span className="nat-countdown__label">Sec</span>
+              </div>
+            </div>
+          )}
           {(inv.ceremonyTime || inv.receptionTime) && (
             <div className="nat-hero__badge">
               {inv.ceremonyTime && <>Ceremony {inv.ceremonyTime}</>}

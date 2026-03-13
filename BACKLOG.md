@@ -30,9 +30,9 @@
 
 - [ ] **Mobile-first layout** — most guests open invitations on their phones; the desktop layout should be secondary; current layout feels "shrunk" and needs more breathing room and whitespace
 - [ ] **Add entrance animations** — page elements should animate in on load, similar to rivals.invite.me
-- [ ] **Add countdown timer** — showing time remaining until the event date
-- [ ] **Add sticky navigation** — the nav/header should remain visible as guests scroll down the invitation
-- [ ] **Fix the "View Demo" link in the event creation flow** — currently broken; it should render the selected template populated with the actual user's event data, not a blank/generic preview
+- [x] **Add countdown timer** — ✅ COMPLETE — all 4 themes show a live days/hours/min/sec countdown in the hero section; auto-hides for past events
+- [x] **Add sticky navigation** — ✅ COMPLETE — already implemented across all 4 themes (position: sticky, backdrop-filter blur)
+- [x] **Fix the "View Demo" link in the event creation flow** — ✅ COMPLETE — when editing an existing event, theme cards show a "Preview" link pointing to the actual invitation URL with the selected theme; new events still show generic "View Demo"
 
 ---
 
@@ -52,6 +52,7 @@
 
 ### 🗺️ Event Creation & Editing (Host Journey)
 
+- [x] **Improve event form validation UX** — ✅ COMPLETE — frontend validates all required fields (groom/bride name, event date, background image, ceremony venue, reception venue) before submitting; invalid fields are highlighted with red borders and inline error messages; a banner lists all missing fields by name; errors clear as the user fills them in
 - [ ] **Simplify location input** — current text input is too bare; integrate Google Maps so hosts can search and pin a location rather than typing a raw address
 - [ ] **Support flexible event type combinations** — an event should be configurable as: ceremony only, reception only, or ceremony + reception; the creation flow and invitation page must both adapt to whatever combination is selected
 

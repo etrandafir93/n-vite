@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useCountdown } from './useCountdown'
 
 function fmtDate(iso) {
   if (!iso) return ''
@@ -62,6 +63,14 @@ const css = `
   .mdn-hero__meta-dot { width: 6px; height: 6px; border-radius: 50%; background: #f5a623; flex-shrink: 0; }
   .mdn-hero__meta-text { font-size: 0.82rem; color: #6a90b0; font-weight: 500; }
   .mdn-hero__meta-text strong { color: #c8dce8; font-weight: 600; }
+
+  /* Countdown */
+  .mdn-countdown { display: flex; gap: 1.5rem; margin-top: 2rem; }
+  .mdn-countdown__unit { text-align: center; }
+  .mdn-countdown__num { display: block; font-size: 2.2rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -0.02em; }
+  .mdn-countdown__label { display: block; font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: #6a90b0; margin-top: 0.3rem; }
+  .mdn-countdown__sep { font-size: 1.6rem; font-weight: 900; color: #f5a623; align-self: center; padding-bottom: 0.5rem; }
+  @media(max-width:600px){ .mdn-countdown { gap: 1rem; } .mdn-countdown__num { font-size: 1.7rem; } }
 
   /* Navigation */
   .mdn-nav {
@@ -402,6 +411,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
   const year = inv.eventDate ? new Date(inv.eventDate).getUTCFullYear() : ''
   const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
+  const countdown = useCountdown(inv.eventDate)
 
   return (
     <div className="mdn-page">
@@ -444,6 +454,29 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
               </div>
             )}
           </div>
+          {countdown && (
+            <div className="mdn-countdown">
+              <div className="mdn-countdown__unit">
+                <span className="mdn-countdown__num">{String(countdown.days).padStart(2,'0')}</span>
+                <span className="mdn-countdown__label">Days</span>
+              </div>
+              <span className="mdn-countdown__sep">·</span>
+              <div className="mdn-countdown__unit">
+                <span className="mdn-countdown__num">{String(countdown.hours).padStart(2,'0')}</span>
+                <span className="mdn-countdown__label">Hours</span>
+              </div>
+              <span className="mdn-countdown__sep">·</span>
+              <div className="mdn-countdown__unit">
+                <span className="mdn-countdown__num">{String(countdown.minutes).padStart(2,'0')}</span>
+                <span className="mdn-countdown__label">Min</span>
+              </div>
+              <span className="mdn-countdown__sep">·</span>
+              <div className="mdn-countdown__unit">
+                <span className="mdn-countdown__num">{String(countdown.seconds).padStart(2,'0')}</span>
+                <span className="mdn-countdown__label">Sec</span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

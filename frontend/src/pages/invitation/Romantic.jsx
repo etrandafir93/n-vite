@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useCountdown } from './useCountdown'
 
 function fmtDate(iso) {
   if (!iso) return ''
@@ -66,6 +67,14 @@ const css = `
     font-size: 3rem; opacity: 0.18; color: #fff; line-height: 1;
     padding: 1rem; user-select: none; pointer-events: none; transform: scaleX(-1);
   }
+
+  /* Countdown */
+  .rom-countdown { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.75rem; }
+  .rom-countdown__unit { text-align: center; }
+  .rom-countdown__num { display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; font-style: italic; color: #fff; line-height: 1; font-weight: 400; }
+  .rom-countdown__label { display: block; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,200,215,0.6); margin-top: 0.3rem; }
+  .rom-countdown__sep { font-size: 1.4rem; color: rgba(244,192,204,0.4); align-self: center; padding-bottom: 0.6rem; }
+  @media(max-width:600px){ .rom-countdown { gap: 1rem; } .rom-countdown__num { font-size: 1.7rem; } }
 
   /* Navigation */
   .rom-nav {
@@ -416,6 +425,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
   const heroOverlay = 'linear-gradient(to bottom, rgba(240,200,215,0.15) 0%, rgba(180,80,110,0.12) 30%, rgba(60,15,35,0.65) 65%, rgba(40,10,25,0.88) 100%)'
   const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
+  const countdown = useCountdown(inv.eventDate)
 
   return (
     <div className="rom-page">
@@ -436,6 +446,29 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
             {inv.brideName}
           </h1>
           <p className="rom-hero__date">{fmtDate(inv.eventDate)}</p>
+          {countdown && (
+            <div className="rom-countdown">
+              <div className="rom-countdown__unit">
+                <span className="rom-countdown__num">{String(countdown.days).padStart(2,'0')}</span>
+                <span className="rom-countdown__label">Days</span>
+              </div>
+              <span className="rom-countdown__sep">·</span>
+              <div className="rom-countdown__unit">
+                <span className="rom-countdown__num">{String(countdown.hours).padStart(2,'0')}</span>
+                <span className="rom-countdown__label">Hours</span>
+              </div>
+              <span className="rom-countdown__sep">·</span>
+              <div className="rom-countdown__unit">
+                <span className="rom-countdown__num">{String(countdown.minutes).padStart(2,'0')}</span>
+                <span className="rom-countdown__label">Min</span>
+              </div>
+              <span className="rom-countdown__sep">·</span>
+              <div className="rom-countdown__unit">
+                <span className="rom-countdown__num">{String(countdown.seconds).padStart(2,'0')}</span>
+                <span className="rom-countdown__label">Sec</span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

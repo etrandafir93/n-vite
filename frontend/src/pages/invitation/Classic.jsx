@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useCountdown } from './useCountdown'
 
 function fmtDate(iso) {
   if (!iso) return ''
@@ -59,6 +60,14 @@ const css = `
     40%{opacity:1;transform:scaleY(1);transform-origin:top}
     80%{opacity:0;transform:scaleY(1);transform-origin:bottom}
   }
+
+  /* ── Countdown ─────────────────────────────────── */
+  .cl-countdown { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.75rem; }
+  .cl-countdown__unit { text-align: center; }
+  .cl-countdown__num { display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; color: #fff; line-height: 1; font-weight: 400; }
+  .cl-countdown__label { display: block; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 0.3rem; }
+  .cl-countdown__sep { font-size: 1.4rem; color: rgba(201,169,110,0.5); align-self: center; padding-bottom: 0.6rem; }
+  @media(max-width:600px){ .cl-countdown { gap: 1rem; } .cl-countdown__num { font-size: 1.7rem; } }
 
   /* ── Navigation ───────────────────────────────── */
   .cl-nav {
@@ -396,6 +405,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
   const heroGradient = 'linear-gradient(to bottom, rgba(10,8,5,.55) 0%, rgba(10,8,5,.3) 40%, rgba(10,8,5,.72) 100%)'
   const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
+  const countdown = useCountdown(inv.eventDate)
 
   return (
     <div className="cl-page">
@@ -416,6 +426,29 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
             <div className="cl-divider__line"/>
           </div>
           <p className="cl-hero__date">{fmtDate(inv.eventDate)}</p>
+          {countdown && (
+            <div className="cl-countdown">
+              <div className="cl-countdown__unit">
+                <span className="cl-countdown__num">{String(countdown.days).padStart(2,'0')}</span>
+                <span className="cl-countdown__label">Days</span>
+              </div>
+              <span className="cl-countdown__sep">·</span>
+              <div className="cl-countdown__unit">
+                <span className="cl-countdown__num">{String(countdown.hours).padStart(2,'0')}</span>
+                <span className="cl-countdown__label">Hours</span>
+              </div>
+              <span className="cl-countdown__sep">·</span>
+              <div className="cl-countdown__unit">
+                <span className="cl-countdown__num">{String(countdown.minutes).padStart(2,'0')}</span>
+                <span className="cl-countdown__label">Min</span>
+              </div>
+              <span className="cl-countdown__sep">·</span>
+              <div className="cl-countdown__unit">
+                <span className="cl-countdown__num">{String(countdown.seconds).padStart(2,'0')}</span>
+                <span className="cl-countdown__label">Sec</span>
+              </div>
+            </div>
+          )}
         </div>
         <div className="cl-scroll-hint"></div>
       </section>

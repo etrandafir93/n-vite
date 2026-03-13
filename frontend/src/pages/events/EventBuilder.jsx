@@ -436,15 +436,27 @@ export default function EventBuilder() {
                     className="eb-theme-radio"
                   />
                   <span className="eb-theme-label">{theme.label}</span>
-                  <a
-                    href={`/invitations/joe-and-jane?theme=${theme.value}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="eb-theme-demo"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    View Demo
-                  </a>
+                  {isEdit ? (
+                    <a
+                      href={`/invitations/${eventReference}?theme=${theme.value}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="eb-theme-demo"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      Preview
+                    </a>
+                  ) : (
+                    <a
+                      href={`/invitations/joe-and-jane?theme=${theme.value}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="eb-theme-demo"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      View Demo
+                    </a>
+                  )}
                 </label>
               ))}
             </div>
