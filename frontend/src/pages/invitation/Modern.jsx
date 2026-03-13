@@ -400,6 +400,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
   if (!inv) return <div className="mdn-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
   const year = inv.eventDate ? new Date(inv.eventDate).getUTCFullYear() : ''
+  const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
@@ -525,7 +526,17 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="mdn-rsvp" id="rsvp">
         <div className="mdn-wrap">
-          {isPastEvent ? (
+          {isDraft ? (
+            <div className="mdn-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>COMING SOON</div>
+              <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#fff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                Coming <span style={{color: '#f5a623'}}>Soon</span>
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#6a90b0', lineHeight: '1.6' }}>
+                This invitation has not been published yet.
+              </p>
+            </div>
+          ) : isPastEvent ? (
             <div className="mdn-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
               <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>THANK YOU</div>
               <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#fff', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>

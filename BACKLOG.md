@@ -11,9 +11,9 @@
 
 **Draft Mode**
 - [x] **Fix "Enable" button visibility logic on dashboard** — ✅ COMPLETE — only DRAFT events show the "Enable" button, not LIVE ones
-- [ ] **Hide share button on dashboard for DRAFT invitations** — draft invitations should not show the share button on the dashboard; only LIVE invitations can be shared
-- [ ] **Disable RSVP form on DRAFT invitations** — when viewing a draft invitation directly via URL, the RSVP form should be disabled or show a message like "This invitation is not yet published" instead of allowing guests to accept/decline
-- [ ] **Change default status for new invitations to DRAFT** — when creating a new invitation via "Save" button, it should be created as DRAFT by default (not LIVE); hosts must explicitly click "Enable" to make it LIVE; this ensures hosts review their invitation before sharing it
+- [x] **Hide share button on dashboard for DRAFT invitations** — ✅ COMPLETE — draft invitations do not show the share button; only LIVE invitations can be shared
+- [x] **Disable RSVP form on DRAFT invitations** — ✅ COMPLETE — when viewing a draft invitation directly via URL, the RSVP form is replaced with a "Coming Soon / This invitation has not been published yet" message across all 4 themes
+- [x] **Change default status for new invitations to DRAFT** — ✅ COMPLETE — new invitations are created as DRAFT by default; hosts must explicitly click "Enable" to make them LIVE
 
 **Live Mode**
 - [x] **Dynamic content rendering** — ✅ COMPLETE — hide empty sections conditionally (family sections, ceremony/reception, navigation links, etc.)
@@ -46,7 +46,7 @@
 ### 📊 Host Dashboard & Analytics
 
 - [x] **Show full accepted/declined guest details** — ✅ COMPLETE — the dashboard now shows full guest information including: attendance status (accepted/declined), plus-one details (yes/no and partner name), menu preference, children count, transportation needs, and notes; all fields are displayed in an expandable details view with menu preference also shown as a table column
-- [ ] **Implement guest data export** — hosts need to export the complete guest list to Excel (or similar); the export must include all collected fields (name, attendance, plus-ones, menu choice, children, transport, notes, etc.)
+- [x] **Implement guest data export** — ✅ COMPLETE — hosts can export the complete guest list to Excel via `GET /api/events/{ref}/export`; includes all fields: name, attendance, plus-ones, partner name, menu choice, children, transport, notes, RSVP date; export button on the analytics dashboard
 
 ---
 
@@ -92,7 +92,7 @@
 
 ### Developer Experience
 
-- [ ] **Enable backend hot reload with Spring Boot DevTools** — currently developers need to run `mvn clean install` after every backend code change to see the results; integrate Spring Boot DevTools to enable automatic application restart when Java files change (much faster than full rebuild); optionally configure LiveReload browser extension for automatic browser refresh when changes are detected; this will match the frontend's hot reload experience and significantly speed up the development workflow
+- [x] **Enable backend hot reload with Spring Boot DevTools** — ✅ COMPLETE — `spring-boot-devtools` added to pom.xml — currently developers need to run `mvn clean install` after every backend code change to see the results; integrate Spring Boot DevTools to enable automatic application restart when Java files change (much faster than full rebuild); optionally configure LiveReload browser extension for automatic browser refresh when changes are detected; this will match the frontend's hot reload experience and significantly speed up the development workflow
 
 ### CI/CD & Automation
 

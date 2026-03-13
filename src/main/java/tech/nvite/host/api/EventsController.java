@@ -2,7 +2,11 @@ package tech.nvite.host.api;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +21,7 @@ import tech.nvite.host.CreateEventUseCase;
 import tech.nvite.host.DeleteEventUseCase;
 import tech.nvite.host.EditEventUseCase;
 import tech.nvite.host.EnableEventUseCase;
+import tech.nvite.host.ExportGuestListUseCase;
 import tech.nvite.host.SeeEventDashboardUseCase;
 import tech.nvite.host.SeeEventUseCase;
 import tech.nvite.host.SeeUpcomingEventsUseCase;
@@ -31,6 +36,7 @@ class EventsController {
   private final EditEventUseCase editEventUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
   private final EnableEventUseCase enableEventUseCase;
+  private final ExportGuestListUseCase exportGuestListUseCase;
   private final SeeEventDashboardUseCase seeEventDashboardUseCase;
   private final SeeUpcomingEventsUseCase seeUpcomingEventsUseCase;
   private final SeeEventUseCase seeEventUseCase;
@@ -73,5 +79,17 @@ class EventsController {
   @GetMapping("/{reference}/dashboard")
   public SeeEventDashboardUseCase.EventStats getDashboard(@PathVariable String reference) {
     return seeEventDashboardUseCase.apply(reference);
+  }
+
+  @GetMapping("/{reference}/export")
+  public ResponseEntity<byte[]> exportGuests(@PathVariable String reference) {
+    var result = exportGuestListUseCase.apply(reference);
+    var headers = new HttpHeaders();
+    headers.setContentType(
+        MediaType.parseMediaType(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+    headers.setContentDisposition(
+        ContentDisposition.attachment().filename(result.filename()).build());
+    return ResponseEntity.ok().headers(headers).body(result.content());
   }
 }

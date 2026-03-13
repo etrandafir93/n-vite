@@ -414,6 +414,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
   if (!inv) return <div className="rom-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
   const heroOverlay = 'linear-gradient(to bottom, rgba(240,200,215,0.15) 0%, rgba(180,80,110,0.12) 30%, rgba(60,15,35,0.65) 65%, rgba(40,10,25,0.88) 100%)'
+  const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
@@ -517,7 +518,17 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="rom-rsvp" id="rsvp">
         <div className="rom-wrap">
-          {isPastEvent ? (
+          {isDraft ? (
+            <div className="rom-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="rom-rsvp__petals" style={{marginBottom: '1rem'}}>···</div>
+              <h3 style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.8rem', color: '#b85670', marginBottom: '1rem' }}>
+                Coming Soon
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#9b7080', lineHeight: '1.6' }}>
+                This invitation has not been published yet.
+              </p>
+            </div>
+          ) : isPastEvent ? (
             <div className="rom-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
               <div className="rom-rsvp__petals" style={{marginBottom: '1rem'}}>···</div>
               <h3 style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.8rem', color: '#b85670', marginBottom: '1rem' }}>

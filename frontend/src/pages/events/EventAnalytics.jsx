@@ -301,7 +301,21 @@ export default function EventAnalytics() {
         {/* Responses Table */}
         {responses && responses.length > 0 && (
           <div className="ea-card">
-            <h2 className="ea-card__title">Guest Responses</h2>
+            <div className="ea-card__header">
+              <h2 className="ea-card__title">Guest Responses</h2>
+              <a
+                href={`/api/events/${reference}/export`}
+                className="ea-export-btn"
+                download
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{width:'16px',height:'16px'}}>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export to Excel
+              </a>
+            </div>
             <div className="ea-table-container">
               <table className="ea-table">
                 <thead>

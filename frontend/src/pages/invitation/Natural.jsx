@@ -410,6 +410,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
 
   if (!inv) return <div className="nat-page" style={{minHeight:'100svh',display:'flex',alignItems:'center',justifyContent:'center'}}>Loading…</div>
 
+  const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
 
   return (
@@ -518,7 +519,17 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
       {/* RSVP */}
       <div className="nat-rsvp" id="rsvp">
         <div className="nat-wrap">
-          {isPastEvent ? (
+          {isDraft ? (
+            <div className="nat-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="nat-rsvp__leaves" style={{marginBottom: '1rem'}}>···</div>
+              <h3 style={{ fontSize: '1.8rem', fontWeight: '600', color: '#2d5016', marginBottom: '1rem' }}>
+                Coming Soon
+              </h3>
+              <p style={{ fontSize: '.9rem', color: '#5a6e4a', lineHeight: '1.6' }}>
+                This invitation has not been published yet.
+              </p>
+            </div>
+          ) : isPastEvent ? (
             <div className="nat-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
               <div className="nat-rsvp__leaves" style={{marginBottom: '1rem'}}>···</div>
               <h3 style={{ fontSize: '1.8rem', fontWeight: '600', color: '#2d5016', marginBottom: '1rem' }}>

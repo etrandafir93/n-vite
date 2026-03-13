@@ -22,7 +22,7 @@ const EMPTY_FORM = {
   receptionMapUrl: '',
   rsvpDeadline: '',
   theme: 'classic',
-  status: 'LIVE',
+  status: 'DRAFT',
 }
 
 function toLocalDateTimeInput(iso) {
