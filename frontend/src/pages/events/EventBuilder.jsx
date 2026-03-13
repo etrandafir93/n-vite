@@ -36,7 +36,7 @@ function toLocalDateTimeInput(iso) {
   return `${y}-${mo}-${day}T${h}:${mi}`
 }
 
-function Field({ label, hint, required, children }) {
+function Field({ label, hint, required, error, children }) {
   return (
     <div className="eb-field">
       <label className="eb-label">
@@ -45,14 +45,15 @@ function Field({ label, hint, required, children }) {
       </label>
       {hint && <p className="eb-hint">{hint}</p>}
       {children}
+      {error && <p className="eb-field-error">{error}</p>}
     </div>
   )
 }
 
-function Input({ value, onChange, type = 'text', placeholder, required }) {
+function Input({ value, onChange, type = 'text', placeholder, required, invalid }) {
   return (
     <input
-      className="eb-input"
+      className={`eb-input${invalid ? ' eb-input--invalid' : ''}`}
       type={type}
       value={value}
       onChange={e => onChange(e.target.value)}
@@ -156,8 +157,28 @@ function ImageUpload({ value, onChange, label, required }) {
   )
 }
 
+const REQUIRED_FIELDS = {
+  groomName: "Groom's name",
+  brideName: "Bride's name",
+  eventDateTime: 'Event date & time',
+  backgroundImageUrl: 'Background image',
+  ceremonyVenue: 'Ceremony venue name',
+  receptionVenue: 'Reception venue name',
+}
+
+function validate(form) {
+  const errors = {}
+  for (const [field, label] of Object.entries(REQUIRED_FIELDS)) {
+    if (!form[field] || (typeof form[field] === 'string' && !form[field].trim())) {
+      errors[field] = `${label} is required`
+    }
+  }
+  return errors
+}
+
 export default function EventBuilder() {
   const [form, setForm] = useState(EMPTY_FORM)
+  const [fieldErrors, setFieldErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -202,7 +223,10 @@ export default function EventBuilder() {
       .finally(() => setLoading(false))
   }, [eventReference])
 
-  const set = field => value => setForm(prev => ({ ...prev, [field]: value }))
+  const set = field => value => {
+    setForm(prev => ({ ...prev, [field]: value }))
+    if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: null }))
+  }
 
   const preparePayload = (status) => {
     return {
@@ -214,6 +238,13 @@ export default function EventBuilder() {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    const errors = validate(form)
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      setError(`Please fill in the required fields: ${Object.values(errors).map(e => e.replace(' is required', '')).join(', ')}`)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     setSaving(true)
     setError(null)
 
@@ -247,6 +278,13 @@ export default function EventBuilder() {
   }
 
   const handlePreview = async () => {
+    const errors = validate(form)
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      setError(`Please fill in the required fields: ${Object.values(errors).map(e => e.replace(' is required', '')).join(', ')}`)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     setSaving(true)
     setError(null)
 
@@ -302,11 +340,11 @@ export default function EventBuilder() {
 
           <Section title="The Couple" subtitle="Names as they will appear on the invitation">
             <div className="eb-grid-2">
-              <Field label="Groom's Name" required>
-                <Input value={form.groomName} onChange={set('groomName')} placeholder="e.g. John Doe" required />
+              <Field label="Groom's Name" required error={fieldErrors.groomName}>
+                <Input value={form.groomName} onChange={set('groomName')} placeholder="e.g. John Doe" required invalid={!!fieldErrors.groomName} />
               </Field>
-              <Field label="Bride's Name" required>
-                <Input value={form.brideName} onChange={set('brideName')} placeholder="e.g. Jane Smith" required />
+              <Field label="Bride's Name" required error={fieldErrors.brideName}>
+                <Input value={form.brideName} onChange={set('brideName')} placeholder="e.g. Jane Smith" required invalid={!!fieldErrors.brideName} />
               </Field>
             </div>
           </Section>
@@ -326,18 +364,18 @@ export default function EventBuilder() {
           </Section>
 
           <Section title="Date & Visuals" subtitle="When is the event, and how it will look">
-            <Field label="Event Date & Time" required>
-              <Input type="datetime-local" value={form.eventDateTime} onChange={set('eventDateTime')} required />
+            <Field label="Event Date & Time" required error={fieldErrors.eventDateTime}>
+              <Input type="datetime-local" value={form.eventDateTime} onChange={set('eventDateTime')} required invalid={!!fieldErrors.eventDateTime} />
             </Field>
-            <Field label="Background Image" required hint="Hero image for the invitation">
+            <Field label="Background Image" required hint="Hero image for the invitation" error={fieldErrors.backgroundImageUrl}>
               <ImageUpload value={form.backgroundImageUrl} onChange={set('backgroundImageUrl')} label="Background" required />
             </Field>
           </Section>
 
           <Section title="Ceremony" subtitle="Church or ceremony venue details">
             <div className="eb-grid-2">
-              <Field label="Venue Name" required>
-                <Input value={form.ceremonyVenue} onChange={set('ceremonyVenue')} placeholder="e.g. St. Mary's Cathedral" required />
+              <Field label="Venue Name" required error={fieldErrors.ceremonyVenue}>
+                <Input value={form.ceremonyVenue} onChange={set('ceremonyVenue')} placeholder="e.g. St. Mary's Cathedral" required invalid={!!fieldErrors.ceremonyVenue} />
               </Field>
               <Field label="Address">
                 <Input value={form.ceremonyAddress} onChange={set('ceremonyAddress')} placeholder="e.g. 123 Church Street" />
@@ -356,8 +394,8 @@ export default function EventBuilder() {
 
           <Section title="Reception" subtitle="Restaurant or reception venue details">
             <div className="eb-grid-2">
-              <Field label="Venue Name" required>
-                <Input value={form.receptionVenue} onChange={set('receptionVenue')} placeholder="e.g. The Grand Ballroom" required />
+              <Field label="Venue Name" required error={fieldErrors.receptionVenue}>
+                <Input value={form.receptionVenue} onChange={set('receptionVenue')} placeholder="e.g. The Grand Ballroom" required invalid={!!fieldErrors.receptionVenue} />
               </Field>
               <Field label="Address">
                 <Input value={form.receptionAddress} onChange={set('receptionAddress')} placeholder="e.g. 456 Elm Avenue" />
