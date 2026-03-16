@@ -29,7 +29,7 @@
 **Redesign** — Reference: **rivals.invite.me** for animations, countdown, and sticky nav
 
 - [x] **Mobile-first layout** — ✅ COMPLETE — fixed broken Modern theme 720px media query (`.spt-` → `.mdn-` prefix); made wrapper padding, section padding, and RSVP padding fluid via clamp(); increased toggle/menu button padding for larger touch targets across all 4 themes
-- [ ] **Add entrance animations** — page elements should animate in on load, similar to rivals.invite.me
+- [x] **Add entrance animations** — ✅ COMPLETE — envelope intro screen added to all 4 themes; guest sees a closed envelope with a pulsing "Tap to open" hint; clicking animates the flap open and letter sliding up, then fades the overlay away to reveal the invitation; each theme has its own color scheme (cream/gold, dark navy/gold, blush/rose, sage/green)
 - [x] **Add countdown timer** — ✅ COMPLETE — all 4 themes show a live days/hours/min/sec countdown in the hero section; auto-hides for past events
 - [x] **Add sticky navigation** — ✅ COMPLETE — already implemented across all 4 themes (position: sticky, backdrop-filter blur)
 - [x] **Fix the "View Demo" link in the event creation flow** — ✅ COMPLETE — when editing an existing event, theme cards show a "Preview" link pointing to the actual invitation URL with the selected theme; new events still show generic "View Demo"

@@ -208,7 +208,44 @@ const css = `
     cursor:pointer; font-family:'Inter',sans-serif; font-weight:500; transition:all .18s;
   }
   .cl-btn-secondary:hover { border-color:rgba(201,169,110,0.4); color:#555; }
+
+  /* ── Envelope Intro ──────────────────────────── */
+  .cl-env-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: #faf8f4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    cursor: pointer; transition: opacity 0.7s ease 0.4s;
+  }
+  .cl-env-overlay--opening { opacity: 0; pointer-events: none; }
+  .cl-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.10)); }
+  .cl-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #ddd4c0; display: flex; align-items: center; justify-content: center; }
+  .cl-env__body::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
+    background:
+      linear-gradient(to bottom right, transparent 49%, #f0ece3 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #f0ece3 50%) right / 50.5% 100% no-repeat;
+  }
+  .cl-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #c9a96e; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(201,169,110,.5); }
+  .cl-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #f0ece3; border: 1px solid #ddd4c0; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .cl-env--open .cl-env__flap { transform: perspective(800px) rotateX(-172deg); }
+  .cl-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fdfcfa; border: 1px solid #e8e2d8; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .cl-env--open .cl-env__letter { transform: translateY(-26%); }
+  .cl-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #c9a96e; animation: envPulse 2s ease-in-out infinite; }
+  @keyframes envPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 `
+
+function EnvelopeIntro({ opening, onOpen }) {
+  return (
+    <div className={`cl-env-overlay${opening ? ' cl-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className={`cl-env${opening ? ' cl-env--open' : ''}`}>
+        <div className="cl-env__body"><div className="cl-env__seal">♦</div></div>
+        <div className="cl-env__flap" />
+        <div className="cl-env__letter" />
+      </div>
+      {!opening && <p className="cl-env__hint">Tap to open</p>}
+    </div>
+  )
+}
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
@@ -408,6 +445,13 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
 export default function ClassicInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
+  const [phase, setPhase] = useState('closed')
+
+  const handleOpen = () => {
+    if (phase !== 'closed') return
+    setPhase('opening')
+    setTimeout(() => setPhase('open'), 1100)
+  }
 
   useEffect(() => {
     if (invitationData) {
@@ -433,6 +477,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
   return (
     <div className="cl-page">
       <style>{css}</style>
+      {phase !== 'open' && <EnvelopeIntro opening={phase === 'opening'} onOpen={handleOpen} />}
 
       <section className="cl-hero">
         <div className="cl-hero__bg" style={{backgroundImage:`${heroGradient}, url('${inv.backgroundImageUrl}')`}}/>

@@ -223,7 +223,44 @@ const css = `
     cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.18s;
   }
   .nat-btn-secondary:hover { border-color: rgba(122,158,126,0.4); color: #5a7d5e; }
+
+  /* ── Envelope Intro ──────────────────────────── */
+  .nat-env-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: #f5f2ec;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    cursor: pointer; transition: opacity 0.7s ease 0.4s;
+  }
+  .nat-env-overlay--opening { opacity: 0; pointer-events: none; }
+  .nat-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.10)); }
+  .nat-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #d4cbb8; display: flex; align-items: center; justify-content: center; }
+  .nat-env__body::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
+    background:
+      linear-gradient(to bottom right, transparent 49%, #eee8de 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #eee8de 50%) right / 50.5% 100% no-repeat;
+  }
+  .nat-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #7a9e7e; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(122,158,126,.4); }
+  .nat-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #eee8de; border: 1px solid #d4cbb8; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .nat-env--open .nat-env__flap { transform: perspective(800px) rotateX(-172deg); }
+  .nat-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fdfcfa; border: 1px solid #e4ddd0; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .nat-env--open .nat-env__letter { transform: translateY(-26%); }
+  .nat-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #7a9e7e; animation: natEnvPulse 2s ease-in-out infinite; }
+  @keyframes natEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 `
+
+function EnvelopeIntro({ opening, onOpen }) {
+  return (
+    <div className={`nat-env-overlay${opening ? ' nat-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className={`nat-env${opening ? ' nat-env--open' : ''}`}>
+        <div className="nat-env__body"><div className="nat-env__seal">✦</div></div>
+        <div className="nat-env__flap" />
+        <div className="nat-env__letter" />
+      </div>
+      {!opening && <p className="nat-env__hint">Tap to open</p>}
+    </div>
+  )
+}
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
@@ -425,6 +462,13 @@ function RsvpForm({ invitationRef, menuOptions }) {
 export default function NaturalInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
+  const [phase, setPhase] = useState('closed')
+
+  const handleOpen = () => {
+    if (phase !== 'closed') return
+    setPhase('opening')
+    setTimeout(() => setPhase('open'), 1100)
+  }
 
   useEffect(() => {
     if (invitationData) {
@@ -449,6 +493,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
   return (
     <div className="nat-page">
       <style>{css}</style>
+      {phase !== 'open' && <EnvelopeIntro opening={phase === 'opening'} onOpen={handleOpen} />}
 
       {/* Hero */}
       <section className="nat-hero">

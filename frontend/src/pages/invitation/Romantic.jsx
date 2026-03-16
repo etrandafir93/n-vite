@@ -224,7 +224,44 @@ const css = `
     font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; transition: all 0.2s;
   }
   .rom-btn-secondary:hover { border-color: rgba(184,86,112,0.4); color: #7a2040; }
+
+  /* ── Envelope Intro ──────────────────────────── */
+  .rom-env-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: #fff5f7;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    cursor: pointer; transition: opacity 0.7s ease 0.4s;
+  }
+  .rom-env-overlay--opening { opacity: 0; pointer-events: none; }
+  .rom-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(184,86,112,.12)); }
+  .rom-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #f0dde6; display: flex; align-items: center; justify-content: center; }
+  .rom-env__body::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
+    background:
+      linear-gradient(to bottom right, transparent 49%, #fce8ee 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #fce8ee 50%) right / 50.5% 100% no-repeat;
+  }
+  .rom-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #b85670; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(184,86,112,.4); }
+  .rom-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #fce8ee; border: 1px solid #f0dde6; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .rom-env--open .rom-env__flap { transform: perspective(800px) rotateX(-172deg); }
+  .rom-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fffbfc; border: 1px solid #f0dde6; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .rom-env--open .rom-env__letter { transform: translateY(-26%); }
+  .rom-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #b85670; animation: romEnvPulse 2s ease-in-out infinite; }
+  @keyframes romEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 `
+
+function EnvelopeIntro({ opening, onOpen }) {
+  return (
+    <div className={`rom-env-overlay${opening ? ' rom-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className={`rom-env${opening ? ' rom-env--open' : ''}`}>
+        <div className="rom-env__body"><div className="rom-env__seal">♥</div></div>
+        <div className="rom-env__flap" />
+        <div className="rom-env__letter" />
+      </div>
+      {!opening && <p className="rom-env__hint">Tap to open</p>}
+    </div>
+  )
+}
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
@@ -426,6 +463,13 @@ function RsvpForm({ invitationRef, menuOptions }) {
 export default function RomanticInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
+  const [phase, setPhase] = useState('closed')
+
+  const handleOpen = () => {
+    if (phase !== 'closed') return
+    setPhase('opening')
+    setTimeout(() => setPhase('open'), 1100)
+  }
 
   useEffect(() => {
     // If data is already provided via props, don't fetch
@@ -453,6 +497,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
   return (
     <div className="rom-page">
       <style>{css}</style>
+      {phase !== 'open' && <EnvelopeIntro opening={phase === 'opening'} onOpen={handleOpen} />}
 
       {/* Hero */}
       <section className="rom-hero">

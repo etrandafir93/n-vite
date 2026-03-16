@@ -212,7 +212,44 @@ const css = `
     cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s;
   }
   .mdn-btn-secondary:hover { border-color: rgba(74,104,128,0.5); color: #8ab0c8; }
+
+  /* ── Envelope Intro ──────────────────────────── */
+  .mdn-env-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: #0d1b2a;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    cursor: pointer; transition: opacity 0.7s ease 0.4s;
+  }
+  .mdn-env-overlay--opening { opacity: 0; pointer-events: none; }
+  .mdn-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.4)); }
+  .mdn-env__body { position: absolute; inset: 0; background: #122033; border: 1px solid #1a2e42; display: flex; align-items: center; justify-content: center; }
+  .mdn-env__body::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
+    background:
+      linear-gradient(to bottom right, transparent 49%, #0d1b2a 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #0d1b2a 50%) right / 50.5% 100% no-repeat;
+  }
+  .mdn-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #f5a623; display: flex; align-items: center; justify-content: center; color: #0d1b2a; font-size: .9rem; font-weight: 700; box-shadow: 0 2px 10px rgba(245,166,35,.4); }
+  .mdn-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #0d1b2a; border: 1px solid #1a2e42; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .mdn-env--open .mdn-env__flap { transform: perspective(800px) rotateX(-172deg); }
+  .mdn-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #0a1622; border: 1px solid #1a2e42; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .mdn-env--open .mdn-env__letter { transform: translateY(-26%); }
+  .mdn-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #f5a623; animation: mdnEnvPulse 2s ease-in-out infinite; }
+  @keyframes mdnEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
 `
+
+function EnvelopeIntro({ opening, onOpen }) {
+  return (
+    <div className={`mdn-env-overlay${opening ? ' mdn-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className={`mdn-env${opening ? ' mdn-env--open' : ''}`}>
+        <div className="mdn-env__body"><div className="mdn-env__seal">◆</div></div>
+        <div className="mdn-env__flap" />
+        <div className="mdn-env__letter" />
+      </div>
+      {!opening && <p className="mdn-env__hint">Tap to open</p>}
+    </div>
+  )
+}
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
@@ -414,6 +451,13 @@ function RsvpForm({ invitationRef, menuOptions }) {
 export default function ModernInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
+  const [phase, setPhase] = useState('closed')
+
+  const handleOpen = () => {
+    if (phase !== 'closed') return
+    setPhase('opening')
+    setTimeout(() => setPhase('open'), 1100)
+  }
 
   useEffect(() => {
     if (invitationData) {
@@ -439,6 +483,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
   return (
     <div className="mdn-page">
       <style>{css}</style>
+      {phase !== 'open' && <EnvelopeIntro opening={phase === 'opening'} onOpen={handleOpen} />}
 
       {/* Hero – split */}
       <section className="mdn-hero">
