@@ -28,7 +28,7 @@
 
 **Redesign** — Reference: **rivals.invite.me** for animations, countdown, and sticky nav
 
-- [ ] **Mobile-first layout** — most guests open invitations on their phones; the desktop layout should be secondary; current layout feels "shrunk" and needs more breathing room and whitespace
+- [x] **Mobile-first layout** — ✅ COMPLETE — fixed broken Modern theme 720px media query (`.spt-` → `.mdn-` prefix); made wrapper padding, section padding, and RSVP padding fluid via clamp(); increased toggle/menu button padding for larger touch targets across all 4 themes
 - [ ] **Add entrance animations** — page elements should animate in on load, similar to rivals.invite.me
 - [x] **Add countdown timer** — ✅ COMPLETE — all 4 themes show a live days/hours/min/sec countdown in the hero section; auto-hides for past events
 - [x] **Add sticky navigation** — ✅ COMPLETE — already implemented across all 4 themes (position: sticky, backdrop-filter blur)

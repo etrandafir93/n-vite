@@ -98,8 +98,8 @@ const css = `
   }
 
   /* Layout */
-  .rom-wrap { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; }
-  .rom-section { padding: 3.5rem 0; border-bottom: 1px solid #f0dde6; }
+  .rom-wrap { max-width: 720px; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 1.5rem); }
+  .rom-section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; border-bottom: 1px solid #f0dde6; }
   .rom-section__title {
     text-align: center; font-family: 'Playfair Display', serif; font-style: italic;
     font-size: 1.2rem; font-weight: 400; color: #b85670; margin-bottom: 2rem;
@@ -162,7 +162,7 @@ const css = `
   .rom-event__map-link:hover { color: #b85670; text-decoration: underline; }
 
   /* RSVP */
-  .rom-rsvp { padding: 4rem 0 5rem; }
+  .rom-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
   .rom-rsvp__head { text-align: center; margin-bottom: 2.5rem; }
   .rom-rsvp__petals { font-size: 1.2rem; color: #d4788a; opacity: 0.5; margin-bottom: 0.8rem; letter-spacing: 0.5rem; }
   .rom-rsvp__title {
@@ -183,7 +183,7 @@ const css = `
   }
   .rom-toggle-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .rom-toggle-btn {
-    flex: 1; min-width: 120px; padding: 0.7rem 1rem; border-radius: 30px;
+    flex: 1; min-width: 120px; padding: 0.75rem 1rem; border-radius: 30px;
     border: 1px solid rgba(184,86,112,0.15); background: rgba(255,255,255,0.4); color: #9b7080;
     font-size: 0.85rem; cursor: pointer;
     font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.2s; text-align: center;
@@ -193,7 +193,7 @@ const css = `
   }
   .rom-menu-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .rom-menu-btn {
-    padding: 0.6rem 1.4rem; border-radius: 30px; border: 1px solid rgba(184,86,112,0.15);
+    padding: 0.65rem 1.4rem; border-radius: 30px; border: 1px solid rgba(184,86,112,0.15);
     background: rgba(255,255,255,0.4); color: #9b7080; font-size: 0.85rem;
     cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.2s;
   }

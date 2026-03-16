@@ -91,8 +91,8 @@ const css = `
   }
 
   /* ── Layout ───────────────────────────────────── */
-  .cl-wrap { max-width: 800px; margin: 0 auto; padding: 0 1.25rem; }
-  .cl-section { padding: 3.5rem 0; border-bottom: 1px solid #e8e2d8; }
+  .cl-wrap { max-width: 800px; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 1.5rem); }
+  .cl-section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; border-bottom: 1px solid #e8e2d8; }
   .cl-section__title {
     text-align: center; font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
     color: #c9a96e; margin-bottom: 2rem;
@@ -156,7 +156,7 @@ const css = `
   .cl-event__map-link:hover { color:#b8906b; text-decoration:underline; }
 
   /* ── RSVP ─────────────────────────────────────── */
-  .cl-rsvp { padding: 4rem 0 5rem; }
+  .cl-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
   .cl-rsvp__head { text-align:center; margin-bottom:2.5rem; }
   .cl-rsvp__title {
     font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.6rem);
@@ -173,14 +173,14 @@ const css = `
   }
   .cl-toggle-row { display:flex; gap:.5rem; flex-wrap:wrap; }
   .cl-toggle-btn {
-    flex:1; min-width:120px; padding:.65rem 1rem; border:1px solid rgba(61,20,33,0.08);
+    flex:1; min-width:120px; padding:.75rem 1rem; border:1px solid rgba(61,20,33,0.08);
     background:rgba(255,255,255,0.4); color:#666; font-size:.85rem; cursor:pointer;
     font-family:'Inter',sans-serif; font-weight:400; transition:all .18s; text-align:center; border-radius:8px;
   }
   .cl-toggle-btn.active { background:rgba(201,169,110,0.12); color:#555; border-color:rgba(201,169,110,0.4); }
   .cl-menu-row { display:flex; gap:.5rem; flex-wrap:wrap; }
   .cl-menu-btn {
-    padding:.55rem 1.3rem; border:1px solid rgba(61,20,33,0.08); background:rgba(255,255,255,0.4);
+    padding:.65rem 1.3rem; border:1px solid rgba(61,20,33,0.08); background:rgba(255,255,255,0.4);
     color:#666; font-size:.82rem; cursor:pointer; font-family:'Inter',sans-serif; font-weight:400; transition:all .18s; border-radius:8px;
   }
   .cl-menu-btn.active { background:rgba(201,169,110,0.12); color:#555; border-color:rgba(201,169,110,0.4); }

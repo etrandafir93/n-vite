@@ -93,8 +93,8 @@ const css = `
   }
 
   /* Layout */
-  .nat-wrap { max-width: 740px; margin: 0 auto; padding: 0 1.25rem; }
-  .nat-section { padding: 3.5rem 0; border-bottom: 1px solid #e8e0d4; }
+  .nat-wrap { max-width: 740px; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 1.5rem); }
+  .nat-section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; border-bottom: 1px solid #e8e0d4; }
   .nat-section__title {
     display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
     font-size: 0.6rem; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: #7a9e7e;
@@ -160,7 +160,7 @@ const css = `
   .nat-event__map-link:hover { color: #5a7d5e; text-decoration: underline; }
 
   /* RSVP */
-  .nat-rsvp { padding: 4rem 0 5rem; }
+  .nat-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
   .nat-rsvp__head { text-align: center; margin-bottom: 2.5rem; }
   .nat-rsvp__leaves { font-size: 1.2rem; color: #7a9e7e; opacity: 0.45; margin-bottom: 0.8rem; letter-spacing: 0.6rem; }
   .nat-rsvp__title {
@@ -181,7 +181,7 @@ const css = `
   }
   .nat-toggle-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .nat-toggle-btn {
-    flex: 1; min-width: 120px; padding: 0.7rem 1rem; border-radius: 10px;
+    flex: 1; min-width: 120px; padding: 0.75rem 1rem; border-radius: 10px;
     border: 1px solid rgba(122,158,126,0.15); background: rgba(255,255,255,0.4); color: #6a7d6e;
     font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif;
     font-weight: 400; transition: all 0.18s; text-align: center;
@@ -191,7 +191,7 @@ const css = `
   }
   .nat-menu-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .nat-menu-btn {
-    padding: 0.6rem 1.3rem; border-radius: 10px; border: 1px solid rgba(122,158,126,0.15);
+    padding: 0.65rem 1.3rem; border-radius: 10px; border: 1px solid rgba(122,158,126,0.15);
     background: rgba(255,255,255,0.4); color: #6a7d6e; font-size: 0.85rem; cursor: pointer;
     font-family: 'Inter', sans-serif; font-weight: 400; transition: all 0.18s;
   }

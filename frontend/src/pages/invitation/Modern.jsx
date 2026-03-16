@@ -19,7 +19,7 @@ const css = `
     position: relative; min-height: 100svh; display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  @media (max-width: 720px) { .spt-hero { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) { .mdn-hero { grid-template-columns: 1fr; } }
 
   .mdn-hero__photo-side {
     position: relative; min-height: 50svh; overflow: hidden;
@@ -94,8 +94,8 @@ const css = `
   }
 
   /* Layout */
-  .mdn-wrap { max-width: 860px; margin: 0 auto; padding: 0 1.25rem; }
-  .mdn-section { padding: 3.5rem 0; border-bottom: 1px solid #1a2e42; }
+  .mdn-wrap { max-width: 860px; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 1.5rem); }
+  .mdn-section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; border-bottom: 1px solid #1a2e42; }
   .mdn-section-label {
     font-size: 0.58rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
     color: #f5a623; margin-bottom: 1.8rem;
@@ -125,7 +125,7 @@ const css = `
 
   /* Events */
   .mdn-events { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  @media (max-width: 600px) { .spt-events { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .mdn-events { grid-template-columns: 1fr; } }
   .mdn-event {
     background: #122033; border: 1px solid #1a2e42; overflow: hidden;
     position: relative;
@@ -154,7 +154,7 @@ const css = `
   .mdn-event__map-link:hover { color: #ffb84d; text-decoration: underline; }
 
   /* RSVP */
-  .mdn-rsvp { padding: 4rem 0 5rem; }
+  .mdn-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
   .mdn-rsvp__head { margin-bottom: 2rem; }
   .mdn-rsvp__title {
     font-size: clamp(2rem,5vw,3.2rem); font-weight: 900; text-transform: uppercase;
@@ -175,7 +175,7 @@ const css = `
   }
   .mdn-toggle-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .mdn-toggle-btn {
-    flex: 1; min-width: 110px; padding: 0.7rem 1rem; border: 1px solid rgba(74,104,128,0.3);
+    flex: 1; min-width: 110px; padding: 0.75rem 1rem; border: 1px solid rgba(74,104,128,0.3);
     background: rgba(26,46,66,0.3); color: #6a90b0; font-size: 0.85rem; font-weight: 400;
     letter-spacing: 0.02em; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: all 0.15s; text-align: center; border-radius: 8px;
@@ -183,7 +183,7 @@ const css = `
   .mdn-toggle-btn.active { background: rgba(245,166,35,0.15); color: #f5a623; border-color: rgba(245,166,35,0.5); }
   .mdn-menu-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .mdn-menu-btn {
-    padding: 0.6rem 1.2rem; border: 1px solid rgba(74,104,128,0.3); background: rgba(26,46,66,0.3);
+    padding: 0.65rem 1.2rem; border: 1px solid rgba(74,104,128,0.3); background: rgba(26,46,66,0.3);
     color: #6a90b0; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.02em;
     cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.15s; border-radius: 8px;
   }
