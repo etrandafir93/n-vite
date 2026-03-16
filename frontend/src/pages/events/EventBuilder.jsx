@@ -10,6 +10,7 @@ const EMPTY_FORM = {
   groomParents: '',
   brideParents: '',
   godparents: '',
+  eventType: 'both',
   ceremonyVenue: '',
   ceremonyAddress: '',
   ceremonyTime: '',
@@ -24,6 +25,13 @@ const EMPTY_FORM = {
   menuOptions: [],
   theme: 'classic',
   status: 'DRAFT',
+}
+
+function detectEventType(data) {
+  if (data.ceremonyVenue && data.receptionVenue) return 'both'
+  if (data.ceremonyVenue) return 'ceremony'
+  if (data.receptionVenue) return 'reception'
+  return 'both'
 }
 
 function toLocalDateTimeInput(iso) {
@@ -158,18 +166,17 @@ function ImageUpload({ value, onChange, label, required }) {
   )
 }
 
-const REQUIRED_FIELDS = {
-  groomName: "Groom's name",
-  brideName: "Bride's name",
-  eventDateTime: 'Event date & time',
-  backgroundImageUrl: 'Background image',
-  ceremonyVenue: 'Ceremony venue name',
-  receptionVenue: 'Reception venue name',
-}
-
 function validate(form) {
   const errors = {}
-  for (const [field, label] of Object.entries(REQUIRED_FIELDS)) {
+  const required = {
+    groomName: "Groom's name",
+    brideName: "Bride's name",
+    eventDateTime: 'Event date & time',
+    backgroundImageUrl: 'Background image',
+    ...(form.eventType !== 'reception' && { ceremonyVenue: 'Ceremony venue name' }),
+    ...(form.eventType !== 'ceremony'  && { receptionVenue: 'Reception venue name' }),
+  }
+  for (const [field, label] of Object.entries(required)) {
     if (!form[field] || (typeof form[field] === 'string' && !form[field].trim())) {
       errors[field] = `${label} is required`
     }
@@ -267,6 +274,7 @@ export default function EventBuilder() {
           groomParents: data.groomParents ?? '',
           brideParents: data.brideParents ?? '',
           godparents: data.godparents ?? '',
+          eventType: detectEventType(data),
           ceremonyVenue: data.ceremonyVenue ?? '',
           ceremonyAddress: data.ceremonyAddress ?? '',
           ceremonyTime: data.ceremonyTime ?? '',
@@ -293,9 +301,21 @@ export default function EventBuilder() {
   }
 
   const preparePayload = (status) => {
+    const noCeremony = form.eventType === 'reception'
+    const noReception = form.eventType === 'ceremony'
     return {
       ...form,
       eventDateTime: form.eventDateTime ? new Date(form.eventDateTime).toISOString() : null,
+      ceremonyVenue:    noCeremony ? null : form.ceremonyVenue,
+      ceremonyAddress:  noCeremony ? null : form.ceremonyAddress,
+      ceremonyTime:     noCeremony ? null : form.ceremonyTime,
+      ceremonyPhotoUrl: noCeremony ? null : form.ceremonyPhotoUrl,
+      ceremonyMapUrl:   noCeremony ? null : form.ceremonyMapUrl,
+      receptionVenue:    noReception ? null : form.receptionVenue,
+      receptionAddress:  noReception ? null : form.receptionAddress,
+      receptionTime:     noReception ? null : form.receptionTime,
+      receptionPhotoUrl: noReception ? null : form.receptionPhotoUrl,
+      receptionMapUrl:   noReception ? null : form.receptionMapUrl,
       status,
     }
   }
@@ -436,6 +456,30 @@ export default function EventBuilder() {
             </Field>
           </Section>
 
+          <Section title="Event Type" subtitle="Which parts of the day are guests invited to?">
+            <div className="eb-theme-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              {[
+                { value: 'both',      label: 'Ceremony + Reception', icon: '⛪ + 🥂' },
+                { value: 'ceremony',  label: 'Ceremony Only',        icon: '⛪' },
+                { value: 'reception', label: 'Reception Only',       icon: '🥂' },
+              ].map(opt => (
+                <label key={opt.value} className={`eb-theme-option${form.eventType === opt.value ? ' eb-theme-option--selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="eventType"
+                    value={opt.value}
+                    checked={form.eventType === opt.value}
+                    onChange={e => set('eventType')(e.target.value)}
+                    className="eb-theme-radio"
+                  />
+                  <span style={{ fontSize: '1.2rem' }}>{opt.icon}</span>
+                  <span className="eb-theme-label">{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          </Section>
+
+          {form.eventType !== 'reception' && (
           <Section title="Ceremony" subtitle="Church or ceremony venue details">
             <div className="eb-grid-2">
               <Field label="Venue Name" required error={fieldErrors.ceremonyVenue}>
@@ -455,7 +499,9 @@ export default function EventBuilder() {
               <Input value={form.ceremonyMapUrl} onChange={set('ceremonyMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
             </Field>
           </Section>
+          )}
 
+          {form.eventType !== 'ceremony' && (
           <Section title="Reception" subtitle="Restaurant or reception venue details">
             <div className="eb-grid-2">
               <Field label="Venue Name" required error={fieldErrors.receptionVenue}>
@@ -475,6 +521,7 @@ export default function EventBuilder() {
               <Input value={form.receptionMapUrl} onChange={set('receptionMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
             </Field>
           </Section>
+          )}
 
           <Section title="RSVP" subtitle="When should guests respond by?">
             <Field label="RSVP Deadline">

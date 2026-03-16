@@ -54,7 +54,7 @@
 
 - [x] **Improve event form validation UX** — ✅ COMPLETE — frontend validates all required fields (groom/bride name, event date, background image, ceremony venue, reception venue) before submitting; invalid fields are highlighted with red borders and inline error messages; a banner lists all missing fields by name; errors clear as the user fills them in
 - [ ] **Simplify location input** — current text input is too bare; integrate Google Maps so hosts can search and pin a location rather than typing a raw address
-- [ ] **Support flexible event type combinations** — an event should be configurable as: ceremony only, reception only, or ceremony + reception; the creation flow and invitation page must both adapt to whatever combination is selected
+- [x] **Support flexible event type combinations** — ✅ COMPLETE — host can choose Ceremony + Reception / Ceremony Only / Reception Only in the event builder; ceremony/reception form sections show/hide accordingly; validation only requires the active venue(s); unused venue data is nulled out on save; invitation pages already conditionally render based on null venues
 
 ---
 

@@ -17,8 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Event(
     @NonNull String groomName,
     @NonNull String brideName,
-    @NonNull String eventLocation,
-    @NonNull String eventReception,
+    String eventLocation,
+    String eventReception,
     @NonNull Instant eventDateTime,
     @With String backgroundImage,
     @With LocalDateTime created,
