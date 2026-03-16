@@ -53,7 +53,7 @@
 ### 🗺️ Event Creation & Editing (Host Journey)
 
 - [x] **Improve event form validation UX** — ✅ COMPLETE — frontend validates all required fields (groom/bride name, event date, background image, ceremony venue, reception venue) before submitting; invalid fields are highlighted with red borders and inline error messages; a banner lists all missing fields by name; errors clear as the user fills them in
-- [ ] **Simplify location input** — current text input is too bare; integrate Google Maps so hosts can search and pin a location rather than typing a raw address
+- [x] **Simplify location input** — ✅ COMPLETE — Google Maps Places Autocomplete added to ceremony and reception address fields in the event builder; selecting a place auto-populates the address and generates the Google Maps embed URL; API key read from GOOGLE_MAPS_API_KEY env var and served via GET /api/config
 - [x] **Support flexible event type combinations** — ✅ COMPLETE — host can choose Ceremony + Reception / Ceremony Only / Reception Only in the event builder; ceremony/reception form sections show/hide accordingly; validation only requires the active venue(s); unused venue data is nulled out on save; invitation pages already conditionally render based on null venues
 
 ---

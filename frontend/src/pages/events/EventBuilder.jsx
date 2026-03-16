@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import './EventBuilder.css'
 
@@ -184,6 +184,69 @@ function validate(form) {
   return errors
 }
 
+function useMapsApiKey() {
+  const [apiKey, setApiKey] = useState(null)
+  useEffect(() => {
+    fetch('/api/config')
+      .then(r => r.json())
+      .then(data => setApiKey(data.mapsApiKey || ''))
+      .catch(() => setApiKey(''))
+  }, [])
+  return apiKey
+}
+
+function useMapsScript(apiKey) {
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    if (!apiKey) return
+    if (window.google?.maps?.places) { setLoaded(true); return }
+    if (document.getElementById('gmaps-script')) {
+      const poll = setInterval(() => { if (window.google?.maps?.places) { setLoaded(true); clearInterval(poll) } }, 100)
+      return () => clearInterval(poll)
+    }
+    const s = document.createElement('script')
+    s.id = 'gmaps-script'
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
+    s.async = true
+    s.onload = () => setLoaded(true)
+    document.head.appendChild(s)
+  }, [apiKey])
+  return loaded
+}
+
+function PlacesInput({ value, onChange, onPlaceSelect, placeholder, invalid, mapsLoaded }) {
+  const inputRef = useRef(null)
+  const acRef = useRef(null)
+
+  useEffect(() => {
+    if (inputRef.current && document.activeElement !== inputRef.current) {
+      inputRef.current.value = value || ''
+    }
+  }, [value])
+
+  useEffect(() => {
+    if (!mapsLoaded || !inputRef.current || acRef.current) return
+    const ac = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['establishment', 'geocode'] })
+    ac.addListener('place_changed', () => {
+      const place = ac.getPlace()
+      onChange(place.formatted_address || inputRef.current.value)
+      onPlaceSelect?.(place)
+    })
+    acRef.current = ac
+  }, [mapsLoaded])
+
+  return (
+    <input
+      ref={inputRef}
+      className={`eb-input${invalid ? ' eb-input--invalid' : ''}`}
+      type="text"
+      defaultValue={value}
+      onInput={e => onChange(e.target.value)}
+      placeholder={placeholder}
+    />
+  )
+}
+
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
 function MenuOptionsEditor({ options, onChange }) {
@@ -256,6 +319,8 @@ export default function EventBuilder() {
   const [searchParams] = useSearchParams()
   const eventReference = searchParams.get('eventReference')
   const isEdit = !!eventReference
+  const mapsApiKey = useMapsApiKey()
+  const mapsLoaded = useMapsScript(mapsApiKey)
 
   useEffect(() => {
     if (!eventReference) return
@@ -298,6 +363,18 @@ export default function EventBuilder() {
   const set = field => value => {
     setForm(prev => ({ ...prev, [field]: value }))
     if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: null }))
+  }
+
+  const onCeremonyPlace = (place) => {
+    if (place.place_id && mapsApiKey) {
+      set('ceremonyMapUrl')(`https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=place_id:${place.place_id}`)
+    }
+  }
+
+  const onReceptionPlace = (place) => {
+    if (place.place_id && mapsApiKey) {
+      set('receptionMapUrl')(`https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=place_id:${place.place_id}`)
+    }
   }
 
   const preparePayload = (status) => {
@@ -485,8 +562,14 @@ export default function EventBuilder() {
               <Field label="Venue Name" required error={fieldErrors.ceremonyVenue}>
                 <Input value={form.ceremonyVenue} onChange={set('ceremonyVenue')} placeholder="e.g. St. Mary's Cathedral" required invalid={!!fieldErrors.ceremonyVenue} />
               </Field>
-              <Field label="Address">
-                <Input value={form.ceremonyAddress} onChange={set('ceremonyAddress')} placeholder="e.g. 123 Church Street" />
+              <Field label="Address" hint={mapsLoaded ? 'Search and select a location' : undefined}>
+                <PlacesInput
+                  value={form.ceremonyAddress}
+                  onChange={set('ceremonyAddress')}
+                  onPlaceSelect={onCeremonyPlace}
+                  placeholder="e.g. 123 Church Street"
+                  mapsLoaded={mapsLoaded}
+                />
               </Field>
               <Field label="Date & Time">
                 <Input type="datetime-local" value={form.ceremonyTime} onChange={set('ceremonyTime')} />
@@ -507,8 +590,14 @@ export default function EventBuilder() {
               <Field label="Venue Name" required error={fieldErrors.receptionVenue}>
                 <Input value={form.receptionVenue} onChange={set('receptionVenue')} placeholder="e.g. The Grand Ballroom" required invalid={!!fieldErrors.receptionVenue} />
               </Field>
-              <Field label="Address">
-                <Input value={form.receptionAddress} onChange={set('receptionAddress')} placeholder="e.g. 456 Elm Avenue" />
+              <Field label="Address" hint={mapsLoaded ? 'Search and select a location' : undefined}>
+                <PlacesInput
+                  value={form.receptionAddress}
+                  onChange={set('receptionAddress')}
+                  onPlaceSelect={onReceptionPlace}
+                  placeholder="e.g. 456 Elm Avenue"
+                  mapsLoaded={mapsLoaded}
+                />
               </Field>
               <Field label="Date & Time">
                 <Input type="datetime-local" value={form.receptionTime} onChange={set('receptionTime')} />
