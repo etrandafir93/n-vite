@@ -78,7 +78,7 @@
   - [x] InvitationController (Guest endpoints) — 6 tests: GET invitation (mapped fields, guest param, no guest param), POST RSVP (all fields, ref from path, 200 response)
   - [ ] ImagesController — image upload flow (skipped: requires GCS mock setup)
   - [ ] EventsController dashboard/analytics endpoint
-- [ ] **Add unit tests for domain model logic** — test any business logic embedded in domain entities (Event, Rsvp, etc.) including validation rules, state transitions, and computed properties
+- [x] **Add unit tests for domain model logic** — ✅ COMPLETE — 24 tests covering all domain entities: Event (builder, @With immutability, backgroundImageOrDefault fallback, @NonNull enforcement), Rsvp (answer serialization, timestamp auto-set, field mapping), InvitationVisitor (factory methods, sealed type equality), InvitationVisits (named vs anonymous visitor name resolution)
 - [ ] **Set up test coverage reporting** — integrate JaCoCo or similar tool to measure and report test coverage; aim for 80%+ coverage on use cases and domain logic; configure CI pipeline to enforce minimum coverage thresholds
 
 ### API Documentation
