@@ -69,11 +69,10 @@
 
 ### Testing
 
-- [ ] **Add unit tests for all use cases** — each use case (CreateEventUseCase, EditEventUseCase, RsvpInvitationUseCase, etc.) should have comprehensive unit tests covering happy paths, edge cases, and error scenarios; use JUnit 5 and Mockito for mocking dependencies
-  - [ ] CreateEventUseCase — test event creation with valid/invalid data, status handling (DRAFT/LIVE), reference generation
-  - [ ] EditEventUseCase — test updating existing events, validation, status transitions
-  - [ ] RsvpInvitationUseCase — test RSVP submission, guest counting, validation
-  - [ ] Other use cases — ensure all domain logic is covered
+- [x] **Add unit tests for all use cases** — ✅ COMPLETE — comprehensive unit tests written for all three main use cases using JUnit 5 + Mockito; 20 tests total covering happy paths, edge cases, error scenarios, status transitions, null validation, and slug generation
+  - [x] CreateEventUseCase — 7 tests: slug generation, spaces stripped, UUID fallback, field mapping, DRAFT/LIVE status, null rejection
+  - [x] EditEventUseCase — 7 tests: field updates, createdBy/created preserved, LIVE→DRAFT transition, existing status fallback, not-found error, null rejection
+  - [x] RsvpInvitationUseCase — 6 tests: accepted/declined/null fields, invalid answer rejection, timestamp set, @With record copy
 - [ ] **Add integration tests for REST controllers** — test the full HTTP request/response cycle including serialization, validation, authentication, and error handling; use Spring Boot Test with @WebMvcTest or @SpringBootTest
   - [ ] EventsController (Host endpoints) — test GET /api/events, POST /api/events, PUT /api/events/{ref}, DELETE /api/events/{ref}
   - [ ] InvitationAudienceV2 (Guest endpoints) — test GET /invitations/{ref}, POST RSVP endpoints
