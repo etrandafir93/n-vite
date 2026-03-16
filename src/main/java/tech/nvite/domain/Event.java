@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.With;
@@ -35,6 +36,7 @@ public record Event(
     String receptionPhotoUrl,
     String receptionMapUrl,
     String rsvpDeadline,
+    List<String> menuOptions,
     String theme,
     EventStatus status) {
 
@@ -52,6 +54,7 @@ public record Event(
         eventReception,
         eventDateTime,
         backgroundImage,
+        null,
         null,
         null,
         null,

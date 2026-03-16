@@ -214,7 +214,10 @@ const css = `
   .mdn-btn-secondary:hover { border-color: rgba(74,104,128,0.5); color: #8ab0c8; }
 `
 
-function RsvpForm({ invitationRef }) {
+const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+
+function RsvpForm({ invitationRef, menuOptions }) {
+  const menuChoices = (menuOptions && menuOptions.length > 0) ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
@@ -321,7 +324,7 @@ function RsvpForm({ invitationRef }) {
           <div className="mdn-field">
             <label className="mdn-label">Menu preference</label>
             <div className="mdn-menu-row">
-              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+              {menuChoices.map(m => (
                 <button key={m} className={`mdn-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
               ))}
             </div>
@@ -609,7 +612,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
                 <h2 className="mdn-rsvp__title">Your <span>Response</span></h2>
                 {inv.rsvpDeadline && <p className="mdn-rsvp__sub">Deadline · {inv.rsvpDeadline}</p>}
               </div>
-              <RsvpForm invitationRef={invitationRef || slug} />
+              <RsvpForm invitationRef={invitationRef || slug} menuOptions={inv.menuOptions} />
             </>
           )}
         </div>

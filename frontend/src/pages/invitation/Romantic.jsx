@@ -226,7 +226,10 @@ const css = `
   .rom-btn-secondary:hover { border-color: rgba(184,86,112,0.4); color: #7a2040; }
 `
 
-function RsvpForm({ invitationRef }) {
+const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+
+function RsvpForm({ invitationRef, menuOptions }) {
+  const menuChoices = (menuOptions && menuOptions.length > 0) ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
@@ -333,7 +336,7 @@ function RsvpForm({ invitationRef }) {
           <div className="rom-field">
             <label className="rom-label">Your menu preference</label>
             <div className="rom-menu-row">
-              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+              {menuChoices.map(m => (
                 <button key={m} className={`rom-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
               ))}
             </div>
@@ -601,7 +604,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                 <h2 className="rom-rsvp__title">Kindly Reply</h2>
                 {inv.rsvpDeadline && <p className="rom-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
               </div>
-              <RsvpForm invitationRef={invitationRef || slug} />
+              <RsvpForm invitationRef={invitationRef || slug} menuOptions={inv.menuOptions} />
             </>
           )}
         </div>

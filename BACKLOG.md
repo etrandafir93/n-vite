@@ -39,7 +39,7 @@
 ### 📋 RSVP Experience (Guest Journey)
 
 - [x] **Implement conditional logic in the RSVP form** — ✅ COMPLETE — added "Do you have any food allergies?" Yes/No field across all 4 themes; selecting Yes reveals a text input for details; stored in backend, shown in analytics dashboard and Excel export
-- [ ] **Allow hosts to define custom menu choices** — hosts should be able to set the specific options guests pick from (e.g. meat, vegetarian, vegan); this must be configurable per event, not hardcoded
+- [x] **Allow hosts to define custom menu choices** — ✅ COMPLETE — hosts can add/remove menu options in the event builder (RSVP section); options stored per event; RSVP form on all 4 themes renders the custom options dynamically, falling back to Meat/Fish/Vegetarian when none are set
 
 ---
 

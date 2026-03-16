@@ -2,6 +2,7 @@ package tech.nvite.host;
 
 import jakarta.annotation.Nullable;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import lombok.NonNull;
@@ -46,6 +47,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
             .receptionPhotoUrl(req.receptionPhotoUrl())
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
+            .menuOptions(req.menuOptions())
             .theme(req.theme())
             .status(req.status() != null ? req.status() : EventStatus.LIVE)
             .eventReference(eventReference)
@@ -81,6 +83,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
       String receptionPhotoUrl,
       @Nullable String receptionMapUrl,
       String rsvpDeadline,
+      @Nullable List<String> menuOptions,
       @Nullable String theme,
       @NonNull EventStatus status) {}
 }

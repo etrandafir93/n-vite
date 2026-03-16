@@ -2,6 +2,7 @@ package tech.nvite.host;
 
 import com.mongodb.lang.Nullable;
 import java.time.Instant;
+import java.util.List;
 import java.util.function.Function;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
             .receptionPhotoUrl(req.receptionPhotoUrl())
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
+            .menuOptions(req.menuOptions())
             .theme(req.theme())
             .status(req.status() != null ? req.status() : existing.status())
             .eventReference(req.eventReference())
@@ -76,6 +78,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
       String receptionPhotoUrl,
       String receptionMapUrl,
       String rsvpDeadline,
+      @Nullable List<String> menuOptions,
       @Nullable String theme,
       @NonNull EventStatus status) {}
 }

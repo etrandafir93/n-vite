@@ -210,7 +210,10 @@ const css = `
   .cl-btn-secondary:hover { border-color:rgba(201,169,110,0.4); color:#555; }
 `
 
-function RsvpForm({ rsvpDeadline, invitationRef }) {
+const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+
+function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
+  const menuChoices = (menuOptions && menuOptions.length > 0) ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName]   = useState('')
   const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending]   = useState(null)
@@ -317,7 +320,7 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
           <div className="cl-field">
             <label className="cl-label">Menu Preference</label>
             <div className="cl-menu-row">
-              {['Meat','Fish','Vegetarian'].map(m=>(
+              {menuChoices.map(m=>(
                 <button key={m} className={`cl-menu-btn${menu===m?' active':''}`} onClick={()=>setMenu(m)}>{m}</button>
               ))}
             </div>
@@ -594,7 +597,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                 <h2 className="cl-rsvp__title">Kindly Reply</h2>
                 {inv.rsvpDeadline && <p className="cl-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
               </div>
-              <RsvpForm rsvpDeadline={inv.rsvpDeadline} invitationRef={invitationRef || slug}/>
+              <RsvpForm rsvpDeadline={inv.rsvpDeadline} invitationRef={invitationRef || slug} menuOptions={inv.menuOptions}/>
             </>
           )}
         </div>

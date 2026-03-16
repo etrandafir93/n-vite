@@ -225,7 +225,10 @@ const css = `
   .nat-btn-secondary:hover { border-color: rgba(122,158,126,0.4); color: #5a7d5e; }
 `
 
-function RsvpForm({ invitationRef }) {
+const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+
+function RsvpForm({ invitationRef, menuOptions }) {
+  const menuChoices = (menuOptions && menuOptions.length > 0) ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [partnerName, setPartnerName] = useState('')
   const [attending, setAttending] = useState(null)
@@ -332,7 +335,7 @@ function RsvpForm({ invitationRef }) {
           <div className="nat-field">
             <label className="nat-label">Menu preference</label>
             <div className="nat-menu-row">
-              {['Meat', 'Fish', 'Vegetarian'].map(m => (
+              {menuChoices.map(m => (
                 <button key={m} className={`nat-menu-btn${menu === m ? ' active' : ''}`} onClick={() => setMenu(m)}>{m}</button>
               ))}
             </div>
@@ -602,7 +605,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
                 <h2 className="nat-rsvp__title">Kindly Reply</h2>
                 {inv.rsvpDeadline && <p className="nat-rsvp__sub">Please respond by {inv.rsvpDeadline}</p>}
               </div>
-              <RsvpForm invitationRef={invitationRef || slug} />
+              <RsvpForm invitationRef={invitationRef || slug} menuOptions={inv.menuOptions} />
             </>
           )}
         </div>

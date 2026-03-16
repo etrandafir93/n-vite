@@ -21,6 +21,7 @@ const EMPTY_FORM = {
   receptionPhotoUrl: '',
   receptionMapUrl: '',
   rsvpDeadline: '',
+  menuOptions: [],
   theme: 'classic',
   status: 'DRAFT',
 }
@@ -176,6 +177,68 @@ function validate(form) {
   return errors
 }
 
+const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+
+function MenuOptionsEditor({ options, onChange }) {
+  const [input, setInput] = useState('')
+
+  const add = () => {
+    const val = input.trim()
+    if (!val || options.includes(val)) return
+    onChange([...options, val])
+    setInput('')
+  }
+
+  const remove = (opt) => onChange(options.filter(o => o !== opt))
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); add() }
+  }
+
+  const displayed = options.length > 0 ? options : DEFAULT_MENU_OPTIONS
+
+  return (
+    <div className="eb-field">
+      <label className="eb-label">Menu Options</label>
+      <p className="eb-hint">
+        Options guests can pick from. Defaults: {DEFAULT_MENU_OPTIONS.join(', ')}.
+      </p>
+      <div style={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap', marginBottom: '.75rem' }}>
+        {displayed.map(opt => (
+          <span key={opt} style={{
+            display: 'inline-flex', alignItems: 'center', gap: '.3rem',
+            padding: '.25rem .65rem', background: '#f0ece3', border: '1px solid #ddd4c0',
+            borderRadius: '20px', fontSize: '.82rem', color: '#444'
+          }}>
+            {opt}
+            {options.length > 0 && (
+              <button
+                type="button"
+                onClick={() => remove(opt)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#999', fontSize: '.85rem', lineHeight: 1 }}
+              >×</button>
+            )}
+          </span>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: '.5rem' }}>
+        <input
+          className="eb-input"
+          type="text"
+          placeholder="Add option (e.g. Vegan)"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          style={{ flex: 1 }}
+        />
+        <button type="button" className="eb-btn eb-btn--secondary" onClick={add} style={{ whiteSpace: 'nowrap' }}>
+          + Add
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function EventBuilder() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [fieldErrors, setFieldErrors] = useState({})
@@ -215,6 +278,7 @@ export default function EventBuilder() {
           receptionPhotoUrl: data.receptionPhotoUrl ?? '',
           receptionMapUrl: data.receptionMapUrl ?? '',
           rsvpDeadline: data.rsvpDeadline ?? '',
+          menuOptions: data.menuOptions ?? [],
           theme: data.theme ?? 'classic',
           status: data.status ?? 'LIVE',
         })
@@ -416,6 +480,10 @@ export default function EventBuilder() {
             <Field label="RSVP Deadline">
               <Input type="date" value={form.rsvpDeadline} onChange={set('rsvpDeadline')} />
             </Field>
+            <MenuOptionsEditor
+              options={form.menuOptions}
+              onChange={set('menuOptions')}
+            />
           </Section>
 
           <Section title="Theme" subtitle="Choose the default invitation theme">
