@@ -366,15 +366,13 @@ export default function EventBuilder() {
   }
 
   const onCeremonyPlace = (place) => {
-    if (place.place_id && mapsApiKey) {
-      set('ceremonyMapUrl')(`https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=place_id:${place.place_id}`)
-    }
+    const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
+    if (url) set('ceremonyMapUrl')(url)
   }
 
   const onReceptionPlace = (place) => {
-    if (place.place_id && mapsApiKey) {
-      set('receptionMapUrl')(`https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=place_id:${place.place_id}`)
-    }
+    const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
+    if (url) set('receptionMapUrl')(url)
   }
 
   const preparePayload = (status) => {
@@ -578,8 +576,8 @@ export default function EventBuilder() {
             <Field label="Ceremony Photo" hint="Image of the ceremony venue">
               <ImageUpload value={form.ceremonyPhotoUrl} onChange={set('ceremonyPhotoUrl')} label="Photo" />
             </Field>
-            <Field label="Map Embed URL" hint='Google Maps embed URL — from Google Maps share → Embed a map → copy src="..."'>
-              <Input value={form.ceremonyMapUrl} onChange={set('ceremonyMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
+            <Field label="Map Link" hint="Auto-filled when you select an address above. Guests tap this to open in Google Maps.">
+              <Input value={form.ceremonyMapUrl} onChange={set('ceremonyMapUrl')} placeholder="https://maps.google.com/..." />
             </Field>
           </Section>
           )}
@@ -606,8 +604,8 @@ export default function EventBuilder() {
             <Field label="Reception Photo" hint="Image of the reception venue">
               <ImageUpload value={form.receptionPhotoUrl} onChange={set('receptionPhotoUrl')} label="Photo" />
             </Field>
-            <Field label="Map Embed URL" hint='Google Maps embed URL — from Google Maps share → Embed a map → copy src="..."'>
-              <Input value={form.receptionMapUrl} onChange={set('receptionMapUrl')} placeholder="https://www.google.com/maps/embed?..." />
+            <Field label="Map Link" hint="Auto-filled when you select an address above. Guests tap this to open in Google Maps.">
+              <Input value={form.receptionMapUrl} onChange={set('receptionMapUrl')} placeholder="https://maps.google.com/..." />
             </Field>
           </Section>
           )}
