@@ -38,6 +38,7 @@ public class RsvpInvitationUseCase
                 req.menuPreference(),
                 req.children(),
                 req.transport(),
+                req.allergies(),
                 req.notes()));
     log.info("RSVP saved {}", saved.id());
     return new Response(saved.id());
@@ -51,6 +52,7 @@ public class RsvpInvitationUseCase
       String menuPreference,
       Integer children,
       Boolean transport,
+      String allergies,
       String notes) {}
 
   public record Response(String rsvpId) {}

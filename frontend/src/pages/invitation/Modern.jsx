@@ -223,6 +223,8 @@ function RsvpForm({ invitationRef }) {
   const [children, setChildren] = useState(null)
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport] = useState(null)
+  const [allergies, setAllergies] = useState(null)
+  const [allergyDetails, setAllergyDetails] = useState('')
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -245,6 +247,7 @@ function RsvpForm({ invitationRef }) {
           menuPreference: menu,
           children: children === 'yes' ? parseInt(childCount) : null,
           transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          allergies: allergies === 'yes' ? (allergyDetails.trim() || 'Yes') : null,
           notes: notes.trim() || null
         })
       })
@@ -344,6 +347,23 @@ function RsvpForm({ invitationRef }) {
               <button className={`mdn-toggle-btn${transport === 'yes' ? ' active' : ''}`} onClick={() => setTransport('yes')}>Yes</button>
               <button className={`mdn-toggle-btn${transport === 'no' ? ' active' : ''}`} onClick={() => setTransport('no')}>No</button>
             </div>
+          </div>
+          <div className="mdn-field">
+            <label className="mdn-label">Any food allergies?</label>
+            <div className="mdn-toggle-row">
+              <button className={`mdn-toggle-btn${allergies === 'yes' ? ' active' : ''}`} onClick={() => setAllergies('yes')}>Yes</button>
+              <button className={`mdn-toggle-btn${allergies === 'no' ? ' active' : ''}`} onClick={() => setAllergies('no')}>No</button>
+            </div>
+            {allergies === 'yes' && (
+              <input
+                className="mdn-number-input"
+                type="text"
+                placeholder="Please describe your allergies..."
+                value={allergyDetails}
+                onChange={e => setAllergyDetails(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
         </>
       )}

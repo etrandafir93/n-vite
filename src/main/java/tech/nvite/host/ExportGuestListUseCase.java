@@ -35,6 +35,7 @@ public class ExportGuestListUseCase
     "Menu Preference",
     "Children",
     "Transport",
+    "Allergies",
     "Notes",
     "RSVP Date"
   };
@@ -65,8 +66,9 @@ public class ExportGuestListUseCase
         row.createCell(5).setCellValue(rsvp.children() != null ? rsvp.children() : 0);
         row.createCell(6)
             .setCellValue(rsvp.transport() == null ? "" : rsvp.transport() ? "Yes" : "No");
-        row.createCell(7).setCellValue(rsvp.notes() != null ? rsvp.notes() : "");
-        row.createCell(8).setCellValue(DATE_FMT.format(rsvp.timestamp()));
+        row.createCell(7).setCellValue(rsvp.allergies() != null ? rsvp.allergies() : "");
+        row.createCell(8).setCellValue(rsvp.notes() != null ? rsvp.notes() : "");
+        row.createCell(9).setCellValue(DATE_FMT.format(rsvp.timestamp()));
       }
 
       for (int i = 0; i < HEADERS.length; i++) {

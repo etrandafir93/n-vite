@@ -16,6 +16,7 @@ public record Rsvp(
     @Nullable String menuPreference,
     @Nullable Integer children,
     @Nullable Boolean transport,
+    @Nullable String allergies,
     @Nullable String notes) {
   public Rsvp(
       String guest,
@@ -25,6 +26,7 @@ public record Rsvp(
       String menuPreference,
       Integer children,
       Boolean transport,
+      String allergies,
       String notes) {
     this(
         null,
@@ -39,6 +41,7 @@ public record Rsvp(
         menuPreference,
         children,
         transport,
+        allergies,
         notes);
   }
 }

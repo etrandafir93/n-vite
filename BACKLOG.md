@@ -38,7 +38,7 @@
 
 ### 📋 RSVP Experience (Guest Journey)
 
-- [ ] **Implement conditional logic in the RSVP form** — use dropdowns that reveal follow-up fields based on the guest's answer; example flow: "Do you have allergies?" → Yes → text field appears to specify; fields should stay hidden until triggered
+- [x] **Implement conditional logic in the RSVP form** — ✅ COMPLETE — added "Do you have any food allergies?" Yes/No field across all 4 themes; selecting Yes reveals a text input for details; stored in backend, shown in analytics dashboard and Excel export
 - [ ] **Allow hosts to define custom menu choices** — hosts should be able to set the specific options guests pick from (e.g. meat, vegetarian, vegan); this must be configurable per event, not hardcoded
 
 ---

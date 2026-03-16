@@ -39,6 +39,7 @@ class InvitationController {
             rsvpRequest.menuPreference(),
             rsvpRequest.children(),
             rsvpRequest.transport(),
+            rsvpRequest.allergies(),
             rsvpRequest.notes());
 
     rsvpInvitationUseCase.apply(request);
@@ -51,5 +52,6 @@ class InvitationController {
       String menuPreference,
       Integer children,
       Boolean transport,
+      String allergies,
       String notes) {}
 }

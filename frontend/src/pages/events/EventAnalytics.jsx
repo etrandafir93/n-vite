@@ -394,6 +394,12 @@ export default function EventAnalytics() {
                                     {response.transport === true ? 'Needs transport' : response.transport === false ? 'No transport needed' : 'Not specified'}
                                   </span>
                                 </div>
+                                {response.allergies && (
+                                  <div className="ea-detail-item">
+                                    <span className="ea-detail-label">Allergies:</span>
+                                    <span className="ea-detail-value">{response.allergies}</span>
+                                  </div>
+                                )}
                                 {response.notes && (
                                   <div className="ea-detail-item">
                                     <span className="ea-detail-label">Message:</span>

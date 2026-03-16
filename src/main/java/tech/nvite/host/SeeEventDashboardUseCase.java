@@ -77,6 +77,7 @@ public class SeeEventDashboardUseCase
                         r.partnerName(),
                         r.children(),
                         r.transport(),
+                        r.allergies(),
                         r.notes(),
                         r.timestamp()))
             .sorted(comparing(GuestResponse::timestamp).reversed())
@@ -123,6 +124,7 @@ public class SeeEventDashboardUseCase
       @Nullable String partnerName,
       @Nullable Integer children,
       @Nullable Boolean transport,
+      @Nullable String allergies,
       @Nullable String notes,
       Instant timestamp) {}
 

@@ -219,6 +219,8 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
   const [children, setChildren]     = useState(null)
   const [childCount, setChildCount] = useState(1)
   const [transport, setTransport]   = useState(null)
+  const [allergies, setAllergies]   = useState(null)
+  const [allergyDetails, setAllergyDetails] = useState('')
   const [notes, setNotes]           = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted]   = useState(false)
@@ -241,6 +243,7 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
           menuPreference: menu,
           children: children === 'yes' ? parseInt(childCount) : null,
           transport: transport === 'yes' ? true : transport === 'no' ? false : null,
+          allergies: allergies === 'yes' ? (allergyDetails.trim() || 'Yes') : null,
           notes: notes.trim() || null
         })
       })
@@ -338,6 +341,23 @@ function RsvpForm({ rsvpDeadline, invitationRef }) {
               <button className={`cl-toggle-btn${transport==='yes'?' active':''}`} onClick={()=>setTransport('yes')}>Yes please</button>
               <button className={`cl-toggle-btn${transport==='no'?' active':''}`}  onClick={()=>setTransport('no')}>No, thank you</button>
             </div>
+          </div>
+          <div className="cl-field">
+            <label className="cl-label">Do you have any food allergies?</label>
+            <div className="cl-toggle-row">
+              <button className={`cl-toggle-btn${allergies==='yes'?' active':''}`} onClick={()=>setAllergies('yes')}>Yes</button>
+              <button className={`cl-toggle-btn${allergies==='no'?' active':''}`}  onClick={()=>setAllergies('no')}>No</button>
+            </div>
+            {allergies === 'yes' && (
+              <input
+                className="cl-number-input"
+                type="text"
+                placeholder="Please describe your allergies..."
+                value={allergyDetails}
+                onChange={e => setAllergyDetails(e.target.value)}
+                style={{ width: '100%', fontSize: '.88rem', padding: '.8rem', marginTop: '.75rem' }}
+              />
+            )}
           </div>
         </>
       )}
