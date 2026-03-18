@@ -498,6 +498,44 @@ export default function EventBuilder() {
 
         <form onSubmit={handleSubmit} noValidate>
 
+          <Section title="Choose a Theme" subtitle="Pick the look and feel of your invitation first">
+            <div className="eb-theme-grid">
+              {[
+                { value: 'classic',  label: 'Classic',  mood: 'Elegant & timeless',    colors: ['#faf8f4', '#e8dfc8', '#c9a96e', '#1c1c1c'] },
+                { value: 'romantic', label: 'Romantic', mood: 'Soft & intimate',        colors: ['#fff5f7', '#fce0e8', '#d4788a', '#4a1a28'] },
+                { value: 'modern',   label: 'Modern',   mood: 'Bold & contemporary',   colors: ['#0d1b2a', '#1a2e42', '#f5a623', '#ffffff'] },
+                { value: 'natural',  label: 'Natural',  mood: 'Warm & organic',         colors: ['#f5f2ec', '#e8dfc8', '#7a9e7e', '#3d2c1e'] },
+              ].map(theme => (
+                <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="theme"
+                    value={theme.value}
+                    checked={form.theme === theme.value}
+                    onChange={e => set('theme')(e.target.value)}
+                    className="eb-theme-radio"
+                  />
+                  <div className="eb-theme-swatch">
+                    {theme.colors.map(c => <span key={c} style={{ background: c }} />)}
+                  </div>
+                  <div className="eb-theme-info">
+                    <span className="eb-theme-label">{theme.label}</span>
+                    <span className="eb-theme-mood">{theme.mood}</span>
+                  </div>
+                  <a
+                    href={isEdit ? `/invitations/${eventReference}/${theme.value}` : `/invitations/joe-and-jane/${theme.value}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="eb-theme-demo"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    {isEdit ? 'Preview ↗' : 'View Demo ↗'}
+                  </a>
+                </label>
+              ))}
+            </div>
+          </Section>
+
           <Section title="The Couple" subtitle="Names as they will appear on the invitation">
             <div className="eb-grid-2">
               <Field label="Groom's Name" required error={fieldErrors.groomName}>
@@ -539,7 +577,7 @@ export default function EventBuilder() {
                 { value: 'ceremony',  label: 'Ceremony Only',        icon: '⛪' },
                 { value: 'reception', label: 'Reception Only',       icon: '🥂' },
               ].map(opt => (
-                <label key={opt.value} className={`eb-theme-option${form.eventType === opt.value ? ' eb-theme-option--selected' : ''}`}>
+                <label key={opt.value} className={`eb-theme-option${form.eventType === opt.value ? ' eb-theme-option--selected' : ''}`} style={{ padding: '1rem 1.1rem', gap: '0.5rem' }}>
                   <input
                     type="radio"
                     name="eventType"
@@ -619,50 +657,6 @@ export default function EventBuilder() {
               options={form.menuOptions}
               onChange={set('menuOptions')}
             />
-          </Section>
-
-          <Section title="Theme" subtitle="Choose the default invitation theme">
-            <div className="eb-theme-grid">
-              {[
-                { value: 'classic', label: 'Classic' },
-                { value: 'romantic', label: 'Romantic' },
-                { value: 'modern', label: 'Modern' },
-                { value: 'natural', label: 'Natural' },
-              ].map(theme => (
-                <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="theme"
-                    value={theme.value}
-                    checked={form.theme === theme.value}
-                    onChange={e => set('theme')(e.target.value)}
-                    className="eb-theme-radio"
-                  />
-                  <span className="eb-theme-label">{theme.label}</span>
-                  {isEdit ? (
-                    <a
-                      href={`/invitations/${eventReference}/${theme.value}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="eb-theme-demo"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      Preview
-                    </a>
-                  ) : (
-                    <a
-                      href={`/invitations/joe-and-jane/${theme.value}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="eb-theme-demo"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      View Demo
-                    </a>
-                  )}
-                </label>
-              ))}
-            </div>
           </Section>
 
           <div className="eb-actions">
