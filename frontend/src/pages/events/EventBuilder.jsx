@@ -254,8 +254,9 @@ function MenuOptionsEditor({ options, onChange }) {
 
   const add = () => {
     const val = input.trim()
-    if (!val || options.includes(val)) return
-    onChange([...options, val])
+    const base = options.length > 0 ? options : DEFAULT_MENU_OPTIONS
+    if (!val || base.includes(val)) return
+    onChange([...base, val])
     setInput('')
   }
 
@@ -640,7 +641,7 @@ export default function EventBuilder() {
                   <span className="eb-theme-label">{theme.label}</span>
                   {isEdit ? (
                     <a
-                      href={`/invitations/${eventReference}?theme=${theme.value}`}
+                      href={`/invitations/${eventReference}/${theme.value}`}
                       target="_blank"
                       rel="noreferrer"
                       className="eb-theme-demo"
@@ -650,7 +651,7 @@ export default function EventBuilder() {
                     </a>
                   ) : (
                     <a
-                      href={`/invitations/joe-and-jane?theme=${theme.value}`}
+                      href={`/invitations/joe-and-jane/${theme.value}`}
                       target="_blank"
                       rel="noreferrer"
                       className="eb-theme-demo"
