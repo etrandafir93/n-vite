@@ -531,7 +531,8 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
 export default function ClassicInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
-  const [phase, setPhase] = useState('closed')
+  const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true'
+  const [phase, setPhase] = useState(isPreview ? 'open' : 'closed')
 
   const handleOpen = () => {
     if (phase !== 'closed') return

@@ -510,8 +510,8 @@ export default function EventBuilder() {
               const previewTheme = hoveredTheme || form.theme
               const previewLabel = themes.find(t => t.value === previewTheme)?.label
               const previewSrc = t => isEdit
-                ? `/invitations/${eventReference}/${t}`
-                : `/invitations/joe-and-jane/${t}`
+                ? `/invitations/${eventReference}/${t}?preview=true`
+                : `/invitations/joe-and-jane/${t}?preview=true`
               return (
                 <div className="eb-theme-picker">
                   <div className="eb-theme-grid">
