@@ -266,58 +266,66 @@
   font-family: 'Courier New', monospace;
 }
 
-/* ---- Theme Picker (cards + live preview) ---- */
+/* ---- Theme Preview Modal ---- */
 
-.eb-theme-picker {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 1.25rem;
-  align-items: start;
+.eb-preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 20, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
-.eb-theme-picker .eb-theme-grid {
-  grid-template-columns: 1fr;
-}
-
-.eb-theme-preview-panel {
-  position: sticky;
-  top: 72px;
-  border: 1px solid rgba(61, 20, 33, 0.12);
-  border-radius: 12px;
+.eb-preview-modal__phone {
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 96vw);
+  height: min(860px, 90vh);
+  border-radius: 20px;
   overflow: hidden;
-  background: #e8e4da;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
 }
 
-.eb-theme-preview-label {
-  padding: 0.42rem 0.9rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: #999;
-  background: var(--white);
-  border-bottom: 1px solid rgba(61, 20, 33, 0.08);
+.eb-preview-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: #1a1a2e;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: #aaa;
+  flex-shrink: 0;
 }
 
-.eb-theme-preview-label strong {
-  color: var(--navy);
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 0.75rem;
-}
-
-.eb-theme-preview-viewport {
-  height: 480px;
-  overflow: hidden;
-  position: relative;
-}
-
-.eb-theme-preview-iframe {
-  width: 960px;
-  height: 1100px;
+.eb-preview-modal__close {
+  background: rgba(255, 255, 255, 0.12);
   border: none;
-  transform: scale(0.52);
-  transform-origin: top left;
-  pointer-events: none;
+  color: #ccc;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.eb-preview-modal__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.eb-preview-modal__frame {
+  flex: 1;
+  width: 100%;
+  border: none;
 }
 
 /* ---- Theme Grid ---- */
@@ -504,19 +512,6 @@
 
 /* ---- Responsive ---- */
 
-@media (max-width: 720px) {
-  .eb-theme-picker {
-    grid-template-columns: 1fr;
-  }
-
-  .eb-theme-preview-panel {
-    display: none;
-  }
-
-  .eb-theme-picker .eb-theme-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
 @media (max-width: 600px) {
   .eb-grid-2 {

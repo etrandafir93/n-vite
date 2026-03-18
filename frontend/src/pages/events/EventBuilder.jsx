@@ -316,7 +316,7 @@ export default function EventBuilder() {
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
-  const [hoveredTheme, setHoveredTheme] = useState(null)
+  const [previewingTheme, setPreviewingTheme] = useState(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const eventReference = searchParams.get('eventReference')
@@ -484,8 +484,38 @@ export default function EventBuilder() {
     )
   }
 
+  const previewSrc = previewingTheme
+    ? (isEdit
+        ? `/invitations/${eventReference}/${previewingTheme}?preview=true`
+        : `/invitations/joe-and-jane/${previewingTheme}?preview=true`)
+    : null
+
+  useEffect(() => {
+    if (!previewingTheme) return
+    const onKey = e => { if (e.key === 'Escape') setPreviewingTheme(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [previewingTheme])
+
   return (
     <div className="eb-page">
+
+      {previewingTheme && (
+        <div className="eb-preview-modal" onClick={() => setPreviewingTheme(null)}>
+          <div className="eb-preview-modal__phone" onClick={e => e.stopPropagation()}>
+            <div className="eb-preview-modal__bar">
+              <span>{previewingTheme.charAt(0).toUpperCase() + previewingTheme.slice(1)} theme — full interactive demo</span>
+              <button className="eb-preview-modal__close" onClick={() => setPreviewingTheme(null)}>✕</button>
+            </div>
+            <iframe
+              src={previewSrc}
+              title="Theme preview"
+              className="eb-preview-modal__frame"
+            />
+          </div>
+        </div>
+      )}
+
       <header className="eb-header">
         <div className="eb-header__inner container">
           <Link to="/events" className="eb-back">← My Invitations</Link>
@@ -499,67 +529,40 @@ export default function EventBuilder() {
 
         <form onSubmit={handleSubmit} noValidate>
 
-          <Section title="Choose a Theme" subtitle="Hover a card to preview — pick the look and feel of your invitation">
-            {(() => {
-              const themes = [
+          <Section title="Choose a Theme" subtitle="Select the look and feel of your invitation — click Preview to explore">
+            <div className="eb-theme-grid">
+              {[
                 { value: 'classic',  label: 'Classic',  mood: 'Elegant & timeless',  colors: ['#faf8f4', '#e8dfc8', '#c9a96e', '#1c1c1c'] },
                 { value: 'romantic', label: 'Romantic', mood: 'Soft & intimate',      colors: ['#fff5f7', '#fce0e8', '#d4788a', '#4a1a28'] },
                 { value: 'modern',   label: 'Modern',   mood: 'Bold & contemporary',  colors: ['#0d1b2a', '#1a2e42', '#f5a623', '#ffffff'] },
                 { value: 'natural',  label: 'Natural',  mood: 'Warm & organic',       colors: ['#f5f2ec', '#e8dfc8', '#7a9e7e', '#3d2c1e'] },
-              ]
-              const previewTheme = hoveredTheme || form.theme
-              const previewLabel = themes.find(t => t.value === previewTheme)?.label
-              const previewSrc = t => isEdit
-                ? `/invitations/${eventReference}/${t}?preview=true`
-                : `/invitations/joe-and-jane/${t}?preview=true`
-              return (
-                <div className="eb-theme-picker">
-                  <div className="eb-theme-grid">
-                    {themes.map(theme => (
-                      <label
-                        key={theme.value}
-                        className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}
-                        onMouseEnter={() => setHoveredTheme(theme.value)}
-                        onMouseLeave={() => setHoveredTheme(null)}
-                      >
-                        <input
-                          type="radio"
-                          name="theme"
-                          value={theme.value}
-                          checked={form.theme === theme.value}
-                          onChange={e => set('theme')(e.target.value)}
-                          className="eb-theme-radio"
-                        />
-                        <div className="eb-theme-swatch">
-                          {theme.colors.map(c => <span key={c} style={{ background: c }} />)}
-                        </div>
-                        <div className="eb-theme-info">
-                          <span className="eb-theme-label">{theme.label}</span>
-                          <span className="eb-theme-mood">{theme.mood}</span>
-                        </div>
-                      </label>
-                    ))}
+              ].map(theme => (
+                <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="theme"
+                    value={theme.value}
+                    checked={form.theme === theme.value}
+                    onChange={e => set('theme')(e.target.value)}
+                    className="eb-theme-radio"
+                  />
+                  <div className="eb-theme-swatch">
+                    {theme.colors.map(c => <span key={c} style={{ background: c }} />)}
                   </div>
-                  <div className="eb-theme-preview-panel">
-                    <div className="eb-theme-preview-label">
-                      Previewing: <strong>{previewLabel}</strong>
-                    </div>
-                    <div className="eb-theme-preview-viewport">
-                      {themes.map(theme => (
-                        <iframe
-                          key={theme.value}
-                          src={previewSrc(theme.value)}
-                          title={`${theme.label} preview`}
-                          className="eb-theme-preview-iframe"
-                          style={{ display: previewTheme === theme.value ? 'block' : 'none' }}
-                          tabIndex={-1}
-                        />
-                      ))}
-                    </div>
+                  <div className="eb-theme-info">
+                    <span className="eb-theme-label">{theme.label}</span>
+                    <span className="eb-theme-mood">{theme.mood}</span>
                   </div>
-                </div>
-              )
-            })()}
+                  <button
+                    type="button"
+                    className="eb-theme-demo"
+                    onClick={e => { e.preventDefault(); setPreviewingTheme(theme.value) }}
+                  >
+                    Preview
+                  </button>
+                </label>
+              ))}
+            </div>
           </Section>
 
           <Section title="The Couple" subtitle="Names as they will appear on the invitation">
