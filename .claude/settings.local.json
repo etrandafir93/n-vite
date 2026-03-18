@@ -29,7 +29,13 @@
       "Bash(xargs cat:*)",
       "Bash(npm run dev:*)",
       "Bash(./mvnw.cmd clean:*)",
-      "Bash(JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-17.0.17\" ./mvnw compile:*)"
+      "Bash(JAVA_HOME=\"C:/Users/Emanuel/.jdks/corretto-17.0.17\" ./mvnw compile:*)",
+      "Bash(xargs ls:*)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/borys/.jdks//**)",
+      "Read(//c/Users/borys/**)",
+      "Bash(JAVA_HOME=\"/c/Users/borys/.jdks/ms-21.0.10\" ./mvnw test:*)",
+      "Bash(xargs grep:*)"
     ],
     "deny": [],
     "ask": []

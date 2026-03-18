@@ -150,10 +150,12 @@ const css = `
     color: #f5f0e8; font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
   }
   .cl-event__map-link {
-    display:inline-flex; align-items:center; gap:.4rem; margin-top:.9rem;
-    font-size:.82rem; color:#c9a96e; text-decoration:none; transition:color .2s;
+    display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.1rem;
+    padding: .42rem 1rem; border: 1px solid #c9a96e; border-radius: 2px;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    color: #c9a96e; text-decoration: none; transition: background .2s, color .2s;
   }
-  .cl-event__map-link:hover { color:#b8906b; text-decoration:underline; }
+  .cl-event__map-link:hover { background: #c9a96e; color: #1c1c1c; }
 
   /* ── RSVP ─────────────────────────────────────── */
   .cl-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
@@ -212,23 +214,71 @@ const css = `
   /* ── Envelope Intro ──────────────────────────── */
   .cl-env-overlay {
     position: fixed; inset: 0; z-index: 200;
-    background: #faf8f4;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    background: radial-gradient(ellipse at 50% 40%, #fdf9f2 0%, #ede6d5 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     cursor: pointer; transition: opacity 0.7s ease 0.4s;
   }
   .cl-env-overlay--opening { opacity: 0; pointer-events: none; }
-  .cl-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.10)); }
-  .cl-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #ddd4c0; display: flex; align-items: center; justify-content: center; }
+  .cl-env-overlay__deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .cl-env-overlay__deco span {
+    position: absolute; opacity: 0; color: #c9a96e;
+    animation: clEnvFloat 6s ease-in-out infinite;
+  }
+  .cl-env-overlay__deco span:nth-child(1) { left: 11%; top: 19%; font-size: 1rem; animation-delay: 0s; }
+  .cl-env-overlay__deco span:nth-child(2) { left: 81%; top: 14%; font-size: .7rem; animation-delay: 1.3s; }
+  .cl-env-overlay__deco span:nth-child(3) { left: 69%; top: 69%; font-size: .95rem; animation-delay: 2.5s; }
+  .cl-env-overlay__deco span:nth-child(4) { left: 20%; top: 73%; font-size: .7rem; animation-delay: 0.9s; }
+  .cl-env-overlay__deco span:nth-child(5) { left: 49%; top: 9%; font-size: .6rem; animation-delay: 3.1s; }
+  @keyframes clEnvFloat { 0%,100%{opacity:0;transform:translateY(0) rotate(0deg)} 40%,60%{opacity:.55} 50%{transform:translateY(-12px) rotate(18deg)} }
+  .cl-env-title {
+    font-family: 'Cormorant Garamond','Georgia',serif;
+    font-size: clamp(.8rem,3vw,1rem); letter-spacing: .28em; text-transform: uppercase;
+    color: #8a6a3a; font-weight: 400;
+  }
+  .cl-env { position: relative; width: clamp(260px,72vw,380px); height: clamp(172px,50vw,258px); filter: drop-shadow(0 14px 44px rgba(120,80,20,.14)) drop-shadow(0 2px 6px rgba(0,0,0,.06)); }
+  .cl-env__body {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #fefcf7 0%, #f8f2e5 100%);
+    border: 1px solid #d8ccb0;
+    display: flex; align-items: center; justify-content: center;
+  }
   .cl-env__body::before {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
     background:
-      linear-gradient(to bottom right, transparent 49%, #f0ece3 50%) left / 50.5% 100% no-repeat,
-      linear-gradient(to bottom left,  transparent 49%, #f0ece3 50%) right / 50.5% 100% no-repeat;
+      linear-gradient(to bottom right, transparent 49%, #ede4ce 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #e8dcca 50%) right / 50.5% 100% no-repeat;
   }
-  .cl-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #c9a96e; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(201,169,110,.5); }
-  .cl-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #f0ece3; border: 1px solid #ddd4c0; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .cl-env__body::after {
+    content: ''; position: absolute; inset: 7px; border: 1px dashed rgba(201,169,110,.28); pointer-events: none;
+  }
+  .cl-env__seal {
+    position: relative; z-index: 2; width: 52px; height: 52px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 34%, #d4b06a, #9a6e2e);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff4dc; font-size: 1.1rem;
+    box-shadow: 0 3px 14px rgba(130,80,10,.45), inset 0 1px 2px rgba(255,240,180,.3);
+  }
+  .cl-env__seal::before { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid rgba(255,238,180,.35); }
+  .cl-env__flap {
+    position: absolute; top: -1px; left: -1px; right: -1px; height: 55%;
+    background: linear-gradient(175deg, #f4ecda, #eadfC6);
+    border: 1px solid #d8ccb0;
+    clip-path: polygon(0 0,100% 0,50% 80%);
+    transform-origin: top; transform: perspective(800px) rotateX(0deg);
+    transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10;
+  }
   .cl-env--open .cl-env__flap { transform: perspective(800px) rotateX(-172deg); }
-  .cl-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fdfcfa; border: 1px solid #e8e2d8; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .cl-env__letter {
+    position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%;
+    background: linear-gradient(to bottom, #fefefe, #fdf8f0);
+    border: 1px solid #e0d8c4;
+    transform: translateY(0); transition: transform .5s ease .2s; z-index: 1;
+  }
+  .cl-env__letter::before {
+    content: ''; position: absolute; left: 14%; right: 14%; top: 28%; height: 1px;
+    background: rgba(201,169,110,.18);
+    box-shadow: 0 10px 0 rgba(201,169,110,.13), 0 20px 0 rgba(201,169,110,.10), 0 30px 0 rgba(201,169,110,.07);
+  }
   .cl-env--open .cl-env__letter { transform: translateY(-26%); }
   .cl-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #c9a96e; animation: envPulse 2s ease-in-out infinite; }
   @keyframes envPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
@@ -237,6 +287,10 @@ const css = `
 function EnvelopeIntro({ opening, onOpen }) {
   return (
     <div className={`cl-env-overlay${opening ? ' cl-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className="cl-env-overlay__deco" aria-hidden="true">
+        <span>✦</span><span>◆</span><span>✦</span><span>◆</span><span>✦</span>
+      </div>
+      <p className="cl-env-title">You're invited</p>
       <div className={`cl-env${opening ? ' cl-env--open' : ''}`}>
         <div className="cl-env__body"><div className="cl-env__seal">♦</div></div>
         <div className="cl-env__flap" />
@@ -575,7 +629,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                     {inv.ceremonyAddress && <p className="cl-event__detail">{inv.ceremonyAddress}<br/>{fmtDate(inv.eventDate)}</p>}
                     {!inv.ceremonyAddress && <p className="cl-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.ceremonyTime && <span className="cl-event__time-pill">{inv.ceremonyTime}</span>}
-                    {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.ceremonyMapUrl && <a className="cl-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}
@@ -588,7 +642,7 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                     {inv.receptionAddress && <p className="cl-event__detail">{inv.receptionAddress}<br/>{fmtDate(inv.eventDate)}</p>}
                     {!inv.receptionAddress && <p className="cl-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.receptionTime && <span className="cl-event__time-pill">{inv.receptionTime}</span>}
-                    {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.receptionMapUrl && <a className="cl-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}

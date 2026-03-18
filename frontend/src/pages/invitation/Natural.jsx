@@ -154,10 +154,12 @@ const css = `
     font-size: 0.72rem; color: #5a7d5e; font-weight: 600;
   }
   .nat-event__map-link {
-    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem;
-    font-size: 0.82rem; color: #7a9e7e; text-decoration: none; transition: color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1.1rem;
+    padding: 0.42rem 1.1rem; border: 1px solid #7a9e7e; border-radius: 50px;
+    font-size: 0.72rem; letter-spacing: 0.06em;
+    color: #7a9e7e; text-decoration: none; transition: background 0.2s, color 0.2s;
   }
-  .nat-event__map-link:hover { color: #5a7d5e; text-decoration: underline; }
+  .nat-event__map-link:hover { background: #7a9e7e; color: #fff; }
 
   /* RSVP */
   .nat-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
@@ -227,23 +229,73 @@ const css = `
   /* ── Envelope Intro ──────────────────────────── */
   .nat-env-overlay {
     position: fixed; inset: 0; z-index: 200;
-    background: #f5f2ec;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    background: radial-gradient(ellipse at 50% 40%, #faf7f0 0%, #e8e0d0 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     cursor: pointer; transition: opacity 0.7s ease 0.4s;
   }
   .nat-env-overlay--opening { opacity: 0; pointer-events: none; }
-  .nat-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.10)); }
-  .nat-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #d4cbb8; display: flex; align-items: center; justify-content: center; }
+  .nat-env-overlay__deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .nat-env-overlay__deco span {
+    position: absolute; opacity: 0; color: #7a9e7e;
+    animation: natEnvFloat 8s ease-in-out infinite;
+  }
+  .nat-env-overlay__deco span:nth-child(1) { left: 9%; top: 20%; font-size: 1.1rem; animation-delay: 0s; }
+  .nat-env-overlay__deco span:nth-child(2) { left: 83%; top: 14%; font-size: .85rem; animation-delay: 1.9s; }
+  .nat-env-overlay__deco span:nth-child(3) { left: 71%; top: 70%; font-size: .95rem; animation-delay: 3.1s; }
+  .nat-env-overlay__deco span:nth-child(4) { left: 19%; top: 75%; font-size: .7rem; animation-delay: 1.3s; }
+  .nat-env-overlay__deco span:nth-child(5) { left: 46%; top: 8%; font-size: .7rem; animation-delay: 4.1s; }
+  .nat-env-overlay__deco span:nth-child(6) { left: 4%; top: 51%; font-size: .65rem; animation-delay: 2.3s; }
+  @keyframes natEnvFloat { 0%,100%{opacity:0;transform:translateY(6px) rotate(-12deg)} 40%,60%{opacity:.45} 50%{transform:translateY(-9px) rotate(12deg)} }
+  .nat-env-title {
+    font-family: 'Playfair Display','Georgia',serif;
+    font-size: clamp(.85rem,3vw,1.05rem);
+    color: #5a7d5e; font-weight: 400; font-style: italic;
+    letter-spacing: .04em;
+  }
+  .nat-env { position: relative; width: clamp(260px,72vw,380px); height: clamp(172px,50vw,258px); filter: drop-shadow(0 14px 42px rgba(70,90,50,.12)) drop-shadow(0 2px 8px rgba(0,0,0,.06)); }
+  .nat-env__body {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #fefaf3 0%, #f5edd8 100%);
+    border: 1px solid #c8bda6;
+    display: flex; align-items: center; justify-content: center;
+  }
   .nat-env__body::before {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
     background:
-      linear-gradient(to bottom right, transparent 49%, #eee8de 50%) left / 50.5% 100% no-repeat,
-      linear-gradient(to bottom left,  transparent 49%, #eee8de 50%) right / 50.5% 100% no-repeat;
+      linear-gradient(to bottom right, transparent 49%, #e6dcca 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #e0d4bc 50%) right / 50.5% 100% no-repeat;
   }
-  .nat-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #7a9e7e; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(122,158,126,.4); }
-  .nat-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #eee8de; border: 1px solid #d4cbb8; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .nat-env__body::after {
+    content: ''; position: absolute; inset: 7px; border: 1px dashed rgba(122,158,126,.3); pointer-events: none;
+  }
+  .nat-env__seal {
+    position: relative; z-index: 2; width: 52px; height: 52px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 34%, #8fb892, #4a7a50);
+    display: flex; align-items: center; justify-content: center;
+    color: #f0f8f1; font-size: 1.15rem;
+    box-shadow: 0 3px 14px rgba(55,100,60,.4), inset 0 1px 2px rgba(200,240,200,.3);
+  }
+  .nat-env__seal::before { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid rgba(200,240,200,.38); }
+  .nat-env__flap {
+    position: absolute; top: -1px; left: -1px; right: -1px; height: 55%;
+    background: linear-gradient(175deg, #ede5d0, #e4d9c0);
+    border: 1px solid #c8bda6;
+    clip-path: polygon(0 0,100% 0,50% 80%);
+    transform-origin: top; transform: perspective(800px) rotateX(0deg);
+    transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10;
+  }
   .nat-env--open .nat-env__flap { transform: perspective(800px) rotateX(-172deg); }
-  .nat-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fdfcfa; border: 1px solid #e4ddd0; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .nat-env__letter {
+    position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%;
+    background: linear-gradient(to bottom, #fefcf7, #faf5ea);
+    border: 1px solid #dad0bc;
+    transform: translateY(0); transition: transform .5s ease .2s; z-index: 1;
+  }
+  .nat-env__letter::before {
+    content: ''; position: absolute; left: 14%; right: 14%; top: 28%; height: 1px;
+    background: rgba(122,158,126,.18);
+    box-shadow: 0 10px 0 rgba(122,158,126,.13), 0 20px 0 rgba(122,158,126,.10), 0 30px 0 rgba(122,158,126,.07);
+  }
   .nat-env--open .nat-env__letter { transform: translateY(-26%); }
   .nat-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #7a9e7e; animation: natEnvPulse 2s ease-in-out infinite; }
   @keyframes natEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
@@ -252,6 +304,10 @@ const css = `
 function EnvelopeIntro({ opening, onOpen }) {
   return (
     <div className={`nat-env-overlay${opening ? ' nat-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className="nat-env-overlay__deco" aria-hidden="true">
+        <span>✿</span><span>❧</span><span>✿</span><span>❧</span><span>✿</span><span>❧</span>
+      </div>
+      <p className="nat-env-title">A note for you</p>
       <div className={`nat-env${opening ? ' nat-env--open' : ''}`}>
         <div className="nat-env__body"><div className="nat-env__seal">✦</div></div>
         <div className="nat-env__flap" />
@@ -595,7 +651,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
                     {inv.ceremonyAddress && <p className="nat-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.ceremonyAddress && <p className="nat-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.ceremonyTime && <span className="nat-event__time-pill">{inv.ceremonyTime}</span>}
-                    {inv.ceremonyMapUrl && <a className="nat-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.ceremonyMapUrl && <a className="nat-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}
@@ -608,7 +664,7 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
                     {inv.receptionAddress && <p className="nat-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.receptionAddress && <p className="nat-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.receptionTime && <span className="nat-event__time-pill">{inv.receptionTime}</span>}
-                    {inv.receptionMapUrl && <a className="nat-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.receptionMapUrl && <a className="nat-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}

@@ -148,10 +148,12 @@ const css = `
     padding: 0.35rem 0.9rem;
   }
   .mdn-event__map-link {
-    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem;
-    font-size: 0.82rem; color: #f5a623; text-decoration: none; transition: color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1.1rem;
+    padding: 0.42rem 1rem; border: 2px solid #f5a623; border-radius: 0;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #f5a623; text-decoration: none; transition: background 0.2s, color 0.2s;
   }
-  .mdn-event__map-link:hover { color: #ffb84d; text-decoration: underline; }
+  .mdn-event__map-link:hover { background: #f5a623; color: #1a1a2e; }
 
   /* RSVP */
   .mdn-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
@@ -216,23 +218,72 @@ const css = `
   /* ── Envelope Intro ──────────────────────────── */
   .mdn-env-overlay {
     position: fixed; inset: 0; z-index: 200;
-    background: #0d1b2a;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    background: radial-gradient(ellipse at 50% 42%, #142438 0%, #070e18 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     cursor: pointer; transition: opacity 0.7s ease 0.4s;
   }
   .mdn-env-overlay--opening { opacity: 0; pointer-events: none; }
-  .mdn-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(0,0,0,.4)); }
-  .mdn-env__body { position: absolute; inset: 0; background: #122033; border: 1px solid #1a2e42; display: flex; align-items: center; justify-content: center; }
+  .mdn-env-overlay__deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .mdn-env-overlay__deco span {
+    position: absolute; opacity: 0; color: #f5a623;
+    animation: mdnEnvFloat 5s ease-in-out infinite;
+  }
+  .mdn-env-overlay__deco span:nth-child(1) { left: 8%; top: 22%; font-size: .45rem; animation-delay: 0s; }
+  .mdn-env-overlay__deco span:nth-child(2) { left: 85%; top: 17%; font-size: .38rem; animation-delay: 1.3s; }
+  .mdn-env-overlay__deco span:nth-child(3) { left: 72%; top: 73%; font-size: .48rem; animation-delay: 2.5s; }
+  .mdn-env-overlay__deco span:nth-child(4) { left: 14%; top: 78%; font-size: .35rem; animation-delay: 0.8s; }
+  .mdn-env-overlay__deco span:nth-child(5) { left: 44%; top: 7%; font-size: .4rem; animation-delay: 3.3s; }
+  @keyframes mdnEnvFloat { 0%,100%{opacity:0;transform:scale(.7) rotate(0deg)} 50%{opacity:.65;transform:scale(1) rotate(45deg)} }
+  .mdn-env-title {
+    font-family: 'Inter',sans-serif;
+    font-size: clamp(.6rem,2.5vw,.75rem); font-weight: 800; letter-spacing: .35em; text-transform: uppercase;
+    color: #f5a623;
+  }
+  .mdn-env { position: relative; width: clamp(260px,72vw,380px); height: clamp(172px,50vw,258px); filter: drop-shadow(0 16px 52px rgba(0,0,0,.65)) drop-shadow(0 0 28px rgba(245,166,35,.07)); }
+  .mdn-env__body {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #162840 0%, #0e1e30 100%);
+    border: 1px solid rgba(245,166,35,.22);
+    display: flex; align-items: center; justify-content: center;
+  }
   .mdn-env__body::before {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
     background:
       linear-gradient(to bottom right, transparent 49%, #0d1b2a 50%) left / 50.5% 100% no-repeat,
-      linear-gradient(to bottom left,  transparent 49%, #0d1b2a 50%) right / 50.5% 100% no-repeat;
+      linear-gradient(to bottom left,  transparent 49%, #0a1520 50%) right / 50.5% 100% no-repeat;
   }
-  .mdn-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #f5a623; display: flex; align-items: center; justify-content: center; color: #0d1b2a; font-size: .9rem; font-weight: 700; box-shadow: 0 2px 10px rgba(245,166,35,.4); }
-  .mdn-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #0d1b2a; border: 1px solid #1a2e42; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .mdn-env__body::after {
+    content: ''; position: absolute; top: 7px; right: 7px; width: 26px; height: 34px;
+    border: 1px solid rgba(245,166,35,.28); pointer-events: none;
+  }
+  .mdn-env__seal {
+    position: relative; z-index: 2; width: 50px; height: 50px; border-radius: 0;
+    background: linear-gradient(135deg, #f5a623, #c87d10);
+    display: flex; align-items: center; justify-content: center;
+    color: #0d1b2a; font-size: 1rem; font-weight: 900;
+    box-shadow: 0 3px 18px rgba(245,166,35,.52), 0 0 28px rgba(245,166,35,.1);
+    clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  }
+  .mdn-env__flap {
+    position: absolute; top: -1px; left: -1px; right: -1px; height: 55%;
+    background: linear-gradient(175deg, #0f2035, #0d1b2a);
+    border: 1px solid rgba(245,166,35,.18);
+    clip-path: polygon(0 0,100% 0,50% 80%);
+    transform-origin: top; transform: perspective(800px) rotateX(0deg);
+    transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10;
+  }
   .mdn-env--open .mdn-env__flap { transform: perspective(800px) rotateX(-172deg); }
-  .mdn-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #0a1622; border: 1px solid #1a2e42; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .mdn-env__letter {
+    position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%;
+    background: linear-gradient(to bottom, #0e1e30, #0a1622);
+    border: 1px solid rgba(245,166,35,.14);
+    transform: translateY(0); transition: transform .5s ease .2s; z-index: 1;
+  }
+  .mdn-env__letter::before {
+    content: ''; position: absolute; left: 14%; right: 14%; top: 28%; height: 1px;
+    background: rgba(245,166,35,.14);
+    box-shadow: 0 10px 0 rgba(245,166,35,.10), 0 20px 0 rgba(245,166,35,.07), 0 30px 0 rgba(245,166,35,.04);
+  }
   .mdn-env--open .mdn-env__letter { transform: translateY(-26%); }
   .mdn-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #f5a623; animation: mdnEnvPulse 2s ease-in-out infinite; }
   @keyframes mdnEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
@@ -241,6 +292,10 @@ const css = `
 function EnvelopeIntro({ opening, onOpen }) {
   return (
     <div className={`mdn-env-overlay${opening ? ' mdn-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className="mdn-env-overlay__deco" aria-hidden="true">
+        <span>■</span><span>■</span><span>■</span><span>■</span><span>■</span>
+      </div>
+      <p className="mdn-env-title">Invitation</p>
       <div className={`mdn-env${opening ? ' mdn-env--open' : ''}`}>
         <div className="mdn-env__body"><div className="mdn-env__seal">◆</div></div>
         <div className="mdn-env__flap" />
@@ -602,7 +657,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
                     {inv.ceremonyAddress && <p className="mdn-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.ceremonyAddress && <p className="mdn-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.ceremonyTime && <span className="mdn-event__time">{inv.ceremonyTime}</span>}
-                    {inv.ceremonyMapUrl && <a className="mdn-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.ceremonyMapUrl && <a className="mdn-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}
@@ -615,7 +670,7 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
                     {inv.receptionAddress && <p className="mdn-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.receptionAddress && <p className="mdn-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.receptionTime && <span className="mdn-event__time">{inv.receptionTime}</span>}
-                    {inv.receptionMapUrl && <a className="mdn-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.receptionMapUrl && <a className="mdn-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}

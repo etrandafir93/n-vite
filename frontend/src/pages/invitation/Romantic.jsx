@@ -156,10 +156,12 @@ const css = `
     font-family: 'Playfair Display', serif;
   }
   .rom-event__map-link {
-    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem;
-    font-size: 0.82rem; color: #d4788a; text-decoration: none; transition: color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1.1rem;
+    padding: 0.42rem 1.1rem; border: 1px solid #d4788a; border-radius: 50px;
+    font-size: 0.72rem; letter-spacing: 0.08em;
+    color: #d4788a; text-decoration: none; transition: background 0.2s, color 0.2s;
   }
-  .rom-event__map-link:hover { color: #b85670; text-decoration: underline; }
+  .rom-event__map-link:hover { background: #d4788a; color: #fff; }
 
   /* RSVP */
   .rom-rsvp { padding: clamp(2.5rem, 8vw, 5rem) 0 clamp(3rem, 10vw, 5rem); }
@@ -228,23 +230,72 @@ const css = `
   /* ── Envelope Intro ──────────────────────────── */
   .rom-env-overlay {
     position: fixed; inset: 0; z-index: 200;
-    background: #fff5f7;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    background: radial-gradient(ellipse at 50% 40%, #fff5f8 0%, #fce0e8 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     cursor: pointer; transition: opacity 0.7s ease 0.4s;
   }
   .rom-env-overlay--opening { opacity: 0; pointer-events: none; }
-  .rom-env { position: relative; width: clamp(240px,70vw,360px); height: clamp(160px,47vw,240px); filter: drop-shadow(0 8px 32px rgba(184,86,112,.12)); }
-  .rom-env__body { position: absolute; inset: 0; background: #fff; border: 1px solid #f0dde6; display: flex; align-items: center; justify-content: center; }
+  .rom-env-overlay__deco { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .rom-env-overlay__deco span {
+    position: absolute; opacity: 0; color: #d4788a;
+    animation: romEnvFloat 7s ease-in-out infinite;
+  }
+  .rom-env-overlay__deco span:nth-child(1) { left: 10%; top: 18%; font-size: 1.1rem; animation-delay: 0s; }
+  .rom-env-overlay__deco span:nth-child(2) { left: 83%; top: 13%; font-size: .8rem; animation-delay: 1.6s; }
+  .rom-env-overlay__deco span:nth-child(3) { left: 75%; top: 68%; font-size: 1rem; animation-delay: 2.9s; }
+  .rom-env-overlay__deco span:nth-child(4) { left: 17%; top: 75%; font-size: .75rem; animation-delay: 1.1s; }
+  .rom-env-overlay__deco span:nth-child(5) { left: 47%; top: 8%; font-size: .65rem; animation-delay: 3.6s; }
+  .rom-env-overlay__deco span:nth-child(6) { left: 5%; top: 50%; font-size: .8rem; animation-delay: 2.1s; }
+  @keyframes romEnvFloat { 0%,100%{opacity:0;transform:translateY(4px) scale(.9)} 40%,60%{opacity:.5} 50%{transform:translateY(-10px) scale(1)} }
+  .rom-env-title {
+    font-family: 'Playfair Display','Georgia',serif;
+    font-size: clamp(.95rem,3.5vw,1.25rem);
+    color: #9e3d58; font-weight: 400; font-style: italic;
+  }
+  .rom-env { position: relative; width: clamp(260px,72vw,380px); height: clamp(172px,50vw,258px); filter: drop-shadow(0 14px 42px rgba(180,80,110,.15)) drop-shadow(0 2px 8px rgba(0,0,0,.05)); }
+  .rom-env__body {
+    position: absolute; inset: 0;
+    background: linear-gradient(155deg, #fff 0%, #fff8fa 100%);
+    border: 1px solid #eeccd8;
+    display: flex; align-items: center; justify-content: center;
+  }
   .rom-env__body::before {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 40%;
     background:
-      linear-gradient(to bottom right, transparent 49%, #fce8ee 50%) left / 50.5% 100% no-repeat,
-      linear-gradient(to bottom left,  transparent 49%, #fce8ee 50%) right / 50.5% 100% no-repeat;
+      linear-gradient(to bottom right, transparent 49%, #fcdde6 50%) left / 50.5% 100% no-repeat,
+      linear-gradient(to bottom left,  transparent 49%, #f8d4df 50%) right / 50.5% 100% no-repeat;
   }
-  .rom-env__seal { position: relative; z-index: 2; width: 44px; height: 44px; border-radius: 50%; background: #b85670; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .9rem; box-shadow: 0 2px 10px rgba(184,86,112,.4); }
-  .rom-env__flap { position: absolute; top: -1px; left: -1px; right: -1px; height: 55%; background: #fce8ee; border: 1px solid #f0dde6; clip-path: polygon(0 0,100% 0,50% 80%); transform-origin: top; transform: perspective(800px) rotateX(0deg); transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10; }
+  .rom-env__body::after {
+    content: ''; position: absolute; inset: 7px; border: 1px solid rgba(212,120,138,.2); pointer-events: none;
+  }
+  .rom-env__seal {
+    position: relative; z-index: 2; width: 52px; height: 52px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 34%, #e08090, #9e3055);
+    display: flex; align-items: center; justify-content: center;
+    color: #ffeef3; font-size: 1.15rem;
+    box-shadow: 0 3px 14px rgba(155,45,80,.45), inset 0 1px 2px rgba(255,215,225,.3);
+  }
+  .rom-env__seal::before { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid rgba(255,210,222,.4); }
+  .rom-env__flap {
+    position: absolute; top: -1px; left: -1px; right: -1px; height: 55%;
+    background: linear-gradient(175deg, #fce6ed, #f8d4df);
+    border: 1px solid #eeccd8;
+    clip-path: polygon(0 0,100% 0,50% 80%);
+    transform-origin: top; transform: perspective(800px) rotateX(0deg);
+    transition: transform .65s cubic-bezier(.4,0,.2,1); z-index: 10;
+  }
   .rom-env--open .rom-env__flap { transform: perspective(800px) rotateX(-172deg); }
-  .rom-env__letter { position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%; background: #fffbfc; border: 1px solid #f0dde6; transform: translateY(0); transition: transform .5s ease .2s; z-index: 1; }
+  .rom-env__letter {
+    position: absolute; bottom: 8%; left: 14%; right: 14%; height: 70%;
+    background: linear-gradient(to bottom, #fff, #fff8fb);
+    border: 1px solid #f0d8e2;
+    transform: translateY(0); transition: transform .5s ease .2s; z-index: 1;
+  }
+  .rom-env__letter::before {
+    content: ''; position: absolute; left: 14%; right: 14%; top: 28%; height: 1px;
+    background: rgba(212,120,138,.18);
+    box-shadow: 0 10px 0 rgba(212,120,138,.13), 0 20px 0 rgba(212,120,138,.10), 0 30px 0 rgba(212,120,138,.07);
+  }
   .rom-env--open .rom-env__letter { transform: translateY(-26%); }
   .rom-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #b85670; animation: romEnvPulse 2s ease-in-out infinite; }
   @keyframes romEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
@@ -253,6 +304,10 @@ const css = `
 function EnvelopeIntro({ opening, onOpen }) {
   return (
     <div className={`rom-env-overlay${opening ? ' rom-env-overlay--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+      <div className="rom-env-overlay__deco" aria-hidden="true">
+        <span>♥</span><span>✿</span><span>♥</span><span>✿</span><span>♥</span><span>✿</span>
+      </div>
+      <p className="rom-env-title">A letter for you</p>
       <div className={`rom-env${opening ? ' rom-env--open' : ''}`}>
         <div className="rom-env__body"><div className="rom-env__seal">♥</div></div>
         <div className="rom-env__flap" />
@@ -594,7 +649,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                     {inv.ceremonyAddress && <p className="rom-event__detail">{inv.ceremonyAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.ceremonyAddress && <p className="rom-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.ceremonyTime && <span className="rom-event__time-pill">{inv.ceremonyTime}</span>}
-                    {inv.ceremonyMapUrl && <a className="rom-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.ceremonyMapUrl && <a className="rom-event__map-link" href={inv.ceremonyMapUrl} target="_blank" rel="noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}
@@ -607,7 +662,7 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                     {inv.receptionAddress && <p className="rom-event__detail">{inv.receptionAddress}<br />{fmtDate(inv.eventDate)}</p>}
                     {!inv.receptionAddress && <p className="rom-event__detail">{fmtDate(inv.eventDate)}</p>}
                     {inv.receptionTime && <span className="rom-event__time-pill">{inv.receptionTime}</span>}
-                    {inv.receptionMapUrl && <a className="rom-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer" title="View on map"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></a>}
+                    {inv.receptionMapUrl && <a className="rom-event__map-link" href={inv.receptionMapUrl} target="_blank" rel="noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>View on map</a>}
                   </div>
                 </div>
               )}
