@@ -210,6 +210,16 @@ const css = `
     outline: none; color: #2e2a24; line-height: 1.6; background: rgba(255,255,255,0.4);
   }
   .nat-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
+  .nat-rsvp-errors {
+    background: #fff5f5; border: 1.5px solid #f0c0c0; border-radius: 8px;
+    padding: .85rem 1.1rem; margin-bottom: 1.2rem; font-size: .82rem; color: #a03030;
+  }
+  .nat-rsvp-errors p { font-weight: 600; margin: 0 0 .35rem; }
+  .nat-rsvp-errors ul { margin: 0; padding-left: 1.1rem; }
+  .nat-rsvp-errors li + li { margin-top: .15rem; }
+  .nat-field--error > .nat-label { color: #a03030; }
+  .nat-field--error .nat-input { border-color: #e5a0a0 !important; background: #fff8f8 !important; }
+  .nat-field--error .nat-toggle-row, .nat-field--error .nat-menu-row { border-radius: 8px; outline: 1.5px solid #a03030; }
   .nat-btn-primary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 12px;
     background: rgba(122,158,126,0.85); color: #fff; border: none;
@@ -335,13 +345,26 @@ function RsvpForm({ invitationRef, menuOptions }) {
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const errs = {}
+    if (!guestName.trim()) errs.guestName = 'Your name is required'
+    if (!attending) errs.attending = 'Please indicate if you will attend'
+    if (attending === 'yes') {
+      if (plusOne === 'yes' && !partnerName.trim()) errs.partnerName = "Partner's name is required"
+      if (!menu) errs.menu = 'Menu preference is required'
+    }
+    return errs
+  }
 
   const handleSubmit = async (answer) => {
-    if (!guestName.trim()) {
-      alert('Please enter your name')
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
       return
     }
-
+    setErrors({})
     setSubmitting(true)
     try {
       const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
@@ -387,7 +410,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
   return (
     <div className="nat-form">
-      <div className="nat-field">
+      <div className={`nat-field${errors.guestName ? ' nat-field--error' : ''}`}>
         <label className="nat-label">Your Name *</label>
         <input
           className="nat-number-input"
@@ -398,7 +421,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
           style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
         />
       </div>
-      <div className="nat-field">
+      <div className={`nat-field${errors.attending ? ' nat-field--error' : ''}`}>
         <label className="nat-label">Will you attend?</label>
         <div className="nat-toggle-row">
           <button className={`nat-toggle-btn${attending === 'yes' ? ' active' : ''}`} onClick={() => setAttending('yes')}>Yes, I'll be there</button>
@@ -408,7 +431,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
       {attending === 'yes' && (
         <>
-          <div className="nat-field">
+          <div className={`nat-field${errors.partnerName ? ' nat-field--error' : ''}`}>
             <label className="nat-label">Bringing a +1?</label>
             <div className="nat-toggle-row">
               <button className={`nat-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
@@ -425,7 +448,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
               />
             )}
           </div>
-          <div className="nat-field">
+          <div className={`nat-field${errors.menu ? ' nat-field--error' : ''}`}>
             <label className="nat-label">Menu preference</label>
             <div className="nat-menu-row">
               {menuChoices.map(m => (
@@ -486,6 +509,15 @@ function RsvpForm({ invitationRef, menuOptions }) {
         <div className="nat-field">
           <label className="nat-label">Questions or comments (Optional)</label>
           <textarea className="nat-textarea" placeholder="Dietary needs, special requests, or a note for the couple..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {Object.keys(errors).length > 0 && (
+        <div className="nat-rsvp-errors">
+          <p>Please fill in the following:</p>
+          <ul>
+            {Object.values(errors).map((msg, i) => <li key={i}>{msg}</li>)}
+          </ul>
         </div>
       )}
 

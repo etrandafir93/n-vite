@@ -198,6 +198,16 @@ const css = `
     outline:none; color:#1c1c1c; line-height:1.6; background:rgba(255,255,255,0.4);
   }
   .cl-cta-row { display:flex; gap:.75rem; margin-top:2rem; flex-wrap:wrap; }
+  .cl-rsvp-errors {
+    background: #fff5f5; border: 1.5px solid #f0c0c0; border-radius: 8px;
+    padding: .85rem 1.1rem; margin-bottom: 1.2rem; font-size: .82rem; color: #a83030;
+  }
+  .cl-rsvp-errors p { font-weight: 600; margin: 0 0 .35rem; }
+  .cl-rsvp-errors ul { margin: 0; padding-left: 1.1rem; }
+  .cl-rsvp-errors li + li { margin-top: .15rem; }
+  .cl-field--error > .cl-label { color: #a83030; }
+  .cl-field--error .cl-number-input { border-color: #e5a0a0 !important; background: #fff8f8 !important; }
+  .cl-field--error .cl-toggle-row, .cl-field--error .cl-menu-row { border-radius: 8px; outline: 1.5px solid #a83030; }
   .cl-btn-primary {
     flex:1; min-width:140px; padding:.9rem 2rem; background:rgba(201,169,110,0.85); color:#fff;
     border:none; font-size:.8rem; letter-spacing:.02em; border-radius:10px;
@@ -318,13 +328,26 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
   const [notes, setNotes]           = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted]   = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const errs = {}
+    if (!guestName.trim()) errs.guestName = 'Your name is required'
+    if (!attending) errs.attending = 'Please indicate if you will attend'
+    if (attending === 'yes') {
+      if (plusOne === 'yes' && !partnerName.trim()) errs.partnerName = "Partner's name is required"
+      if (!menu) errs.menu = 'Menu preference is required'
+    }
+    return errs
+  }
 
   const handleSubmit = async (answer) => {
-    if (!guestName.trim()) {
-      alert('Please enter your name')
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
       return
     }
-
+    setErrors({})
     setSubmitting(true)
     try {
       const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
@@ -370,7 +393,7 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
 
   return (
     <div className="cl-form">
-      <div className="cl-field">
+      <div className={`cl-field${errors.guestName ? ' cl-field--error' : ''}`}>
         <label className="cl-label">Your Name *</label>
         <input
           className="cl-number-input"
@@ -381,7 +404,7 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
           style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
         />
       </div>
-      <div className="cl-field">
+      <div className={`cl-field${errors.attending ? ' cl-field--error' : ''}`}>
         <label className="cl-label">Will you attend?</label>
         <div className="cl-toggle-row">
           <button className={`cl-toggle-btn${attending==='yes'?' active':''}`} onClick={()=>setAttending('yes')}>Yes, I will attend</button>
@@ -391,7 +414,7 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
 
       {attending === 'yes' && (
         <>
-          <div className="cl-field">
+          <div className={`cl-field${errors.partnerName ? ' cl-field--error' : ''}`}>
             <label className="cl-label">Attending with a +1?</label>
             <div className="cl-toggle-row">
               <button className={`cl-toggle-btn${plusOne==='yes'?' active':''}`} onClick={()=>setPlusOne('yes')}>Yes</button>
@@ -408,7 +431,7 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
               />
             )}
           </div>
-          <div className="cl-field">
+          <div className={`cl-field${errors.menu ? ' cl-field--error' : ''}`}>
             <label className="cl-label">Menu Preference</label>
             <div className="cl-menu-row">
               {menuChoices.map(m=>(
@@ -467,6 +490,15 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
         <div className="cl-field">
           <label className="cl-label">Questions or Comments (Optional)</label>
           <textarea className="cl-textarea" placeholder="Dietary restrictions, special requests, or a note for the couple..." value={notes} onChange={e=>setNotes(e.target.value)}/>
+        </div>
+      )}
+
+      {Object.keys(errors).length > 0 && (
+        <div className="cl-rsvp-errors">
+          <p>Please fill in the following:</p>
+          <ul>
+            {Object.values(errors).map((msg, i) => <li key={i}>{msg}</li>)}
+          </ul>
         </div>
       )}
 

@@ -212,6 +212,16 @@ const css = `
     outline: none; color: #3a2030; line-height: 1.6; background: rgba(255,255,255,0.4);
   }
   .rom-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
+  .rom-rsvp-errors {
+    background: #fff5f6; border: 1.5px solid #f0c0c8; border-radius: 8px;
+    padding: .85rem 1.1rem; margin-bottom: 1.2rem; font-size: .82rem; color: #a03050;
+  }
+  .rom-rsvp-errors p { font-weight: 600; margin: 0 0 .35rem; }
+  .rom-rsvp-errors ul { margin: 0; padding-left: 1.1rem; }
+  .rom-rsvp-errors li + li { margin-top: .15rem; }
+  .rom-field--error > .rom-label { color: #a03050; }
+  .rom-field--error .rom-input { border-color: #e5a0b0 !important; background: #fff8fa !important; }
+  .rom-field--error .rom-toggle-row, .rom-field--error .rom-menu-row { border-radius: 8px; outline: 1.5px solid #a03050; }
   .rom-btn-primary {
     flex: 1; min-width: 150px; padding: 0.95rem 2rem; border-radius: 30px;
     background: rgba(184,86,112,0.85); color: #fff; border: none;
@@ -335,13 +345,26 @@ function RsvpForm({ invitationRef, menuOptions }) {
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const errs = {}
+    if (!guestName.trim()) errs.guestName = 'Your name is required'
+    if (!attending) errs.attending = 'Please indicate if you will attend'
+    if (attending === 'yes') {
+      if (plusOne === 'yes' && !partnerName.trim()) errs.partnerName = "Partner's name is required"
+      if (!menu) errs.menu = 'Menu preference is required'
+    }
+    return errs
+  }
 
   const handleSubmit = async (answer) => {
-    if (!guestName.trim()) {
-      alert('Please enter your name')
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
       return
     }
-
+    setErrors({})
     setSubmitting(true)
     try {
       const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
@@ -387,7 +410,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
   return (
     <div className="rom-form">
-      <div className="rom-field">
+      <div className={`rom-field${errors.guestName ? ' rom-field--error' : ''}`}>
         <label className="rom-label">Your Name *</label>
         <input
           className="rom-number-input"
@@ -398,7 +421,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
           style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
         />
       </div>
-      <div className="rom-field">
+      <div className={`rom-field${errors.attending ? ' rom-field--error' : ''}`}>
         <label className="rom-label">Will you be joining us?</label>
         <div className="rom-toggle-row">
           <button className={`rom-toggle-btn${attending === 'yes' ? ' active' : ''}`} onClick={() => setAttending('yes')}>Yes, with joy!</button>
@@ -408,7 +431,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
       {attending === 'yes' && (
         <>
-          <div className="rom-field">
+          <div className={`rom-field${errors.partnerName ? ' rom-field--error' : ''}`}>
             <label className="rom-label">Will you bring a +1?</label>
             <div className="rom-toggle-row">
               <button className={`rom-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
@@ -425,7 +448,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
               />
             )}
           </div>
-          <div className="rom-field">
+          <div className={`rom-field${errors.menu ? ' rom-field--error' : ''}`}>
             <label className="rom-label">Your menu preference</label>
             <div className="rom-menu-row">
               {menuChoices.map(m => (
@@ -486,6 +509,15 @@ function RsvpForm({ invitationRef, menuOptions }) {
         <div className="rom-field">
           <label className="rom-label">Any wishes or questions for us? (Optional)</label>
           <textarea className="rom-textarea" placeholder="Dietary needs, special requests, or a loving note..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {Object.keys(errors).length > 0 && (
+        <div className="rom-rsvp-errors">
+          <p>Please fill in the following:</p>
+          <ul>
+            {Object.values(errors).map((msg, i) => <li key={i}>{msg}</li>)}
+          </ul>
         </div>
       )}
 

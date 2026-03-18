@@ -202,6 +202,16 @@ const css = `
     resize: vertical; min-height: 100px; outline: none; line-height: 1.6; border-radius: 10px;
   }
   .mdn-cta-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
+  .mdn-rsvp-errors {
+    background: rgba(200,50,50,0.1); border: 1.5px solid rgba(200,50,50,0.3); border-radius: 8px;
+    padding: .85rem 1.1rem; margin-bottom: 1.2rem; font-size: .82rem; color: #ff8080;
+  }
+  .mdn-rsvp-errors p { font-weight: 600; margin: 0 0 .35rem; }
+  .mdn-rsvp-errors ul { margin: 0; padding-left: 1.1rem; }
+  .mdn-rsvp-errors li + li { margin-top: .15rem; }
+  .mdn-field--error > .mdn-label { color: #ff8080; }
+  .mdn-field--error .mdn-input { border-color: rgba(200,50,50,0.5) !important; }
+  .mdn-field--error .mdn-toggle-row, .mdn-field--error .mdn-menu-row { border-radius: 8px; outline: 1.5px solid rgba(200,50,50,0.6); }
   .mdn-btn-primary {
     flex: 1; min-width: 140px; padding: 0.95rem 2rem; background: rgba(245,166,35,0.9); color: #0d1b2a;
     border: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; border-radius: 10px;
@@ -323,13 +333,26 @@ function RsvpForm({ invitationRef, menuOptions }) {
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const validate = () => {
+    const errs = {}
+    if (!guestName.trim()) errs.guestName = 'Your name is required'
+    if (!attending) errs.attending = 'Please indicate if you will attend'
+    if (attending === 'yes') {
+      if (plusOne === 'yes' && !partnerName.trim()) errs.partnerName = "Partner's name is required"
+      if (!menu) errs.menu = 'Menu preference is required'
+    }
+    return errs
+  }
 
   const handleSubmit = async (answer) => {
-    if (!guestName.trim()) {
-      alert('Please enter your name')
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
       return
     }
-
+    setErrors({})
     setSubmitting(true)
     try {
       const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
@@ -375,7 +398,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
   return (
     <div className="mdn-form">
-      <div className="mdn-field">
+      <div className={`mdn-field${errors.guestName ? ' mdn-field--error' : ''}`}>
         <label className="mdn-label">Your Name *</label>
         <input
           className="mdn-number-input"
@@ -386,7 +409,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
           style={{ width: '100%', fontSize: '.88rem', padding: '.8rem' }}
         />
       </div>
-      <div className="mdn-field">
+      <div className={`mdn-field${errors.attending ? ' mdn-field--error' : ''}`}>
         <label className="mdn-label">Will you attend?</label>
         <div className="mdn-toggle-row">
           <button className={`mdn-toggle-btn${attending === 'yes' ? ' active' : ''}`} onClick={() => setAttending('yes')}>Yes, I'm in</button>
@@ -396,7 +419,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
 
       {attending === 'yes' && (
         <>
-          <div className="mdn-field">
+          <div className={`mdn-field${errors.partnerName ? ' mdn-field--error' : ''}`}>
             <label className="mdn-label">Coming with a +1?</label>
             <div className="mdn-toggle-row">
               <button className={`mdn-toggle-btn${plusOne === 'yes' ? ' active' : ''}`} onClick={() => setPlusOne('yes')}>Yes</button>
@@ -413,7 +436,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
               />
             )}
           </div>
-          <div className="mdn-field">
+          <div className={`mdn-field${errors.menu ? ' mdn-field--error' : ''}`}>
             <label className="mdn-label">Menu preference</label>
             <div className="mdn-menu-row">
               {menuChoices.map(m => (
@@ -474,6 +497,15 @@ function RsvpForm({ invitationRef, menuOptions }) {
         <div className="mdn-field">
           <label className="mdn-label">Questions or comments (Optional)</label>
           <textarea className="mdn-textarea" placeholder="Anything you'd like us to know..." value={notes} onChange={e => setNotes(e.target.value)} />
+        </div>
+      )}
+
+      {Object.keys(errors).length > 0 && (
+        <div className="mdn-rsvp-errors">
+          <p>Please fill in the following:</p>
+          <ul>
+            {Object.values(errors).map((msg, i) => <li key={i}>{msg}</li>)}
+          </ul>
         </div>
       )}
 
