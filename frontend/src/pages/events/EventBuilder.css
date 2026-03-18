@@ -266,6 +266,60 @@
   font-family: 'Courier New', monospace;
 }
 
+/* ---- Theme Picker (cards + live preview) ---- */
+
+.eb-theme-picker {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.eb-theme-picker .eb-theme-grid {
+  grid-template-columns: 1fr;
+}
+
+.eb-theme-preview-panel {
+  position: sticky;
+  top: 72px;
+  border: 1px solid rgba(61, 20, 33, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e8e4da;
+}
+
+.eb-theme-preview-label {
+  padding: 0.42rem 0.9rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #999;
+  background: var(--white);
+  border-bottom: 1px solid rgba(61, 20, 33, 0.08);
+}
+
+.eb-theme-preview-label strong {
+  color: var(--navy);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.75rem;
+}
+
+.eb-theme-preview-viewport {
+  height: 480px;
+  overflow: hidden;
+  position: relative;
+}
+
+.eb-theme-preview-iframe {
+  width: 960px;
+  height: 1100px;
+  border: none;
+  transform: scale(0.52);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
 /* ---- Theme Grid ---- */
 
 .eb-theme-grid {
@@ -449,6 +503,20 @@
 }
 
 /* ---- Responsive ---- */
+
+@media (max-width: 720px) {
+  .eb-theme-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .eb-theme-preview-panel {
+    display: none;
+  }
+
+  .eb-theme-picker .eb-theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media (max-width: 600px) {
   .eb-grid-2 {
