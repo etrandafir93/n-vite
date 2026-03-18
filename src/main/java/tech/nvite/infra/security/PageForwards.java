@@ -17,6 +17,11 @@ class PageForwards {
     return "forward:/index.html";
   }
 
+  @GetMapping("/invitations/{ref}/{theme}")
+  String invitationPageWithTheme(@PathVariable String ref, @PathVariable String theme) {
+    return "forward:/index.html";
+  }
+
   @GetMapping("/invitation/{invitationName}/{style}")
   String invitations(@PathVariable String invitationName, @PathVariable String style) {
     return "forward:/index.html";
