@@ -476,14 +476,6 @@ export default function EventBuilder() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="eb-page">
-        <div className="eb-loading">Loading invitation…</div>
-      </div>
-    )
-  }
-
   const previewSrc = previewingTheme
     ? (isEdit
         ? `/invitations/${eventReference}/${previewingTheme}?preview=true`
@@ -496,6 +488,14 @@ export default function EventBuilder() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [previewingTheme])
+
+  if (loading) {
+    return (
+      <div className="eb-page">
+        <div className="eb-loading">Loading invitation…</div>
+      </div>
+    )
+  }
 
   return (
     <div className="eb-page">
