@@ -37,6 +37,7 @@ class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
+        .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
         .cors(cors -> cors.configure(http))
         .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
         .oauth2Login(oauth2 -> oauth2.loginPage("/login").defaultSuccessUrl("/events", true))
