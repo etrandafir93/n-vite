@@ -100,7 +100,7 @@
   "sections": {
     "label": "Flexible Content",
     "title": "16 invitation sections",
-    "subtitle": "First {{freeCount}} are included for free. The remaining {{paidCount}} are optional at +5 EUR each.",
+    "subtitle": "Any {{freeCount}} sections are free. Each additional section costs +5 EUR.",
     "free_badge": "Free",
     "paid_badge": "+5 EUR",
     "items": [
@@ -116,7 +116,7 @@
       "Honeymoon Fund",
       "Children Policy",
       "Parking",
-      "Live Stream",
+      "Countdown",
       "Menu Preview",
       "Photo Gallery",
       "Couple Quote"
@@ -141,3 +141,4 @@
     "copyright": "© {{year}} nvite. All rights reserved."
   }
 }
+

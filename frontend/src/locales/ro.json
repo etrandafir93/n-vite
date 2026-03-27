@@ -100,7 +100,7 @@
   "sections": {
     "label": "Continut flexibil",
     "title": "16 sectiuni pentru invitatie",
-    "subtitle": "Primele {{freeCount}} sunt incluse gratuit. Restul de {{paidCount}} sunt optionale la +5 EUR fiecare.",
+    "subtitle": "Oricare {{freeCount}} sectiuni sunt gratuite. Fiecare sectiune suplimentara costa +5 EUR.",
     "free_badge": "Gratuit",
     "paid_badge": "+5 EUR",
     "items": [
@@ -116,7 +116,7 @@
       "Fond luna de miere",
       "Politica pentru copii",
       "Parcare",
-      "Transmisie live",
+      "Countdown",
       "Preview meniu",
       "Galerie foto",
       "Citatul cuplului"
@@ -141,3 +141,4 @@
     "copyright": "© {{year}} nvite. Toate drepturile rezervate."
   }
 }
+

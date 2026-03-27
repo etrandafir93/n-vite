@@ -100,7 +100,7 @@
   "sections": {
     "label": "Contenido flexible",
     "title": "16 secciones para invitacion",
-    "subtitle": "Las primeras {{freeCount}} estan incluidas gratis. Las {{paidCount}} restantes son opcionales por +5 EUR cada una.",
+    "subtitle": "Cualquier {{freeCount}} secciones son gratis. Cada seccion adicional cuesta +5 EUR.",
     "free_badge": "Gratis",
     "paid_badge": "+5 EUR",
     "items": [
@@ -116,7 +116,7 @@
       "Fondo de luna de miel",
       "Politica para ninos",
       "Aparcamiento",
-      "Transmision en vivo",
+      "Cuenta regresiva",
       "Vista previa del menu",
       "Galeria de fotos",
       "Frase de la pareja"
@@ -141,3 +141,4 @@
     "copyright": "© {{year}} nvite. Todos los derechos reservados."
   }
 }
+

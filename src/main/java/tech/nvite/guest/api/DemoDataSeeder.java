@@ -175,11 +175,11 @@ class DemoDataSeeder {
             null,
             null),
         genericSection(
-            SectionType.LIVE_STREAM,
-            "Live Stream",
-            "If you cannot attend in person, join us online.",
+            SectionType.COUNTDOWN,
+            "Countdown",
+            "A live countdown appears on the invitation as the big day approaches.",
             null,
-            "https://example.com/livestream"),
+            null),
         genericSection(
             SectionType.MENU_PREVIEW,
             "Menu Preview",

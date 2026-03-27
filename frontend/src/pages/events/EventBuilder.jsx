@@ -41,7 +41,7 @@ const SECTION_CATALOGUE = [
   { type: 'HONEYMOON_FUND', label: 'Honeymoon Fund', description: 'Share honeymoon contribution info.' },
   { type: 'CHILDREN_POLICY', label: 'Children Policy', description: 'Clarify whether children are invited.' },
   { type: 'PARKING', label: 'Parking', description: 'Add parking tips and access instructions.' },
-  { type: 'LIVE_STREAM', label: 'Live Stream', description: 'Provide livestream access for remote guests.' },
+  { type: 'COUNTDOWN', label: 'Countdown', description: 'Show a live countdown to your event date.' },
   { type: 'MENU_PREVIEW', label: 'Menu Preview', description: 'Preview food and drink highlights.' },
   { type: 'PHOTO_GALLERY', label: 'Photo Gallery', description: 'Share photos before or after the event.' },
   { type: 'COUPLE_QUOTE', label: 'Couple Quote', description: 'Add a favorite quote or short dedication.' },
@@ -60,7 +60,7 @@ const GENERIC_SECTION_TYPES = new Set([
   'HONEYMOON_FUND',
   'CHILDREN_POLICY',
   'PARKING',
-  'LIVE_STREAM',
+  'COUNTDOWN',
   'MENU_PREVIEW',
   'PHOTO_GALLERY',
   'COUPLE_QUOTE',
@@ -873,7 +873,7 @@ export default function EventBuilder() {
 
           <Section title="Extra Sections" subtitle="Add optional content blocks to enhance the invitation">
             <div className="eb-pricing-note">
-              <strong>Sections pricing:</strong> first {FREE_SECTIONS_COUNT} sections are free, each additional
+              <strong>Sections pricing:</strong> any {FREE_SECTIONS_COUNT} sections are free, each additional
               section is +{EXTRA_SECTION_PRICE_EUR} EUR.
               <div>
                 Selected: {selectedSectionsCount} section(s) | Paid extras: {paidSectionsCount} | Additional total:
@@ -951,3 +951,4 @@ export default function EventBuilder() {
     </div>
   )
 }
+

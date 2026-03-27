@@ -22,7 +22,7 @@ const EXTENDED_SECTION_LABELS = {
   HONEYMOON_FUND: 'Honeymoon Fund',
   CHILDREN_POLICY: 'Children Policy',
   PARKING: 'Parking',
-  LIVE_STREAM: 'Live Stream',
+  COUNTDOWN: 'Countdown',
   MENU_PREVIEW: 'Menu Preview',
   PHOTO_GALLERY: 'Photo Gallery',
   COUPLE_QUOTE: 'Couple Quote',
@@ -125,3 +125,4 @@ export default function Invitation() {
     </>
   )
 }
+
