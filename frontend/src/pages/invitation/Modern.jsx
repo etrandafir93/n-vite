@@ -297,6 +297,36 @@ const css = `
   .mdn-env--open .mdn-env__letter { transform: translateY(-26%); }
   .mdn-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #f5a623; animation: mdnEnvPulse 2s ease-in-out infinite; }
   @keyframes mdnEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  /* ── Dress Code ───────────────────────────────── */
+  .mdn-dress-code { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+  .mdn-dress-code__photo { width: clamp(120px,30%,200px); aspect-ratio: 3/4; object-fit: cover; flex-shrink: 0; }
+  .mdn-dress-code__info { flex: 1; min-width: 180px; }
+  .mdn-dress-code__row { margin-bottom: 1rem; }
+  .mdn-dress-code__label { font-size: .55rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: #f5a623; display: block; margin-bottom: .3rem; }
+  .mdn-dress-code__value { font-size: .88rem; color: #c8dce8; line-height: 1.6; }
+  .mdn-dress-code__swatches { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+  .mdn-dress-code__swatch { padding: .25rem .8rem; border: 1px solid #1a2e42; font-size: .75rem; color: #6a90b0; background: #122033; }
+  .mdn-dress-code__note { font-size: .82rem; color: #6a90b0; line-height: 1.7; border-left: 2px solid #f5a623; padding-left: .75rem; margin-top: .75rem; }
+
+  /* ── Accommodation ────────────────────────────── */
+  .mdn-hotels { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+  .mdn-hotel { background: #122033; border: 1px solid #1a2e42; padding: 1.25rem 1.2rem; position: relative; }
+  .mdn-hotel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #f5a623; }
+  .mdn-hotel__name { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: #fff; margin-bottom: .4rem; }
+  .mdn-hotel__dist { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: #f5a623; margin-bottom: .5rem; }
+  .mdn-hotel__note { font-size: .8rem; color: #4a6880; line-height: 1.6; margin-bottom: .75rem; }
+  .mdn-hotel__link { display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #f5a623; text-decoration: none; border-bottom: 1px solid rgba(245,166,35,.3); transition: border-color .2s; }
+  .mdn-hotel__link:hover { border-bottom-color: #f5a623; }
+
+  /* ── Day Schedule ─────────────────────────────── */
+  .mdn-schedule { position: relative; padding-left: 1.5rem; }
+  .mdn-schedule::before { content: ''; position: absolute; left: .35rem; top: .5rem; bottom: .5rem; width: 1px; background: linear-gradient(to bottom, #f5a623, rgba(245,166,35,.1)); }
+  .mdn-schedule__item { position: relative; display: flex; gap: 1rem; align-items: baseline; margin-bottom: 1.4rem; }
+  .mdn-schedule__item:last-child { margin-bottom: 0; }
+  .mdn-schedule__item::before { content: ''; position: absolute; left: -1.15rem; top: .42rem; width: 7px; height: 7px; background: #f5a623; }
+  .mdn-schedule__time { font-size: .7rem; font-weight: 800; letter-spacing: .12em; color: #f5a623; white-space: nowrap; min-width: 60px; text-transform: uppercase; }
+  .mdn-schedule__label { font-size: .88rem; color: #c8dce8; line-height: 1.5; }
 `
 
 function EnvelopeIntro({ opening, onOpen }) {
@@ -565,6 +595,10 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
 
   const year = inv.eventDate ? new Date(inv.eventDate).getUTCFullYear() : ''
   const isDraft = inv.status === 'DRAFT'
+  const findSection = (type) => (inv.sections || []).find(s => s.type === type) || null
+  const dressCode = findSection('DRESS_CODE')
+  const accommodation = findSection('ACCOMMODATION')
+  const daySchedule = findSection('DAY_SCHEDULE')
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
   const countdown = useCountdown(inv.eventDate)
 
@@ -644,6 +678,9 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
           {(inv.ceremonyVenue || inv.receptionVenue) && (
             <a href="#schedule" className="mdn-nav__link">Schedule</a>
           )}
+          {dressCode && <a href="#dress-code" className="mdn-nav__link">Dress Code</a>}
+          {accommodation && <a href="#accommodation" className="mdn-nav__link">Stay</a>}
+          {daySchedule && <a href="#day-schedule" className="mdn-nav__link">Timeline</a>}
           <a href="#rsvp" className="mdn-nav__link">RSVP</a>
         </div>
       </nav>
@@ -707,6 +744,65 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Dress Code */}
+        {dressCode && (
+          <div className="mdn-section" id="dress-code">
+            <div className="mdn-section-label">Dress Code</div>
+            <div className="mdn-dress-code">
+              {dressCode.dressCodeImageUrl && <img className="mdn-dress-code__photo" src={dressCode.dressCodeImageUrl} alt="Dress code"/>}
+              <div className="mdn-dress-code__info">
+                {dressCode.dressCodeFormality && (
+                  <div className="mdn-dress-code__row">
+                    <span className="mdn-dress-code__label">Formality</span>
+                    <span className="mdn-dress-code__value">{dressCode.dressCodeFormality}</span>
+                  </div>
+                )}
+                {dressCode.dressCodeColours && (
+                  <div className="mdn-dress-code__row">
+                    <span className="mdn-dress-code__label">Colour Palette</span>
+                    <div className="mdn-dress-code__swatches">
+                      {dressCode.dressCodeColours.split(',').map(c => <span key={c} className="mdn-dress-code__swatch">{c.trim()}</span>)}
+                    </div>
+                  </div>
+                )}
+                {dressCode.dressCodeNote && <p className="mdn-dress-code__note">{dressCode.dressCodeNote}</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Accommodation */}
+        {accommodation && accommodation.hotels && accommodation.hotels.length > 0 && (
+          <div className="mdn-section" id="accommodation">
+            <div className="mdn-section-label">Where to Stay</div>
+            <div className="mdn-hotels">
+              {accommodation.hotels.map((h, i) => (
+                <div key={i} className="mdn-hotel">
+                  <p className="mdn-hotel__name">{h.name}</p>
+                  {h.distance && <p className="mdn-hotel__dist">{h.distance} from venue</p>}
+                  {h.note && <p className="mdn-hotel__note">{h.note}</p>}
+                  {h.bookingLink && <a className="mdn-hotel__link" href={h.bookingLink} target="_blank" rel="noreferrer">Book Now ↗</a>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Day Schedule */}
+        {daySchedule && daySchedule.scheduleItems && daySchedule.scheduleItems.length > 0 && (
+          <div className="mdn-section" id="day-schedule">
+            <div className="mdn-section-label">Day Timeline</div>
+            <div className="mdn-schedule">
+              {daySchedule.scheduleItems.map((item, i) => (
+                <div key={i} className="mdn-schedule__item">
+                  <span className="mdn-schedule__time">{item.time}</span>
+                  <span className="mdn-schedule__label">{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}

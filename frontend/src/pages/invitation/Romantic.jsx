@@ -309,6 +309,35 @@ const css = `
   .rom-env--open .rom-env__letter { transform: translateY(-26%); }
   .rom-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #b85670; animation: romEnvPulse 2s ease-in-out infinite; }
   @keyframes romEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  /* ── Dress Code ───────────────────────────────── */
+  .rom-dress-code { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+  .rom-dress-code__photo { width: clamp(120px,30%,200px); aspect-ratio: 3/4; object-fit: cover; flex-shrink: 0; border-radius: 12px; }
+  .rom-dress-code__info { flex: 1; min-width: 180px; }
+  .rom-dress-code__row { margin-bottom: 1rem; }
+  .rom-dress-code__label { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: #d4788a; display: block; margin-bottom: .3rem; }
+  .rom-dress-code__value { font-size: .88rem; color: #3a2030; line-height: 1.6; }
+  .rom-dress-code__swatches { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+  .rom-dress-code__swatch { padding: .25rem .8rem; border: 1px solid #f0dde6; font-size: .75rem; color: #7a4050; background: #fff; border-radius: 20px; }
+  .rom-dress-code__note { font-size: .82rem; color: #9b7080; line-height: 1.7; font-style: italic; border-left: 2px solid #d4788a; padding-left: .75rem; margin-top: .75rem; }
+
+  /* ── Accommodation ────────────────────────────── */
+  .rom-hotels { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+  .rom-hotel { background: #fff; border: 1px solid #f0dde6; padding: 1.25rem 1.2rem; border-radius: 16px; box-shadow: 0 2px 10px rgba(184,86,112,.06); }
+  .rom-hotel__name { font-family: 'Playfair Display',serif; font-style: italic; font-size: 1rem; font-weight: 400; color: #3a2030; margin-bottom: .4rem; }
+  .rom-hotel__dist { font-size: .72rem; color: #d4788a; margin-bottom: .5rem; }
+  .rom-hotel__note { font-size: .8rem; color: #9b7080; line-height: 1.6; margin-bottom: .75rem; }
+  .rom-hotel__link { display: inline-block; font-size: .7rem; letter-spacing: .08em; color: #d4788a; text-decoration: none; border-bottom: 1px solid rgba(212,120,138,.3); transition: border-color .2s; }
+  .rom-hotel__link:hover { border-bottom-color: #d4788a; }
+
+  /* ── Day Schedule ─────────────────────────────── */
+  .rom-schedule { position: relative; padding-left: 1.5rem; }
+  .rom-schedule::before { content: ''; position: absolute; left: .35rem; top: .5rem; bottom: .5rem; width: 1px; background: linear-gradient(to bottom, #d4788a, rgba(212,120,138,.15)); }
+  .rom-schedule__item { position: relative; display: flex; gap: 1rem; align-items: baseline; margin-bottom: 1.4rem; }
+  .rom-schedule__item:last-child { margin-bottom: 0; }
+  .rom-schedule__item::before { content: ''; position: absolute; left: -1.15rem; top: .42rem; width: 7px; height: 7px; border-radius: 50%; background: #d4788a; }
+  .rom-schedule__time { font-size: .7rem; letter-spacing: .1em; color: #d4788a; white-space: nowrap; min-width: 60px; font-style: italic; }
+  .rom-schedule__label { font-size: .88rem; color: #3a2030; line-height: 1.5; }
 `
 
 function EnvelopeIntro({ opening, onOpen }) {
@@ -579,6 +608,10 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
 
   const heroOverlay = 'linear-gradient(to bottom, rgba(240,200,215,0.15) 0%, rgba(180,80,110,0.12) 30%, rgba(60,15,35,0.65) 65%, rgba(40,10,25,0.88) 100%)'
   const isDraft = inv.status === 'DRAFT'
+  const findSection = (type) => (inv.sections || []).find(s => s.type === type) || null
+  const dressCode = findSection('DRESS_CODE')
+  const accommodation = findSection('ACCOMMODATION')
+  const daySchedule = findSection('DAY_SCHEDULE')
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
   const countdown = useCountdown(inv.eventDate)
 
@@ -636,6 +669,9 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
           {(inv.ceremonyVenue || inv.receptionVenue) && (
             <a href="#celebrations" className="rom-nav__link">Celebrations</a>
           )}
+          {dressCode && <a href="#dress-code" className="rom-nav__link">Dress Code</a>}
+          {accommodation && <a href="#accommodation" className="rom-nav__link">Stay</a>}
+          {daySchedule && <a href="#schedule" className="rom-nav__link">Schedule</a>}
           <a href="#rsvp" className="rom-nav__link">RSVP</a>
         </div>
       </nav>
@@ -699,6 +735,65 @@ export default function RomanticInvitation({ invitationRef, invitationData }) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Dress Code */}
+        {dressCode && (
+          <div className="rom-section" id="dress-code">
+            <p className="rom-section__title">~ Dress Code ~</p>
+            <div className="rom-dress-code">
+              {dressCode.dressCodeImageUrl && <img className="rom-dress-code__photo" src={dressCode.dressCodeImageUrl} alt="Dress code"/>}
+              <div className="rom-dress-code__info">
+                {dressCode.dressCodeFormality && (
+                  <div className="rom-dress-code__row">
+                    <span className="rom-dress-code__label">Formality</span>
+                    <span className="rom-dress-code__value">{dressCode.dressCodeFormality}</span>
+                  </div>
+                )}
+                {dressCode.dressCodeColours && (
+                  <div className="rom-dress-code__row">
+                    <span className="rom-dress-code__label">Colour Palette</span>
+                    <div className="rom-dress-code__swatches">
+                      {dressCode.dressCodeColours.split(',').map(c => <span key={c} className="rom-dress-code__swatch">{c.trim()}</span>)}
+                    </div>
+                  </div>
+                )}
+                {dressCode.dressCodeNote && <p className="rom-dress-code__note">{dressCode.dressCodeNote}</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Accommodation */}
+        {accommodation && accommodation.hotels && accommodation.hotels.length > 0 && (
+          <div className="rom-section" id="accommodation">
+            <p className="rom-section__title">~ Where to Stay ~</p>
+            <div className="rom-hotels">
+              {accommodation.hotels.map((h, i) => (
+                <div key={i} className="rom-hotel">
+                  <p className="rom-hotel__name">{h.name}</p>
+                  {h.distance && <p className="rom-hotel__dist">{h.distance} from venue</p>}
+                  {h.note && <p className="rom-hotel__note">{h.note}</p>}
+                  {h.bookingLink && <a className="rom-hotel__link" href={h.bookingLink} target="_blank" rel="noreferrer">Book Now ↗</a>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Day Schedule */}
+        {daySchedule && daySchedule.scheduleItems && daySchedule.scheduleItems.length > 0 && (
+          <div className="rom-section" id="schedule">
+            <p className="rom-section__title">~ Day Schedule ~</p>
+            <div className="rom-schedule">
+              {daySchedule.scheduleItems.map((item, i) => (
+                <div key={i} className="rom-schedule__item">
+                  <span className="rom-schedule__time">{item.time}</span>
+                  <span className="rom-schedule__label">{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}

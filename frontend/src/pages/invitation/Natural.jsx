@@ -309,6 +309,35 @@ const css = `
   .nat-env--open .nat-env__letter { transform: translateY(-26%); }
   .nat-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #7a9e7e; animation: natEnvPulse 2s ease-in-out infinite; }
   @keyframes natEnvPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  /* ── Dress Code ───────────────────────────────── */
+  .nat-dress-code { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+  .nat-dress-code__photo { width: clamp(120px,30%,200px); aspect-ratio: 3/4; object-fit: cover; flex-shrink: 0; border-radius: 12px; }
+  .nat-dress-code__info { flex: 1; min-width: 180px; }
+  .nat-dress-code__row { margin-bottom: 1rem; }
+  .nat-dress-code__label { font-size: .55rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #7a9e7e; display: block; margin-bottom: .3rem; }
+  .nat-dress-code__value { font-size: .88rem; color: #2e2a24; line-height: 1.6; }
+  .nat-dress-code__swatches { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+  .nat-dress-code__swatch { padding: .25rem .8rem; border: 1px solid #e8e0d4; font-size: .75rem; color: #5a7d5e; background: #f0ebe2; border-radius: 20px; }
+  .nat-dress-code__note { font-size: .82rem; color: #8a7d6e; line-height: 1.7; font-style: italic; border-left: 2px solid #7a9e7e; padding-left: .75rem; margin-top: .75rem; }
+
+  /* ── Accommodation ────────────────────────────── */
+  .nat-hotels { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 1rem; }
+  .nat-hotel { background: #fff; border: 1px solid #e8e0d4; padding: 1.25rem 1.2rem; border-radius: 14px; box-shadow: 0 2px 12px rgba(122,158,126,.06); }
+  .nat-hotel__name { font-family: 'Playfair Display',serif; font-size: 1rem; color: #2e2a24; margin-bottom: .4rem; }
+  .nat-hotel__dist { font-size: .72rem; color: #7a9e7e; font-weight: 600; margin-bottom: .5rem; }
+  .nat-hotel__note { font-size: .8rem; color: #8a7d6e; line-height: 1.6; margin-bottom: .75rem; }
+  .nat-hotel__link { display: inline-block; font-size: .7rem; color: #7a9e7e; text-decoration: none; border-bottom: 1px solid rgba(122,158,126,.3); transition: border-color .2s; }
+  .nat-hotel__link:hover { border-bottom-color: #7a9e7e; }
+
+  /* ── Day Schedule ─────────────────────────────── */
+  .nat-schedule { position: relative; padding-left: 1.5rem; }
+  .nat-schedule::before { content: ''; position: absolute; left: .35rem; top: .5rem; bottom: .5rem; width: 1px; background: linear-gradient(to bottom, #7a9e7e, rgba(122,158,126,.15)); }
+  .nat-schedule__item { position: relative; display: flex; gap: 1rem; align-items: baseline; margin-bottom: 1.4rem; }
+  .nat-schedule__item:last-child { margin-bottom: 0; }
+  .nat-schedule__item::before { content: ''; position: absolute; left: -1.15rem; top: .42rem; width: 7px; height: 7px; border-radius: 50%; background: #7a9e7e; }
+  .nat-schedule__time { font-size: .7rem; font-weight: 600; letter-spacing: .08em; color: #7a9e7e; white-space: nowrap; min-width: 60px; }
+  .nat-schedule__label { font-size: .88rem; color: #2e2a24; line-height: 1.5; }
 `
 
 function EnvelopeIntro({ opening, onOpen }) {
@@ -578,6 +607,10 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
   const isDraft = inv.status === 'DRAFT'
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
   const countdown = useCountdown(inv.eventDate)
+  const findSection = (type) => (inv.sections || []).find(s => s.type === type) || null
+  const dressCode = findSection('DRESS_CODE')
+  const accommodation = findSection('ACCOMMODATION')
+  const daySchedule = findSection('DAY_SCHEDULE')
 
   return (
     <div className="nat-page">
@@ -638,6 +671,9 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
           {(inv.ceremonyVenue || inv.receptionVenue) && (
             <a href="#celebrations" className="nat-nav__link">Celebrations</a>
           )}
+          {dressCode && <a href="#dress-code" className="nat-nav__link">Dress Code</a>}
+          {accommodation && <a href="#accommodation" className="nat-nav__link">Stay</a>}
+          {daySchedule && <a href="#schedule" className="nat-nav__link">Schedule</a>}
           <a href="#rsvp" className="nat-nav__link">RSVP</a>
         </div>
       </nav>
@@ -701,6 +737,65 @@ export default function NaturalInvitation({ invitationRef, invitationData }) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Dress Code */}
+        {dressCode && (
+          <div className="nat-section" id="dress-code">
+            <p className="nat-section__title">Dress Code</p>
+            <div className="nat-dress-code">
+              {dressCode.dressCodeImageUrl && <img className="nat-dress-code__photo" src={dressCode.dressCodeImageUrl} alt="Dress code"/>}
+              <div className="nat-dress-code__info">
+                {dressCode.dressCodeFormality && (
+                  <div className="nat-dress-code__row">
+                    <span className="nat-dress-code__label">Formality</span>
+                    <span className="nat-dress-code__value">{dressCode.dressCodeFormality}</span>
+                  </div>
+                )}
+                {dressCode.dressCodeColours && (
+                  <div className="nat-dress-code__row">
+                    <span className="nat-dress-code__label">Colour Palette</span>
+                    <div className="nat-dress-code__swatches">
+                      {dressCode.dressCodeColours.split(',').map(c => <span key={c} className="nat-dress-code__swatch">{c.trim()}</span>)}
+                    </div>
+                  </div>
+                )}
+                {dressCode.dressCodeNote && <p className="nat-dress-code__note">{dressCode.dressCodeNote}</p>}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Accommodation */}
+        {accommodation && accommodation.hotels && accommodation.hotels.length > 0 && (
+          <div className="nat-section" id="accommodation">
+            <p className="nat-section__title">Where to Stay</p>
+            <div className="nat-hotels">
+              {accommodation.hotels.map((h, i) => (
+                <div key={i} className="nat-hotel">
+                  <p className="nat-hotel__name">{h.name}</p>
+                  {h.distance && <p className="nat-hotel__dist">{h.distance} from venue</p>}
+                  {h.note && <p className="nat-hotel__note">{h.note}</p>}
+                  {h.bookingLink && <a className="nat-hotel__link" href={h.bookingLink} target="_blank" rel="noreferrer">Book Now ↗</a>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Day Schedule */}
+        {daySchedule && daySchedule.scheduleItems && daySchedule.scheduleItems.length > 0 && (
+          <div className="nat-section" id="schedule">
+            <p className="nat-section__title">Day Schedule</p>
+            <div className="nat-schedule">
+              {daySchedule.scheduleItems.map((item, i) => (
+                <div key={i} className="nat-schedule__item">
+                  <span className="nat-schedule__time">{item.time}</span>
+                  <span className="nat-schedule__label">{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
