@@ -95,6 +95,31 @@
       { "key": "natural", "name": "Natural", "tagline": "Verdes terrosos y texturas orgánicas para los amantes de la naturaleza" }
     ]
   },
+  "sections": {
+    "label": "Contenido flexible",
+    "title": "16 secciones para invitacion",
+    "subtitle": "Las primeras {{freeCount}} estan incluidas gratis. Las {{paidCount}} restantes son opcionales por +5 EUR cada una.",
+    "free_badge": "Gratis",
+    "paid_badge": "+5 EUR",
+    "items": [
+      "Codigo de vestimenta",
+      "Alojamiento",
+      "Agenda del dia",
+      "Lista de regalos",
+      "Nuestra historia",
+      "Cortejo nupcial",
+      "FAQ",
+      "Transporte",
+      "Solicitud de canciones",
+      "Fondo de luna de miel",
+      "Politica para ninos",
+      "Aparcamiento",
+      "Transmision en vivo",
+      "Vista previa del menu",
+      "Galeria de fotos",
+      "Frase de la pareja"
+    ]
+  },
   "footer": {
     "tagline": "Hermosas invitaciones digitales para tus momentos más importantes.",
     "product": "Producto",

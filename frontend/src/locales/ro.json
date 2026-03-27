@@ -95,6 +95,31 @@
       { "key": "natural", "name": "Natural", "tagline": "Verde pământesc și texturi organice pentru iubitorii de natură" }
     ]
   },
+  "sections": {
+    "label": "Continut flexibil",
+    "title": "16 sectiuni pentru invitatie",
+    "subtitle": "Primele {{freeCount}} sunt incluse gratuit. Restul de {{paidCount}} sunt optionale la +5 EUR fiecare.",
+    "free_badge": "Gratuit",
+    "paid_badge": "+5 EUR",
+    "items": [
+      "Dress Code",
+      "Cazare",
+      "Programul zilei",
+      "Lista de cadouri",
+      "Povestea noastra",
+      "Echipa mirilor",
+      "FAQ",
+      "Transport",
+      "Cereri de melodii",
+      "Fond luna de miere",
+      "Politica pentru copii",
+      "Parcare",
+      "Transmisie live",
+      "Preview meniu",
+      "Galerie foto",
+      "Citatul cuplului"
+    ]
+  },
   "footer": {
     "tagline": "Invitații digitale superbe pentru cele mai importante momente ale tale.",
     "product": "Produs",

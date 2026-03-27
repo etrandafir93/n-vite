@@ -4,6 +4,7 @@ import Hero from './components/Hero'
 import HowItWorks from './components/HowItWorks'
 import Templates from './components/Templates'
 import Features from './components/Features'
+import SectionsCatalogue from './components/SectionsCatalogue'
 import Pricing from './components/Pricing'
 import Footer from './components/Footer'
 import ClassicInvitation from './pages/invitation/Classic'
@@ -23,6 +24,7 @@ function Home() {
         <Hero />
         <HowItWorks />
         <Templates />
+        <SectionsCatalogue />
         <Features />
         <Pricing />
       </main>

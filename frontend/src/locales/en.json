@@ -95,6 +95,31 @@
       { "key": "natural", "name": "Natural", "tagline": "Earthy greens and organic textures for nature lovers" }
     ]
   },
+  "sections": {
+    "label": "Flexible Content",
+    "title": "16 invitation sections",
+    "subtitle": "First {{freeCount}} are included for free. The remaining {{paidCount}} are optional at +5 EUR each.",
+    "free_badge": "Free",
+    "paid_badge": "+5 EUR",
+    "items": [
+      "Dress Code",
+      "Accommodation",
+      "Day Schedule",
+      "Gift Registry",
+      "Our Story",
+      "Wedding Party",
+      "FAQ",
+      "Transport",
+      "Song Request",
+      "Honeymoon Fund",
+      "Children Policy",
+      "Parking",
+      "Live Stream",
+      "Menu Preview",
+      "Photo Gallery",
+      "Couple Quote"
+    ]
+  },
   "footer": {
     "tagline": "Beautiful digital invitations for your most important moments.",
     "product": "Product",
