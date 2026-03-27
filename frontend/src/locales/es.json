@@ -1,100 +1,113 @@
 {
   "nav": {
-    "how_it_works": "Cómo Funciona",
-    "features": "Características",
+    "how_it_works": "CÃ³mo Funciona",
+    "features": "CaracterÃ­sticas",
+    "sections": "Secciones",
     "pricing": "Precios",
     "templates": "Plantillas",
-    "log_in": "Iniciar sesión",
+    "log_in": "Iniciar sesiÃ³n",
+    "log_out": "Cerrar sesiÃ³n",
     "get_started": "Comenzar",
     "my_invitations": "Mis invitaciones",
-    "create_invitation": "Crear invitación"
+    "create_invitation": "Crear invitaciÃ³n"
   },
   "hero": {
     "label": "Invitaciones Digitales",
     "title_pre": "Tu evento empieza",
-    "title_em": "aquí",
-    "subtitle": "Crea impresionantes invitaciones digitales para tu boda o evento especial. Comparte al instante, recoge confirmaciones en tiempo real — todo en un solo lugar.",
-    "cta_create": "Crear Tu Invitación",
-    "cta_how": "Cómo Funciona",
+    "title_em": "aquÃ­",
+    "subtitle": "Crea impresionantes invitaciones digitales para tu boda o evento especial. Comparte al instante, recoge confirmaciones en tiempo real â€” todo en un solo lugar.",
+    "cta_create": "Crear Tu InvitaciÃ³n",
+    "cta_how": "CÃ³mo Funciona",
     "stat_invitations_value": "5 000+",
     "stat_invitations_label": "Invitaciones enviadas",
     "stat_satisfaction_value": "98%",
-    "stat_satisfaction_label": "Satisfacción de invitados",
+    "stat_satisfaction_label": "SatisfacciÃ³n de invitados",
     "stat_speed_value": "2 min",
-    "stat_speed_label": "Para estar en vivo"
+    "stat_speed_label": "Para estar en vivo",
+    "preview": {
+      "invite_label": "Estais cordialmente invitados a la boda de",
+      "date": "14 Â· Junio Â· 2026",
+      "location": "The Grand Hall, Londres",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "badge_rsvp_title": "Nuevo RSVP",
+      "badge_rsvp_text": "Sophie acepto!",
+      "badge_guests_title": "42 invitados",
+      "badge_guests_text": "confirmados hasta ahora"
+    }
   },
   "hiw": {
     "label": "Proceso sencillo",
     "title": "Listo en menos de 2 minutos",
-    "subtitle": "No necesitas habilidades de diseño. Sin aplicaciones que instalar. Solo una hermosa invitación que tus invitados amarán.",
-    "cta": "Empieza a Crear — Es Gratis",
+    "subtitle": "No necesitas habilidades de diseÃ±o. Sin aplicaciones que instalar. Solo una hermosa invitaciÃ³n que tus invitados amarÃ¡n.",
+    "cta": "Empieza a Crear â€” Es Gratis",
     "steps": [
-      { "title": "Elige una plantilla", "description": "Explora nuestra colección de plantillas para bodas y eventos. Encuentra el diseño que combine con tu estilo." },
-      { "title": "Personaliza tus detalles", "description": "Añade vuestros nombres, fecha, lugar y un mensaje personal. Sube una foto de fondo o elige de nuestra galería." },
-      { "title": "Comparte tu enlace", "description": "Obtén un enlace único al instante. Compártelo por WhatsApp, email o cualquier app de mensajería — sin necesidad de imprimir." },
-      { "title": "Recoge las confirmaciones", "description": "Los invitados confirman su asistencia con un toque. Recibes una notificación inmediata y puedes hacer seguimiento en tiempo real." },
-      { "title": "Gestiona tu lista de invitados", "description": "Ve las respuestas aceptadas y rechazadas, el número de asistentes y actualiza los detalles del evento en cualquier momento." }
+      { "title": "Elige una plantilla", "description": "Explora nuestra colecciÃ³n de plantillas para bodas y eventos. Encuentra el diseÃ±o que combine con tu estilo." },
+      { "title": "Personaliza tus detalles", "description": "AÃ±ade vuestros nombres, fecha, lugar y un mensaje personal. Sube una foto de fondo o elige de nuestra galerÃ­a." },
+      { "title": "Comparte tu enlace", "description": "ObtÃ©n un enlace Ãºnico al instante. CompÃ¡rtelo por WhatsApp, email o cualquier app de mensajerÃ­a â€” sin necesidad de imprimir." },
+      { "title": "Recoge las confirmaciones", "description": "Los invitados confirman su asistencia con un toque. Recibes una notificaciÃ³n inmediata y puedes hacer seguimiento en tiempo real." },
+      { "title": "Gestiona tu lista de invitados", "description": "Ve las respuestas aceptadas y rechazadas, el nÃºmero de asistentes y actualiza los detalles del evento en cualquier momento." }
     ]
   },
   "features": {
     "label": "Todo lo que necesitas",
     "title": "Creado para parejas modernas",
-    "subtitle": "Todas las herramientas para gestionar tus invitaciones — sin el engorro del papel, la impresión o las hojas de cálculo.",
+    "subtitle": "Todas las herramientas para gestionar tus invitaciones â€” sin el engorro del papel, la impresiÃ³n o las hojas de cÃ¡lculo.",
     "items": [
-      { "title": "Seguimiento instantáneo de confirmaciones", "description": "Sabe quién viene en el momento en que responden. Aceptados, rechazados y pendientes — todo en un solo panel." },
-      { "title": "Funciona en cualquier dispositivo", "description": "Los invitados abren la invitación directamente en su navegador — sin app requerida, sin registro. Funciona en cualquier teléfono u ordenador." },
-      { "title": "Mapa del lugar incluido", "description": "Inserta un mapa interactivo para que los invitados obtengan indicaciones con un toque. Sin confusión, sin retrasos." },
-      { "title": "Diseño personalizado hermoso", "description": "Elige entre plantillas artesanales para bodas, bautizos y aniversarios. Añade tus propias fotos para hacerla verdaderamente tuya." },
-      { "title": "Notificaciones en tiempo real", "description": "Recibe una notificación instantánea cada vez que un invitado confirma. Mantente al día con tu lista sin verificar manualmente." },
-      { "title": "Edita en cualquier momento", "description": "¿Cambiaste el lugar o la hora? Actualiza tu invitación en segundos y todos tus invitados verán los nuevos detalles inmediatamente." }
+      { "title": "Seguimiento instantÃ¡neo de confirmaciones", "description": "Sabe quiÃ©n viene en el momento en que responden. Aceptados, rechazados y pendientes â€” todo en un solo panel." },
+      { "title": "Funciona en cualquier dispositivo", "description": "Los invitados abren la invitaciÃ³n directamente en su navegador â€” sin app requerida, sin registro. Funciona en cualquier telÃ©fono u ordenador." },
+      { "title": "Mapa del lugar incluido", "description": "Inserta un mapa interactivo para que los invitados obtengan indicaciones con un toque. Sin confusiÃ³n, sin retrasos." },
+      { "title": "DiseÃ±o personalizado hermoso", "description": "Elige entre plantillas artesanales para bodas, bautizos y aniversarios. AÃ±ade tus propias fotos para hacerla verdaderamente tuya." },
+      { "title": "Notificaciones en tiempo real", "description": "Recibe una notificaciÃ³n instantÃ¡nea cada vez que un invitado confirma. Mantente al dÃ­a con tu lista sin verificar manualmente." },
+      { "title": "Edita en cualquier momento", "description": "Â¿Cambiaste el lugar o la hora? Actualiza tu invitaciÃ³n en segundos y todos tus invitados verÃ¡n los nuevos detalles inmediatamente." }
     ]
   },
   "pricing": {
     "label": "Precios",
     "title": "Precios simples y transparentes",
-    "subtitle": "Sin suscripciones. Sin tarifas ocultas. Paga una vez y tu invitación estará activa todo el tiempo que necesites.",
+    "subtitle": "Sin suscripciones. Sin tarifas ocultas. Paga una vez y tu invitaciÃ³n estarÃ¡ activa todo el tiempo que necesites.",
     "compare_show": "Comparar planes en detalle",
-    "compare_hide": "Ocultar comparación",
-    "most_popular": "Más Popular",
-    "feature_header": "Característica",
+    "compare_hide": "Ocultar comparaciÃ³n",
+    "most_popular": "MÃ¡s Popular",
+    "feature_header": "CaracterÃ­stica",
     "cta": "Comenzar",
     "personal": {
       "name": "Enlace Personal",
-      "tagline": "Para reuniones íntimas",
+      "tagline": "Para reuniones Ã­ntimas",
       "price": "$0.99",
       "unit": "por invitado",
-      "description": "Cada invitado recibe un enlace personalizado con su nombre en la invitación.",
-      "features": ["Enlace único por invitado", "Nombre del invitado en la invitación", "Panel de seguimiento de confirmaciones", "Notificaciones en tiempo real", "Mapa del lugar", "Editar detalles en cualquier momento"]
+      "description": "Cada invitado recibe un enlace personalizado con su nombre en la invitaciÃ³n.",
+      "features": ["Enlace Ãºnico por invitado", "Nombre del invitado en la invitaciÃ³n", "Panel de seguimiento de confirmaciones", "Notificaciones en tiempo real", "Mapa del lugar", "Editar detalles en cualquier momento"]
     },
     "unlimited": {
       "name": "Ilimitado",
-      "tagline": "Más popular",
+      "tagline": "MÃ¡s popular",
       "price": "$89",
-      "unit": "precio único",
-      "description": "Un enlace para todos tus invitados — compartir ilimitado, confirmaciones ilimitadas.",
-      "features": ["Enlace único compartible", "Invitados ilimitados", "Panel de seguimiento de confirmaciones", "Notificaciones en tiempo real", "Mapa del lugar", "Editar detalles en cualquier momento", "Recopilación del nombre de la pareja", "Soporte prioritario"]
+      "unit": "precio Ãºnico",
+      "description": "Un enlace para todos tus invitados â€” compartir ilimitado, confirmaciones ilimitadas.",
+      "features": ["Enlace Ãºnico compartible", "Invitados ilimitados", "Panel de seguimiento de confirmaciones", "Notificaciones en tiempo real", "Mapa del lugar", "Editar detalles en cualquier momento", "RecopilaciÃ³n del nombre de la pareja", "Soporte prioritario"]
     },
     "comparison": [
-      { "label": "Límite de invitados", "personal": "Pago por invitado", "unlimited": "Ilimitado" },
+      { "label": "LÃ­mite de invitados", "personal": "Pago por invitado", "unlimited": "Ilimitado" },
       { "label": "Enlace personalizado por invitado", "personal": true, "unlimited": false },
-      { "label": "Enlace único compartible", "personal": false, "unlimited": true },
+      { "label": "Enlace Ãºnico compartible", "personal": false, "unlimited": true },
       { "label": "Seguimiento de confirmaciones", "personal": true, "unlimited": true },
       { "label": "Notificaciones en tiempo real", "personal": true, "unlimited": true },
       { "label": "Mapa del lugar", "personal": true, "unlimited": true },
       { "label": "Editar en cualquier momento", "personal": true, "unlimited": true },
-      { "label": "Recopilación del nombre de la pareja", "personal": false, "unlimited": true }
+      { "label": "RecopilaciÃ³n del nombre de la pareja", "personal": false, "unlimited": true }
     ]
   },
   "templates": {
-    "label": "Vélo en acción",
-    "title": "Explora nuestros estilos de invitación",
-    "subtitle": "Toca cualquier plantilla para previsualizar una invitación real — sin cuenta necesaria.",
+    "label": "VÃ©lo en acciÃ³n",
+    "title": "Explora nuestros estilos de invitaciÃ³n",
+    "subtitle": "Toca cualquier plantilla para previsualizar una invitaciÃ³n real â€” sin cuenta necesaria.",
     "view_demo": "Ver Demo",
     "themes": [
-      { "key": "classic", "name": "Clásico", "tagline": "Elegancia atemporal con acentos dorados y tipografía serif" },
-      { "key": "romantic", "name": "Romántico", "tagline": "Florales suaves, tonos rosados y curvas delicadas" },
-      { "key": "modern", "name": "Moderno", "tagline": "Diseños audaces y oscuros con fuerte contraste" },
-      { "key": "natural", "name": "Natural", "tagline": "Verdes terrosos y texturas orgánicas para los amantes de la naturaleza" }
+      { "key": "classic", "name": "ClÃ¡sico", "tagline": "Elegancia atemporal con acentos dorados y tipografÃ­a serif" },
+      { "key": "romantic", "name": "RomÃ¡ntico", "tagline": "Florales suaves, tonos rosados y curvas delicadas" },
+      { "key": "modern", "name": "Moderno", "tagline": "DiseÃ±os audaces y oscuros con fuerte contraste" },
+      { "key": "natural", "name": "Natural", "tagline": "Verdes terrosos y texturas orgÃ¡nicas para los amantes de la naturaleza" }
     ]
   },
   "sections": {
@@ -123,22 +136,24 @@
     ]
   },
   "footer": {
-    "tagline": "Hermosas invitaciones digitales para tus momentos más importantes.",
+    "tagline": "Hermosas invitaciones digitales para tus momentos mÃ¡s importantes.",
     "product": "Producto",
     "events": "Eventos",
     "company": "Empresa",
     "weddings": "Bodas",
     "baptisms": "Bautizos",
     "anniversaries": "Aniversarios",
-    "birthdays": "Fiestas de Cumpleaños",
+    "birthdays": "Fiestas de CumpleaÃ±os",
     "about": "Sobre Nosotros",
     "blog": "Blog",
     "contact": "Contacto",
     "support": "Soporte",
-    "privacy": "Política de Privacidad",
-    "terms": "Términos de Servicio",
-    "cookies": "Política de Cookies",
-    "copyright": "© {{year}} nvite. Todos los derechos reservados."
+    "privacy": "PolÃ­tica de Privacidad",
+    "terms": "TÃ©rminos de Servicio",
+    "cookies": "PolÃ­tica de Cookies",
+    "copyright": "Â© {{year}} nvite. Todos los derechos reservados."
   }
 }
+
+
 

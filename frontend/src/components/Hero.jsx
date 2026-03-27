@@ -44,7 +44,7 @@ export default function Hero() {
               <div className="phone-mockup__screen">
                 <div className="invite-preview">
                   <div className="invite-preview__header">
-                    <p className="invite-preview__label">You are cordially invited to the wedding of</p>
+                    <p className="invite-preview__label">{t('hero.preview.invite_label')}</p>
                     <div className="invite-preview__ornament">✦</div>
                   </div>
                   <div className="invite-preview__center">
@@ -56,11 +56,11 @@ export default function Hero() {
                   </div>
                   <div className="invite-preview__footer">
                     <div className="invite-preview__divider-line" />
-                    <p className="invite-preview__date">14 · June · 2026</p>
-                    <p className="invite-preview__location">The Grand Hall, London</p>
+                    <p className="invite-preview__date">{t('hero.preview.date')}</p>
+                    <p className="invite-preview__location">{t('hero.preview.location')}</p>
                     <div className="invite-preview__rsvp">
-                      <button className="invite-preview__btn invite-preview__btn--accept">Accept</button>
-                      <button className="invite-preview__btn invite-preview__btn--decline">Decline</button>
+                      <button className="invite-preview__btn invite-preview__btn--accept">{t('hero.preview.accept')}</button>
+                      <button className="invite-preview__btn invite-preview__btn--decline">{t('hero.preview.decline')}</button>
                     </div>
                   </div>
                 </div>
@@ -72,16 +72,16 @@ export default function Hero() {
           <div className="hero__badge hero__badge--rsvp">
             <span className="hero__badge-icon">✓</span>
             <div>
-              <strong>New RSVP</strong>
-              <p>Sophie accepted!</p>
+              <strong>{t('hero.preview.badge_rsvp_title')}</strong>
+              <p>{t('hero.preview.badge_rsvp_text')}</p>
             </div>
           </div>
 
           <div className="hero__badge hero__badge--guests">
             <span className="hero__badge-icon">👥</span>
             <div>
-              <strong>42 guests</strong>
-              <p>confirmed so far</p>
+              <strong>{t('hero.preview.badge_guests_title')}</strong>
+              <p>{t('hero.preview.badge_guests_text')}</p>
             </div>
           </div>
         </div>

@@ -2,9 +2,11 @@
   "nav": {
     "how_it_works": "How It Works",
     "features": "Features",
+    "sections": "Sections",
     "pricing": "Pricing",
     "templates": "Templates",
     "log_in": "Log in",
+    "log_out": "Log out",
     "get_started": "Get Started",
     "my_invitations": "My Invitations",
     "create_invitation": "Create Invitation"
@@ -21,7 +23,18 @@
     "stat_satisfaction_value": "98%",
     "stat_satisfaction_label": "Guest satisfaction",
     "stat_speed_value": "2 min",
-    "stat_speed_label": "To go live"
+    "stat_speed_label": "To go live",
+    "preview": {
+      "invite_label": "You are cordially invited to the wedding of",
+      "date": "14 · June · 2026",
+      "location": "The Grand Hall, London",
+      "accept": "Accept",
+      "decline": "Decline",
+      "badge_rsvp_title": "New RSVP",
+      "badge_rsvp_text": "Sophie accepted!",
+      "badge_guests_title": "42 guests",
+      "badge_guests_text": "confirmed so far"
+    }
   },
   "hiw": {
     "label": "Simple process",

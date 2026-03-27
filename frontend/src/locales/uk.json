@@ -2,9 +2,11 @@
   "nav": {
     "how_it_works": "Як це працює",
     "features": "Можливості",
+    "sections": "Секції",
     "pricing": "Ціни",
     "templates": "Шаблони",
     "log_in": "Увійти",
+    "log_out": "Вийти",
     "get_started": "Розпочати",
     "my_invitations": "Мої запрошення",
     "create_invitation": "Створити запрошення"
@@ -21,7 +23,18 @@
     "stat_satisfaction_value": "98%",
     "stat_satisfaction_label": "Задоволеність гостей",
     "stat_speed_value": "2 хв",
-    "stat_speed_label": "До публікації"
+    "stat_speed_label": "До публікації",
+    "preview": {
+      "invite_label": "Ви сердечно запрошені на весілля",
+      "date": "14 · Червня · 2026",
+      "location": "The Grand Hall, Лондон",
+      "accept": "Прийняти",
+      "decline": "Відхилити",
+      "badge_rsvp_title": "Нове RSVP",
+      "badge_rsvp_text": "Sophie підтвердила!",
+      "badge_guests_title": "42 гості",
+      "badge_guests_text": "вже підтвердили"
+    }
   },
   "hiw": {
     "label": "Простий процес",

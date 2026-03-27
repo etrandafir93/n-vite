@@ -237,7 +237,12 @@
     gap: 0.5rem;
   }
 
-  .navbar__cta {
+  .navbar__cta--public {
+    display: none;
+  }
+
+  .navbar__user,
+  .navbar__login--logout {
     display: none;
   }
 

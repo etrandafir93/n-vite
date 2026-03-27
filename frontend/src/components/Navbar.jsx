@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import './Navbar.css'
 import { version } from '../../package.json'
@@ -15,6 +15,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [authState, setAuthState] = useState({ loading: true, authenticated: false, name: null })
+  const langRef = useRef(null)
   const { t, i18n } = useTranslation()
 
   useEffect(() => {
@@ -41,6 +42,23 @@ export default function Navbar() {
       })
   }, [])
 
+  useEffect(() => {
+    const onDocClick = (event) => {
+      if (langRef.current && !langRef.current.contains(event.target)) {
+        setLangOpen(false)
+      }
+    }
+    const onEsc = (event) => {
+      if (event.key === 'Escape') setLangOpen(false)
+    }
+    document.addEventListener('mousedown', onDocClick)
+    document.addEventListener('keydown', onEsc)
+    return () => {
+      document.removeEventListener('mousedown', onDocClick)
+      document.removeEventListener('keydown', onEsc)
+    }
+  }, [])
+
   function changeLang(code) {
     i18n.changeLanguage(code)
     localStorage.setItem('lang', code)
@@ -59,16 +77,19 @@ export default function Navbar() {
         <ul className={`navbar__links ${menuOpen ? 'navbar__links--open' : ''}`}>
           <li><a href="#how-it-works" onClick={() => setMenuOpen(false)}>{t('nav.how_it_works')}</a></li>
           <li><a href="#templates" onClick={() => setMenuOpen(false)}>{t('nav.templates')}</a></li>
+          <li><a href="#sections" onClick={() => setMenuOpen(false)}>{t('nav.sections')}</a></li>
           <li><a href="#features" onClick={() => setMenuOpen(false)}>{t('nav.features')}</a></li>
           <li><a href="#pricing" onClick={() => setMenuOpen(false)}>{t('nav.pricing')}</a></li>
         </ul>
 
         <div className="navbar__actions">
-          <div className="lang-switcher">
+          <div className="lang-switcher" ref={langRef}>
             <button
               className="lang-switcher__btn"
               onClick={() => setLangOpen(o => !o)}
               aria-label="Switch language"
+              aria-haspopup="listbox"
+              aria-expanded={langOpen}
             >
               <span>{currentLang.flag}</span>
               <span>{currentLang.label}</span>
@@ -77,12 +98,14 @@ export default function Navbar() {
               </svg>
             </button>
             {langOpen && (
-              <ul className="lang-switcher__dropdown">
+              <ul className="lang-switcher__dropdown" role="listbox">
                 {LANGS.map(lang => (
                   <li key={lang.code}>
                     <button
                       className={`lang-switcher__option ${lang.code === i18n.language ? 'lang-switcher__option--active' : ''}`}
                       onClick={() => changeLang(lang.code)}
+                      role="option"
+                      aria-selected={lang.code === i18n.language}
                     >
                       <span>{lang.flag}</span>
                       <span>{lang.label}</span>
@@ -92,17 +115,18 @@ export default function Navbar() {
               </ul>
             )}
           </div>
-          {!authState.loading && authState.authenticated && (
+          {authState.authenticated && (
             <>
               <span className="navbar__user">{authState.name}</span>
-              <a href="/events" className="navbar__login">{t('nav.my_invitations')}</a>
-              <a href="/events/builder" className="navbar__cta">{t('nav.create_invitation')}</a>
+              <a href="/events" className="navbar__login navbar__login--app">{t('nav.my_invitations')}</a>
+              <a href="/events/builder" className="navbar__cta navbar__cta--app">{t('nav.create_invitation')}</a>
+              <a href="/logout" className="navbar__login navbar__login--logout">{t('nav.log_out')}</a>
             </>
           )}
-          {!authState.loading && !authState.authenticated && (
+          {!authState.authenticated && (
             <>
-              <a href="/oauth2/authorization/google" className="navbar__login">{t('nav.log_in')}</a>
-              <a href="#pricing" className="navbar__cta">{t('nav.get_started')}</a>
+              <a href="/oauth2/authorization/google" className="navbar__login navbar__login--public">{t('nav.log_in')}</a>
+              <a href="#pricing" className="navbar__cta navbar__cta--public">{t('nav.get_started')}</a>
             </>
           )}
         </div>

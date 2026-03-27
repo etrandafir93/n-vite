@@ -1,100 +1,113 @@
 {
   "nav": {
-    "how_it_works": "Cum Funcționează",
-    "features": "Funcționalități",
-    "pricing": "Prețuri",
-    "templates": "Șabloane",
+    "how_it_works": "Cum FuncÈ›ioneazÄƒ",
+    "features": "FuncÈ›ionalitÄƒÈ›i",
+    "sections": "Sectiuni",
+    "pricing": "PreÈ›uri",
+    "templates": "È˜abloane",
     "log_in": "Conectare",
-    "get_started": "Începe Acum",
+    "log_out": "Deconectare",
+    "get_started": "ÃŽncepe Acum",
     "my_invitations": "Invitatiile mele",
     "create_invitation": "Creeaza invitatia"
   },
   "hero": {
-    "label": "Invitații Digitale",
-    "title_pre": "Evenimentul tău începe",
+    "label": "InvitaÈ›ii Digitale",
+    "title_pre": "Evenimentul tÄƒu Ã®ncepe",
     "title_em": "aici",
-    "subtitle": "Creează invitații digitale superbe pentru nunta sau evenimentul tău. Trimite instant, colectează confirmările în timp real — totul într-un singur loc.",
-    "cta_create": "Creează Invitația Ta",
-    "cta_how": "Cum Funcționează",
+    "subtitle": "CreeazÄƒ invitaÈ›ii digitale superbe pentru nunta sau evenimentul tÄƒu. Trimite instant, colecteazÄƒ confirmÄƒrile Ã®n timp real â€” totul Ã®ntr-un singur loc.",
+    "cta_create": "CreeazÄƒ InvitaÈ›ia Ta",
+    "cta_how": "Cum FuncÈ›ioneazÄƒ",
     "stat_invitations_value": "5 000+",
-    "stat_invitations_label": "Invitații trimise",
+    "stat_invitations_label": "InvitaÈ›ii trimise",
     "stat_satisfaction_value": "98%",
-    "stat_satisfaction_label": "Satisfacția invitaților",
+    "stat_satisfaction_label": "SatisfacÈ›ia invitaÈ›ilor",
     "stat_speed_value": "2 min",
-    "stat_speed_label": "Până la publicare"
+    "stat_speed_label": "PÃ¢nÄƒ la publicare",
+    "preview": {
+      "invite_label": "Sunteti invitati cu drag la nunta lui",
+      "date": "14 Â· Iunie Â· 2026",
+      "location": "The Grand Hall, Londra",
+      "accept": "Accept",
+      "decline": "Refuz",
+      "badge_rsvp_title": "RSVP nou",
+      "badge_rsvp_text": "Sophie a acceptat!",
+      "badge_guests_title": "42 invitati",
+      "badge_guests_text": "confirmati pana acum"
+    }
   },
   "hiw": {
     "label": "Proces simplu",
-    "title": "Gata în mai puțin de 2 minute",
-    "subtitle": "Nu ai nevoie de abilități de design. Fără aplicații de instalat. Doar o invitație frumoasă pe care invitații tăi o vor iubi.",
-    "cta": "Începe să Creezi — E Gratuit",
+    "title": "Gata Ã®n mai puÈ›in de 2 minute",
+    "subtitle": "Nu ai nevoie de abilitÄƒÈ›i de design. FÄƒrÄƒ aplicaÈ›ii de instalat. Doar o invitaÈ›ie frumoasÄƒ pe care invitaÈ›ii tÄƒi o vor iubi.",
+    "cta": "ÃŽncepe sÄƒ Creezi â€” E Gratuit",
     "steps": [
-      { "title": "Alege un șablon", "description": "Răsfoiește colecția noastră de șabloane pentru nunți și evenimente. Găsește designul care se potrivește stilului tău." },
-      { "title": "Personalizează detaliile", "description": "Adaugă numele, data, locația și un mesaj personal. Încarcă o fotografie de fundal sau alege din galeria noastră." },
-      { "title": "Distribuie linkul tău", "description": "Obține instant un link unic. Trimite-l prin WhatsApp, email sau orice aplicație de mesagerie — fără imprimare." },
-      { "title": "Colectează confirmările", "description": "Invitații confirmă prezența cu un singur tap. Ești notificat imediat și poți urmări răspunsurile în timp real." },
-      { "title": "Gestionează lista de invitați", "description": "Vezi răspunsurile acceptate și refuzate, numărul de participanți și actualizează detaliile evenimentului oricând." }
+      { "title": "Alege un È™ablon", "description": "RÄƒsfoieÈ™te colecÈ›ia noastrÄƒ de È™abloane pentru nunÈ›i È™i evenimente. GÄƒseÈ™te designul care se potriveÈ™te stilului tÄƒu." },
+      { "title": "PersonalizeazÄƒ detaliile", "description": "AdaugÄƒ numele, data, locaÈ›ia È™i un mesaj personal. ÃŽncarcÄƒ o fotografie de fundal sau alege din galeria noastrÄƒ." },
+      { "title": "Distribuie linkul tÄƒu", "description": "ObÈ›ine instant un link unic. Trimite-l prin WhatsApp, email sau orice aplicaÈ›ie de mesagerie â€” fÄƒrÄƒ imprimare." },
+      { "title": "ColecteazÄƒ confirmÄƒrile", "description": "InvitaÈ›ii confirmÄƒ prezenÈ›a cu un singur tap. EÈ™ti notificat imediat È™i poÈ›i urmÄƒri rÄƒspunsurile Ã®n timp real." },
+      { "title": "GestioneazÄƒ lista de invitaÈ›i", "description": "Vezi rÄƒspunsurile acceptate È™i refuzate, numÄƒrul de participanÈ›i È™i actualizeazÄƒ detaliile evenimentului oricÃ¢nd." }
     ]
   },
   "features": {
     "label": "Tot ce ai nevoie",
     "title": "Creat pentru cuplurile moderne",
-    "subtitle": "Toate instrumentele pentru a gestiona invitațiile — fără bătaia de cap a hârtiei, imprimării sau foilor de calcul.",
+    "subtitle": "Toate instrumentele pentru a gestiona invitaÈ›iile â€” fÄƒrÄƒ bÄƒtaia de cap a hÃ¢rtiei, imprimÄƒrii sau foilor de calcul.",
     "items": [
-      { "title": "Urmărire instantă a confirmărilor", "description": "Află cine vine în momentul în care răspund. Acceptați, refuzați și în așteptare — totul într-un singur tablou de bord." },
-      { "title": "Funcționează pe orice dispozitiv", "description": "Invitații deschid invitația direct în browser — fără aplicație necesară, fără înregistrare. Funcționează pe orice telefon sau computer." },
-      { "title": "Hartă a locației inclusă", "description": "Inserează o hartă interactivă pentru ca invitații să obțină indicații în locație cu un singur tap. Fără confuzie, fără întârzieri." },
-      { "title": "Design personalizat frumos", "description": "Alege din șabloane create manual pentru nunți, botezuri și aniversări. Adaugă propriile fotografii pentru a-l face cu adevărat al tău." },
-      { "title": "Notificări în timp real", "description": "Primești o notificare instantă de fiecare dată când un invitat confirmă. Rămâi la curent cu lista ta fără să verifici manual." },
-      { "title": "Editează oricând", "description": "Ai schimbat locul sau ora? Actualizează invitația în câteva secunde și toți invitații tăi vor vedea noile detalii imediat." }
+      { "title": "UrmÄƒrire instantÄƒ a confirmÄƒrilor", "description": "AflÄƒ cine vine Ã®n momentul Ã®n care rÄƒspund. AcceptaÈ›i, refuzaÈ›i È™i Ã®n aÈ™teptare â€” totul Ã®ntr-un singur tablou de bord." },
+      { "title": "FuncÈ›ioneazÄƒ pe orice dispozitiv", "description": "InvitaÈ›ii deschid invitaÈ›ia direct Ã®n browser â€” fÄƒrÄƒ aplicaÈ›ie necesarÄƒ, fÄƒrÄƒ Ã®nregistrare. FuncÈ›ioneazÄƒ pe orice telefon sau computer." },
+      { "title": "HartÄƒ a locaÈ›iei inclusÄƒ", "description": "InsereazÄƒ o hartÄƒ interactivÄƒ pentru ca invitaÈ›ii sÄƒ obÈ›inÄƒ indicaÈ›ii Ã®n locaÈ›ie cu un singur tap. FÄƒrÄƒ confuzie, fÄƒrÄƒ Ã®ntÃ¢rzieri." },
+      { "title": "Design personalizat frumos", "description": "Alege din È™abloane create manual pentru nunÈ›i, botezuri È™i aniversÄƒri. AdaugÄƒ propriile fotografii pentru a-l face cu adevÄƒrat al tÄƒu." },
+      { "title": "NotificÄƒri Ã®n timp real", "description": "PrimeÈ™ti o notificare instantÄƒ de fiecare datÄƒ cÃ¢nd un invitat confirmÄƒ. RÄƒmÃ¢i la curent cu lista ta fÄƒrÄƒ sÄƒ verifici manual." },
+      { "title": "EditeazÄƒ oricÃ¢nd", "description": "Ai schimbat locul sau ora? ActualizeazÄƒ invitaÈ›ia Ã®n cÃ¢teva secunde È™i toÈ›i invitaÈ›ii tÄƒi vor vedea noile detalii imediat." }
     ]
   },
   "pricing": {
-    "label": "Prețuri",
-    "title": "Prețuri simple și transparente",
-    "subtitle": "Fără abonamente. Fără taxe ascunse. Plătești o singură dată și invitația ta rămâne activă cât ai nevoie.",
-    "compare_show": "Compară planurile în detaliu",
-    "compare_hide": "Ascunde comparația",
+    "label": "PreÈ›uri",
+    "title": "PreÈ›uri simple È™i transparente",
+    "subtitle": "FÄƒrÄƒ abonamente. FÄƒrÄƒ taxe ascunse. PlÄƒteÈ™ti o singurÄƒ datÄƒ È™i invitaÈ›ia ta rÄƒmÃ¢ne activÄƒ cÃ¢t ai nevoie.",
+    "compare_show": "ComparÄƒ planurile Ã®n detaliu",
+    "compare_hide": "Ascunde comparaÈ›ia",
     "most_popular": "Cel Mai Popular",
-    "feature_header": "Funcționalitate",
-    "cta": "Începe Acum",
+    "feature_header": "FuncÈ›ionalitate",
+    "cta": "ÃŽncepe Acum",
     "personal": {
       "name": "Link Personal",
       "tagline": "Pentru reuniuni intime",
       "price": "$0.99",
       "unit": "per invitat",
-      "description": "Fiecare invitat primește un link personalizat cu numele lor pe invitație.",
-      "features": ["Link unic per invitat", "Numele invitatului pe invitație", "Tablou de bord confirmare", "Notificări în timp real", "Hartă a locației", "Editează detaliile oricând"]
+      "description": "Fiecare invitat primeÈ™te un link personalizat cu numele lor pe invitaÈ›ie.",
+      "features": ["Link unic per invitat", "Numele invitatului pe invitaÈ›ie", "Tablou de bord confirmare", "NotificÄƒri Ã®n timp real", "HartÄƒ a locaÈ›iei", "EditeazÄƒ detaliile oricÃ¢nd"]
     },
     "unlimited": {
       "name": "Nelimitat",
       "tagline": "Cel mai popular",
       "price": "$89",
-      "unit": "preț fix",
-      "description": "Un singur link pentru toți invitații tăi — distribuire nelimitată, confirmări nelimitate.",
-      "features": ["Link unic de distribuire", "Invitați nelimitați", "Tablou de bord confirmare", "Notificări în timp real", "Hartă a locației", "Editează detaliile oricând", "Colectarea numelui partenerului", "Suport prioritar"]
+      "unit": "preÈ› fix",
+      "description": "Un singur link pentru toÈ›i invitaÈ›ii tÄƒi â€” distribuire nelimitatÄƒ, confirmÄƒri nelimitate.",
+      "features": ["Link unic de distribuire", "InvitaÈ›i nelimitaÈ›i", "Tablou de bord confirmare", "NotificÄƒri Ã®n timp real", "HartÄƒ a locaÈ›iei", "EditeazÄƒ detaliile oricÃ¢nd", "Colectarea numelui partenerului", "Suport prioritar"]
     },
     "comparison": [
-      { "label": "Limită invitați", "personal": "Plată per invitat", "unlimited": "Nelimitat" },
+      { "label": "LimitÄƒ invitaÈ›i", "personal": "PlatÄƒ per invitat", "unlimited": "Nelimitat" },
       { "label": "Link personalizat per invitat", "personal": true, "unlimited": false },
       { "label": "Link unic de distribuire", "personal": false, "unlimited": true },
-      { "label": "Urmărire confirmări", "personal": true, "unlimited": true },
-      { "label": "Notificări în timp real", "personal": true, "unlimited": true },
-      { "label": "Hartă a locației", "personal": true, "unlimited": true },
-      { "label": "Editare oricând", "personal": true, "unlimited": true },
+      { "label": "UrmÄƒrire confirmÄƒri", "personal": true, "unlimited": true },
+      { "label": "NotificÄƒri Ã®n timp real", "personal": true, "unlimited": true },
+      { "label": "HartÄƒ a locaÈ›iei", "personal": true, "unlimited": true },
+      { "label": "Editare oricÃ¢nd", "personal": true, "unlimited": true },
       { "label": "Colectarea numelui partenerului", "personal": false, "unlimited": true }
     ]
   },
   "templates": {
-    "label": "Descoperă",
-    "title": "Răsfoiește stilurile noastre de invitații",
-    "subtitle": "Apasă pe orice șablon pentru a previzualiza o invitație reală — fără cont necesar.",
+    "label": "DescoperÄƒ",
+    "title": "RÄƒsfoieÈ™te stilurile noastre de invitaÈ›ii",
+    "subtitle": "ApasÄƒ pe orice È™ablon pentru a previzualiza o invitaÈ›ie realÄƒ â€” fÄƒrÄƒ cont necesar.",
     "view_demo": "Previzualizare",
     "themes": [
-      { "key": "classic", "name": "Clasic", "tagline": "Eleganță atemporală cu accente aurii și tipografie serif" },
-      { "key": "romantic", "name": "Romantic", "tagline": "Florale delicate, tonuri roze și curbe elegante" },
-      { "key": "modern", "name": "Modern", "tagline": "Layout îndrăzneț, întunecat cu contrast puternic" },
-      { "key": "natural", "name": "Natural", "tagline": "Verde pământesc și texturi organice pentru iubitorii de natură" }
+      { "key": "classic", "name": "Clasic", "tagline": "EleganÈ›Äƒ atemporalÄƒ cu accente aurii È™i tipografie serif" },
+      { "key": "romantic", "name": "Romantic", "tagline": "Florale delicate, tonuri roze È™i curbe elegante" },
+      { "key": "modern", "name": "Modern", "tagline": "Layout Ã®ndrÄƒzneÈ›, Ã®ntunecat cu contrast puternic" },
+      { "key": "natural", "name": "Natural", "tagline": "Verde pÄƒmÃ¢ntesc È™i texturi organice pentru iubitorii de naturÄƒ" }
     ]
   },
   "sections": {
@@ -123,22 +136,24 @@
     ]
   },
   "footer": {
-    "tagline": "Invitații digitale superbe pentru cele mai importante momente ale tale.",
+    "tagline": "InvitaÈ›ii digitale superbe pentru cele mai importante momente ale tale.",
     "product": "Produs",
     "events": "Evenimente",
     "company": "Companie",
-    "weddings": "Nunți",
+    "weddings": "NunÈ›i",
     "baptisms": "Botezuri",
-    "anniversaries": "Aniversări",
-    "birthdays": "Petreceri de Ziua de Naștere",
+    "anniversaries": "AniversÄƒri",
+    "birthdays": "Petreceri de Ziua de NaÈ™tere",
     "about": "Despre Noi",
     "blog": "Blog",
     "contact": "Contact",
     "support": "Suport",
-    "privacy": "Politica de Confidențialitate",
-    "terms": "Termeni și Condiții",
+    "privacy": "Politica de ConfidenÈ›ialitate",
+    "terms": "Termeni È™i CondiÈ›ii",
     "cookies": "Politica de Cookies",
-    "copyright": "© {{year}} nvite. Toate drepturile rezervate."
+    "copyright": "Â© {{year}} nvite. Toate drepturile rezervate."
   }
 }
+
+
 
