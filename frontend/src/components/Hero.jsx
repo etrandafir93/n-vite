@@ -1,38 +1,38 @@
+import { useTranslation } from 'react-i18next'
 import './Hero.css'
 
 export default function Hero() {
+  const { t } = useTranslation()
+
   return (
     <section className="hero">
       <div className="hero__bg" />
 
       <div className="hero__inner container">
         <div className="hero__content">
-          <span className="section-label">Digital Invitations</span>
+          <span className="section-label">{t('hero.label')}</span>
           <h1 className="hero__title">
-            Your event starts <em>here</em>
+            {t('hero.title_pre')} <em>{t('hero.title_em')}</em>
           </h1>
-          <p className="hero__subtitle">
-            Create stunning digital invitations for your wedding or special event.
-            Share instantly, collect RSVPs in real time — all in one place.
-          </p>
+          <p className="hero__subtitle">{t('hero.subtitle')}</p>
           <div className="hero__actions">
-            <a href="#pricing" className="btn btn--primary">Create Your Invitation</a>
-            <a href="#how-it-works" className="btn btn--ghost">See How It Works</a>
+            <a href="#pricing" className="btn btn--primary">{t('hero.cta_create')}</a>
+            <a href="#how-it-works" className="btn btn--ghost">{t('hero.cta_how')}</a>
           </div>
           <div className="hero__stats">
             <div className="hero__stat">
-              <strong>5 000+</strong>
-              <span>Invitations sent</span>
+              <strong>{t('hero.stat_invitations_value')}</strong>
+              <span>{t('hero.stat_invitations_label')}</span>
             </div>
             <div className="hero__stat-divider" />
             <div className="hero__stat">
-              <strong>98%</strong>
-              <span>Guest satisfaction</span>
+              <strong>{t('hero.stat_satisfaction_value')}</strong>
+              <span>{t('hero.stat_satisfaction_label')}</span>
             </div>
             <div className="hero__stat-divider" />
             <div className="hero__stat">
-              <strong>2 min</strong>
-              <span>To go live</span>
+              <strong>{t('hero.stat_speed_value')}</strong>
+              <span>{t('hero.stat_speed_label')}</span>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function Hero() {
                   </div>
                   <div className="invite-preview__footer">
                     <div className="invite-preview__divider-line" />
-                    <p className="invite-preview__date">14 · June · 2025</p>
+                    <p className="invite-preview__date">14 · June · 2026</p>
                     <p className="invite-preview__location">The Grand Hall, London</p>
                     <div className="invite-preview__rsvp">
                       <button className="invite-preview__btn invite-preview__btn--accept">Accept</button>

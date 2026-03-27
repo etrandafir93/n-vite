@@ -1,0 +1,116 @@
+{
+  "nav": {
+    "how_it_works": "How It Works",
+    "features": "Features",
+    "pricing": "Pricing",
+    "templates": "Templates",
+    "log_in": "Log in",
+    "get_started": "Get Started"
+  },
+  "hero": {
+    "label": "Digital Invitations",
+    "title_pre": "Your event starts",
+    "title_em": "here",
+    "subtitle": "Create stunning digital invitations for your wedding or special event. Share instantly, collect RSVPs in real time — all in one place.",
+    "cta_create": "Create Your Invitation",
+    "cta_how": "See How It Works",
+    "stat_invitations_value": "5 000+",
+    "stat_invitations_label": "Invitations sent",
+    "stat_satisfaction_value": "98%",
+    "stat_satisfaction_label": "Guest satisfaction",
+    "stat_speed_value": "2 min",
+    "stat_speed_label": "To go live"
+  },
+  "hiw": {
+    "label": "Simple process",
+    "title": "Ready in under 2 minutes",
+    "subtitle": "No design skills needed. No app to install. Just a beautiful invitation your guests will love.",
+    "cta": "Start Creating — It's Free",
+    "steps": [
+      { "title": "Pick a template", "description": "Browse our curated collection of wedding and event templates. Find the design that matches your style." },
+      { "title": "Personalise your details", "description": "Add your names, date, venue and a personal message. Upload a background photo or choose from our gallery." },
+      { "title": "Share your link", "description": "Get a unique invitation link instantly. Share it via WhatsApp, email or any messaging app — no printing required." },
+      { "title": "Collect RSVPs", "description": "Guests confirm their attendance with one tap. You get notified immediately and can track responses in real time." },
+      { "title": "Manage your guest list", "description": "View accepted and declined responses, see attendance numbers and update event details at any time." }
+    ]
+  },
+  "features": {
+    "label": "Everything you need",
+    "title": "Built for modern couples",
+    "subtitle": "All the tools to manage your invitations — without the hassle of paper, printing or spreadsheets.",
+    "items": [
+      { "title": "Instant RSVP tracking", "description": "Know who is coming the moment they respond. Accepted, declined and pending guests — all in one dashboard." },
+      { "title": "Works on any device", "description": "Guests open the invitation directly in their browser — no app required, no sign-up. It just works, on any phone or computer." },
+      { "title": "Venue map included", "description": "Embed an interactive map so guests can get directions to your venue in one tap. No confusion, no late arrivals." },
+      { "title": "Beautiful custom design", "description": "Choose from handcrafted templates for weddings, baptisms and anniversaries. Add your own photos to make it truly yours." },
+      { "title": "Real-time notifications", "description": "Receive an instant notification every time a guest RSVPs. Stay on top of your guest list without checking manually." },
+      { "title": "Edit anytime", "description": "Changed the venue or time? Update your invitation in seconds and all your guests will see the new details immediately." }
+    ]
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Simple, transparent pricing",
+    "subtitle": "No subscriptions. No hidden fees. Pay once and your invitation is live as long as you need it.",
+    "compare_show": "Compare plans in detail",
+    "compare_hide": "Hide comparison",
+    "most_popular": "Most Popular",
+    "feature_header": "Feature",
+    "cta": "Get Started",
+    "personal": {
+      "name": "Personal Link",
+      "tagline": "For intimate gatherings",
+      "price": "$0.99",
+      "unit": "per guest",
+      "description": "Each guest receives a personalised link with their name on the invitation.",
+      "features": ["Unique link per guest", "Guest's name on invitation", "RSVP tracking dashboard", "Real-time notifications", "Venue map", "Edit details anytime"]
+    },
+    "unlimited": {
+      "name": "Unlimited",
+      "tagline": "Most popular",
+      "price": "$89",
+      "unit": "flat price",
+      "description": "One link for all your guests — unlimited sharing, unlimited RSVPs.",
+      "features": ["Single shareable link", "Unlimited guests", "RSVP tracking dashboard", "Real-time notifications", "Venue map", "Edit details anytime", "Partner name collection", "Priority support"]
+    },
+    "comparison": [
+      { "label": "Guest limit", "personal": "Pay per guest", "unlimited": "Unlimited" },
+      { "label": "Personalised link per guest", "personal": true, "unlimited": false },
+      { "label": "Single shareable link", "personal": false, "unlimited": true },
+      { "label": "RSVP tracking", "personal": true, "unlimited": true },
+      { "label": "Real-time notifications", "personal": true, "unlimited": true },
+      { "label": "Venue map", "personal": true, "unlimited": true },
+      { "label": "Edit anytime", "personal": true, "unlimited": true },
+      { "label": "Partner name collection", "personal": false, "unlimited": true }
+    ]
+  },
+  "templates": {
+    "label": "See it in action",
+    "title": "Browse our invitation styles",
+    "subtitle": "Tap any template to preview a live invitation — no account needed.",
+    "view_demo": "View Demo",
+    "themes": [
+      { "key": "classic", "name": "Classic", "tagline": "Timeless elegance with gold accents and serif typography" },
+      { "key": "romantic", "name": "Romantic", "tagline": "Soft florals, rose tones and delicate curves" },
+      { "key": "modern", "name": "Modern", "tagline": "Bold, dark layouts with striking contrast" },
+      { "key": "natural", "name": "Natural", "tagline": "Earthy greens and organic textures for nature lovers" }
+    ]
+  },
+  "footer": {
+    "tagline": "Beautiful digital invitations for your most important moments.",
+    "product": "Product",
+    "events": "Events",
+    "company": "Company",
+    "weddings": "Weddings",
+    "baptisms": "Baptisms",
+    "anniversaries": "Anniversaries",
+    "birthdays": "Birthday Parties",
+    "about": "About Us",
+    "blog": "Blog",
+    "contact": "Contact",
+    "support": "Support",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "copyright": "© {{year}} nvite. All rights reserved."
+  }
+}

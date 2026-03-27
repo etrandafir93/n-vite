@@ -1,15 +1,16 @@
+import { useTranslation } from 'react-i18next'
 import './Footer.css'
 
 export default function Footer() {
+  const { t } = useTranslation()
+
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer__top">
           <div className="footer__brand">
             <a href="#" className="footer__logo">n<span>·</span>vite</a>
-            <p className="footer__tagline">
-              Beautiful digital invitations for your most important moments.
-            </p>
+            <p className="footer__tagline">{t('footer.tagline')}</p>
             <div className="footer__socials">
               <a href="#" aria-label="Facebook" className="footer__social">
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -32,44 +33,44 @@ export default function Footer() {
           </div>
 
           <div className="footer__links-group">
-            <h4>Product</h4>
+            <h4>{t('footer.product')}</h4>
             <ul>
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#pricing">Pricing</a></li>
-              <li><a href="#">Templates</a></li>
+              <li><a href="#how-it-works">{t('nav.how_it_works')}</a></li>
+              <li><a href="#features">{t('nav.features')}</a></li>
+              <li><a href="#pricing">{t('nav.pricing')}</a></li>
+              <li><a href="#templates">{t('nav.templates')}</a></li>
             </ul>
           </div>
 
           <div className="footer__links-group">
-            <h4>Events</h4>
+            <h4>{t('footer.events')}</h4>
             <ul>
-              <li><a href="#">Weddings</a></li>
-              <li><a href="#">Baptisms</a></li>
-              <li><a href="#">Anniversaries</a></li>
-              <li><a href="#">Birthday Parties</a></li>
+              <li><a href="#">{t('footer.weddings')}</a></li>
+              <li><a href="#">{t('footer.baptisms')}</a></li>
+              <li><a href="#">{t('footer.anniversaries')}</a></li>
+              <li><a href="#">{t('footer.birthdays')}</a></li>
             </ul>
           </div>
 
           <div className="footer__links-group">
-            <h4>Company</h4>
+            <h4>{t('footer.company')}</h4>
             <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Support</a></li>
+              <li><a href="#">{t('footer.about')}</a></li>
+              <li><a href="#">{t('footer.blog')}</a></li>
+              <li><a href="#">{t('footer.contact')}</a></li>
+              <li><a href="#">{t('footer.support')}</a></li>
             </ul>
           </div>
         </div>
 
         <div className="footer__bottom">
           <p className="footer__copyright">
-            &copy; {new Date().getFullYear()} nvite. All rights reserved.
+            {t('footer.copyright', { year: new Date().getFullYear() })}
           </p>
           <div className="footer__legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
+            <a href="#">{t('footer.privacy')}</a>
+            <a href="#">{t('footer.terms')}</a>
+            <a href="#">{t('footer.cookies')}</a>
           </div>
         </div>
       </div>

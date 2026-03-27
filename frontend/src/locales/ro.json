@@ -1,0 +1,116 @@
+{
+  "nav": {
+    "how_it_works": "Cum Funcționează",
+    "features": "Funcționalități",
+    "pricing": "Prețuri",
+    "templates": "Șabloane",
+    "log_in": "Conectare",
+    "get_started": "Începe Acum"
+  },
+  "hero": {
+    "label": "Invitații Digitale",
+    "title_pre": "Evenimentul tău începe",
+    "title_em": "aici",
+    "subtitle": "Creează invitații digitale superbe pentru nunta sau evenimentul tău. Trimite instant, colectează confirmările în timp real — totul într-un singur loc.",
+    "cta_create": "Creează Invitația Ta",
+    "cta_how": "Cum Funcționează",
+    "stat_invitations_value": "5 000+",
+    "stat_invitations_label": "Invitații trimise",
+    "stat_satisfaction_value": "98%",
+    "stat_satisfaction_label": "Satisfacția invitaților",
+    "stat_speed_value": "2 min",
+    "stat_speed_label": "Până la publicare"
+  },
+  "hiw": {
+    "label": "Proces simplu",
+    "title": "Gata în mai puțin de 2 minute",
+    "subtitle": "Nu ai nevoie de abilități de design. Fără aplicații de instalat. Doar o invitație frumoasă pe care invitații tăi o vor iubi.",
+    "cta": "Începe să Creezi — E Gratuit",
+    "steps": [
+      { "title": "Alege un șablon", "description": "Răsfoiește colecția noastră de șabloane pentru nunți și evenimente. Găsește designul care se potrivește stilului tău." },
+      { "title": "Personalizează detaliile", "description": "Adaugă numele, data, locația și un mesaj personal. Încarcă o fotografie de fundal sau alege din galeria noastră." },
+      { "title": "Distribuie linkul tău", "description": "Obține instant un link unic. Trimite-l prin WhatsApp, email sau orice aplicație de mesagerie — fără imprimare." },
+      { "title": "Colectează confirmările", "description": "Invitații confirmă prezența cu un singur tap. Ești notificat imediat și poți urmări răspunsurile în timp real." },
+      { "title": "Gestionează lista de invitați", "description": "Vezi răspunsurile acceptate și refuzate, numărul de participanți și actualizează detaliile evenimentului oricând." }
+    ]
+  },
+  "features": {
+    "label": "Tot ce ai nevoie",
+    "title": "Creat pentru cuplurile moderne",
+    "subtitle": "Toate instrumentele pentru a gestiona invitațiile — fără bătaia de cap a hârtiei, imprimării sau foilor de calcul.",
+    "items": [
+      { "title": "Urmărire instantă a confirmărilor", "description": "Află cine vine în momentul în care răspund. Acceptați, refuzați și în așteptare — totul într-un singur tablou de bord." },
+      { "title": "Funcționează pe orice dispozitiv", "description": "Invitații deschid invitația direct în browser — fără aplicație necesară, fără înregistrare. Funcționează pe orice telefon sau computer." },
+      { "title": "Hartă a locației inclusă", "description": "Inserează o hartă interactivă pentru ca invitații să obțină indicații în locație cu un singur tap. Fără confuzie, fără întârzieri." },
+      { "title": "Design personalizat frumos", "description": "Alege din șabloane create manual pentru nunți, botezuri și aniversări. Adaugă propriile fotografii pentru a-l face cu adevărat al tău." },
+      { "title": "Notificări în timp real", "description": "Primești o notificare instantă de fiecare dată când un invitat confirmă. Rămâi la curent cu lista ta fără să verifici manual." },
+      { "title": "Editează oricând", "description": "Ai schimbat locul sau ora? Actualizează invitația în câteva secunde și toți invitații tăi vor vedea noile detalii imediat." }
+    ]
+  },
+  "pricing": {
+    "label": "Prețuri",
+    "title": "Prețuri simple și transparente",
+    "subtitle": "Fără abonamente. Fără taxe ascunse. Plătești o singură dată și invitația ta rămâne activă cât ai nevoie.",
+    "compare_show": "Compară planurile în detaliu",
+    "compare_hide": "Ascunde comparația",
+    "most_popular": "Cel Mai Popular",
+    "feature_header": "Funcționalitate",
+    "cta": "Începe Acum",
+    "personal": {
+      "name": "Link Personal",
+      "tagline": "Pentru reuniuni intime",
+      "price": "$0.99",
+      "unit": "per invitat",
+      "description": "Fiecare invitat primește un link personalizat cu numele lor pe invitație.",
+      "features": ["Link unic per invitat", "Numele invitatului pe invitație", "Tablou de bord confirmare", "Notificări în timp real", "Hartă a locației", "Editează detaliile oricând"]
+    },
+    "unlimited": {
+      "name": "Nelimitat",
+      "tagline": "Cel mai popular",
+      "price": "$89",
+      "unit": "preț fix",
+      "description": "Un singur link pentru toți invitații tăi — distribuire nelimitată, confirmări nelimitate.",
+      "features": ["Link unic de distribuire", "Invitați nelimitați", "Tablou de bord confirmare", "Notificări în timp real", "Hartă a locației", "Editează detaliile oricând", "Colectarea numelui partenerului", "Suport prioritar"]
+    },
+    "comparison": [
+      { "label": "Limită invitați", "personal": "Plată per invitat", "unlimited": "Nelimitat" },
+      { "label": "Link personalizat per invitat", "personal": true, "unlimited": false },
+      { "label": "Link unic de distribuire", "personal": false, "unlimited": true },
+      { "label": "Urmărire confirmări", "personal": true, "unlimited": true },
+      { "label": "Notificări în timp real", "personal": true, "unlimited": true },
+      { "label": "Hartă a locației", "personal": true, "unlimited": true },
+      { "label": "Editare oricând", "personal": true, "unlimited": true },
+      { "label": "Colectarea numelui partenerului", "personal": false, "unlimited": true }
+    ]
+  },
+  "templates": {
+    "label": "Descoperă",
+    "title": "Răsfoiește stilurile noastre de invitații",
+    "subtitle": "Apasă pe orice șablon pentru a previzualiza o invitație reală — fără cont necesar.",
+    "view_demo": "Previzualizare",
+    "themes": [
+      { "key": "classic", "name": "Clasic", "tagline": "Eleganță atemporală cu accente aurii și tipografie serif" },
+      { "key": "romantic", "name": "Romantic", "tagline": "Florale delicate, tonuri roze și curbe elegante" },
+      { "key": "modern", "name": "Modern", "tagline": "Layout îndrăzneț, întunecat cu contrast puternic" },
+      { "key": "natural", "name": "Natural", "tagline": "Verde pământesc și texturi organice pentru iubitorii de natură" }
+    ]
+  },
+  "footer": {
+    "tagline": "Invitații digitale superbe pentru cele mai importante momente ale tale.",
+    "product": "Produs",
+    "events": "Evenimente",
+    "company": "Companie",
+    "weddings": "Nunți",
+    "baptisms": "Botezuri",
+    "anniversaries": "Aniversări",
+    "birthdays": "Petreceri de Ziua de Naștere",
+    "about": "Despre Noi",
+    "blog": "Blog",
+    "contact": "Contact",
+    "support": "Suport",
+    "privacy": "Politica de Confidențialitate",
+    "terms": "Termeni și Condiții",
+    "cookies": "Politica de Cookies",
+    "copyright": "© {{year}} nvite. Toate drepturile rezervate."
+  }
+}

@@ -2,6 +2,9 @@
 
 > Generated from the Fathom meeting recap (March 5, 2026)
 > Full recording: https://fathom.video/share/ecxeacKLKzbfzedSofGdsnn8w6gNXtsB
+>
+> Updated from the Fathom session recap (March 24, 2026)
+> Full recording: https://fathom.video/share/GRga1yFkKEgejLssi2H_5Fp4x16kJKt5
 
 ---
 
@@ -97,3 +100,59 @@
 ### CI/CD & Automation
 
 - [ ] **GitHub Action to post BACKLOG.md updates to Slack** — create a GitHub Actions workflow that triggers on every commit to the main/master branch, reads the BACKLOG.md file, and posts it to a designated Slack channel for team visibility and progress tracking; this ensures the team stays informed about completed tasks and current priorities without manually checking the repository
+
+---
+
+## 🌍 Internationalization (i18n)
+
+> From March 24 session — support multiple languages starting with Romanian, Ukrainian, English, Spanish
+
+- [ ] **Set up i18n framework** — choose and integrate a localization library (e.g. i18next for frontend, Spring MessageSource for backend); define locale detection strategy (browser preference, URL param, or user setting)
+- [x] **Extract all hardcoded UI strings** — ✅ COMPLETE — `i18next` + `react-i18next` installed; `src/i18n.js` initialised with browser-language detection + localStorage persistence; all landing page components (Navbar, Hero, HowItWorks, Templates, Features, Pricing, Footer) now use `useTranslation()`; locale files created for `en`, `ro`, `uk`, `es` covering all UI strings including arrays (steps, feature items, pricing plans, comparison table); language switcher dropdown added to Navbar
+- [ ] **Implement Romanian translations** — translate all UI strings to Romanian; highest priority as primary target market
+- [ ] **Implement Ukrainian translations** — translate all UI strings to Ukrainian
+- [ ] **Implement English translations** — baseline locale; ensure all keys exist and are correct
+- [ ] **Implement Spanish translations** — translate all UI strings to Spanish
+- [ ] **Add language switcher UI** — allow guests to switch language on the invitation page; persist preference in localStorage
+
+---
+
+## 🎨 New Invitation Templates
+
+> From March 24 session — create at least 3 new templates with unique animations/designs
+
+- [ ] **"Scratch-off" reveal template** — guest scratches a card-like overlay to reveal the invitation details underneath; use canvas or CSS clip-path animation
+- [ ] **Envelope open template** — a sealed envelope animates open on the screen, revealing the invitation inside (distinct from the existing envelope intro overlay; this is the full theme layout built around the envelope metaphor)
+- [ ] **Day/Night theme** — dual-mode invitation: renders daytime palette during day hours, switches to a night-sky/starry palette after sunset; use CSS custom properties toggled by time-of-day check on load
+
+---
+
+## 🏠 Landing Page — Demo Section
+
+> From March 24 session — showcase invitation templates to new visitors without requiring login
+
+- [x] **Add demo section to landing page** — ✅ COMPLETE — `Templates.jsx` section added between HowItWorks and Features; 4 theme cards with gradient mini-previews, each linking to `/invitations/joe-and-jane/{theme}` in a new tab; mobile-responsive (4-col → 2-col → 1-col); "Templates" nav link added to Navbar and Footer
+  - [x] Design the section layout (template cards with thumbnail + theme name + "View Demo" CTA)
+  - [x] Wire each card to a real demo invitation URL for the corresponding theme
+  - [x] Make the section mobile-responsive
+
+---
+
+## 🔓 Public Demo Access (No Login Required)
+
+> From March 24 session — let the public explore templates without a Google login
+
+- [x] **Set up a shared demo/test user account** — ✅ COMPLETE — `DemoDataSeeder` updated: event date bumped to 2026-09-13 (future), RSVP deadline to Aug 2026, explicit `status: LIVE`; smart refresh logic auto-updates the existing DB record if its date is in the past; `/invitations/**` already public without auth via `SecurityConfig`
+- [ ] **Ensure demo events are read-only** — demo RSVPs should be accepted but not stored (or stored under a clearly marked demo bucket); prevent demo events from appearing in real host dashboards
+
+---
+
+## 💰 Monetization — Paid Add-Ons
+
+> From March 24 session — free base templates, paid add-on features
+
+- [ ] **Define the paid add-on model** — decide which features are free vs paid (e.g. extra themes, countdown timer, accommodation block, custom content sections); document the tiers
+- [ ] **Implement feature gating on the backend** — add a subscription/plan field to the user/event model; enforce limits server-side
+- [ ] **Accommodation info block (paid add-on)** — allow hosts to add hotel/accommodation recommendations with name, distance, booking link; rendered as a dedicated section on the invitation
+- [ ] **Custom content blocks (paid add-on)** — allow hosts to add freeform sections (text + optional image) to the invitation; useful for dress code, travel tips, etc.
+- [ ] **Integrate a payment provider** — evaluate Stripe or similar; implement checkout flow for upgrading to a paid plan

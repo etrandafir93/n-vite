@@ -1,57 +1,6 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import './Pricing.css'
-
-const plans = [
-  {
-    id: 'personal',
-    name: 'Personal Link',
-    tagline: 'For intimate gatherings',
-    price: '$0.99',
-    unit: 'per guest',
-    description: 'Each guest receives a personalised link with their name on the invitation.',
-    highlight: false,
-    features: [
-      'Unique link per guest',
-      "Guest's name on invitation",
-      'RSVP tracking dashboard',
-      'Real-time notifications',
-      'Venue map',
-      'Edit details anytime',
-    ],
-    cta: 'Get Started',
-  },
-  {
-    id: 'unlimited',
-    name: 'Unlimited',
-    tagline: 'Most popular',
-    price: '$89',
-    unit: 'flat price',
-    description: 'One link for all your guests — unlimited sharing, unlimited RSVPs.',
-    highlight: true,
-    features: [
-      'Single shareable link',
-      'Unlimited guests',
-      'RSVP tracking dashboard',
-      'Real-time notifications',
-      'Venue map',
-      'Edit details anytime',
-      'Partner name collection',
-      'Priority support',
-    ],
-    cta: 'Get Started',
-  },
-]
-
-const comparisonRows = [
-  { label: 'Guest limit', personal: 'Pay per guest', unlimited: 'Unlimited' },
-  { label: 'Personalised link per guest', personal: true, unlimited: false },
-  { label: 'Single shareable link', personal: false, unlimited: true },
-  { label: 'RSVP tracking', personal: true, unlimited: true },
-  { label: 'Real-time notifications', personal: true, unlimited: true },
-  { label: 'Venue map', personal: true, unlimited: true },
-  { label: 'Edit anytime', personal: true, unlimited: true },
-  { label: 'Partner name collection', personal: false, unlimited: true },
-]
 
 function Check() {
   return (
@@ -71,16 +20,24 @@ function Cross() {
 
 export default function Pricing() {
   const [showComparison, setShowComparison] = useState(false)
+  const { t } = useTranslation()
+
+  const personalPlan = t('pricing.personal', { returnObjects: true })
+  const unlimitedPlan = t('pricing.unlimited', { returnObjects: true })
+  const comparisonRows = t('pricing.comparison', { returnObjects: true })
+
+  const plans = [
+    { id: 'personal', ...personalPlan, highlight: false, cta: t('pricing.cta') },
+    { id: 'unlimited', ...unlimitedPlan, highlight: true, cta: t('pricing.cta') },
+  ]
 
   return (
     <section className="pricing" id="pricing">
       <div className="container">
         <div className="pricing__header">
-          <span className="section-label">Pricing</span>
-          <h2 className="pricing__title">Simple, transparent pricing</h2>
-          <p className="pricing__subtitle">
-            No subscriptions. No hidden fees. Pay once and your invitation is live as long as you need it.
-          </p>
+          <span className="section-label">{t('pricing.label')}</span>
+          <h2 className="pricing__title">{t('pricing.title')}</h2>
+          <p className="pricing__subtitle">{t('pricing.subtitle')}</p>
         </div>
 
         <div className="pricing__cards">
@@ -90,7 +47,7 @@ export default function Pricing() {
               key={plan.id}
             >
               {plan.highlight && (
-                <div className="pricing-card__badge">Most Popular</div>
+                <div className="pricing-card__badge">{t('pricing.most_popular')}</div>
               )}
               <div className="pricing-card__header">
                 <h3 className="pricing-card__name">{plan.name}</h3>
@@ -125,7 +82,7 @@ export default function Pricing() {
           className="pricing__compare-toggle"
           onClick={() => setShowComparison(o => !o)}
         >
-          {showComparison ? 'Hide comparison' : 'Compare plans in detail'}
+          {showComparison ? t('pricing.compare_hide') : t('pricing.compare_show')}
           <svg viewBox="0 0 20 20" fill="currentColor" className={showComparison ? 'rotate' : ''}>
             <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
@@ -136,9 +93,9 @@ export default function Pricing() {
             <table className="pricing__table">
               <thead>
                 <tr>
-                  <th>Feature</th>
-                  <th>Personal Link</th>
-                  <th className="pricing__table-highlight">Unlimited</th>
+                  <th>{t('pricing.feature_header')}</th>
+                  <th>{personalPlan.name}</th>
+                  <th className="pricing__table-highlight">{unlimitedPlan.name}</th>
                 </tr>
               </thead>
               <tbody>
