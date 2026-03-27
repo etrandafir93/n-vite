@@ -462,6 +462,11 @@
   padding: 0.6rem 0.75rem;
 }
 
+.eb-catalogue-card--selected {
+  border-color: rgba(201, 160, 122, 0.75);
+  background: #fff9ee;
+}
+
 .eb-catalogue-card__info {
   display: flex;
   flex-direction: column;
@@ -495,10 +500,27 @@
   border-bottom: 1px solid rgba(201, 160, 122, 0.3);
 }
 
+.eb-section-editor__name-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
 .eb-section-editor__name {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--navy);
+}
+
+.eb-section-editor__toggle {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #826640;
+  letter-spacing: 0.02em;
 }
 
 .eb-sub-fields {

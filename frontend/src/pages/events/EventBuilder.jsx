@@ -485,6 +485,7 @@ export default function EventBuilder() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [previewingTheme, setPreviewingTheme] = useState(null)
+  const [activeSectionType, setActiveSectionType] = useState(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const eventReference = searchParams.get('eventReference')
@@ -504,6 +505,7 @@ export default function EventBuilder() {
         return r.json()
       })
       .then(data => {
+        const loadedSections = data.sections ?? []
         setForm({
           groomName: data.groomName ?? '',
           brideName: data.brideName ?? '',
@@ -527,8 +529,9 @@ export default function EventBuilder() {
           menuOptions: data.menuOptions ?? [],
           theme: data.theme ?? 'classic',
           status: data.status ?? 'LIVE',
-          sections: data.sections ?? [],
+          sections: loadedSections,
         })
+        setActiveSectionType(loadedSections[0]?.type ?? null)
       })
       .catch(() => setError('Could not load invitation data.'))
       .finally(() => setLoading(false))
@@ -539,8 +542,7 @@ export default function EventBuilder() {
     if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: null }))
   }
 
-  const addSection = type => {
-    const blank = {
+  const buildBlankSection = type => ({
       type,
       title: '',
       content: '',
@@ -548,17 +550,50 @@ export default function EventBuilder() {
       linkUrl: '',
       hotels: type === 'ACCOMMODATION' ? [] : null,
       scheduleItems: type === 'DAY_SCHEDULE' ? [] : null,
-    }
+    })
+
+  const addSection = type => {
+    const blank = buildBlankSection(type)
+    setActiveSectionType(type)
     setForm(prev => ({ ...prev, sections: [...prev.sections, blank] }))
   }
 
-  const removeSection = i => setForm(prev => ({ ...prev, sections: prev.sections.filter((_, idx) => idx !== i) }))
+  const removeSectionByType = type => {
+    setForm(prev => ({ ...prev, sections: prev.sections.filter(section => section.type !== type) }))
+    setActiveSectionType(prev => (prev === type ? null : prev))
+  }
 
-  const updateSection = (i, value) => setForm(prev => {
-    const sections = [...prev.sections]
-    sections[i] = value
+  const updateSectionByType = (type, value) => setForm(prev => {
+    const sections = prev.sections.map(section => section.type === type ? value : section)
     return { ...prev, sections }
   })
+
+  const toggleSectionSelection = type => {
+    const sectionAlreadyAdded = form.sections.some(section => section.type === type)
+    if (sectionAlreadyAdded) {
+      removeSectionByType(type)
+      return
+    }
+    addSection(type)
+  }
+
+  const toggleSectionEditor = type => {
+    setActiveSectionType(prev => (prev === type ? null : type))
+  }
+
+  useEffect(() => {
+    if (!activeSectionType) return
+    const stillExists = form.sections.some(section => section.type === activeSectionType)
+    if (!stillExists) {
+      setActiveSectionType(form.sections[0]?.type ?? null)
+    }
+  }, [form.sections, activeSectionType])
+
+  const updateSection = (i, value) => {
+    const sectionType = form.sections[i]?.type
+    if (!sectionType) return
+    updateSectionByType(sectionType, value)
+  }
 
   const onCeremonyPlace = (place) => {
     const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
@@ -885,7 +920,7 @@ export default function EventBuilder() {
               {SECTION_CATALOGUE.map(cat => {
                 const added = form.sections.some(s => s.type === cat.type)
                 return (
-                  <div key={cat.type} className="eb-catalogue-card">
+                  <div key={cat.type} className={`eb-catalogue-card${added ? ' eb-catalogue-card--selected' : ''}`}>
                     <div className="eb-catalogue-card__info">
                       <span className="eb-catalogue-card__name">{cat.label}</span>
                       <span className="eb-catalogue-card__desc">{cat.description}</span>
@@ -893,10 +928,9 @@ export default function EventBuilder() {
                     <button
                       type="button"
                       className={`eb-btn ${added ? 'eb-btn--ghost' : 'eb-btn--secondary'}`}
-                      onClick={() => !added && addSection(cat.type)}
-                      disabled={added}
+                      onClick={() => toggleSectionSelection(cat.type)}
                     >
-                      {added ? '✓ Added' : '+ Add'}
+                      {added ? 'Remove' : '+ Add'}
                     </button>
                   </div>
                 )
@@ -905,21 +939,29 @@ export default function EventBuilder() {
 
             {form.sections.map((section, i) => {
               const cat = SECTION_CATALOGUE.find(c => c.type === section.type)
+              const isOpen = activeSectionType === section.type
               return (
-                <div key={i} className="eb-section-editor">
+                <div key={section.type} className="eb-section-editor">
                   <div className="eb-section-editor__head">
-                    <span className="eb-section-editor__name">{cat?.label}</span>
-                    <button type="button" className="eb-remove-btn" onClick={() => removeSection(i)}>✕ Remove</button>
+                    <button type="button" className="eb-section-editor__name-btn" onClick={() => toggleSectionEditor(section.type)}>
+                      <span className="eb-section-editor__name">{cat?.label}</span>
+                      <span className="eb-section-editor__toggle">{isOpen ? 'Hide' : 'Edit'}</span>
+                    </button>
+                    <button type="button" className="eb-remove-btn" onClick={() => removeSectionByType(section.type)}>Remove</button>
                   </div>
-                  {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} />}
-                  {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} />}
-                  {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} />}
-                  {GENERIC_SECTION_TYPES.has(section.type) && (
-                    <GenericSectionEditor
-                      value={section}
-                      onChange={v => updateSection(i, v)}
-                      sectionName={cat?.label || section.type}
-                    />
+                  {isOpen && (
+                    <>
+                      {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} />}
+                      {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} />}
+                      {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} />}
+                      {GENERIC_SECTION_TYPES.has(section.type) && (
+                        <GenericSectionEditor
+                          value={section}
+                          onChange={v => updateSection(i, v)}
+                          sectionName={cat?.label || section.type}
+                        />
+                      )}
+                    </>
                   )}
                 </div>
               )
