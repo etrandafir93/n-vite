@@ -5,7 +5,9 @@
     "pricing": "Prețuri",
     "templates": "Șabloane",
     "log_in": "Conectare",
-    "get_started": "Începe Acum"
+    "get_started": "Începe Acum",
+    "my_invitations": "Invitatiile mele",
+    "create_invitation": "Creeaza invitatia"
   },
   "hero": {
     "label": "Invitații Digitale",

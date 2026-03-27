@@ -5,7 +5,9 @@
     "pricing": "Precios",
     "templates": "Plantillas",
     "log_in": "Iniciar sesión",
-    "get_started": "Comenzar"
+    "get_started": "Comenzar",
+    "my_invitations": "Mis invitaciones",
+    "create_invitation": "Crear invitación"
   },
   "hero": {
     "label": "Invitaciones Digitales",

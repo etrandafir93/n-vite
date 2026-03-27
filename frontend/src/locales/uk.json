@@ -5,7 +5,9 @@
     "pricing": "Ціни",
     "templates": "Шаблони",
     "log_in": "Увійти",
-    "get_started": "Розпочати"
+    "get_started": "Розпочати",
+    "my_invitations": "Мої запрошення",
+    "create_invitation": "Створити запрошення"
   },
   "hero": {
     "label": "Цифрові запрошення",

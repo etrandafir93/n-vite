@@ -5,7 +5,9 @@
     "pricing": "Pricing",
     "templates": "Templates",
     "log_in": "Log in",
-    "get_started": "Get Started"
+    "get_started": "Get Started",
+    "my_invitations": "My Invitations",
+    "create_invitation": "Create Invitation"
   },
   "hero": {
     "label": "Digital Invitations",

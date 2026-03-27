@@ -14,12 +14,31 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [authState, setAuthState] = useState({ loading: true, authenticated: false, name: null })
   const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch auth state')
+        return response.json()
+      })
+      .then(data => {
+        setAuthState({
+          loading: false,
+          authenticated: !!data.authenticated,
+          name: data.name || null,
+        })
+      })
+      .catch(() => {
+        setAuthState({ loading: false, authenticated: false, name: null })
+      })
   }, [])
 
   function changeLang(code) {
@@ -73,8 +92,19 @@ export default function Navbar() {
               </ul>
             )}
           </div>
-          <a href="/oauth2/authorization/google" className="navbar__login">{t('nav.log_in')}</a>
-          <a href="#pricing" className="navbar__cta">{t('nav.get_started')}</a>
+          {!authState.loading && authState.authenticated && (
+            <>
+              <span className="navbar__user">{authState.name}</span>
+              <a href="/events" className="navbar__login">{t('nav.my_invitations')}</a>
+              <a href="/events/builder" className="navbar__cta">{t('nav.create_invitation')}</a>
+            </>
+          )}
+          {!authState.loading && !authState.authenticated && (
+            <>
+              <a href="/oauth2/authorization/google" className="navbar__login">{t('nav.log_in')}</a>
+              <a href="#pricing" className="navbar__cta">{t('nav.get_started')}</a>
+            </>
+          )}
         </div>
 
         <button
