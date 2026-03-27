@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -140,8 +139,28 @@ class CreateEventUseCaseTest {
     assertThatThrownBy(
             () ->
                 new CreateEventUseCase.Request(
-                    null, "Anna", DATE, "img", null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, EventStatus.LIVE, null))
+                    null,
+                    "Anna",
+                    DATE,
+                    "img",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    EventStatus.LIVE,
+                    null))
         .isInstanceOf(NullPointerException.class);
   }
 
@@ -150,8 +169,28 @@ class CreateEventUseCaseTest {
   private CreateEventUseCase.Request minimalRequest(
       String groom, String bride, EventStatus status) {
     return new CreateEventUseCase.Request(
-        groom, bride, DATE, "https://img.com/bg.jpg", null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, status, null);
+        groom,
+        bride,
+        DATE,
+        "https://img.com/bg.jpg",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        status,
+        null);
   }
 
   private Event anyEvent() {

@@ -68,11 +68,9 @@ class InvitationControllerTest {
     when(visitInvitationUseCase.apply(any()))
         .thenReturn(new VisitInvitationUseCase.Response(sampleEvent()));
 
-    mvc.perform(get("/api/invitations/anna-and-mark"))
-        .andExpect(status().isOk());
+    mvc.perform(get("/api/invitations/anna-and-mark")).andExpect(status().isOk());
 
-    verify(visitInvitationUseCase)
-        .apply(new VisitInvitationUseCase.Request("anna-and-mark", null));
+    verify(visitInvitationUseCase).apply(new VisitInvitationUseCase.Request("anna-and-mark", null));
   }
 
   // POST /api/invitations/{ref}/responses
@@ -136,7 +134,8 @@ class InvitationControllerTest {
     mvc.perform(
         post("/api/invitations/some-other-ref/responses")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
+            .content(
+                """
                 { "guestName": "A", "answer": "ACCEPTED" }
                 """));
 

@@ -86,22 +86,40 @@ class EventTest {
 
   @Test
   void builderRejectsNullGroomName() {
-    assertThatThrownBy(() -> Event.builder().groomName(null).brideName("Anna").eventDateTime(DATE)
-            .backgroundImage("img").build())
+    assertThatThrownBy(
+            () ->
+                Event.builder()
+                    .groomName(null)
+                    .brideName("Anna")
+                    .eventDateTime(DATE)
+                    .backgroundImage("img")
+                    .build())
         .isInstanceOf(NullPointerException.class);
   }
 
   @Test
   void builderRejectsNullBrideName() {
-    assertThatThrownBy(() -> Event.builder().groomName("Mark").brideName(null).eventDateTime(DATE)
-            .backgroundImage("img").build())
+    assertThatThrownBy(
+            () ->
+                Event.builder()
+                    .groomName("Mark")
+                    .brideName(null)
+                    .eventDateTime(DATE)
+                    .backgroundImage("img")
+                    .build())
         .isInstanceOf(NullPointerException.class);
   }
 
   @Test
   void builderRejectsNullEventDateTime() {
-    assertThatThrownBy(() -> Event.builder().groomName("Mark").brideName("Anna").eventDateTime(null)
-            .backgroundImage("img").build())
+    assertThatThrownBy(
+            () ->
+                Event.builder()
+                    .groomName("Mark")
+                    .brideName("Anna")
+                    .eventDateTime(null)
+                    .backgroundImage("img")
+                    .build())
         .isInstanceOf(NullPointerException.class);
   }
 

@@ -10,7 +10,8 @@ class RsvpTest {
   @Test
   void constructorSerializesAcceptedAnswer() {
     var rsvp =
-        new Rsvp("John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
+        new Rsvp(
+            "John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
 
     assertThat(rsvp.answer()).isEqualTo("ACCEPTED");
   }
@@ -18,7 +19,8 @@ class RsvpTest {
   @Test
   void constructorSerializesDeclinedAnswer() {
     var rsvp =
-        new Rsvp("John", "anna-and-mark", new RsvpAnswer.Declined(), null, null, null, null, null, null);
+        new Rsvp(
+            "John", "anna-and-mark", new RsvpAnswer.Declined(), null, null, null, null, null, null);
 
     assertThat(rsvp.answer()).isEqualTo("DECLINED");
   }
@@ -27,7 +29,8 @@ class RsvpTest {
   void constructorSetsTimestampToNow() {
     var before = Instant.now();
     var rsvp =
-        new Rsvp("John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
+        new Rsvp(
+            "John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
     var after = Instant.now();
 
     assertThat(rsvp.timestamp()).isBetween(before, after);
@@ -36,7 +39,8 @@ class RsvpTest {
   @Test
   void constructorSetsIdToNull() {
     var rsvp =
-        new Rsvp("John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
+        new Rsvp(
+            "John", "anna-and-mark", new RsvpAnswer.Accepted(), null, null, null, null, null, null);
 
     assertThat(rsvp.id()).isNull();
   }
@@ -81,7 +85,19 @@ class RsvpTest {
   @Test
   void fullConstructorPreservesAllFields() {
     var ts = Instant.parse("2026-06-15T12:00:00Z");
-    var rsvp = new Rsvp("id-1", ts, "John", "anna-and-mark", "ACCEPTED", "Jane", "Meat", 1, false, "Peanuts", "Note");
+    var rsvp =
+        new Rsvp(
+            "id-1",
+            ts,
+            "John",
+            "anna-and-mark",
+            "ACCEPTED",
+            "Jane",
+            "Meat",
+            1,
+            false,
+            "Peanuts",
+            "Note");
 
     assertThat(rsvp.id()).isEqualTo("id-1");
     assertThat(rsvp.timestamp()).isEqualTo(ts);

@@ -43,9 +43,7 @@ class EventsControllerTest {
   void listEventsReturnsEmptyList() throws Exception {
     when(seeUpcomingEventsUseCase.get()).thenReturn(List.of());
 
-    mvc.perform(get("/api/events"))
-        .andExpect(status().isOk())
-        .andExpect(content().json("[]"));
+    mvc.perform(get("/api/events")).andExpect(status().isOk()).andExpect(content().json("[]"));
   }
 
   @Test
@@ -71,9 +69,29 @@ class EventsControllerTest {
     when(seeEventUseCase.apply("anna-and-mark"))
         .thenReturn(
             new SeeEventUseCase.EventFormResponse(
-                "anna-and-mark", "Mark", "Anna", DATE, "img.jpg", null, null, null,
-                "Church", null, null, null, null, "Hotel", null, null, null, null,
-                null, List.of("Meat", "Fish"), "classic", "LIVE", null));
+                "anna-and-mark",
+                "Mark",
+                "Anna",
+                DATE,
+                "img.jpg",
+                null,
+                null,
+                null,
+                "Church",
+                null,
+                null,
+                null,
+                null,
+                "Hotel",
+                null,
+                null,
+                null,
+                null,
+                null,
+                List.of("Meat", "Fish"),
+                "classic",
+                "LIVE",
+                null));
 
     mvc.perform(get("/api/events/anna-and-mark/form"))
         .andExpect(status().isOk())
@@ -139,8 +157,7 @@ class EventsControllerTest {
     verify(editEventUseCase)
         .apply(
             argThat(
-                (EditEventUseCase.Request req) ->
-                    "anna-and-mark".equals(req.eventReference())));
+                (EditEventUseCase.Request req) -> "anna-and-mark".equals(req.eventReference())));
   }
 
   // PATCH /api/events/{ref}/enable
@@ -158,8 +175,7 @@ class EventsControllerTest {
 
   @Test
   void deleteEventReturns204() throws Exception {
-    mvc.perform(delete("/api/events/anna-and-mark"))
-        .andExpect(status().isNoContent());
+    mvc.perform(delete("/api/events/anna-and-mark")).andExpect(status().isNoContent());
 
     verify(deleteEventUseCase).accept(new DeleteEventUseCase.Request("anna-and-mark"));
   }
@@ -168,7 +184,7 @@ class EventsControllerTest {
 
   @Test
   void exportGuestsReturnsExcelFile() throws Exception {
-    var excelBytes = new byte[]{1, 2, 3};
+    var excelBytes = new byte[] {1, 2, 3};
     when(exportGuestListUseCase.apply("anna-and-mark"))
         .thenReturn(new ExportGuestListUseCase.ExportResult(excelBytes, "guests.xlsx"));
 
@@ -189,6 +205,7 @@ class EventsControllerTest {
           "backgroundImageUrl": "https://img.com/bg.jpg",
           "status": "%s"
         }
-        """.formatted(status);
+        """
+        .formatted(status);
   }
 }

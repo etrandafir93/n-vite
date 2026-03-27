@@ -35,7 +35,9 @@
       "Read(//c/Users/borys/.jdks//**)",
       "Read(//c/Users/borys/**)",
       "Bash(JAVA_HOME=\"/c/Users/borys/.jdks/ms-21.0.10\" ./mvnw test:*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(npm install:*)",
+      "Bash(mvn compile:*)"
     ],
     "deny": [],
     "ask": []

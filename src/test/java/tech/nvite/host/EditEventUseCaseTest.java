@@ -141,8 +141,29 @@ class EditEventUseCaseTest {
     assertThatThrownBy(
             () ->
                 new EditEventUseCase.Request(
-                    null, "Mark", "Anna", DATE, "img", null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, EventStatus.LIVE, null))
+                    null,
+                    "Mark",
+                    "Anna",
+                    DATE,
+                    "img",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    EventStatus.LIVE,
+                    null))
         .isInstanceOf(NullPointerException.class);
   }
 
@@ -150,8 +171,29 @@ class EditEventUseCaseTest {
 
   private EditEventUseCase.Request minimalRequest(String ref, EventStatus status) {
     return new EditEventUseCase.Request(
-        ref, "Mark", "Anna", DATE, "https://img.com/bg.jpg", null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, null, status, null);
+        ref,
+        "Mark",
+        "Anna",
+        DATE,
+        "https://img.com/bg.jpg",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        status,
+        null);
   }
 
   private Event existingEvent(String ref) {

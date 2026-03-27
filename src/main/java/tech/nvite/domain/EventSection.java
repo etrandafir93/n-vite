@@ -7,6 +7,12 @@ import lombok.NonNull;
 public record EventSection(
     @NonNull SectionType type,
 
+    // Generic fields used by most section types
+    @Nullable String title,
+    @Nullable String content,
+    @Nullable String imageUrl,
+    @Nullable String linkUrl,
+
     // DRESS_CODE fields
     @Nullable String dressCodeFormality,
     @Nullable String dressCodeColours,
@@ -25,7 +31,5 @@ public record EventSection(
       @Nullable String bookingLink,
       @Nullable String note) {}
 
-  public record ScheduleItem(
-      String time,
-      String label) {}
+  public record ScheduleItem(String time, String label) {}
 }

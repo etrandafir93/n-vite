@@ -89,8 +89,7 @@ class RsvpInvitationUseCaseTest {
             () ->
                 useCase.apply(
                     new RsvpInvitationUseCase.Request(
-                        "anna-and-mark", "Bad Actor", "MAYBE", null, null, null, null, null,
-                        null)))
+                        "anna-and-mark", "Bad Actor", "MAYBE", null, null, null, null, null, null)))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("MAYBE");
   }
@@ -120,7 +119,14 @@ class RsvpInvitationUseCaseTest {
 
   private RsvpInvitationUseCase.Request acceptedRequest() {
     return new RsvpInvitationUseCase.Request(
-        "anna-and-mark", "John Doe", "ACCEPTED", "Jane Doe", "Fish", 2, true, "Nuts",
+        "anna-and-mark",
+        "John Doe",
+        "ACCEPTED",
+        "Jane Doe",
+        "Fish",
+        2,
+        true,
+        "Nuts",
         "Wheelchair access needed");
   }
 

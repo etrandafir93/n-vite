@@ -29,10 +29,42 @@ const EMPTY_FORM = {
 }
 
 const SECTION_CATALOGUE = [
-  { type: 'DRESS_CODE',   label: 'Dress Code',    description: 'Let guests know the attire and suggested colours.' },
+  { type: 'DRESS_CODE', label: 'Dress Code', description: 'Let guests know the attire and suggested colours.' },
   { type: 'ACCOMMODATION', label: 'Accommodation', description: 'Recommend nearby hotels for out-of-town guests.' },
-  { type: 'DAY_SCHEDULE', label: 'Day Schedule',   description: 'Share a full timeline of the day\'s events.' },
+  { type: 'DAY_SCHEDULE', label: 'Day Schedule', description: 'Share a full timeline of the day\'s events.' },
+  { type: 'GIFT_REGISTRY', label: 'Gift Registry', description: 'Add optional registry details and links.' },
+  { type: 'OUR_STORY', label: 'Our Story', description: 'Tell your story as a couple.' },
+  { type: 'WEDDING_PARTY', label: 'Wedding Party', description: 'Introduce bridesmaids, groomsmen, and special guests.' },
+  { type: 'FAQ', label: 'FAQ', description: 'Answer common guest questions in advance.' },
+  { type: 'TRANSPORT', label: 'Transport', description: 'Explain shuttle, taxi, or public transport details.' },
+  { type: 'SONG_REQUEST', label: 'Song Request', description: 'Invite guests to suggest songs for the party.' },
+  { type: 'HONEYMOON_FUND', label: 'Honeymoon Fund', description: 'Share honeymoon contribution info.' },
+  { type: 'CHILDREN_POLICY', label: 'Children Policy', description: 'Clarify whether children are invited.' },
+  { type: 'PARKING', label: 'Parking', description: 'Add parking tips and access instructions.' },
+  { type: 'LIVE_STREAM', label: 'Live Stream', description: 'Provide livestream access for remote guests.' },
+  { type: 'MENU_PREVIEW', label: 'Menu Preview', description: 'Preview food and drink highlights.' },
+  { type: 'PHOTO_GALLERY', label: 'Photo Gallery', description: 'Share photos before or after the event.' },
+  { type: 'COUPLE_QUOTE', label: 'Couple Quote', description: 'Add a favorite quote or short dedication.' },
 ]
+
+const FREE_SECTIONS_COUNT = 4
+const EXTRA_SECTION_PRICE_EUR = 5
+
+const GENERIC_SECTION_TYPES = new Set([
+  'GIFT_REGISTRY',
+  'OUR_STORY',
+  'WEDDING_PARTY',
+  'FAQ',
+  'TRANSPORT',
+  'SONG_REQUEST',
+  'HONEYMOON_FUND',
+  'CHILDREN_POLICY',
+  'PARKING',
+  'LIVE_STREAM',
+  'MENU_PREVIEW',
+  'PHOTO_GALLERY',
+  'COUPLE_QUOTE',
+])
 
 function DressCodeEditor({ value, onChange }) {
   const set = key => val => onChange({ ...value, [key]: val })
@@ -55,6 +87,32 @@ function DressCodeEditor({ value, onChange }) {
       </Field>
       <Field label="Dress Code Image" hint="Optional mood board or example photo">
         <ImageUpload value={value.dressCodeImageUrl || ''} onChange={set('dressCodeImageUrl')} label="Dress Code Image" />
+      </Field>
+    </div>
+  )
+}
+
+function GenericSectionEditor({ value, onChange, sectionName }) {
+  const set = key => val => onChange({ ...value, [key]: val })
+  return (
+    <div className="eb-sub-fields">
+      <Field label={`${sectionName} Title`}>
+        <Input value={value.title || ''} onChange={set('title')} placeholder={`e.g. ${sectionName}`} />
+      </Field>
+      <Field label="Description / Details">
+        <textarea
+          className="eb-input"
+          rows={4}
+          value={value.content || ''}
+          onChange={e => set('content')(e.target.value)}
+          placeholder="Write details that guests should see"
+        />
+      </Field>
+      <Field label="Optional Link">
+        <Input value={value.linkUrl || ''} onChange={set('linkUrl')} placeholder="https://..." />
+      </Field>
+      <Field label="Optional Image">
+        <ImageUpload value={value.imageUrl || ''} onChange={set('imageUrl')} label={`${sectionName} Image`} />
       </Field>
     </div>
   )
@@ -433,6 +491,9 @@ export default function EventBuilder() {
   const isEdit = !!eventReference
   const mapsApiKey = useMapsApiKey()
   const mapsLoaded = useMapsScript(mapsApiKey)
+  const selectedSectionsCount = form.sections.length
+  const paidSectionsCount = Math.max(0, selectedSectionsCount - FREE_SECTIONS_COUNT)
+  const extraSectionsPrice = paidSectionsCount * EXTRA_SECTION_PRICE_EUR
 
   useEffect(() => {
     if (!eventReference) return
@@ -479,7 +540,15 @@ export default function EventBuilder() {
   }
 
   const addSection = type => {
-    const blank = { type, hotels: type === 'ACCOMMODATION' ? [] : null, scheduleItems: type === 'DAY_SCHEDULE' ? [] : null }
+    const blank = {
+      type,
+      title: '',
+      content: '',
+      imageUrl: '',
+      linkUrl: '',
+      hotels: type === 'ACCOMMODATION' ? [] : null,
+      scheduleItems: type === 'DAY_SCHEDULE' ? [] : null,
+    }
     setForm(prev => ({ ...prev, sections: [...prev.sections, blank] }))
   }
 
@@ -803,6 +872,15 @@ export default function EventBuilder() {
           )}
 
           <Section title="Extra Sections" subtitle="Add optional content blocks to enhance the invitation">
+            <div className="eb-pricing-note">
+              <strong>Sections pricing:</strong> first {FREE_SECTIONS_COUNT} sections are free, each additional
+              section is +{EXTRA_SECTION_PRICE_EUR} EUR.
+              <div>
+                Selected: {selectedSectionsCount} section(s) | Paid extras: {paidSectionsCount} | Additional total:
+                {' '}<strong>{extraSectionsPrice} EUR</strong>
+              </div>
+            </div>
+
             <div className="eb-section-catalogue">
               {SECTION_CATALOGUE.map(cat => {
                 const added = form.sections.some(s => s.type === cat.type)
@@ -836,6 +914,13 @@ export default function EventBuilder() {
                   {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} />}
                   {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} />}
                   {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} />}
+                  {GENERIC_SECTION_TYPES.has(section.type) && (
+                    <GenericSectionEditor
+                      value={section}
+                      onChange={v => updateSection(i, v)}
+                      sectionName={cat?.label || section.type}
+                    />
+                  )}
                 </div>
               )
             })}
