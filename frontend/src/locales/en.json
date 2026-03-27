@@ -42,11 +42,26 @@
     "subtitle": "No design skills needed. No app to install. Just a beautiful invitation your guests will love.",
     "cta": "Start Creating — It's Free",
     "steps": [
-      { "title": "Pick a template", "description": "Browse our curated collection of wedding and event templates. Find the design that matches your style." },
-      { "title": "Personalise your details", "description": "Add your names, date, venue and a personal message. Upload a background photo or choose from our gallery." },
-      { "title": "Share your link", "description": "Get a unique invitation link instantly. Share it via WhatsApp, email or any messaging app — no printing required." },
-      { "title": "Collect RSVPs", "description": "Guests confirm their attendance with one tap. You get notified immediately and can track responses in real time." },
-      { "title": "Manage your guest list", "description": "View accepted and declined responses, see attendance numbers and update event details at any time." }
+      {
+        "title": "Pick a template",
+        "description": "Browse our curated collection of wedding and event templates. Find the design that matches your style."
+      },
+      {
+        "title": "Personalise your details",
+        "description": "Add your names, date, venue and a personal message. Upload a background photo or choose from our gallery."
+      },
+      {
+        "title": "Share your link",
+        "description": "Get a unique invitation link instantly. Share it via WhatsApp, email or any messaging app — no printing required."
+      },
+      {
+        "title": "Collect RSVPs",
+        "description": "Guests confirm their attendance with one tap. You get notified immediately and can track responses in real time."
+      },
+      {
+        "title": "Manage your guest list",
+        "description": "View accepted and declined responses, see attendance numbers and update event details at any time."
+      }
     ]
   },
   "features": {
@@ -54,12 +69,30 @@
     "title": "Built for modern couples",
     "subtitle": "All the tools to manage your invitations — without the hassle of paper, printing or spreadsheets.",
     "items": [
-      { "title": "Instant RSVP tracking", "description": "Know who is coming the moment they respond. Accepted, declined and pending guests — all in one dashboard." },
-      { "title": "Works on any device", "description": "Guests open the invitation directly in their browser — no app required, no sign-up. It just works, on any phone or computer." },
-      { "title": "Venue map included", "description": "Embed an interactive map so guests can get directions to your venue in one tap. No confusion, no late arrivals." },
-      { "title": "Beautiful custom design", "description": "Choose from handcrafted templates for weddings, baptisms and anniversaries. Add your own photos to make it truly yours." },
-      { "title": "Real-time notifications", "description": "Receive an instant notification every time a guest RSVPs. Stay on top of your guest list without checking manually." },
-      { "title": "Edit anytime", "description": "Changed the venue or time? Update your invitation in seconds and all your guests will see the new details immediately." }
+      {
+        "title": "Instant RSVP tracking",
+        "description": "Know who is coming the moment they respond. Accepted, declined and pending guests — all in one dashboard."
+      },
+      {
+        "title": "Works on any device",
+        "description": "Guests open the invitation directly in their browser — no app required, no sign-up. It just works, on any phone or computer."
+      },
+      {
+        "title": "Venue map included",
+        "description": "Embed an interactive map so guests can get directions to your venue in one tap. No confusion, no late arrivals."
+      },
+      {
+        "title": "Beautiful custom design",
+        "description": "Choose from handcrafted templates for weddings, baptisms and anniversaries. Add your own photos to make it truly yours."
+      },
+      {
+        "title": "Real-time notifications",
+        "description": "Receive an instant notification every time a guest RSVPs. Stay on top of your guest list without checking manually."
+      },
+      {
+        "title": "Edit anytime",
+        "description": "Changed the venue or time? Update your invitation in seconds and all your guests will see the new details immediately."
+      }
     ]
   },
   "pricing": {
@@ -77,7 +110,14 @@
       "price": "$0.99",
       "unit": "per guest",
       "description": "Each guest receives a personalised link with their name on the invitation.",
-      "features": ["Unique link per guest", "Guest's name on invitation", "RSVP tracking dashboard", "Real-time notifications", "Venue map", "Edit details anytime"]
+      "features": [
+        "Unique link per guest",
+        "Guest's name on invitation",
+        "RSVP tracking dashboard",
+        "Real-time notifications",
+        "Venue map",
+        "Edit details anytime"
+      ]
     },
     "unlimited": {
       "name": "Unlimited",
@@ -85,17 +125,58 @@
       "price": "$89",
       "unit": "flat price",
       "description": "One link for all your guests — unlimited sharing, unlimited RSVPs.",
-      "features": ["Single shareable link", "Unlimited guests", "RSVP tracking dashboard", "Real-time notifications", "Venue map", "Edit details anytime", "Partner name collection", "Priority support"]
+      "features": [
+        "Single shareable link",
+        "Unlimited guests",
+        "RSVP tracking dashboard",
+        "Real-time notifications",
+        "Venue map",
+        "Edit details anytime",
+        "Partner name collection",
+        "Priority support"
+      ]
     },
     "comparison": [
-      { "label": "Guest limit", "personal": "Pay per guest", "unlimited": "Unlimited" },
-      { "label": "Personalised link per guest", "personal": true, "unlimited": false },
-      { "label": "Single shareable link", "personal": false, "unlimited": true },
-      { "label": "RSVP tracking", "personal": true, "unlimited": true },
-      { "label": "Real-time notifications", "personal": true, "unlimited": true },
-      { "label": "Venue map", "personal": true, "unlimited": true },
-      { "label": "Edit anytime", "personal": true, "unlimited": true },
-      { "label": "Partner name collection", "personal": false, "unlimited": true }
+      {
+        "label": "Guest limit",
+        "personal": "Pay per guest",
+        "unlimited": "Unlimited"
+      },
+      {
+        "label": "Personalised link per guest",
+        "personal": true,
+        "unlimited": false
+      },
+      {
+        "label": "Single shareable link",
+        "personal": false,
+        "unlimited": true
+      },
+      {
+        "label": "RSVP tracking",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Real-time notifications",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Venue map",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Edit anytime",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Partner name collection",
+        "personal": false,
+        "unlimited": true
+      }
     ]
   },
   "templates": {
@@ -104,18 +185,32 @@
     "subtitle": "Tap any template to preview a live invitation — no account needed.",
     "view_demo": "View Demo",
     "themes": [
-      { "key": "classic", "name": "Classic", "tagline": "Timeless elegance with gold accents and serif typography" },
-      { "key": "romantic", "name": "Romantic", "tagline": "Soft florals, rose tones and delicate curves" },
-      { "key": "modern", "name": "Modern", "tagline": "Bold, dark layouts with striking contrast" },
-      { "key": "natural", "name": "Natural", "tagline": "Earthy greens and organic textures for nature lovers" }
+      {
+        "key": "classic",
+        "name": "Classic",
+        "tagline": "Timeless elegance with gold accents and serif typography"
+      },
+      {
+        "key": "romantic",
+        "name": "Romantic",
+        "tagline": "Soft florals, rose tones and delicate curves"
+      },
+      {
+        "key": "modern",
+        "name": "Modern",
+        "tagline": "Bold, dark layouts with striking contrast"
+      },
+      {
+        "key": "natural",
+        "name": "Natural",
+        "tagline": "Earthy greens and organic textures for nature lovers"
+      }
     ]
   },
   "sections": {
     "label": "Flexible Content",
     "title": "16 invitation sections",
     "subtitle": "Any {{freeCount}} sections are free. Each additional section costs +5 EUR.",
-    "free_badge": "Free",
-    "paid_badge": "+5 EUR",
     "items": [
       "Dress Code",
       "Accommodation",
@@ -133,7 +228,12 @@
       "Menu Preview",
       "Photo Gallery",
       "Couple Quote"
-    ]
+    ],
+    "selected": "Selected",
+    "extra_cost": "Extra cost",
+    "extra_cost_none": "+0 EUR",
+    "selected_badge": "Selected",
+    "select_badge": "Select"
   },
   "footer": {
     "tagline": "Beautiful digital invitations for your most important moments.",
@@ -154,4 +254,3 @@
     "copyright": "© {{year}} nvite. All rights reserved."
   }
 }
-

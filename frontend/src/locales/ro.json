@@ -42,11 +42,26 @@
     "subtitle": "Nu ai nevoie de abilitÄƒÈ›i de design. FÄƒrÄƒ aplicaÈ›ii de instalat. Doar o invitaÈ›ie frumoasÄƒ pe care invitaÈ›ii tÄƒi o vor iubi.",
     "cta": "ÃŽncepe sÄƒ Creezi â€” E Gratuit",
     "steps": [
-      { "title": "Alege un È™ablon", "description": "RÄƒsfoieÈ™te colecÈ›ia noastrÄƒ de È™abloane pentru nunÈ›i È™i evenimente. GÄƒseÈ™te designul care se potriveÈ™te stilului tÄƒu." },
-      { "title": "PersonalizeazÄƒ detaliile", "description": "AdaugÄƒ numele, data, locaÈ›ia È™i un mesaj personal. ÃŽncarcÄƒ o fotografie de fundal sau alege din galeria noastrÄƒ." },
-      { "title": "Distribuie linkul tÄƒu", "description": "ObÈ›ine instant un link unic. Trimite-l prin WhatsApp, email sau orice aplicaÈ›ie de mesagerie â€” fÄƒrÄƒ imprimare." },
-      { "title": "ColecteazÄƒ confirmÄƒrile", "description": "InvitaÈ›ii confirmÄƒ prezenÈ›a cu un singur tap. EÈ™ti notificat imediat È™i poÈ›i urmÄƒri rÄƒspunsurile Ã®n timp real." },
-      { "title": "GestioneazÄƒ lista de invitaÈ›i", "description": "Vezi rÄƒspunsurile acceptate È™i refuzate, numÄƒrul de participanÈ›i È™i actualizeazÄƒ detaliile evenimentului oricÃ¢nd." }
+      {
+        "title": "Alege un È™ablon",
+        "description": "RÄƒsfoieÈ™te colecÈ›ia noastrÄƒ de È™abloane pentru nunÈ›i È™i evenimente. GÄƒseÈ™te designul care se potriveÈ™te stilului tÄƒu."
+      },
+      {
+        "title": "PersonalizeazÄƒ detaliile",
+        "description": "AdaugÄƒ numele, data, locaÈ›ia È™i un mesaj personal. ÃŽncarcÄƒ o fotografie de fundal sau alege din galeria noastrÄƒ."
+      },
+      {
+        "title": "Distribuie linkul tÄƒu",
+        "description": "ObÈ›ine instant un link unic. Trimite-l prin WhatsApp, email sau orice aplicaÈ›ie de mesagerie â€” fÄƒrÄƒ imprimare."
+      },
+      {
+        "title": "ColecteazÄƒ confirmÄƒrile",
+        "description": "InvitaÈ›ii confirmÄƒ prezenÈ›a cu un singur tap. EÈ™ti notificat imediat È™i poÈ›i urmÄƒri rÄƒspunsurile Ã®n timp real."
+      },
+      {
+        "title": "GestioneazÄƒ lista de invitaÈ›i",
+        "description": "Vezi rÄƒspunsurile acceptate È™i refuzate, numÄƒrul de participanÈ›i È™i actualizeazÄƒ detaliile evenimentului oricÃ¢nd."
+      }
     ]
   },
   "features": {
@@ -54,12 +69,30 @@
     "title": "Creat pentru cuplurile moderne",
     "subtitle": "Toate instrumentele pentru a gestiona invitaÈ›iile â€” fÄƒrÄƒ bÄƒtaia de cap a hÃ¢rtiei, imprimÄƒrii sau foilor de calcul.",
     "items": [
-      { "title": "UrmÄƒrire instantÄƒ a confirmÄƒrilor", "description": "AflÄƒ cine vine Ã®n momentul Ã®n care rÄƒspund. AcceptaÈ›i, refuzaÈ›i È™i Ã®n aÈ™teptare â€” totul Ã®ntr-un singur tablou de bord." },
-      { "title": "FuncÈ›ioneazÄƒ pe orice dispozitiv", "description": "InvitaÈ›ii deschid invitaÈ›ia direct Ã®n browser â€” fÄƒrÄƒ aplicaÈ›ie necesarÄƒ, fÄƒrÄƒ Ã®nregistrare. FuncÈ›ioneazÄƒ pe orice telefon sau computer." },
-      { "title": "HartÄƒ a locaÈ›iei inclusÄƒ", "description": "InsereazÄƒ o hartÄƒ interactivÄƒ pentru ca invitaÈ›ii sÄƒ obÈ›inÄƒ indicaÈ›ii Ã®n locaÈ›ie cu un singur tap. FÄƒrÄƒ confuzie, fÄƒrÄƒ Ã®ntÃ¢rzieri." },
-      { "title": "Design personalizat frumos", "description": "Alege din È™abloane create manual pentru nunÈ›i, botezuri È™i aniversÄƒri. AdaugÄƒ propriile fotografii pentru a-l face cu adevÄƒrat al tÄƒu." },
-      { "title": "NotificÄƒri Ã®n timp real", "description": "PrimeÈ™ti o notificare instantÄƒ de fiecare datÄƒ cÃ¢nd un invitat confirmÄƒ. RÄƒmÃ¢i la curent cu lista ta fÄƒrÄƒ sÄƒ verifici manual." },
-      { "title": "EditeazÄƒ oricÃ¢nd", "description": "Ai schimbat locul sau ora? ActualizeazÄƒ invitaÈ›ia Ã®n cÃ¢teva secunde È™i toÈ›i invitaÈ›ii tÄƒi vor vedea noile detalii imediat." }
+      {
+        "title": "UrmÄƒrire instantÄƒ a confirmÄƒrilor",
+        "description": "AflÄƒ cine vine Ã®n momentul Ã®n care rÄƒspund. AcceptaÈ›i, refuzaÈ›i È™i Ã®n aÈ™teptare â€” totul Ã®ntr-un singur tablou de bord."
+      },
+      {
+        "title": "FuncÈ›ioneazÄƒ pe orice dispozitiv",
+        "description": "InvitaÈ›ii deschid invitaÈ›ia direct Ã®n browser â€” fÄƒrÄƒ aplicaÈ›ie necesarÄƒ, fÄƒrÄƒ Ã®nregistrare. FuncÈ›ioneazÄƒ pe orice telefon sau computer."
+      },
+      {
+        "title": "HartÄƒ a locaÈ›iei inclusÄƒ",
+        "description": "InsereazÄƒ o hartÄƒ interactivÄƒ pentru ca invitaÈ›ii sÄƒ obÈ›inÄƒ indicaÈ›ii Ã®n locaÈ›ie cu un singur tap. FÄƒrÄƒ confuzie, fÄƒrÄƒ Ã®ntÃ¢rzieri."
+      },
+      {
+        "title": "Design personalizat frumos",
+        "description": "Alege din È™abloane create manual pentru nunÈ›i, botezuri È™i aniversÄƒri. AdaugÄƒ propriile fotografii pentru a-l face cu adevÄƒrat al tÄƒu."
+      },
+      {
+        "title": "NotificÄƒri Ã®n timp real",
+        "description": "PrimeÈ™ti o notificare instantÄƒ de fiecare datÄƒ cÃ¢nd un invitat confirmÄƒ. RÄƒmÃ¢i la curent cu lista ta fÄƒrÄƒ sÄƒ verifici manual."
+      },
+      {
+        "title": "EditeazÄƒ oricÃ¢nd",
+        "description": "Ai schimbat locul sau ora? ActualizeazÄƒ invitaÈ›ia Ã®n cÃ¢teva secunde È™i toÈ›i invitaÈ›ii tÄƒi vor vedea noile detalii imediat."
+      }
     ]
   },
   "pricing": {
@@ -77,7 +110,14 @@
       "price": "$0.99",
       "unit": "per invitat",
       "description": "Fiecare invitat primeÈ™te un link personalizat cu numele lor pe invitaÈ›ie.",
-      "features": ["Link unic per invitat", "Numele invitatului pe invitaÈ›ie", "Tablou de bord confirmare", "NotificÄƒri Ã®n timp real", "HartÄƒ a locaÈ›iei", "EditeazÄƒ detaliile oricÃ¢nd"]
+      "features": [
+        "Link unic per invitat",
+        "Numele invitatului pe invitaÈ›ie",
+        "Tablou de bord confirmare",
+        "NotificÄƒri Ã®n timp real",
+        "HartÄƒ a locaÈ›iei",
+        "EditeazÄƒ detaliile oricÃ¢nd"
+      ]
     },
     "unlimited": {
       "name": "Nelimitat",
@@ -85,17 +125,58 @@
       "price": "$89",
       "unit": "preÈ› fix",
       "description": "Un singur link pentru toÈ›i invitaÈ›ii tÄƒi â€” distribuire nelimitatÄƒ, confirmÄƒri nelimitate.",
-      "features": ["Link unic de distribuire", "InvitaÈ›i nelimitaÈ›i", "Tablou de bord confirmare", "NotificÄƒri Ã®n timp real", "HartÄƒ a locaÈ›iei", "EditeazÄƒ detaliile oricÃ¢nd", "Colectarea numelui partenerului", "Suport prioritar"]
+      "features": [
+        "Link unic de distribuire",
+        "InvitaÈ›i nelimitaÈ›i",
+        "Tablou de bord confirmare",
+        "NotificÄƒri Ã®n timp real",
+        "HartÄƒ a locaÈ›iei",
+        "EditeazÄƒ detaliile oricÃ¢nd",
+        "Colectarea numelui partenerului",
+        "Suport prioritar"
+      ]
     },
     "comparison": [
-      { "label": "LimitÄƒ invitaÈ›i", "personal": "PlatÄƒ per invitat", "unlimited": "Nelimitat" },
-      { "label": "Link personalizat per invitat", "personal": true, "unlimited": false },
-      { "label": "Link unic de distribuire", "personal": false, "unlimited": true },
-      { "label": "UrmÄƒrire confirmÄƒri", "personal": true, "unlimited": true },
-      { "label": "NotificÄƒri Ã®n timp real", "personal": true, "unlimited": true },
-      { "label": "HartÄƒ a locaÈ›iei", "personal": true, "unlimited": true },
-      { "label": "Editare oricÃ¢nd", "personal": true, "unlimited": true },
-      { "label": "Colectarea numelui partenerului", "personal": false, "unlimited": true }
+      {
+        "label": "LimitÄƒ invitaÈ›i",
+        "personal": "PlatÄƒ per invitat",
+        "unlimited": "Nelimitat"
+      },
+      {
+        "label": "Link personalizat per invitat",
+        "personal": true,
+        "unlimited": false
+      },
+      {
+        "label": "Link unic de distribuire",
+        "personal": false,
+        "unlimited": true
+      },
+      {
+        "label": "UrmÄƒrire confirmÄƒri",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "NotificÄƒri Ã®n timp real",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "HartÄƒ a locaÈ›iei",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Editare oricÃ¢nd",
+        "personal": true,
+        "unlimited": true
+      },
+      {
+        "label": "Colectarea numelui partenerului",
+        "personal": false,
+        "unlimited": true
+      }
     ]
   },
   "templates": {
@@ -104,18 +185,32 @@
     "subtitle": "ApasÄƒ pe orice È™ablon pentru a previzualiza o invitaÈ›ie realÄƒ â€” fÄƒrÄƒ cont necesar.",
     "view_demo": "Previzualizare",
     "themes": [
-      { "key": "classic", "name": "Clasic", "tagline": "EleganÈ›Äƒ atemporalÄƒ cu accente aurii È™i tipografie serif" },
-      { "key": "romantic", "name": "Romantic", "tagline": "Florale delicate, tonuri roze È™i curbe elegante" },
-      { "key": "modern", "name": "Modern", "tagline": "Layout Ã®ndrÄƒzneÈ›, Ã®ntunecat cu contrast puternic" },
-      { "key": "natural", "name": "Natural", "tagline": "Verde pÄƒmÃ¢ntesc È™i texturi organice pentru iubitorii de naturÄƒ" }
+      {
+        "key": "classic",
+        "name": "Clasic",
+        "tagline": "EleganÈ›Äƒ atemporalÄƒ cu accente aurii È™i tipografie serif"
+      },
+      {
+        "key": "romantic",
+        "name": "Romantic",
+        "tagline": "Florale delicate, tonuri roze È™i curbe elegante"
+      },
+      {
+        "key": "modern",
+        "name": "Modern",
+        "tagline": "Layout Ã®ndrÄƒzneÈ›, Ã®ntunecat cu contrast puternic"
+      },
+      {
+        "key": "natural",
+        "name": "Natural",
+        "tagline": "Verde pÄƒmÃ¢ntesc È™i texturi organice pentru iubitorii de naturÄƒ"
+      }
     ]
   },
   "sections": {
     "label": "Continut flexibil",
     "title": "16 sectiuni pentru invitatie",
     "subtitle": "Oricare {{freeCount}} sectiuni sunt gratuite. Fiecare sectiune suplimentara costa +5 EUR.",
-    "free_badge": "Gratuit",
-    "paid_badge": "+5 EUR",
     "items": [
       "Dress Code",
       "Cazare",
@@ -129,11 +224,16 @@
       "Fond luna de miere",
       "Politica pentru copii",
       "Parcare",
-      "Countdown",
+      "Numaratoare inversa",
       "Preview meniu",
       "Galerie foto",
       "Citatul cuplului"
-    ]
+    ],
+    "selected": "Selectate",
+    "extra_cost": "Cost suplimentar",
+    "extra_cost_none": "+0 EUR",
+    "selected_badge": "Selectat",
+    "select_badge": "Selecteaza"
   },
   "footer": {
     "tagline": "InvitaÈ›ii digitale superbe pentru cele mai importante momente ale tale.",
@@ -154,6 +254,3 @@
     "copyright": "Â© {{year}} nvite. Toate drepturile rezervate."
   }
 }
-
-
-
