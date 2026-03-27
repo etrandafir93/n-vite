@@ -73,7 +73,7 @@ class EventsControllerTest {
             new SeeEventUseCase.EventFormResponse(
                 "anna-and-mark", "Mark", "Anna", DATE, "img.jpg", null, null, null,
                 "Church", null, null, null, null, "Hotel", null, null, null, null,
-                null, List.of("Meat", "Fish"), "classic", "LIVE"));
+                null, List.of("Meat", "Fish"), "classic", "LIVE", null));
 
     mvc.perform(get("/api/events/anna-and-mark/form"))
         .andExpect(status().isOk())

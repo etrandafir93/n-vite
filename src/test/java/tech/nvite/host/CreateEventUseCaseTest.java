@@ -72,7 +72,8 @@ class CreateEventUseCaseTest {
             "2026-06-01",
             List.of("Meat", "Fish", "Veg"),
             "classic",
-            EventStatus.LIVE));
+            EventStatus.LIVE,
+            null));
 
     ArgumentCaptor<Event> captor = forClass(Event.class);
     verify(events).create(captor.capture());
@@ -140,7 +141,7 @@ class CreateEventUseCaseTest {
             () ->
                 new CreateEventUseCase.Request(
                     null, "Anna", DATE, "img", null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, EventStatus.LIVE))
+                    null, null, null, null, null, null, null, EventStatus.LIVE, null))
         .isInstanceOf(NullPointerException.class);
   }
 
@@ -150,7 +151,7 @@ class CreateEventUseCaseTest {
       String groom, String bride, EventStatus status) {
     return new CreateEventUseCase.Request(
         groom, bride, DATE, "https://img.com/bg.jpg", null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, status);
+        null, null, null, null, null, null, null, null, null, status, null);
   }
 
   private Event anyEvent() {
