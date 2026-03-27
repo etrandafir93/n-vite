@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.With;
 import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.Event;
+import tech.nvite.domain.EventSection;
 import tech.nvite.domain.EventStatus;
 import tech.nvite.domain.Events;
 import tech.nvite.infra.UseCase;
@@ -48,6 +49,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
             .menuOptions(req.menuOptions())
             .theme(req.theme())
             .status(req.status() != null ? req.status() : existing.status())
+            .sections(req.sections() != null ? req.sections() : existing.sections())
             .eventReference(req.eventReference())
             .createdBy(existing.createdBy())
             .created(existing.created())
@@ -80,5 +82,6 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
       String rsvpDeadline,
       @Nullable List<String> menuOptions,
       @Nullable String theme,
-      @NonNull EventStatus status) {}
+      @NonNull EventStatus status,
+      @Nullable List<EventSection> sections) {}
 }

@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tech.nvite.domain.Event;
+import tech.nvite.domain.EventSection;
 import tech.nvite.domain.EventStatus;
 import tech.nvite.domain.Events;
 import tech.nvite.infra.UseCase;
@@ -50,6 +51,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
             .menuOptions(req.menuOptions())
             .theme(req.theme())
             .status(req.status() != null ? req.status() : EventStatus.LIVE)
+            .sections(req.sections())
             .eventReference(eventReference)
             .createdBy(currentUser.get().id())
             .build();
@@ -85,5 +87,6 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
       String rsvpDeadline,
       @Nullable List<String> menuOptions,
       @Nullable String theme,
-      @NonNull EventStatus status) {}
+      @NonNull EventStatus status,
+      @Nullable List<EventSection> sections) {}
 }

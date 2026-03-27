@@ -25,6 +25,116 @@ const EMPTY_FORM = {
   menuOptions: [],
   theme: 'classic',
   status: 'DRAFT',
+  sections: [],
+}
+
+const SECTION_CATALOGUE = [
+  { type: 'DRESS_CODE',   label: 'Dress Code',    description: 'Let guests know the attire and suggested colours.' },
+  { type: 'ACCOMMODATION', label: 'Accommodation', description: 'Recommend nearby hotels for out-of-town guests.' },
+  { type: 'DAY_SCHEDULE', label: 'Day Schedule',   description: 'Share a full timeline of the day\'s events.' },
+]
+
+function DressCodeEditor({ value, onChange }) {
+  const set = key => val => onChange({ ...value, [key]: val })
+  return (
+    <div className="eb-sub-fields">
+      <Field label="Formality">
+        <select className="eb-input" value={value.dressCodeFormality || ''} onChange={e => set('dressCodeFormality')(e.target.value)}>
+          <option value="">Select…</option>
+          <option value="BLACK_TIE">Black Tie</option>
+          <option value="FORMAL">Formal</option>
+          <option value="SMART_CASUAL">Smart Casual</option>
+          <option value="CASUAL">Casual</option>
+        </select>
+      </Field>
+      <Field label="Suggested Colours" hint="e.g. Dusty rose, sage green, ivory">
+        <Input value={value.dressCodeColours || ''} onChange={set('dressCodeColours')} placeholder="Describe the colour palette" />
+      </Field>
+      <Field label="Note" hint="Optional additional guidance">
+        <Input value={value.dressCodeNote || ''} onChange={set('dressCodeNote')} placeholder="e.g. Please avoid white and black" />
+      </Field>
+      <Field label="Dress Code Image" hint="Optional mood board or example photo">
+        <ImageUpload value={value.dressCodeImageUrl || ''} onChange={set('dressCodeImageUrl')} label="Dress Code Image" />
+      </Field>
+    </div>
+  )
+}
+
+function AccommodationEditor({ value, onChange }) {
+  const hotels = value.hotels || []
+
+  const addHotel = () => onChange({ ...value, hotels: [...hotels, { name: '', distance: '', bookingLink: '', note: '' }] })
+  const removeHotel = i => onChange({ ...value, hotels: hotels.filter((_, idx) => idx !== i) })
+  const updateHotel = (i, key, val) => {
+    const updated = hotels.map((h, idx) => idx === i ? { ...h, [key]: val } : h)
+    onChange({ ...value, hotels: updated })
+  }
+
+  return (
+    <div className="eb-sub-fields">
+      {hotels.map((hotel, i) => (
+        <div key={i} className="eb-hotel-row">
+          <div className="eb-hotel-row__head">
+            <span className="eb-hotel-row__num">Hotel {i + 1}</span>
+            <button type="button" className="eb-remove-btn" onClick={() => removeHotel(i)}>✕ Remove</button>
+          </div>
+          <div className="eb-grid-2">
+            <Field label="Hotel Name">
+              <Input value={hotel.name} onChange={v => updateHotel(i, 'name', v)} placeholder="e.g. Marriott City Centre" />
+            </Field>
+            <Field label="Distance">
+              <Input value={hotel.distance || ''} onChange={v => updateHotel(i, 'distance', v)} placeholder="e.g. 5 min walk" />
+            </Field>
+            <Field label="Booking Link">
+              <Input value={hotel.bookingLink || ''} onChange={v => updateHotel(i, 'bookingLink', v)} placeholder="https://..." />
+            </Field>
+            <Field label="Note">
+              <Input value={hotel.note || ''} onChange={v => updateHotel(i, 'note', v)} placeholder="e.g. Use code WEDDING25" />
+            </Field>
+          </div>
+        </div>
+      ))}
+      {hotels.length < 3 && (
+        <button type="button" className="eb-btn eb-btn--secondary" onClick={addHotel}>+ Add Hotel</button>
+      )}
+    </div>
+  )
+}
+
+function DayScheduleEditor({ value, onChange }) {
+  const items = value.scheduleItems || []
+
+  const addItem = () => onChange({ ...value, scheduleItems: [...items, { time: '', label: '' }] })
+  const removeItem = i => onChange({ ...value, scheduleItems: items.filter((_, idx) => idx !== i) })
+  const updateItem = (i, key, val) => {
+    const updated = items.map((it, idx) => idx === i ? { ...it, [key]: val } : it)
+    onChange({ ...value, scheduleItems: updated })
+  }
+
+  return (
+    <div className="eb-sub-fields">
+      {items.map((item, i) => (
+        <div key={i} className="eb-schedule-row">
+          <input
+            className="eb-input eb-schedule-row__time"
+            type="text"
+            value={item.time}
+            onChange={e => updateItem(i, 'time', e.target.value)}
+            placeholder="e.g. 14:00"
+          />
+          <input
+            className="eb-input eb-schedule-row__label"
+            type="text"
+            value={item.label}
+            onChange={e => updateItem(i, 'label', e.target.value)}
+            placeholder="e.g. Ceremony begins"
+          />
+          <button type="button" className="eb-remove-btn" onClick={() => removeItem(i)}>✕</button>
+        </div>
+      ))}
+      <button type="button" className="eb-btn eb-btn--secondary" onClick={addItem}>+ Add Item</button>
+    </div>
+  )
 }
 
 function detectEventType(data) {
@@ -356,6 +466,7 @@ export default function EventBuilder() {
           menuOptions: data.menuOptions ?? [],
           theme: data.theme ?? 'classic',
           status: data.status ?? 'LIVE',
+          sections: data.sections ?? [],
         })
       })
       .catch(() => setError('Could not load invitation data.'))
@@ -366,6 +477,19 @@ export default function EventBuilder() {
     setForm(prev => ({ ...prev, [field]: value }))
     if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: null }))
   }
+
+  const addSection = type => {
+    const blank = { type, hotels: type === 'ACCOMMODATION' ? [] : null, scheduleItems: type === 'DAY_SCHEDULE' ? [] : null }
+    setForm(prev => ({ ...prev, sections: [...prev.sections, blank] }))
+  }
+
+  const removeSection = i => setForm(prev => ({ ...prev, sections: prev.sections.filter((_, idx) => idx !== i) }))
+
+  const updateSection = (i, value) => setForm(prev => {
+    const sections = [...prev.sections]
+    sections[i] = value
+    return { ...prev, sections }
+  })
 
   const onCeremonyPlace = (place) => {
     const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
@@ -677,6 +801,45 @@ export default function EventBuilder() {
             </Field>
           </Section>
           )}
+
+          <Section title="Extra Sections" subtitle="Add optional content blocks to enhance the invitation">
+            <div className="eb-section-catalogue">
+              {SECTION_CATALOGUE.map(cat => {
+                const added = form.sections.some(s => s.type === cat.type)
+                return (
+                  <div key={cat.type} className="eb-catalogue-card">
+                    <div className="eb-catalogue-card__info">
+                      <span className="eb-catalogue-card__name">{cat.label}</span>
+                      <span className="eb-catalogue-card__desc">{cat.description}</span>
+                    </div>
+                    <button
+                      type="button"
+                      className={`eb-btn ${added ? 'eb-btn--ghost' : 'eb-btn--secondary'}`}
+                      onClick={() => !added && addSection(cat.type)}
+                      disabled={added}
+                    >
+                      {added ? '✓ Added' : '+ Add'}
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+
+            {form.sections.map((section, i) => {
+              const cat = SECTION_CATALOGUE.find(c => c.type === section.type)
+              return (
+                <div key={i} className="eb-section-editor">
+                  <div className="eb-section-editor__head">
+                    <span className="eb-section-editor__name">{cat?.label}</span>
+                    <button type="button" className="eb-remove-btn" onClick={() => removeSection(i)}>✕ Remove</button>
+                  </div>
+                  {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} />}
+                  {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} />}
+                  {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} />}
+                </div>
+              )
+            })}
+          </Section>
 
           <Section title="RSVP" subtitle="When should guests respond by?">
             <Field label="RSVP Deadline">

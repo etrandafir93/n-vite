@@ -432,6 +432,127 @@
   text-decoration: underline;
 }
 
+/* ---- Extra Sections ---- */
+
+.eb-section-catalogue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.eb-catalogue-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--light-bg);
+  border: 1.5px solid rgba(61, 20, 33, 0.1);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+
+.eb-catalogue-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.eb-catalogue-card__name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.eb-catalogue-card__desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.eb-section-editor {
+  border: 1.5px solid var(--gold);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.eb-section-editor__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.1rem;
+  background: var(--gold-pale);
+  border-bottom: 1px solid rgba(201, 160, 122, 0.3);
+}
+
+.eb-section-editor__name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.eb-sub-fields {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.eb-remove-btn {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  transition: color var(--transition), background var(--transition);
+}
+
+.eb-remove-btn:hover {
+  color: #a83030;
+  background: #fff0f0;
+}
+
+.eb-hotel-row {
+  border: 1px solid rgba(61, 20, 33, 0.1);
+  border-radius: 8px;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+  background: var(--white);
+}
+
+.eb-hotel-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.eb-hotel-row__num {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.eb-schedule-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.eb-schedule-row__time {
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.eb-schedule-row__label {
+  flex: 1;
+}
+
 /* ---- Actions ---- */
 
 .eb-actions {

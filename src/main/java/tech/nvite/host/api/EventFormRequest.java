@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import java.time.Instant;
 import java.util.List;
 import lombok.NonNull;
+import tech.nvite.domain.EventSection;
 import tech.nvite.domain.EventStatus;
 
 record EventFormRequest(
@@ -27,4 +28,5 @@ record EventFormRequest(
     String rsvpDeadline,
     @Nullable List<String> menuOptions,
     @Nullable String theme,
-    @NonNull EventStatus status) {}
+    @NonNull EventStatus status,
+    @Nullable List<EventSection> sections) {}

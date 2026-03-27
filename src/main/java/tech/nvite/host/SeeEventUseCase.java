@@ -3,6 +3,7 @@ package tech.nvite.host;
 import java.time.Instant;
 import java.util.List;
 import java.util.function.Function;
+import tech.nvite.domain.EventSection;
 import lombok.RequiredArgsConstructor;
 import tech.nvite.domain.Events;
 import tech.nvite.host.api.EventBuilderMapper;
@@ -43,5 +44,6 @@ public class SeeEventUseCase implements Function<String, SeeEventUseCase.EventFo
       String rsvpDeadline,
       List<String> menuOptions,
       String theme,
-      String status) {}
+      String status,
+      List<EventSection> sections) {}
 }

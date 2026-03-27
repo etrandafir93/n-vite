@@ -38,7 +38,8 @@ public record Event(
     String rsvpDeadline,
     List<String> menuOptions,
     String theme,
-    EventStatus status) {
+    EventStatus status,
+    List<EventSection> sections) {
 
   public Event(
       String groomName,
@@ -54,6 +55,7 @@ public record Event(
         eventReception,
         eventDateTime,
         backgroundImage,
+        null,
         null,
         null,
         null,

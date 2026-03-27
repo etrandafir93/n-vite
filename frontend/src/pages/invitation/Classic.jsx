@@ -292,6 +292,35 @@ const css = `
   .cl-env--open .cl-env__letter { transform: translateY(-26%); }
   .cl-env__hint { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: #c9a96e; animation: envPulse 2s ease-in-out infinite; }
   @keyframes envPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  /* ── Dress Code ───────────────────────────────── */
+  .cl-dress-code { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+  .cl-dress-code__photo { width: clamp(120px, 30%, 200px); aspect-ratio: 3/4; object-fit: cover; flex-shrink: 0; }
+  .cl-dress-code__info { flex: 1; min-width: 180px; }
+  .cl-dress-code__row { margin-bottom: 1rem; }
+  .cl-dress-code__label { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: #c9a96e; display: block; margin-bottom: .3rem; }
+  .cl-dress-code__value { font-size: .88rem; color: #1c1c1c; line-height: 1.6; }
+  .cl-dress-code__swatches { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .4rem; }
+  .cl-dress-code__swatch { padding: .25rem .8rem; border: 1px solid #e8e2d8; font-size: .75rem; color: #555; background: #faf8f4; }
+  .cl-dress-code__note { font-size: .82rem; color: #777; line-height: 1.7; font-style: italic; border-left: 2px solid #c9a96e; padding-left: .75rem; margin-top: .75rem; }
+
+  /* ── Accommodation ────────────────────────────── */
+  .cl-hotels { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .cl-hotel { background: #fff; border: 1px solid #e8e2d8; padding: 1.25rem 1.2rem; }
+  .cl-hotel__name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: #1c1c1c; margin-bottom: .4rem; }
+  .cl-hotel__dist { font-size: .72rem; color: #c9a96e; letter-spacing: .08em; margin-bottom: .5rem; }
+  .cl-hotel__note { font-size: .8rem; color: #777; line-height: 1.6; margin-bottom: .75rem; }
+  .cl-hotel__link { display: inline-block; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: #c9a96e; text-decoration: none; border-bottom: 1px solid rgba(201,169,110,.4); transition: border-color .2s; }
+  .cl-hotel__link:hover { border-bottom-color: #c9a96e; }
+
+  /* ── Day Schedule ─────────────────────────────── */
+  .cl-schedule { position: relative; padding-left: 1.5rem; }
+  .cl-schedule::before { content: ''; position: absolute; left: .35rem; top: .5rem; bottom: .5rem; width: 1px; background: linear-gradient(to bottom, #c9a96e, rgba(201,169,110,.15)); }
+  .cl-schedule__item { position: relative; display: flex; gap: 1rem; align-items: baseline; margin-bottom: 1.4rem; }
+  .cl-schedule__item:last-child { margin-bottom: 0; }
+  .cl-schedule__item::before { content: ''; position: absolute; left: -1.15rem; top: .42rem; width: 7px; height: 7px; border-radius: 50%; background: #c9a96e; flex-shrink: 0; }
+  .cl-schedule__time { font-size: .7rem; letter-spacing: .12em; color: #c9a96e; white-space: nowrap; min-width: 60px; }
+  .cl-schedule__label { font-size: .88rem; color: #1c1c1c; line-height: 1.5; }
 `
 
 function EnvelopeIntro({ opening, onOpen }) {
@@ -558,6 +587,10 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
 
   const heroGradient = 'linear-gradient(to bottom, rgba(10,8,5,.55) 0%, rgba(10,8,5,.3) 40%, rgba(10,8,5,.72) 100%)'
   const isDraft = inv.status === 'DRAFT'
+  const findSection = (type) => (inv.sections || []).find(s => s.type === type) || null
+  const dressCode = findSection('DRESS_CODE')
+  const accommodation = findSection('ACCOMMODATION')
+  const daySchedule = findSection('DAY_SCHEDULE')
   const isPastEvent = inv.eventDate && new Date(inv.eventDate) < new Date()
   const countdown = useCountdown(inv.eventDate)
 
@@ -616,6 +649,9 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
           {(inv.ceremonyVenue || inv.receptionVenue) && (
             <a href="#celebrations" className="cl-nav__link">Celebrations</a>
           )}
+          {dressCode && <a href="#dress-code" className="cl-nav__link">Dress Code</a>}
+          {accommodation && <a href="#accommodation" className="cl-nav__link">Stay</a>}
+          {daySchedule && <a href="#schedule" className="cl-nav__link">Schedule</a>}
           <a href="#rsvp" className="cl-nav__link">RSVP</a>
         </div>
       </nav>
@@ -679,6 +715,70 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+        {/* Dress Code */}
+        {dressCode && (
+          <div className="cl-section" id="dress-code">
+            <p className="cl-section__title">Dress Code</p>
+            <div className="cl-dress-code">
+              {dressCode.dressCodeImageUrl && (
+                <img className="cl-dress-code__photo" src={dressCode.dressCodeImageUrl} alt="Dress code"/>
+              )}
+              <div className="cl-dress-code__info">
+                {dressCode.dressCodeFormality && (
+                  <div className="cl-dress-code__row">
+                    <span className="cl-dress-code__label">Formality</span>
+                    <span className="cl-dress-code__value">{dressCode.dressCodeFormality}</span>
+                  </div>
+                )}
+                {dressCode.dressCodeColours && (
+                  <div className="cl-dress-code__row">
+                    <span className="cl-dress-code__label">Colour Palette</span>
+                    <div className="cl-dress-code__swatches">
+                      {dressCode.dressCodeColours.split(',').map(c => (
+                        <span key={c} className="cl-dress-code__swatch">{c.trim()}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {dressCode.dressCodeNote && (
+                  <p className="cl-dress-code__note">{dressCode.dressCodeNote}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Accommodation */}
+        {accommodation && accommodation.hotels && accommodation.hotels.length > 0 && (
+          <div className="cl-section" id="accommodation">
+            <p className="cl-section__title">Where to Stay</p>
+            <div className="cl-hotels">
+              {accommodation.hotels.map((h, i) => (
+                <div key={i} className="cl-hotel">
+                  <p className="cl-hotel__name">{h.name}</p>
+                  {h.distance && <p className="cl-hotel__dist">{h.distance} from venue</p>}
+                  {h.note && <p className="cl-hotel__note">{h.note}</p>}
+                  {h.bookingLink && <a className="cl-hotel__link" href={h.bookingLink} target="_blank" rel="noreferrer">Book Now ↗</a>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Day Schedule */}
+        {daySchedule && daySchedule.scheduleItems && daySchedule.scheduleItems.length > 0 && (
+          <div className="cl-section" id="schedule">
+            <p className="cl-section__title">Day Schedule</p>
+            <div className="cl-schedule">
+              {daySchedule.scheduleItems.map((item, i) => (
+                <div key={i} className="cl-schedule__item">
+                  <span className="cl-schedule__time">{item.time}</span>
+                  <span className="cl-schedule__label">{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         )}
