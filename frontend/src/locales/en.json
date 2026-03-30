@@ -273,7 +273,8 @@
         "name": "Natural",
         "tagline": "Earthy greens and organic textures for nature lovers"
       }
-    ]
+    ],
+    "preview_loading": "Loading live preview..."
   },
   "sections": {
     "label": "Flexible Content",

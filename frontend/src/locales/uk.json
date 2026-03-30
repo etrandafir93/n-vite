@@ -273,7 +273,8 @@
           "Plyus odyn"
         ]
       }
-    ]
+    ],
+    "preview_loading": "Zavantazhennya live preview..."
   },
   "sections": {
     "label": "Гнучкий контент",

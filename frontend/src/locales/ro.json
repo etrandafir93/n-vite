@@ -273,7 +273,8 @@
           "Plus unu"
         ]
       }
-    ]
+    ],
+    "preview_loading": "Se incarca preview live..."
   },
   "sections": {
     "label": "Continut flexibil",

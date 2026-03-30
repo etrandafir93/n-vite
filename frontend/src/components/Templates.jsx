@@ -1,28 +1,24 @@
-﻿import { useEffect, useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import './Templates.css'
 
 const DEMO_REF = 'joe-and-jane'
-const PREVIEW_TICK_MS = 1200
-const PREVIEW_MAX_MS = 9600
 
 const themeVisuals = {
-  classic: { gradient: 'linear-gradient(165deg, #2a1a0e 0%, #5b3721 56%, #c9a07a 100%)', accent: '#d9b28b', symbol: '*' },
-  romantic: { gradient: 'linear-gradient(165deg, #340d19 0%, #8b3050 58%, #d4788a 100%)', accent: '#f0b7c3', symbol: 'o' },
-  modern: { gradient: 'linear-gradient(165deg, #101824 0%, #213f66 56%, #f5a623 100%)', accent: '#ffd274', symbol: '+' },
-  natural: { gradient: 'linear-gradient(165deg, #1d2b20 0%, #356246 56%, #7a9e7e 100%)', accent: '#b9d1b6', symbol: '#' },
+  classic: { gradient: 'linear-gradient(165deg, #2a1a0e 0%, #5b3721 56%, #c9a07a 100%)', accent: '#d9b28b' },
+  romantic: { gradient: 'linear-gradient(165deg, #340d19 0%, #8b3050 58%, #d4788a 100%)', accent: '#f0b7c3' },
+  modern: { gradient: 'linear-gradient(165deg, #101824 0%, #213f66 56%, #f5a623 100%)', accent: '#ffd274' },
+  natural: { gradient: 'linear-gradient(165deg, #1d2b20 0%, #356246 56%, #7a9e7e 100%)', accent: '#b9d1b6' },
 }
 
 const fallbackSteps = [
-  { title: 'Welcome cover', subtitle: 'Names, date and venue in one elegant opener.', points: ['Emma & James', '14 Sep 2026', 'Villa Bellagio'] },
-  { title: 'Our story', subtitle: 'A short timeline that feels personal and warm.', points: ['How we met', 'First trip', 'Proposal day'] },
-  { title: 'Day schedule', subtitle: 'Clear timings so guests know what happens next.', points: ['16:00 Ceremony', '18:00 Dinner', '21:00 First dance'] },
-  { title: 'RSVP', subtitle: 'Collect confirmations in seconds with one tap.', points: ['Will attend', 'Not attending', 'Plus one'] },
+  { title: 'Welcome cover', subtitle: 'Names, date and venue in one elegant opener.', points: ['Emma & James', '14 Sep 2026'] },
+  { title: 'Day schedule', subtitle: 'Clear timings so guests know what happens next.', points: ['16:00 Ceremony', '18:00 Dinner'] },
 ]
 
 const getStepPoints = (step) => {
   if (Array.isArray(step?.points) && step.points.length > 0) {
-    return step.points.slice(0, 3)
+    return step.points.slice(0, 2)
   }
   return []
 }
@@ -39,29 +35,7 @@ export default function Templates() {
   }, [i18nSteps])
 
   const [activeKey, setActiveKey] = useState(null)
-  const [activeStep, setActiveStep] = useState({})
-
-  useEffect(() => {
-    if (!activeKey) return
-    const stepsCount = Math.max(1, previewSteps.length)
-    setActiveStep((prev) => ({ ...prev, [activeKey]: 0 }))
-
-    const intervalId = window.setInterval(() => {
-      setActiveStep((prev) => {
-        const current = prev[activeKey] ?? 0
-        return { ...prev, [activeKey]: (current + 1) % stepsCount }
-      })
-    }, PREVIEW_TICK_MS)
-
-    const timeoutId = window.setTimeout(() => {
-      window.clearInterval(intervalId)
-    }, PREVIEW_MAX_MS)
-
-    return () => {
-      window.clearInterval(intervalId)
-      window.clearTimeout(timeoutId)
-    }
-  }, [activeKey, previewSteps.length])
+  const [loadedLive, setLoadedLive] = useState({})
 
   return (
     <section className="templates" id="templates">
@@ -73,14 +47,13 @@ export default function Templates() {
         </div>
 
         <div className="templates__grid">
-          {themes.map((theme) => {
+          {themes.map((theme, idx) => {
             const v = themeVisuals[theme.key]
             const isActive = activeKey === theme.key
-            const stepIndex = isActive ? (activeStep[theme.key] ?? 0) : 0
-            const safeStep = previewSteps[stepIndex] || previewSteps[0] || fallbackSteps[0]
-            const nextStep = previewSteps[(stepIndex + 1) % previewSteps.length] || safeStep
-            const points = getStepPoints(safeStep)
-            const nextPoints = getStepPoints(nextStep)
+            const demoUrl = `/invitations/${DEMO_REF}/${theme.key}?preview=true`
+            const baseStep = previewSteps[idx % previewSteps.length] || previewSteps[0] || fallbackSteps[0]
+            const nextStep = previewSteps[(idx + 1) % previewSteps.length] || baseStep
+            const stepPoints = getStepPoints(baseStep)
 
             return (
               <article
@@ -103,32 +76,48 @@ export default function Templates() {
                     </div>
 
                     <div className="template-phone__screen">
-                      <div className="template-phone__cover" style={{ background: v.gradient }}>
-                        <p className="template-phone__invite">{t('templates.preview_invite')}</p>
-                        <p className="template-phone__names">Emma &amp; James</p>
-                        <p className="template-phone__date">14 Sep 2026</p>
-                      </div>
-
-                      <div key={`${theme.key}-${stepIndex}`} className="template-phone__feed">
-                        <div className="template-phone__section template-phone__section--primary">
-                          <p className="template-phone__section-index">
-                            {t('templates.preview_step_counter', { current: stepIndex + 1, total: previewSteps.length })}
-                          </p>
-                          <h4 className="template-phone__section-title">{safeStep.title}</h4>
-                          <p className="template-phone__section-subtitle">{safeStep.subtitle}</p>
-                          <div className="template-phone__chips">
-                            {(points.length > 0 ? points : [safeStep.subtitle]).slice(0, 2).map((point, idx) => (
-                              <span key={`${theme.key}-${stepIndex}-point-${idx}`} className="template-phone__chip">{point}</span>
-                            ))}
+                      {!isActive && (
+                        <>
+                          <div className="template-phone__cover" style={{ background: v.gradient }}>
+                            <p className="template-phone__invite">{t('templates.preview_invite')}</p>
+                            <p className="template-phone__names">Emma &amp; James</p>
+                            <p className="template-phone__date">14 Sep 2026</p>
                           </div>
-                        </div>
 
-                        <div className="template-phone__section template-phone__section--secondary">
-                          <h5 className="template-phone__next-title">{nextStep.title}</h5>
-                          <p className="template-phone__next-subtitle">{nextPoints[0] || nextStep.subtitle}</p>
-                          <div className="template-phone__next-line" />
+                          <div className="template-phone__feed">
+                            <div className="template-phone__section template-phone__section--primary">
+                              <h4 className="template-phone__section-title">{baseStep.title}</h4>
+                              <p className="template-phone__section-subtitle">{baseStep.subtitle}</p>
+                              <div className="template-phone__chips">
+                                {(stepPoints.length > 0 ? stepPoints : [baseStep.subtitle]).map((point, pointIdx) => (
+                                  <span key={`${theme.key}-point-${pointIdx}`} className="template-phone__chip">{point}</span>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="template-phone__section template-phone__section--secondary">
+                              <h5 className="template-phone__next-title">{nextStep.title}</h5>
+                              <p className="template-phone__next-subtitle">{nextStep.subtitle}</p>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {isActive && (
+                        <div className="template-phone__live-wrap">
+                          {!loadedLive[theme.key] && (
+                            <div className="template-phone__loading">{t('templates.preview_loading')}</div>
+                          )}
+                          <iframe
+                            title={`${theme.name} live preview`}
+                            src={demoUrl}
+                            className={`template-phone__live ${loadedLive[theme.key] ? 'is-ready' : ''}`}
+                            onLoad={() => {
+                              setLoadedLive((prev) => ({ ...prev, [theme.key]: true }))
+                            }}
+                          />
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>

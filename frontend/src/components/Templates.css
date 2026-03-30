@@ -139,6 +139,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .template-phone__cover {
@@ -246,11 +247,35 @@
   line-height: 1.28;
 }
 
-.template-phone__next-line {
-  height: 0.14rem;
-  border-radius: 999px;
-  width: 70%;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--preview-accent), #fff 46%) 0%, #f2f5fb 100%);
+.template-phone__live-wrap {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+}
+
+.template-phone__live {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.template-phone__live.is-ready {
+  opacity: 1;
+}
+
+.template-phone__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.52rem;
+  color: #637495;
+  letter-spacing: 0.03em;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f7fc 100%);
 }
 
 .template-card__body {

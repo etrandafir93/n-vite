@@ -273,7 +273,8 @@
         "name": "Natural",
         "tagline": "Verdes terrosos y texturas orgÃ¡nicas para los amantes de la naturaleza"
       }
-    ]
+    ],
+    "preview_loading": "Cargando vista previa..."
   },
   "sections": {
     "label": "Contenido flexible",
