@@ -212,31 +212,66 @@
     "preview_steps": [
       {
         "title": "Coperta",
-        "subtitle": "Nume, data si locatie intr-o deschidere eleganta."
+        "subtitle": "Nume, data si locatie intr-o deschidere eleganta.",
+        "points": [
+          "Emma si James",
+          "14 Sep 2026",
+          "Villa Bellagio"
+        ]
       },
       {
         "title": "Povestea noastra",
-        "subtitle": "Un timeline scurt, personal si cald."
+        "subtitle": "Un timeline scurt, personal si cald.",
+        "points": [
+          "Cum ne-am cunoscut",
+          "Prima calatorie",
+          "Ziua cererii"
+        ]
       },
       {
         "title": "Programul zilei",
-        "subtitle": "Ore clare pentru fiecare moment al evenimentului."
+        "subtitle": "Ore clare pentru fiecare moment al evenimentului.",
+        "points": [
+          "16:00 Ceremonie",
+          "18:00 Cina",
+          "21:00 Primul dans"
+        ]
       },
       {
         "title": "Dress code",
-        "subtitle": "Seteaza stilul si culorile intr-un bloc rapid."
+        "subtitle": "Seteaza stilul si culorile intr-un bloc rapid.",
+        "points": [
+          "Stil formal",
+          "Paleta champagne",
+          "Pantofi comozi"
+        ]
       },
       {
         "title": "Cazare",
-        "subtitle": "Ajuta invitatii sa rezerve usor aproape de locatie."
+        "subtitle": "Ajuta invitatii sa rezerve usor aproape de locatie.",
+        "points": [
+          "3 hoteluri partenere",
+          "Shuttle aproape",
+          "Check-in devreme"
+        ]
       },
       {
         "title": "Numaratoare inversa",
-        "subtitle": "Creeaza emotie pana la ziua cea mare."
+        "subtitle": "Creeaza emotie pana la ziua cea mare.",
+        "points": [
+          "124 zile ramase",
+          "Save the date",
+          "Reminder final"
+        ]
       },
       {
         "title": "RSVP",
-        "subtitle": "Colecteaza confirmarile in cateva secunde."
+        "subtitle": "Colecteaza confirmarile in cateva secunde.",
+        "points": [
+          "Particip",
+          "Nu particip",
+          "Plus unu"
+        ]
       }
     ]
   },

@@ -190,31 +190,66 @@
     "preview_steps": [
       {
         "title": "Welcome cover",
-        "subtitle": "Names, date and venue in one elegant opener."
+        "subtitle": "Names, date and venue in one elegant opener.",
+        "points": [
+          "Emma & James",
+          "14 Sep 2026",
+          "Villa Bellagio"
+        ]
       },
       {
         "title": "Our story",
-        "subtitle": "A short timeline that feels personal and warm."
+        "subtitle": "A short timeline that feels personal and warm.",
+        "points": [
+          "How we met",
+          "First trip",
+          "Proposal day"
+        ]
       },
       {
         "title": "Day schedule",
-        "subtitle": "Clear timings so guests know what happens next."
+        "subtitle": "Clear timings so guests know what happens next.",
+        "points": [
+          "16:00 Ceremony",
+          "18:00 Dinner",
+          "21:00 First dance"
+        ]
       },
       {
         "title": "Dress code",
-        "subtitle": "Set tone and colors with one quick visual block."
+        "subtitle": "Set tone and colors with one quick visual block.",
+        "points": [
+          "Formal style",
+          "Champagne palette",
+          "Comfortable shoes"
+        ]
       },
       {
         "title": "Accommodation",
-        "subtitle": "Help guests book nearby stays with confidence."
+        "subtitle": "Help guests book nearby stays with confidence.",
+        "points": [
+          "3 partner hotels",
+          "Shuttle nearby",
+          "Early check-in tips"
+        ]
       },
       {
         "title": "Countdown",
-        "subtitle": "Build excitement as the big day gets closer."
+        "subtitle": "Build excitement as the big day gets closer.",
+        "points": [
+          "124 days left",
+          "Save the date",
+          "Final reminders"
+        ]
       },
       {
         "title": "RSVP",
-        "subtitle": "Collect confirmations in seconds with one tap."
+        "subtitle": "Collect confirmations in seconds with one tap.",
+        "points": [
+          "Will attend",
+          "Not attending",
+          "Plus one"
+        ]
       }
     ],
     "themes": [

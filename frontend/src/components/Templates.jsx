@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import './Templates.css'
 
 const DEMO_REF = 'joe-and-jane'
-const PREVIEW_TICK_MS = 1250
+const PREVIEW_TICK_MS = 1200
 const PREVIEW_MAX_MS = 9600
 
 const themeVisuals = {
@@ -14,11 +14,18 @@ const themeVisuals = {
 }
 
 const fallbackSteps = [
-  { title: 'Welcome', subtitle: 'Open with your cover photo and names.' },
-  { title: 'Story', subtitle: 'Share your journey in a warm timeline.' },
-  { title: 'Schedule', subtitle: 'Guide guests through each part of the day.' },
-  { title: 'RSVP', subtitle: 'Collect answers in a single tap.' },
+  { title: 'Welcome cover', subtitle: 'Names, date and venue in one elegant opener.', points: ['Emma & James', '14 Sep 2026', 'Villa Bellagio'] },
+  { title: 'Our story', subtitle: 'A short timeline that feels personal and warm.', points: ['How we met', 'First trip', 'Proposal day'] },
+  { title: 'Day schedule', subtitle: 'Clear timings so guests know what happens next.', points: ['16:00 Ceremony', '18:00 Dinner', '21:00 First dance'] },
+  { title: 'RSVP', subtitle: 'Collect confirmations in seconds with one tap.', points: ['Will attend', 'Not attending', 'Plus one'] },
 ]
+
+const getStepPoints = (step) => {
+  if (Array.isArray(step?.points) && step.points.length > 0) {
+    return step.points.slice(0, 3)
+  }
+  return []
+}
 
 export default function Templates() {
   const { t } = useTranslation()
@@ -71,6 +78,9 @@ export default function Templates() {
             const isActive = activeKey === theme.key
             const stepIndex = isActive ? (activeStep[theme.key] ?? 0) : 0
             const safeStep = previewSteps[stepIndex] || previewSteps[0] || fallbackSteps[0]
+            const nextStep = previewSteps[(stepIndex + 1) % previewSteps.length] || safeStep
+            const points = getStepPoints(safeStep)
+            const nextPoints = getStepPoints(nextStep)
 
             return (
               <article
@@ -81,12 +91,17 @@ export default function Templates() {
                 onFocus={() => setActiveKey(theme.key)}
                 onBlur={() => setActiveKey((prev) => (prev === theme.key ? null : prev))}
               >
-                <div className="template-card__preview" style={{ background: v.gradient }}>
+                <div className="template-card__preview" style={{ background: v.gradient, '--preview-accent': v.accent }}>
+                  <span className="template-card__bloom template-card__bloom--a" />
+                  <span className="template-card__bloom template-card__bloom--b" />
+                  <span className="template-card__bloom template-card__bloom--c" />
+
                   <div className="template-phone" aria-hidden="true">
                     <div className="template-phone__top">
                       <span className="template-phone__camera" />
                       <span className="template-phone__speaker" />
                     </div>
+
                     <div className="template-phone__screen">
                       <div className="template-phone__cover" style={{ background: v.gradient }}>
                         <p className="template-phone__invite">{t('templates.preview_invite')}</p>
@@ -94,16 +109,24 @@ export default function Templates() {
                         <p className="template-phone__date">14 Sep 2026</p>
                       </div>
 
-                      <div key={`${theme.key}-${stepIndex}`} className="template-phone__section">
-                        <p className="template-phone__section-index">
-                          {t('templates.preview_step_counter', { current: stepIndex + 1, total: previewSteps.length })}
-                        </p>
-                        <h4 className="template-phone__section-title">{safeStep.title}</h4>
-                        <p className="template-phone__section-subtitle">{safeStep.subtitle}</p>
-                        <div className="template-phone__lines">
-                          <span />
-                          <span />
-                          <span />
+                      <div key={`${theme.key}-${stepIndex}`} className="template-phone__feed">
+                        <div className="template-phone__section template-phone__section--primary">
+                          <p className="template-phone__section-index">
+                            {t('templates.preview_step_counter', { current: stepIndex + 1, total: previewSteps.length })}
+                          </p>
+                          <h4 className="template-phone__section-title">{safeStep.title}</h4>
+                          <p className="template-phone__section-subtitle">{safeStep.subtitle}</p>
+                          <div className="template-phone__chips">
+                            {(points.length > 0 ? points : [safeStep.subtitle]).slice(0, 2).map((point, idx) => (
+                              <span key={`${theme.key}-${stepIndex}-point-${idx}`} className="template-phone__chip">{point}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="template-phone__section template-phone__section--secondary">
+                          <h5 className="template-phone__next-title">{nextStep.title}</h5>
+                          <p className="template-phone__next-subtitle">{nextPoints[0] || nextStep.subtitle}</p>
+                          <div className="template-phone__next-line" />
                         </div>
                       </div>
                     </div>

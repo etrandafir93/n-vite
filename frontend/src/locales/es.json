@@ -190,31 +190,66 @@
     "preview_steps": [
       {
         "title": "Portada",
-        "subtitle": "Nombres, fecha y lugar en una apertura elegante."
+        "subtitle": "Nombres, fecha y lugar en una apertura elegante.",
+        "points": [
+          "Emma y James",
+          "14 Sep 2026",
+          "Villa Bellagio"
+        ]
       },
       {
         "title": "Nuestra historia",
-        "subtitle": "Linea de tiempo corta, personal y cercana."
+        "subtitle": "Linea de tiempo corta, personal y cercana.",
+        "points": [
+          "Como nos conocimos",
+          "Primer viaje",
+          "Dia de propuesta"
+        ]
       },
       {
         "title": "Agenda del dia",
-        "subtitle": "Horarios claros para cada momento del evento."
+        "subtitle": "Horarios claros para cada momento del evento.",
+        "points": [
+          "16:00 Ceremonia",
+          "18:00 Cena",
+          "21:00 Primer baile"
+        ]
       },
       {
         "title": "Codigo de vestimenta",
-        "subtitle": "Define el estilo con un bloque visual rapido."
+        "subtitle": "Define el estilo con un bloque visual rapido.",
+        "points": [
+          "Estilo formal",
+          "Paleta champagne",
+          "Zapatos comodos"
+        ]
       },
       {
         "title": "Alojamiento",
-        "subtitle": "Ayuda a tus invitados a reservar sin dudas."
+        "subtitle": "Ayuda a tus invitados a reservar sin dudas.",
+        "points": [
+          "3 hoteles aliados",
+          "Shuttle cercano",
+          "Check-in anticipado"
+        ]
       },
       {
         "title": "Cuenta regresiva",
-        "subtitle": "Genera emocion antes del gran dia."
+        "subtitle": "Genera emocion antes del gran dia.",
+        "points": [
+          "124 dias restantes",
+          "Reserva la fecha",
+          "Recordatorios finales"
+        ]
       },
       {
         "title": "RSVP",
-        "subtitle": "Recoge confirmaciones en segundos con un toque."
+        "subtitle": "Recoge confirmaciones en segundos con un toque.",
+        "points": [
+          "Asistire",
+          "No asistire",
+          "Acompanante"
+        ]
       }
     ],
     "themes": [

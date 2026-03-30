@@ -212,31 +212,66 @@
     "preview_steps": [
       {
         "title": "Obkladynka",
-        "subtitle": "Imena, data ta miscze v elegantnomu starti."
+        "subtitle": "Imena, data ta miscze v elegantnomu starti.",
+        "points": [
+          "Emma ta James",
+          "14 Ver 2026",
+          "Villa Bellagio"
+        ]
       },
       {
         "title": "Nasha istoriya",
-        "subtitle": "Korotkyy taymlayn z osobystym akcentom."
+        "subtitle": "Korotkyy taymlayn z osobystym akcentom.",
+        "points": [
+          "Yak poznayomylys",
+          "Persha podrizh",
+          "Den propozyciyi"
+        ]
       },
       {
         "title": "Rozklad dnya",
-        "subtitle": "Chitki chasy dlya kozhnoho etapu podiyi."
+        "subtitle": "Chitki chasy dlya kozhnoho etapu podiyi.",
+        "points": [
+          "16:00 Ceremoniya",
+          "18:00 Vecherya",
+          "21:00 Pershyy tanec"
+        ]
       },
       {
         "title": "Dres-kod",
-        "subtitle": "Vstanovlyuye stil i kolory dlya gostey."
+        "subtitle": "Vstanovlyuye stil i kolory dlya gostey.",
+        "points": [
+          "Formalnyy styl",
+          "Kolory champagne",
+          "Zruchne vzuttya"
+        ]
       },
       {
         "title": "Prozhyvannya",
-        "subtitle": "Dopomagaye gostyam legko obraty zhitlo."
+        "subtitle": "Dopomagaye gostyam legko obraty zhitlo.",
+        "points": [
+          "3 goteli partnery",
+          "Poruch shuttle",
+          "Ranniy check-in"
+        ]
       },
       {
         "title": "Countdown",
-        "subtitle": "Dodaye ochikuvannya pered velykym dnem."
+        "subtitle": "Dodaye ochikuvannya pered velykym dnem.",
+        "points": [
+          "124 dni do podiyi",
+          "Zberezhit datu",
+          "Finalni nagaduvannya"
+        ]
       },
       {
         "title": "RSVP",
-        "subtitle": "Shvydko zbiraye vidpovidi v odyn klik."
+        "subtitle": "Shvydko zbiraye vidpovidi v odyn klik.",
+        "points": [
+          "Pryydu",
+          "Ne pryydu",
+          "Plyus odyn"
+        ]
       }
     ]
   },
