@@ -41,11 +41,12 @@ export default function Templates() {
             return (
               <article
                 key={theme.key}
-                className="template-card"
+                className={`template-card${isActive ? ' template-card--active' : ''}`}
                 onMouseEnter={() => setActiveKey(theme.key)}
                 onMouseLeave={() => setActiveKey((prev) => (prev === theme.key ? null : prev))}
                 onFocus={() => setActiveKey(theme.key)}
                 onBlur={() => setActiveKey((prev) => (prev === theme.key ? null : prev))}
+                onTouchStart={() => setActiveKey(theme.key)}
               >
                 <TemplatePhonePreview
                   theme={theme}
