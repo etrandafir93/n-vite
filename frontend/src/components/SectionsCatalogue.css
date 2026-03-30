@@ -115,9 +115,7 @@
   border: 1px solid rgba(18, 23, 46, 0.12);
   border-radius: 16px;
   padding: 0.7rem;
-  background:
-    radial-gradient(circle at 12% 10%, rgba(255, 255, 255, 0.88), transparent 42%),
-    linear-gradient(170deg, #fffef9 0%, #f8f1e4 100%);
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -130,51 +128,20 @@
   text-align: left;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 3px 10px rgba(30, 22, 12, 0.05);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
 }
 
 .section-chip:hover {
-  border-color: rgba(18, 23, 46, 0.3);
+  border-color: rgba(18, 23, 46, 0.18);
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(30, 22, 12, 0.12);
-}
-
-.section-chip::before {
-  content: '';
-  position: absolute;
-  inset: 0.38rem;
-  border-radius: 12px;
-  border: 1px solid rgba(128, 96, 48, 0.14);
-  pointer-events: none;
-}
-
-.section-chip::after {
-  content: '';
-  position: absolute;
-  width: 78px;
-  height: 78px;
-  right: -34px;
-  bottom: -38px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(206, 177, 123, 0.2) 0%, rgba(206, 177, 123, 0) 72%);
-  pointer-events: none;
+  box-shadow: var(--shadow-lg);
 }
 
 .section-chip__top {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
-}
-
-.section-chip__top::after {
-  content: '';
-  display: block;
-  width: 1.55rem;
-  height: 0.16rem;
-  border-radius: 999px;
-  background: rgba(113, 84, 41, 0.22);
-  align-self: center;
 }
 
 .section-chip__icon {
@@ -185,27 +152,20 @@
   align-items: center;
   justify-content: center;
   font-size: 1.05rem;
-  background: linear-gradient(160deg, #f8e8c8 0%, #ebd2a0 100%);
-  box-shadow: inset 0 0 0 1px rgba(62, 43, 19, 0.18), 0 4px 8px rgba(70, 50, 21, 0.12);
-}
-
-.section-chip__index {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: rgba(94, 78, 56, 0.72);
+  background: var(--gold-pale);
+  box-shadow: inset 0 0 0 1px rgba(201, 169, 110, 0.2);
 }
 
 .section-chip--selected {
   border-color: rgba(36, 106, 56, 0.62);
-  box-shadow: 0 0 0 2px rgba(36, 106, 56, 0.16), 0 10px 20px rgba(34, 93, 49, 0.1);
-  background: linear-gradient(165deg, #f7fcf7 0%, #ebf8ed 100%);
+  box-shadow: 0 0 0 2px rgba(36, 106, 56, 0.1), var(--shadow);
+  background: #f7fcf8;
 }
 
 .section-chip--paid {
   border-color: rgba(164, 110, 36, 0.58);
-  box-shadow: 0 0 0 2px rgba(164, 110, 36, 0.14), 0 10px 20px rgba(124, 84, 22, 0.12);
-  background: linear-gradient(165deg, #fffdf6 0%, #fff3dc 100%);
+  box-shadow: 0 0 0 2px rgba(164, 110, 36, 0.12), var(--shadow);
+  background: #fffaf2;
 }
 
 .section-chip__name {
