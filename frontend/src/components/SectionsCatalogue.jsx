@@ -109,7 +109,10 @@ export default function SectionsCatalogue() {
                 onClick={() => toggleItem(idx)}
                 aria-pressed={chip.isSelected}
               >
-                <span className="section-chip__icon" aria-hidden="true">{SECTION_ICONS[idx] || '✨'}</span>
+                <div className="section-chip__top">
+                  <span className="section-chip__icon" aria-hidden="true">{SECTION_ICONS[idx] || '✨'}</span>
+                  <span className="section-chip__index" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+                </div>
                 <span className="section-chip__name">{item}</span>
                 <span className="section-chip__desc">{itemDescriptions[idx] || ''}</span>
                 <span

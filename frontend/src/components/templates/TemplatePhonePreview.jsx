@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useRef, useState } from 'react'
 
 const PREVIEW_SECTION_IDS = ['families', 'celebrations', 'schedule', 'dress-code', 'accommodation', 'day-schedule', 'rsvp']
-const MAX_TOUR_MS = 5200
+const MAX_TOUR_MS = 7800
 
 function injectNoScrollbarStyles(iframe) {
   try {
@@ -114,7 +114,7 @@ function runAutoTour(iframe, timerRef) {
     if (maxScroll <= 80) return false
 
     const stops = buildStops(doc, scroller, maxScroll)
-    const paceMs = Math.max(520, Math.floor(MAX_TOUR_MS / Math.max(1, stops.length - 1)))
+    const paceMs = Math.max(820, Math.floor(MAX_TOUR_MS / Math.max(1, stops.length - 1)))
 
     if (win?.scrollTo) {
       win.scrollTo({ top: 0, behavior: 'auto' })
@@ -126,10 +126,10 @@ function runAutoTour(iframe, timerRef) {
       timers.push(window.setTimeout(() => {
         if (!iframe.isConnected) return
         if (win?.scrollTo && (scroller === doc.scrollingElement || scroller === doc.documentElement || scroller === doc.body)) {
-          win.scrollTo({ top, behavior: 'auto' })
+          win.scrollTo({ top, behavior: 'smooth' })
           return
         }
-        scroller.scrollTo?.({ top, behavior: 'auto' }) ?? (scroller.scrollTop = top)
+        scroller.scrollTo?.({ top, behavior: 'smooth' }) ?? (scroller.scrollTop = top)
       }, idx * paceMs))
     })
 

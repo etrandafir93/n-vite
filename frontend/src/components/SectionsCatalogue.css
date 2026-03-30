@@ -113,7 +113,9 @@
   border: 1px solid rgba(18, 23, 46, 0.12);
   border-radius: 14px;
   padding: 0.65rem;
-  background: #fbfaf7;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.78), transparent 34%),
+    linear-gradient(165deg, #fffdf8 0%, #f7f2e8 100%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -122,12 +124,45 @@
   min-height: 0;
   aspect-ratio: 1 / 0.92;
   cursor: pointer;
-  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition), transform var(--transition);
   text-align: left;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(30, 22, 12, 0.05);
 }
 
 .section-chip:hover {
   border-color: rgba(18, 23, 46, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(30, 22, 12, 0.1);
+}
+
+.section-chip::before {
+  content: '';
+  position: absolute;
+  inset: 0.34rem;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 96, 48, 0.14);
+  pointer-events: none;
+}
+
+.section-chip::after {
+  content: '';
+  position: absolute;
+  width: 78px;
+  height: 78px;
+  right: -34px;
+  bottom: -38px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(206, 177, 123, 0.2) 0%, rgba(206, 177, 123, 0) 72%);
+  pointer-events: none;
+}
+
+.section-chip__top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .section-chip__icon {
@@ -138,20 +173,27 @@
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  background: #f1e6cc;
-  box-shadow: inset 0 0 0 1px rgba(62, 43, 19, 0.1);
+  background: linear-gradient(160deg, #f6e7c9 0%, #ead2a2 100%);
+  box-shadow: inset 0 0 0 1px rgba(62, 43, 19, 0.16);
+}
+
+.section-chip__index {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(94, 78, 56, 0.72);
 }
 
 .section-chip--selected {
   border-color: rgba(36, 106, 56, 0.55);
   box-shadow: 0 0 0 2px rgba(36, 106, 56, 0.12);
-  background: #f4fbf5;
+  background: linear-gradient(165deg, #f7fcf7 0%, #ebf8ed 100%);
 }
 
 .section-chip--paid {
   border-color: rgba(164, 110, 36, 0.5);
   box-shadow: 0 0 0 2px rgba(164, 110, 36, 0.11);
-  background: #fffaf1;
+  background: linear-gradient(165deg, #fffdf6 0%, #fff3dc 100%);
 }
 
 .section-chip__name {
@@ -180,10 +222,11 @@
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--navy);
-  background: #ead8b2;
+  background: #ecddb9;
   border-radius: 999px;
   padding: 0.2rem 0.48rem;
   white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(90, 68, 34, 0.16);
 }
 
 .section-chip__price--active {
