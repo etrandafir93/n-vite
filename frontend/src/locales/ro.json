@@ -243,6 +243,12 @@
       "full": "Mix Zi Mare"
     }
   },
+  "guest_invitation": {
+    "more_details": "Mai multe detalii",
+    "open_link": "Deschide link",
+    "loading": "Se incarca...",
+    "not_found": "Invitatia nu a fost gasita"
+  },
   "footer": {
     "tagline": "InvitaÈ›ii digitale superbe pentru cele mai importante momente ale tale.",
     "product": "Produs",

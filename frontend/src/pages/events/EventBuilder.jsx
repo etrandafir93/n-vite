@@ -483,6 +483,7 @@ export default function EventBuilder() {
   const [fieldErrors, setFieldErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
   const [error, setError] = useState(null)
   const [previewingTheme, setPreviewingTheme] = useState(null)
   const [activeSectionType, setActiveSectionType] = useState(null)
@@ -531,6 +532,7 @@ export default function EventBuilder() {
           status: data.status ?? 'LIVE',
           sections: loadedSections,
         })
+        setIsDirty(false)
         setActiveSectionType(loadedSections[0]?.type ?? null)
       })
       .catch(() => setError('Could not load invitation data.'))
@@ -538,6 +540,7 @@ export default function EventBuilder() {
   }, [eventReference])
 
   const set = field => value => {
+    setIsDirty(true)
     setForm(prev => ({ ...prev, [field]: value }))
     if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: null }))
   }
@@ -555,15 +558,18 @@ export default function EventBuilder() {
   const addSection = type => {
     const blank = buildBlankSection(type)
     setActiveSectionType(type)
+    setIsDirty(true)
     setForm(prev => ({ ...prev, sections: [...prev.sections, blank] }))
   }
 
   const removeSectionByType = type => {
+    setIsDirty(true)
     setForm(prev => ({ ...prev, sections: prev.sections.filter(section => section.type !== type) }))
     setActiveSectionType(prev => (prev === type ? null : prev))
   }
 
   const updateSectionByType = (type, value) => setForm(prev => {
+    setIsDirty(true)
     const sections = prev.sections.map(section => section.type === type ? value : section)
     return { ...prev, sections }
   })
@@ -696,6 +702,7 @@ export default function EventBuilder() {
       console.log('Preview response:', eventReference)
       // Open preview in new window
       window.open(`/invitations/${eventReference}`, '_blank')
+      setIsDirty(false)
       setSaving(false)
     } catch (err) {
       console.error('Preview error:', err)
@@ -716,6 +723,38 @@ export default function EventBuilder() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [previewingTheme])
+
+  useEffect(() => {
+    if (!isEdit) setIsDirty(false)
+  }, [isEdit])
+
+  useEffect(() => {
+    const onBeforeUnload = (event) => {
+      if (!isDirty || saving) return
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', onBeforeUnload)
+    return () => window.removeEventListener('beforeunload', onBeforeUnload)
+  }, [isDirty, saving])
+
+  const venueReady =
+    (form.eventType === 'both' && !!form.ceremonyVenue.trim() && !!form.receptionVenue.trim()) ||
+    (form.eventType === 'ceremony' && !!form.ceremonyVenue.trim()) ||
+    (form.eventType === 'reception' && !!form.receptionVenue.trim())
+
+  const readinessChecks = [
+    { label: 'Couple names', done: !!form.groomName.trim() && !!form.brideName.trim() },
+    { label: 'Date & time', done: !!form.eventDateTime },
+    { label: 'Background image', done: !!form.backgroundImageUrl.trim() },
+    { label: 'Venue details', done: venueReady },
+    { label: 'Theme selected', done: !!form.theme },
+    { label: 'At least one section', done: form.sections.length > 0 },
+  ]
+  const readinessDoneCount = readinessChecks.filter(check => check.done).length
+  const readinessPercent = Math.round((readinessDoneCount / readinessChecks.length) * 100)
+  const canLeaveWithoutPrompt = !isDirty || saving
+  const confirmLeave = () => canLeaveWithoutPrompt || window.confirm('You have unsaved changes. Leave this page?')
 
   if (loading) {
     return (
@@ -746,7 +785,7 @@ export default function EventBuilder() {
 
       <header className="eb-header">
         <div className="eb-header__inner container">
-          <Link to="/events" className="eb-back">← My Invitations</Link>
+          <Link to="/events" className="eb-back" onClick={e => { if (!confirmLeave()) e.preventDefault() }}>← My Invitations</Link>
           <Link to="/" className="eb-logo">n<span>·</span>vite</Link>
           <div className="eb-header__right" />
         </div>
@@ -978,10 +1017,27 @@ export default function EventBuilder() {
             />
           </Section>
 
+          <div className="eb-readiness">
+            <div className="eb-readiness__head">
+              <strong>Publish Readiness</strong>
+              <span>{readinessDoneCount}/{readinessChecks.length} complete ({readinessPercent}%)</span>
+            </div>
+            <div className="eb-readiness__bar" aria-hidden="true">
+              <span style={{ width: `${readinessPercent}%` }} />
+            </div>
+            <ul className="eb-readiness__list">
+              {readinessChecks.map(check => (
+                <li key={check.label} className={check.done ? 'done' : 'pending'}>
+                  {check.done ? '✓' : '○'} {check.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="eb-actions">
-            <Link to="/events" className="eb-btn eb-btn--ghost">Cancel</Link>
+            <Link to="/events" className="eb-btn eb-btn--ghost" onClick={e => { if (!confirmLeave()) e.preventDefault() }}>Cancel</Link>
             <button type="button" onClick={handlePreview} className="eb-btn eb-btn--secondary" disabled={saving}>
-              Preview
+              Preview Draft
             </button>
             <button type="submit" className="eb-btn eb-btn--primary" disabled={saving}>
               {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Create Invitation'}

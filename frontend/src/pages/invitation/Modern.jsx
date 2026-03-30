@@ -364,6 +364,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [errors, setErrors] = useState({})
+  const [submitError, setSubmitError] = useState(null)
 
   const validate = () => {
     const errs = {}
@@ -383,6 +384,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
       return
     }
     setErrors({})
+    setSubmitError(null)
     setSubmitting(true)
     try {
       const response = await fetch(`/api/invitations/${invitationRef}/responses`, {
@@ -407,7 +409,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
       setSubmitted(true)
     } catch (error) {
       console.error('Error submitting RSVP:', error)
-      alert('Failed to submit RSVP. Please try again.')
+      setSubmitError('We could not save your response right now. Please try again.')
     } finally {
       setSubmitting(false)
     }
@@ -422,6 +424,14 @@ function RsvpForm({ invitationRef, menuOptions }) {
         <p style={{ fontSize: '.9rem', color: '#6a90b0', lineHeight: '1.6' }}>
           Your response has been recorded. See you soon!
         </p>
+        <button
+          className="mdn-btn-secondary"
+          type="button"
+          onClick={() => setSubmitted(false)}
+          style={{ marginTop: '1.1rem', maxWidth: '220px' }}
+        >
+          Update response
+        </button>
       </div>
     )
   }
@@ -536,6 +546,11 @@ function RsvpForm({ invitationRef, menuOptions }) {
           <ul>
             {Object.values(errors).map((msg, i) => <li key={i}>{msg}</li>)}
           </ul>
+        </div>
+      )}
+      {submitError && (
+        <div className="mdn-rsvp-errors" role="alert" style={{ marginTop: '.6rem' }}>
+          <p>{submitError}</p>
         </div>
       )}
 

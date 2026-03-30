@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import ClassicInvitation from '../invitation/Classic'
 import RomanticInvitation from '../invitation/Romantic'
 import ModernInvitation from '../invitation/Modern'
@@ -28,14 +29,14 @@ const EXTENDED_SECTION_LABELS = {
   COUPLE_QUOTE: 'Couple Quote',
 }
 
-function ExtendedSections({ sections }) {
+function ExtendedSections({ sections, t }) {
   const renderable = (sections || []).filter(s => EXTENDED_SECTION_LABELS[s.type])
   if (renderable.length === 0) return null
 
   return (
     <section style={{ padding: '2.5rem 1.2rem 3rem', background: '#f7f6f4' }}>
       <div style={{ maxWidth: '920px', margin: '0 auto' }}>
-        <h2 style={{ margin: '0 0 1rem', textAlign: 'center', color: '#2f2a24' }}>More Details</h2>
+        <h2 style={{ margin: '0 0 1rem', textAlign: 'center', color: '#2f2a24' }}>{t('guest_invitation.more_details')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
           {renderable.map((section, idx) => (
             <article
@@ -65,7 +66,7 @@ function ExtendedSections({ sections }) {
               )}
               {section.linkUrl && (
                 <a href={section.linkUrl} target="_blank" rel="noreferrer" style={{ color: '#8a6742', fontWeight: 600 }}>
-                  Open link
+                  {t('guest_invitation.open_link')}
                 </a>
               )}
             </article>
@@ -77,6 +78,7 @@ function ExtendedSections({ sections }) {
 }
 
 export default function Invitation() {
+  const { t } = useTranslation()
   const { ref, theme: urlTheme } = useParams()
   const [invitation, setInvitation] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -101,18 +103,18 @@ export default function Invitation() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        Loading...
-      </div>
-    )
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {t('guest_invitation.loading')}
+        </div>
+      )
   }
 
   if (!invitation) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        Invitation not found
-      </div>
-    )
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {t('guest_invitation.not_found')}
+        </div>
+      )
   }
 
   const selectedTheme = urlTheme || invitation.theme || 'classic'
@@ -121,7 +123,7 @@ export default function Invitation() {
   return (
     <>
       <ThemeComponent invitationRef={ref} invitationData={invitation} />
-      <ExtendedSections sections={invitation.sections} />
+      <ExtendedSections sections={invitation.sections} t={t} />
     </>
   )
 }

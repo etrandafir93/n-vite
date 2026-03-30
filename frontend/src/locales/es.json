@@ -243,6 +243,12 @@
       "full": "Mix Gran Dia"
     }
   },
+  "guest_invitation": {
+    "more_details": "Mas detalles",
+    "open_link": "Abrir enlace",
+    "loading": "Cargando...",
+    "not_found": "Invitacion no encontrada"
+  },
   "footer": {
     "tagline": "Hermosas invitaciones digitales para tus momentos mÃ¡s importantes.",
     "product": "Producto",

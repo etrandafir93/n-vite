@@ -204,11 +204,13 @@ function ShareMenu({ reference, groomName, brideName, onOpenChange }) {
             <TelegramIcon /> Telegram
           </a>
           <a
-            href={`fb-messenger://share/?link=${encodeURIComponent(url)}`}
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
+            target="_blank"
+            rel="noreferrer"
             className="ev-share__item ev-share__item--messenger"
             onClick={() => setOpenAndNotify(false)}
           >
-            <MessengerIcon /> Messenger
+            <MessengerIcon /> Facebook
           </a>
           <button
             className="ev-share__item ev-share__item--instagram"
@@ -248,7 +250,6 @@ function EventCard({ event, onDelete, onEnable }) {
     })
       .then(() => {
         onEnable(event.reference)
-        window.location.reload()
       })
       .catch(console.error)
   }

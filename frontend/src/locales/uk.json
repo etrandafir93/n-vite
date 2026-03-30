@@ -243,6 +243,12 @@
       "full": "Big Day Mix"
     }
   },
+  "guest_invitation": {
+    "more_details": "More Details",
+    "open_link": "Open link",
+    "loading": "Loading...",
+    "not_found": "Invitation not found"
+  },
   "footer": {
     "tagline": "Красиві цифрові запрошення для ваших найважливіших моментів.",
     "product": "Продукт",
