@@ -1,4 +1,7 @@
-﻿import { useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
+
+const PREVIEW_SECTION_IDS = ['families', 'celebrations', 'schedule', 'dress-code', 'accommodation', 'day-schedule', 'rsvp']
+const MAX_TOUR_MS = 9000
 
 function injectNoScrollbarStyles(iframe) {
   try {
@@ -29,6 +32,77 @@ function injectNoScrollbarStyles(iframe) {
   }
 }
 
+function buildStops(doc, scroller, maxScroll) {
+  const fromSections = PREVIEW_SECTION_IDS
+    .map((id) => {
+      const section = doc.getElementById(id)
+      if (!section) return null
+
+      if (scroller === doc.scrollingElement || scroller === doc.documentElement || scroller === doc.body) {
+        return section.offsetTop
+      }
+
+      const rootRect = scroller.getBoundingClientRect()
+      const sectionRect = section.getBoundingClientRect()
+      return scroller.scrollTop + (sectionRect.top - rootRect.top)
+    })
+    .filter((value) => value !== null)
+    .map((value) => Math.min(maxScroll, Math.max(0, value)))
+
+  const fallback = [0, Math.round(maxScroll * 0.2), Math.round(maxScroll * 0.4), Math.round(maxScroll * 0.62), Math.round(maxScroll * 0.82), maxScroll]
+  const source = fromSections.length > 0 ? [0, ...fromSections] : fallback
+
+  return source
+    .filter((value, idx) => idx === 0 || Math.abs(value - source[idx - 1]) > 35)
+    .slice(0, 9)
+}
+
+function runAutoTour(iframe, timerRef) {
+  if (!iframe) return
+  try {
+    const win = iframe.contentWindow
+    const doc = iframe.contentDocument || win?.document
+    if (!doc) return
+
+    injectNoScrollbarStyles(iframe)
+
+    const scroller = doc.scrollingElement || doc.documentElement || doc.body
+    if (!scroller) return
+
+    const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
+    if (maxScroll <= 80) return
+
+    const stops = buildStops(doc, scroller, maxScroll)
+    const paceMs = Math.max(850, Math.floor(MAX_TOUR_MS / Math.max(1, stops.length - 1)))
+
+    if (win?.scrollTo) {
+      win.scrollTo({ top: 0, behavior: 'auto' })
+    }
+    scroller.scrollTop = 0
+
+    const timers = []
+    stops.forEach((top, idx) => {
+      timers.push(window.setTimeout(() => {
+        if (!iframe.isConnected) return
+        if (win?.scrollTo && (scroller === doc.scrollingElement || scroller === doc.documentElement || scroller === doc.body)) {
+          win.scrollTo({ top, behavior: 'smooth' })
+          return
+        }
+        scroller.scrollTo?.({ top, behavior: 'smooth' }) ?? (scroller.scrollTop = top)
+      }, idx * paceMs))
+    })
+
+    timerRef.current = timers
+  } catch (error) {
+    // Ignore preview auto-scroll errors and keep the live preview visible.
+  }
+}
+
+function clearTour(timerRef) {
+  timerRef.current.forEach((timer) => window.clearTimeout(timer))
+  timerRef.current = []
+}
+
 const fallbackSteps = [
   { title: 'Welcome cover', subtitle: 'Names, date and venue in one elegant opener.', points: ['Emma & James', '14 Sep 2026'] },
   { title: 'Day schedule', subtitle: 'Clear timings so guests know what happens next.', points: ['16:00 Ceremony', '18:00 Dinner'] },
@@ -49,6 +123,8 @@ export default function TemplatePhonePreview({
   previewSteps,
   labels,
 }) {
+  const iframeRef = useRef(null)
+  const tourTimers = useRef([])
   const [loadedLive, setLoadedLive] = useState(false)
   const demoUrl = `/invitations/${demoRef}/${theme.key}?preview=true&embed=true`
 
@@ -58,6 +134,21 @@ export default function TemplatePhonePreview({
     const next = steps[1] || current
     return [current, next]
   }, [previewSteps])
+
+  useEffect(() => {
+    if (!isActive) {
+      clearTour(tourTimers)
+      setLoadedLive(false)
+    }
+    return () => clearTour(tourTimers)
+  }, [isActive])
+
+  useEffect(() => {
+    if (!isActive || !loadedLive || !iframeRef.current) return
+    clearTour(tourTimers)
+    const kickOff = window.setTimeout(() => runAutoTour(iframeRef.current, tourTimers), 260)
+    return () => window.clearTimeout(kickOff)
+  }, [isActive, loadedLive])
 
   const stepPoints = getStepPoints(baseStep)
 
@@ -111,12 +202,14 @@ export default function TemplatePhonePreview({
                 <div className="template-phone__loading">{labels.previewLoading}</div>
               )}
               <iframe
+                ref={iframeRef}
                 title={`${theme.name} live preview`}
                 src={demoUrl}
                 className={`template-phone__live ${loadedLive ? 'is-ready' : ''}`}
                 onLoad={(event) => {
                   injectNoScrollbarStyles(event.currentTarget)
                   setLoadedLive(true)
+                  runAutoTour(event.currentTarget, tourTimers)
                 }}
               />
             </div>
