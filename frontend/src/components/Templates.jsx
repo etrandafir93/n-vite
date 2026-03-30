@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import './Templates.css'
 
@@ -13,6 +14,59 @@ const themeVisuals = {
 export default function Templates() {
   const { t } = useTranslation()
   const themes = t('templates.themes', { returnObjects: true })
+  const [activeKey, setActiveKey] = useState(null)
+  const iframeRefs = useRef({})
+  const scrollIntervals = useRef({})
+
+  const stopAutoScroll = (key) => {
+    const timer = scrollIntervals.current[key]
+    if (timer) {
+      clearInterval(timer)
+      delete scrollIntervals.current[key]
+    }
+  }
+
+  const startAutoScroll = (key) => {
+    stopAutoScroll(key)
+    const iframe = iframeRefs.current[key]
+    if (!iframe) return
+
+    let direction = 1
+    scrollIntervals.current[key] = window.setInterval(() => {
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow?.document
+        if (!doc) return
+        const scroller = doc.scrollingElement || doc.documentElement || doc.body
+        if (!scroller) return
+
+        const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
+        if (maxScroll <= 0) return
+
+        const next = scroller.scrollTop + direction * 2
+        if (next >= maxScroll - 2) direction = -1
+        if (next <= 2) direction = 1
+        scroller.scrollTop = Math.max(0, Math.min(maxScroll, next))
+      } catch (e) {
+        stopAutoScroll(key)
+      }
+    }, 40)
+  }
+
+  useEffect(() => {
+    Object.keys(scrollIntervals.current).forEach((key) => {
+      if (key !== activeKey) {
+        stopAutoScroll(key)
+      }
+    })
+    if (!activeKey) return
+    startAutoScroll(activeKey)
+  }, [activeKey])
+
+  useEffect(() => {
+    return () => {
+      Object.keys(scrollIntervals.current).forEach(stopAutoScroll)
+    }
+  }, [])
 
   return (
     <section className="templates" id="templates">
@@ -26,21 +80,36 @@ export default function Templates() {
         <div className="templates__grid">
           {themes.map((theme) => {
             const v = themeVisuals[theme.key]
+            const isActive = activeKey === theme.key
+            const demoUrl = `/invitations/${DEMO_REF}/${theme.key}?preview=true`
+
             return (
-              <a
+              <article
                 key={theme.key}
-                href={`/invitations/${DEMO_REF}/${theme.key}`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="template-card"
+                onMouseEnter={() => setActiveKey(theme.key)}
+                onMouseLeave={() => setActiveKey(prev => (prev === theme.key ? null : prev))}
+                onFocus={() => setActiveKey(theme.key)}
+                onBlur={() => setActiveKey(prev => (prev === theme.key ? null : prev))}
               >
                 <div className="template-card__preview" style={{ background: v.gradient }}>
-                  <div className="template-card__mini">
-                    <p className="template-card__mini-label">You are invited to the wedding of</p>
-                    <div className="template-card__mini-symbol" style={{ color: v.accent }}>{v.symbol}</div>
-                    <p className="template-card__mini-names">Emma &amp; James</p>
-                    <p className="template-card__mini-date">14 · September · 2026</p>
-                  </div>
+                  {!isActive && (
+                    <div className="template-card__mini">
+                      <p className="template-card__mini-label">You are invited to the wedding of</p>
+                      <div className="template-card__mini-symbol" style={{ color: v.accent }}>{v.symbol}</div>
+                      <p className="template-card__mini-names">Emma &amp; James</p>
+                      <p className="template-card__mini-date">14 · September · 2026</p>
+                    </div>
+                  )}
+                  {isActive && (
+                    <iframe
+                      ref={el => { iframeRefs.current[theme.key] = el }}
+                      title={`${theme.name} demo preview`}
+                      src={demoUrl}
+                      className="template-card__live"
+                      onLoad={() => { if (activeKey === theme.key) startAutoScroll(theme.key) }}
+                    />
+                  )}
                 </div>
                 <div className="template-card__body">
                   <div className="template-card__name-row">
@@ -48,9 +117,17 @@ export default function Templates() {
                     <span className="template-card__arrow">→</span>
                   </div>
                   <p className="template-card__tagline">{theme.tagline}</p>
-                  <span className="template-card__cta">{t('templates.view_demo')}</span>
+                  <a
+                    href={`/invitations/${DEMO_REF}/${theme.key}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="template-card__cta"
+                    onMouseEnter={() => setActiveKey(theme.key)}
+                  >
+                    {t('templates.view_demo')}
+                  </a>
                 </div>
-              </a>
+              </article>
             )
           })}
         </div>
