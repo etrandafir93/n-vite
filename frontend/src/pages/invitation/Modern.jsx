@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useCountdown } from './useCountdown'
 
 function fmtDate(iso) {
@@ -349,6 +350,7 @@ function EnvelopeIntro({ opening, onOpen }) {
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
 function RsvpForm({ invitationRef, menuOptions }) {
+  const { t } = useTranslation()
   const menuChoices = (menuOptions && menuOptions.length > 0) ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [partnerName, setPartnerName] = useState('')
@@ -409,7 +411,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
       setSubmitted(true)
     } catch (error) {
       console.error('Error submitting RSVP:', error)
-      setSubmitError('We could not save your response right now. Please try again.')
+      setSubmitError(t('rsvp_common.submit_error'))
     } finally {
       setSubmitting(false)
     }
@@ -430,7 +432,7 @@ function RsvpForm({ invitationRef, menuOptions }) {
           onClick={() => setSubmitted(false)}
           style={{ marginTop: '1.1rem', maxWidth: '220px' }}
         >
-          Update response
+          {t('rsvp_common.update_response')}
         </button>
       </div>
     )

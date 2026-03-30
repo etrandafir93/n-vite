@@ -249,6 +249,10 @@
     "loading": "Se incarca...",
     "not_found": "Invitatia nu a fost gasita"
   },
+  "rsvp_common": {
+    "submit_error": "Nu am putut salva raspunsul acum. Te rugam sa incerci din nou.",
+    "update_response": "Actualizeaza raspunsul"
+  },
   "footer": {
     "tagline": "InvitaÈ›ii digitale superbe pentru cele mai importante momente ale tale.",
     "product": "Produs",

@@ -249,6 +249,10 @@
     "loading": "Cargando...",
     "not_found": "Invitacion no encontrada"
   },
+  "rsvp_common": {
+    "submit_error": "No pudimos guardar tu respuesta ahora. Intentalo de nuevo.",
+    "update_response": "Actualizar respuesta"
+  },
   "footer": {
     "tagline": "Hermosas invitaciones digitales para tus momentos mÃ¡s importantes.",
     "product": "Producto",

@@ -249,6 +249,10 @@
     "loading": "Loading...",
     "not_found": "Invitation not found"
   },
+  "rsvp_common": {
+    "submit_error": "We could not save your response right now. Please try again.",
+    "update_response": "Update response"
+  },
   "footer": {
     "tagline": "Beautiful digital invitations for your most important moments.",
     "product": "Product",
