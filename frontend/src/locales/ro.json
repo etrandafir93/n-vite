@@ -274,7 +274,8 @@
         ]
       }
     ],
-    "preview_loading": "Se incarca preview live..."
+    "preview_loading": "Se incarca preview live...",
+    "preview_live": "Preview live"
   },
   "sections": {
     "label": "Continut flexibil",

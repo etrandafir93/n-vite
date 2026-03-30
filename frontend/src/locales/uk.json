@@ -274,7 +274,8 @@
         ]
       }
     ],
-    "preview_loading": "Zavantazhennya live preview..."
+    "preview_loading": "Zavantazhennya live preview...",
+    "preview_live": "Live preview"
   },
   "sections": {
     "label": "Гнучкий контент",

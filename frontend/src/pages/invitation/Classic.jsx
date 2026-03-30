@@ -577,7 +577,9 @@ function RsvpForm({ rsvpDeadline, invitationRef, menuOptions }) {
 export default function ClassicInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
-  const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true'
+  const searchParams = new URLSearchParams(window.location.search)
+  const isPreview = searchParams.get('preview') === 'true'
+  const isEmbeddedPreview = searchParams.get('embed') === 'true'
   const [phase, setPhase] = useState(isPreview ? 'open' : 'closed')
 
   const handleOpen = () => {
@@ -833,6 +835,15 @@ export default function ClassicInvitation({ invitationRef, invitationData }) {
               </p>
               <p style={{ fontSize: '.85rem', color: '#888', lineHeight: '1.6' }}>
                 Your presence made our special day even more memorable.
+              </p>
+            </div>
+          ) : isEmbeddedPreview ? (
+            <div className="cl-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.5rem', color: '#1c1c1c', marginBottom: '.75rem' }}>
+                Live RSVP Preview
+              </h3>
+              <p style={{ fontSize: '.88rem', color: '#777', lineHeight: '1.6' }}>
+                Open full demo to interact with RSVP fields.
               </p>
             </div>
           ) : (

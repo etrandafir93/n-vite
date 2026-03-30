@@ -251,6 +251,7 @@
   position: absolute;
   inset: 0;
   background: #fff;
+  overflow: hidden;
 }
 
 .template-phone__live {
@@ -276,6 +277,48 @@
   color: #637495;
   letter-spacing: 0.03em;
   background: linear-gradient(180deg, #ffffff 0%, #f4f7fc 100%);
+  z-index: 2;
+}
+
+.template-phone__loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.85) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: loading-sweep 1.3s ease-in-out infinite;
+}
+
+.template-phone__live-badge {
+  position: absolute;
+  top: 0.42rem;
+  right: 0.44rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
+  padding: 0.16rem 0.34rem;
+  border-radius: 999px;
+  background: rgba(17, 23, 35, 0.74);
+  color: #eaf0ff;
+  font-size: 0.34rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  backdrop-filter: blur(2px);
+}
+
+.template-phone__live-badge.is-ready {
+  background: rgba(12, 20, 31, 0.5);
+}
+
+.template-phone__live-dot {
+  width: 0.24rem;
+  height: 0.24rem;
+  border-radius: 50%;
+  background: #66f2ab;
+  box-shadow: 0 0 0 rgba(102, 242, 171, 0.6);
+  animation: live-pulse 1.4s ease-out infinite;
 }
 
 .template-card__body {
@@ -340,6 +383,21 @@
   }
   50% {
     transform: translateY(-4px) scale(1.04);
+  }
+}
+
+@keyframes loading-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(102, 242, 171, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(102, 242, 171, 0);
   }
 }
 

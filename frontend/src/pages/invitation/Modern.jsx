@@ -585,7 +585,9 @@ function RsvpForm({ invitationRef, menuOptions }) {
 export default function ModernInvitation({ invitationRef, invitationData }) {
   const { slug } = useParams()
   const [inv, setInv] = useState(invitationData || null)
-  const isPreview = new URLSearchParams(window.location.search).get('preview') === 'true'
+  const searchParams = new URLSearchParams(window.location.search)
+  const isPreview = searchParams.get('preview') === 'true'
+  const isEmbeddedPreview = searchParams.get('embed') === 'true'
   const [phase, setPhase] = useState(isPreview ? 'open' : 'closed')
 
   const handleOpen = () => {
@@ -849,6 +851,16 @@ export default function ModernInvitation({ invitationRef, invitationData }) {
               </p>
               <p style={{ fontSize: '.85rem', color: '#4a6880', lineHeight: '1.6' }}>
                 Your presence made our special day even more memorable.
+              </p>
+            </div>
+          ) : isEmbeddedPreview ? (
+            <div className="mdn-form" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+              <div className="mdn-section-label" style={{ marginBottom: '1rem' }}>LIVE PREVIEW</div>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: '900', color: '#fff', marginBottom: '.75rem', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                RSVP <span style={{color: '#f5a623'}}>Preview</span>
+              </h3>
+              <p style={{ fontSize: '.84rem', color: '#6a90b0', lineHeight: '1.6' }}>
+                Open full demo to interact with RSVP fields.
               </p>
             </div>
           ) : (

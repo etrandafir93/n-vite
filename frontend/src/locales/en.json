@@ -274,7 +274,8 @@
         "tagline": "Earthy greens and organic textures for nature lovers"
       }
     ],
-    "preview_loading": "Loading live preview..."
+    "preview_loading": "Loading live preview...",
+    "preview_live": "Live preview"
   },
   "sections": {
     "label": "Flexible Content",
