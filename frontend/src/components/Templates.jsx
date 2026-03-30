@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import './Templates.css'
 
 const DEMO_REF = 'joe-and-jane'
+const PREVIEW_SECTION_IDS = ['families', 'celebrations', 'schedule', 'dress-code', 'accommodation', 'day-schedule', 'rsvp']
 
 const themeVisuals = {
   classic: { gradient: 'linear-gradient(160deg, #2a1a0e 0%, #6b4226 55%, #c9a07a 100%)', accent: '#c9a07a', symbol: '✦' },
@@ -16,13 +17,13 @@ export default function Templates() {
   const themes = t('templates.themes', { returnObjects: true })
   const [activeKey, setActiveKey] = useState(null)
   const iframeRefs = useRef({})
-  const scrollIntervals = useRef({})
+  const scrollTimers = useRef({})
 
   const stopAutoScroll = (key) => {
-    const timer = scrollIntervals.current[key]
-    if (timer) {
-      clearInterval(timer)
-      delete scrollIntervals.current[key]
+    const timers = scrollTimers.current[key]
+    if (timers) {
+      timers.forEach(timer => clearTimeout(timer))
+      delete scrollTimers.current[key]
     }
   }
 
@@ -31,29 +32,53 @@ export default function Templates() {
     const iframe = iframeRefs.current[key]
     if (!iframe) return
 
-    let direction = 1
-    scrollIntervals.current[key] = window.setInterval(() => {
-      try {
-        const doc = iframe.contentDocument || iframe.contentWindow?.document
-        if (!doc) return
-        const scroller = doc.scrollingElement || doc.documentElement || doc.body
-        if (!scroller) return
-
-        const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
-        if (maxScroll <= 0) return
-
-        const next = scroller.scrollTop + direction * 2
-        if (next >= maxScroll - 2) direction = -1
-        if (next <= 2) direction = 1
-        scroller.scrollTop = Math.max(0, Math.min(maxScroll, next))
-      } catch (e) {
-        stopAutoScroll(key)
+    try {
+      const doc = iframe.contentDocument || iframe.contentWindow?.document
+      if (!doc) return
+      const scroller = doc.scrollingElement || doc.documentElement || doc.body
+      if (!scroller) return
+      if (!doc.getElementById('template-preview-hide-scrollbar')) {
+        const style = doc.createElement('style')
+        style.id = 'template-preview-hide-scrollbar'
+        style.textContent = `
+          html, body {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+          html::-webkit-scrollbar,
+          body::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+          }
+        `
+        doc.head?.appendChild(style)
       }
-    }, 40)
+
+      const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
+      const sectionStops = PREVIEW_SECTION_IDS
+        .map(id => doc.getElementById(id)?.offsetTop ?? null)
+        .filter(top => top !== null)
+        .map(top => Math.min(maxScroll, Math.max(0, top)))
+      const fallbackStops = [0, Math.round(maxScroll * 0.2), Math.round(maxScroll * 0.4), Math.round(maxScroll * 0.62), Math.round(maxScroll * 0.82), maxScroll]
+      const sourceStops = sectionStops.length > 0 ? [0, ...sectionStops] : fallbackStops
+      const stops = sourceStops.filter((top, index) => index === 0 || Math.abs(top - sourceStops[index - 1]) > 40)
+
+      const timers = []
+      stops.forEach((top, idx) => {
+        const timer = window.setTimeout(() => {
+          scroller.scrollTo({ top, behavior: 'smooth' })
+        }, idx * 650)
+        timers.push(timer)
+      })
+      scrollTimers.current[key] = timers
+    } catch (e) {
+      stopAutoScroll(key)
+    }
   }
 
   useEffect(() => {
-    Object.keys(scrollIntervals.current).forEach((key) => {
+    Object.keys(scrollTimers.current).forEach((key) => {
       if (key !== activeKey) {
         stopAutoScroll(key)
       }
@@ -64,7 +89,7 @@ export default function Templates() {
 
   useEffect(() => {
     return () => {
-      Object.keys(scrollIntervals.current).forEach(stopAutoScroll)
+      Object.keys(scrollTimers.current).forEach(stopAutoScroll)
     }
   }, [])
 
