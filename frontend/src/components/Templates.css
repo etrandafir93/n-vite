@@ -147,6 +147,18 @@
   position: relative;
 }
 
+.template-phone__fallback {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+.template-phone__fallback.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .template-phone__cover {
   padding: 0.92rem 0.72rem 0.52rem;
   text-align: center;
@@ -257,6 +269,14 @@
   inset: 0;
   background: #fff;
   overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.template-phone__live-wrap.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .template-phone__live {
@@ -454,6 +474,10 @@
     justify-content: center;
   }
 
+  .template-phone__loading {
+    font-size: 0.46rem;
+  }
+
   .template-card__tagline {
     min-height: auto;
     font-size: 0.86rem;
@@ -494,6 +518,10 @@
 
   .template-phone {
     width: min(186px, 66vw);
+  }
+
+  .template-phone__loading {
+    font-size: 0.5rem;
   }
 
   .template-card__bloom {

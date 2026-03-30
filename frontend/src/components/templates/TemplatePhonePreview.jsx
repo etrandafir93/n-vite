@@ -32,6 +32,32 @@ function injectNoScrollbarStyles(iframe) {
   }
 }
 
+function injectResponsiveEmbedStyles(iframe) {
+  try {
+    const doc = iframe.contentDocument || iframe.contentWindow?.document
+    if (!doc || doc.getElementById('nvite-preview-embed-scale')) return
+
+    const frameWidth = iframe.clientWidth || 180
+    const scale = frameWidth <= 140 ? 0.68 : frameWidth <= 170 ? 0.74 : 0.8
+
+    const style = doc.createElement('style')
+    style.id = 'nvite-preview-embed-scale'
+    style.textContent = `
+      html, body {
+        min-width: 0 !important;
+      }
+      body {
+        transform: scale(${scale});
+        transform-origin: top left;
+        width: calc(100% / ${scale}) !important;
+      }
+    `
+    doc.head?.appendChild(style)
+  } catch (error) {
+    // Ignore iframe style injection issues.
+  }
+}
+
 function buildStops(doc, scroller, maxScroll) {
   const fromSections = PREVIEW_SECTION_IDS
     .map((id) => {
@@ -142,6 +168,7 @@ export default function TemplatePhonePreview({
 }) {
   const iframeRef = useRef(null)
   const tourTimers = useRef([])
+  const pendingStart = useRef(false)
   const [loadedLive, setLoadedLive] = useState(false)
   const demoUrl = `/invitations/${demoRef}/${theme.key}?preview=true&embed=true`
 
@@ -155,20 +182,21 @@ export default function TemplatePhonePreview({
   useEffect(() => {
     if (!isActive) {
       clearTour(tourTimers)
-      setLoadedLive(false)
+      pendingStart.current = false
     }
     return () => clearTour(tourTimers)
   }, [isActive])
 
   useEffect(() => {
-    if (!isActive || !loadedLive || !iframeRef.current) return
+    if (!isActive || !iframeRef.current) return
     clearTour(tourTimers)
     const firstTry = window.setTimeout(() => {
-      const success = runAutoTour(iframeRef.current, tourTimers)
-      if (!success && iframeRef.current?.isConnected) {
-        tourTimers.current.push(window.setTimeout(() => runAutoTour(iframeRef.current, tourTimers), 650))
+      if (!loadedLive) {
+        pendingStart.current = true
+        return
       }
-    }, 200)
+      runAutoTour(iframeRef.current, tourTimers)
+    }, 110)
     return () => window.clearTimeout(firstTry)
   }, [isActive, loadedLive])
 
@@ -187,59 +215,59 @@ export default function TemplatePhonePreview({
         </div>
 
         <div className="template-phone__screen">
-          {!isActive && (
-            <>
-              <div className="template-phone__cover" style={{ background: visual.gradient }}>
-                <p className="template-phone__invite">{labels.previewInvite}</p>
-                <p className="template-phone__names">Emma &amp; James</p>
-                <p className="template-phone__date">14 Sep 2026</p>
-              </div>
+          <div className={`template-phone__fallback ${isActive ? 'is-hidden' : ''}`}>
+            <div className="template-phone__cover" style={{ background: visual.gradient }}>
+              <p className="template-phone__invite">{labels.previewInvite}</p>
+              <p className="template-phone__names">Emma &amp; James</p>
+              <p className="template-phone__date">14 Sep 2026</p>
+            </div>
 
-              <div className="template-phone__feed">
-                <div className="template-phone__section template-phone__section--primary">
-                  <h4 className="template-phone__section-title">{baseStep.title}</h4>
-                  <p className="template-phone__section-subtitle">{baseStep.subtitle}</p>
-                  <div className="template-phone__chips">
-                    {(stepPoints.length > 0 ? stepPoints : [baseStep.subtitle]).map((point, idx) => (
-                      <span key={`${theme.key}-point-${idx}`} className="template-phone__chip">{point}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="template-phone__section template-phone__section--secondary">
-                  <h5 className="template-phone__next-title">{nextStep.title}</h5>
-                  <p className="template-phone__next-subtitle">{nextStep.subtitle}</p>
+            <div className="template-phone__feed">
+              <div className="template-phone__section template-phone__section--primary">
+                <h4 className="template-phone__section-title">{baseStep.title}</h4>
+                <p className="template-phone__section-subtitle">{baseStep.subtitle}</p>
+                <div className="template-phone__chips">
+                  {(stepPoints.length > 0 ? stepPoints : [baseStep.subtitle]).map((point, idx) => (
+                    <span key={`${theme.key}-point-${idx}`} className="template-phone__chip">{point}</span>
+                  ))}
                 </div>
               </div>
-            </>
-          )}
 
-          {isActive && (
-            <div className="template-phone__live-wrap">
-              <div className={`template-phone__live-badge ${loadedLive ? 'is-ready' : ''}`}>
-                <span className="template-phone__live-dot" />
-                {labels.previewLive}
+              <div className="template-phone__section template-phone__section--secondary">
+                <h5 className="template-phone__next-title">{nextStep.title}</h5>
+                <p className="template-phone__next-subtitle">{nextStep.subtitle}</p>
               </div>
-              {!loadedLive && (
-                <div className="template-phone__loading">{labels.previewLoading}</div>
-              )}
-              <iframe
-                ref={iframeRef}
-                title={`${theme.name} live preview`}
-                src={demoUrl}
-                className={`template-phone__live ${loadedLive ? 'is-ready' : ''}`}
-                onLoad={(event) => {
-                  injectNoScrollbarStyles(event.currentTarget)
-                  setLoadedLive(true)
+            </div>
+          </div>
+
+          <div className={`template-phone__live-wrap ${isActive ? 'is-active' : ''}`}>
+            <div className={`template-phone__live-badge ${loadedLive ? 'is-ready' : ''}`}>
+              <span className="template-phone__live-dot" />
+              {labels.previewLive}
+            </div>
+            {!loadedLive && (
+              <div className="template-phone__loading">{labels.previewLoading}</div>
+            )}
+            <iframe
+              ref={iframeRef}
+              title={`${theme.name} live preview`}
+              src={demoUrl}
+              className={`template-phone__live ${loadedLive ? 'is-ready' : ''}`}
+              onLoad={(event) => {
+                injectNoScrollbarStyles(event.currentTarget)
+                injectResponsiveEmbedStyles(event.currentTarget)
+                setLoadedLive(true)
+                if (pendingStart.current || isActive) {
+                  pendingStart.current = false
                   const didStart = runAutoTour(event.currentTarget, tourTimers)
                   if (!didStart) {
-                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 320))
-                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 780))
+                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 220))
+                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 520))
                   }
-                }}
-              />
-            </div>
-          )}
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
