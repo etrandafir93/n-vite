@@ -205,6 +205,39 @@
         "name": "Natural",
         "tagline": "Verde pÄƒmÃ¢ntesc È™i texturi organice pentru iubitorii de naturÄƒ"
       }
+    ],
+    "preview_hint": "Treci cu mouse-ul pentru sectiuni",
+    "preview_invite": "Esti invitat",
+    "preview_step_counter": "Sectiunea {{current}} din {{total}}",
+    "preview_steps": [
+      {
+        "title": "Coperta",
+        "subtitle": "Nume, data si locatie intr-o deschidere eleganta."
+      },
+      {
+        "title": "Povestea noastra",
+        "subtitle": "Un timeline scurt, personal si cald."
+      },
+      {
+        "title": "Programul zilei",
+        "subtitle": "Ore clare pentru fiecare moment al evenimentului."
+      },
+      {
+        "title": "Dress code",
+        "subtitle": "Seteaza stilul si culorile intr-un bloc rapid."
+      },
+      {
+        "title": "Cazare",
+        "subtitle": "Ajuta invitatii sa rezerve usor aproape de locatie."
+      },
+      {
+        "title": "Numaratoare inversa",
+        "subtitle": "Creeaza emotie pana la ziua cea mare."
+      },
+      {
+        "title": "RSVP",
+        "subtitle": "Colecteaza confirmarile in cateva secunde."
+      }
     ]
   },
   "sections": {

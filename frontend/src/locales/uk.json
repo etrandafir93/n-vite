@@ -205,6 +205,39 @@
         "name": "Природний",
         "tagline": "Земляні зелені тони та органічні текстури для поціновувачів природи"
       }
+    ],
+    "preview_hint": "Navedi myshu dlya pereglyadu sekciy",
+    "preview_invite": "Vas zaprosheno",
+    "preview_step_counter": "Sekciya {{current}} z {{total}}",
+    "preview_steps": [
+      {
+        "title": "Obkladynka",
+        "subtitle": "Imena, data ta miscze v elegantnomu starti."
+      },
+      {
+        "title": "Nasha istoriya",
+        "subtitle": "Korotkyy taymlayn z osobystym akcentom."
+      },
+      {
+        "title": "Rozklad dnya",
+        "subtitle": "Chitki chasy dlya kozhnoho etapu podiyi."
+      },
+      {
+        "title": "Dres-kod",
+        "subtitle": "Vstanovlyuye stil i kolory dlya gostey."
+      },
+      {
+        "title": "Prozhyvannya",
+        "subtitle": "Dopomagaye gostyam legko obraty zhitlo."
+      },
+      {
+        "title": "Countdown",
+        "subtitle": "Dodaye ochikuvannya pered velykym dnem."
+      },
+      {
+        "title": "RSVP",
+        "subtitle": "Shvydko zbiraye vidpovidi v odyn klik."
+      }
     ]
   },
   "sections": {

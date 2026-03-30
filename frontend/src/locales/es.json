@@ -184,6 +184,39 @@
     "title": "Explora nuestros estilos de invitaciÃ³n",
     "subtitle": "Toca cualquier plantilla para previsualizar una invitaciÃ³n real â€” sin cuenta necesaria.",
     "view_demo": "Ver Demo",
+    "preview_hint": "Pasa el raton para ver secciones",
+    "preview_invite": "Estas invitado",
+    "preview_step_counter": "Seccion {{current}} de {{total}}",
+    "preview_steps": [
+      {
+        "title": "Portada",
+        "subtitle": "Nombres, fecha y lugar en una apertura elegante."
+      },
+      {
+        "title": "Nuestra historia",
+        "subtitle": "Linea de tiempo corta, personal y cercana."
+      },
+      {
+        "title": "Agenda del dia",
+        "subtitle": "Horarios claros para cada momento del evento."
+      },
+      {
+        "title": "Codigo de vestimenta",
+        "subtitle": "Define el estilo con un bloque visual rapido."
+      },
+      {
+        "title": "Alojamiento",
+        "subtitle": "Ayuda a tus invitados a reservar sin dudas."
+      },
+      {
+        "title": "Cuenta regresiva",
+        "subtitle": "Genera emocion antes del gran dia."
+      },
+      {
+        "title": "RSVP",
+        "subtitle": "Recoge confirmaciones en segundos con un toque."
+      }
+    ],
     "themes": [
       {
         "key": "classic",

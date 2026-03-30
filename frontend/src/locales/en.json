@@ -184,6 +184,39 @@
     "title": "Browse our invitation styles",
     "subtitle": "Tap any template to preview a live invitation — no account needed.",
     "view_demo": "View Demo",
+    "preview_hint": "Hover to preview sections",
+    "preview_invite": "You are invited",
+    "preview_step_counter": "Section {{current}} of {{total}}",
+    "preview_steps": [
+      {
+        "title": "Welcome cover",
+        "subtitle": "Names, date and venue in one elegant opener."
+      },
+      {
+        "title": "Our story",
+        "subtitle": "A short timeline that feels personal and warm."
+      },
+      {
+        "title": "Day schedule",
+        "subtitle": "Clear timings so guests know what happens next."
+      },
+      {
+        "title": "Dress code",
+        "subtitle": "Set tone and colors with one quick visual block."
+      },
+      {
+        "title": "Accommodation",
+        "subtitle": "Help guests book nearby stays with confidence."
+      },
+      {
+        "title": "Countdown",
+        "subtitle": "Build excitement as the big day gets closer."
+      },
+      {
+        "title": "RSVP",
+        "subtitle": "Collect confirmations in seconds with one tap."
+      }
+    ],
     "themes": [
       {
         "key": "classic",
