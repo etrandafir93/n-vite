@@ -209,8 +209,9 @@
   },
   "sections": {
     "label": "Contenido flexible",
-    "title": "16 secciones para invitacion",
-    "subtitle": "Cualquier {{freeCount}} secciones son gratis. Cada seccion adicional cuesta +5 EUR.",
+    "title": "16 secciones. Combinaciones infinitas.",
+    "subtitle": "Mezcla las secciones que mejor encajan con tu evento. Empieza simple o crea una version completa.",
+    "teaser": "Prueba combinaciones y ve el total actualizado al instante",
     "items": [
       "Codigo de vestimenta",
       "Alojamiento",
@@ -232,8 +233,15 @@
     "selected": "Seleccionadas",
     "extra_cost": "Coste extra",
     "extra_cost_none": "+0 EUR",
-    "selected_badge": "Seleccionada",
-    "select_badge": "Elegir"
+    "selected_badge": "Incluida",
+    "select_badge": "Anadir",
+    "summary_free": "Te quedan {{freeSlotsLeft}} plazas incluidas antes de extras de pago.",
+    "summary_paid": "{{extraCount}} seccion(es) extra desbloqueadas. Total adicional: +{{extraPrice}} EUR.",
+    "presets": {
+      "starter": "Mix Inicial",
+      "story": "Mix Historia",
+      "full": "Mix Gran Dia"
+    }
   },
   "footer": {
     "tagline": "Hermosas invitaciones digitales para tus momentos mÃ¡s importantes.",

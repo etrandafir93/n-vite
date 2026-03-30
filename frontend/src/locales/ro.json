@@ -209,8 +209,9 @@
   },
   "sections": {
     "label": "Continut flexibil",
-    "title": "16 sectiuni pentru invitatie",
-    "subtitle": "Oricare {{freeCount}} sectiuni sunt gratuite. Fiecare sectiune suplimentara costa +5 EUR.",
+    "title": "16 sectiuni. Combinatii nelimitate.",
+    "subtitle": "Combina sectiunile care se potrivesc evenimentului tau. Incepe simplu sau construieste varianta completa.",
+    "teaser": "Incearca combinatii si vezi totalul actualizat instant",
     "items": [
       "Dress Code",
       "Cazare",
@@ -232,8 +233,15 @@
     "selected": "Selectate",
     "extra_cost": "Cost suplimentar",
     "extra_cost_none": "+0 EUR",
-    "selected_badge": "Selectat",
-    "select_badge": "Selecteaza"
+    "selected_badge": "Inclusa",
+    "select_badge": "Adauga",
+    "summary_free": "Mai ai {{freeSlotsLeft}} slot(uri) incluse inainte de extra cost.",
+    "summary_paid": "{{extraCount}} sectiune(i) extra adaugate. Total suplimentar: +{{extraPrice}} EUR.",
+    "presets": {
+      "starter": "Mix Start",
+      "story": "Mix Poveste",
+      "full": "Mix Zi Mare"
+    }
   },
   "footer": {
     "tagline": "InvitaÈ›ii digitale superbe pentru cele mai importante momente ale tale.",

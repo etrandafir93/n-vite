@@ -209,8 +209,9 @@
   },
   "sections": {
     "label": "Flexible Content",
-    "title": "16 invitation sections",
-    "subtitle": "Any {{freeCount}} sections are free. Each additional section costs +5 EUR.",
+    "title": "16 sections. Endless combinations.",
+    "subtitle": "Mix and match the sections that fit your day best. Build a light version or go all in.",
+    "teaser": "Try combinations and watch your total update live",
     "items": [
       "Dress Code",
       "Accommodation",
@@ -232,8 +233,15 @@
     "selected": "Selected",
     "extra_cost": "Extra cost",
     "extra_cost_none": "+0 EUR",
-    "selected_badge": "Selected",
-    "select_badge": "Select"
+    "selected_badge": "Included",
+    "select_badge": "Add",
+    "summary_free": "You still have {{freeSlotsLeft}} included slot(s) before paid extras start.",
+    "summary_paid": "{{extraCount}} extra section(s) unlocked. Additional total: +{{extraPrice}} EUR.",
+    "presets": {
+      "starter": "Starter Mix",
+      "story": "Story Mix",
+      "full": "Big Day Mix"
+    }
   },
   "footer": {
     "tagline": "Beautiful digital invitations for your most important moments.",

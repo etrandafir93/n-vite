@@ -1,6 +1,16 @@
 .sections-catalogue {
-  background: var(--white);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(238, 216, 173, 0.25), transparent 50%),
+    radial-gradient(circle at 88% 82%, rgba(205, 236, 216, 0.22), transparent 46%),
+    var(--white);
   padding: 5rem 0;
+  position: relative;
+}
+
+.sections-catalogue__anchor {
+  position: absolute;
+  top: -84px;
+  left: 0;
 }
 
 .sections-catalogue__header {
@@ -19,6 +29,45 @@
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
+}
+
+.sections-catalogue__teaser {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #f3ead9;
+  border: 1px solid #e5d0aa;
+  color: #5f4528;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.sections-catalogue__presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.sections-catalogue__presets button {
+  border: 1px solid rgba(18, 23, 46, 0.18);
+  background: #ffffff;
+  color: var(--text-dark);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.sections-catalogue__presets button:hover {
+  border-color: #bd9a66;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(44, 30, 8, 0.08);
 }
 
 .sections-catalogue__grid {
@@ -52,6 +101,14 @@
   font-size: 0.85rem;
 }
 
+.sections-catalogue__summary-line {
+  width: 100%;
+  text-align: center;
+  font-size: 0.79rem;
+  color: #6a5742;
+  margin-top: -0.35rem;
+}
+
 .section-chip {
   border: 1px solid rgba(18, 23, 46, 0.12);
   border-radius: 10px;
@@ -76,6 +133,12 @@
   background: #f4fbf5;
 }
 
+.section-chip--paid {
+  border-color: rgba(164, 110, 36, 0.5);
+  box-shadow: 0 0 0 2px rgba(164, 110, 36, 0.11);
+  background: #fffaf1;
+}
+
 .section-chip__name {
   font-size: 0.79rem;
   font-weight: 600;
@@ -96,6 +159,11 @@
 .section-chip__price--active {
   background: #d7f0dc;
   color: #1f6b2f;
+}
+
+.section-chip__price--paid {
+  background: #f5dfb8;
+  color: #704511;
 }
 
 @media (max-width: 980px) {
