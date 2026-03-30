@@ -427,17 +427,22 @@
   }
 
   .template-card {
-    max-width: 430px;
+    max-width: 520px;
     margin: 0 auto;
     border-radius: 18px;
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    align-items: stretch;
   }
 
   .template-card__preview {
-    padding: 1rem 0.85rem 1.1rem;
+    padding: 0.8rem 0.55rem;
+    min-height: 100%;
+    border-right: 1px solid rgba(12, 18, 30, 0.08);
   }
 
   .template-phone {
-    width: min(188px, 64vw);
+    width: min(124px, 28vw);
   }
 
   .template-card__bloom {
@@ -445,7 +450,8 @@
   }
 
   .template-card__body {
-    padding: 1rem;
+    padding: 0.85rem 0.95rem;
+    justify-content: center;
   }
 
   .template-card__tagline {
@@ -454,13 +460,13 @@
   }
 
   .template-card__meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.45rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
   }
 
   .template-card__hint {
-    font-size: 0.73rem;
+    font-size: 0.7rem;
   }
 
   .template-card__cta {
@@ -476,14 +482,28 @@
 @media (max-width: 480px) {
   .template-card {
     max-width: 100%;
+    display: flex;
+    grid-template-columns: none;
+  }
+
+  .template-card__preview {
+    border-right: 0;
+    border-bottom: 1px solid rgba(12, 18, 30, 0.08);
+    padding: 0.88rem 0.75rem;
   }
 
   .template-phone {
-    width: min(208px, 72vw);
+    width: min(186px, 66vw);
   }
 
   .template-card__bloom {
     display: none;
+  }
+
+  .template-card__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.44rem;
   }
 
   .template-phone__live-badge {

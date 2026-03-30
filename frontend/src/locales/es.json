@@ -311,7 +311,25 @@
       "starter": "Mix Inicial",
       "story": "Mix Historia",
       "full": "Mix Gran Dia"
-    }
+    },
+    "item_descriptions": [
+      "Guia de atuendo y colores",
+      "Opciones de alojamiento",
+      "Cronograma de momentos clave",
+      "Detalles de regalos",
+      "Historia de la pareja",
+      "Personas importantes",
+      "Respuestas para invitados",
+      "Info de transporte",
+      "Canciones sugeridas",
+      "Detalles de contribucion",
+      "Politica para ninos",
+      "Consejos de aparcamiento",
+      "Tiempo restante al evento",
+      "Comida y bebida destacada",
+      "Fotos y recuerdos",
+      "Mensaje personal corto"
+    ]
   },
   "guest_invitation": {
     "more_details": "Mas detalles",

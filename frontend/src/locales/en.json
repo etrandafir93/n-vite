@@ -311,7 +311,25 @@
       "starter": "Starter Mix",
       "story": "Story Mix",
       "full": "Big Day Mix"
-    }
+    },
+    "item_descriptions": [
+      "Attire and color guidance",
+      "Nearby stay suggestions",
+      "Key moments timeline",
+      "Gift and registry details",
+      "Your journey as a couple",
+      "People close to you",
+      "Answers to guest questions",
+      "Travel and shuttle info",
+      "Guest music requests",
+      "Contribution details",
+      "Kids attendance policy",
+      "Parking and access tips",
+      "Time left to the event",
+      "Food and drink highlights",
+      "Memories and snapshots",
+      "Short personal message"
+    ]
   },
   "guest_invitation": {
     "more_details": "More Details",

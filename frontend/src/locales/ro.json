@@ -311,7 +311,25 @@
       "starter": "Mix Start",
       "story": "Mix Poveste",
       "full": "Mix Zi Mare"
-    }
+    },
+    "item_descriptions": [
+      "Ghid de tinuta si culori",
+      "Sugestii de cazare",
+      "Timeline cu momente cheie",
+      "Detalii cadouri",
+      "Povestea voastra",
+      "Persoane apropiate",
+      "Raspunsuri pentru invitati",
+      "Informatii transport",
+      "Preferinte muzicale",
+      "Detalii contributii",
+      "Politica pentru copii",
+      "Sfaturi de parcare",
+      "Timp ramas pana la eveniment",
+      "Preparatele principale",
+      "Amintiri in imagini",
+      "Mesaj personal scurt"
+    ]
   },
   "guest_invitation": {
     "more_details": "Mai multe detalii",

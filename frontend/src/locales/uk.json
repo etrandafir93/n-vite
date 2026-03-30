@@ -311,7 +311,25 @@
       "starter": "Starter Mix",
       "story": "Story Mix",
       "full": "Big Day Mix"
-    }
+    },
+    "item_descriptions": [
+      "Porady shchodo stylyu ta koloriv",
+      "Varianty prozhyvannya poruch",
+      "Taymlayn klyuchovyh momentiv",
+      "Detali podarunkiv",
+      "Istoriya vashoyi pari",
+      "Nayblyzhchi lyudy",
+      "Vidpovidi na pytannya gostey",
+      "Transport i shuttle info",
+      "Muzychni pobazhannya gostey",
+      "Detali vneskiv",
+      "Pravyla dlya ditey",
+      "Porady shchodo parkovky",
+      "Skilky chasu zalyshylos",
+      "Osnovni punkty menyu",
+      "Foto ta spogady",
+      "Korotke osobyste povidomlennya"
+    ]
   },
   "guest_invitation": {
     "more_details": "More Details",

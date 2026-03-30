@@ -11,9 +11,12 @@ const PRESETS = {
   full: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12],
 }
 
+const SECTION_ICONS = ['👗', '🛏️', '🕒', '🎁', '💞', '👥', '❓', '🚌', '🎵', '🏝️', '🧒', '🅿️', '⏳', '🍽️', '📷', '💬']
+
 export default function SectionsCatalogue() {
   const { t } = useTranslation()
   const items = t('sections.items', { returnObjects: true })
+  const itemDescriptions = t('sections.item_descriptions', { returnObjects: true })
   const [selected, setSelected] = useState(() => new Set(PRESETS.starter))
 
   useEffect(() => {
@@ -106,7 +109,9 @@ export default function SectionsCatalogue() {
                 onClick={() => toggleItem(idx)}
                 aria-pressed={chip.isSelected}
               >
+                <span className="section-chip__icon" aria-hidden="true">{SECTION_ICONS[idx] || '✨'}</span>
                 <span className="section-chip__name">{item}</span>
+                <span className="section-chip__desc">{itemDescriptions[idx] || ''}</span>
                 <span
                   className={`section-chip__price ${chip.isSelected ? 'section-chip__price--active' : ''} ${chip.isPaid ? 'section-chip__price--paid' : ''}`}
                 >

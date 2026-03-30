@@ -130,6 +130,18 @@
   border-color: rgba(18, 23, 46, 0.25);
 }
 
+.section-chip__icon {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: #f1e6cc;
+  box-shadow: inset 0 0 0 1px rgba(62, 43, 19, 0.1);
+}
+
 .section-chip--selected {
   border-color: rgba(36, 106, 56, 0.55);
   box-shadow: 0 0 0 2px rgba(36, 106, 56, 0.12);
@@ -149,6 +161,16 @@
   line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.section-chip__desc {
+  font-size: 0.67rem;
+  color: #6e6253;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
