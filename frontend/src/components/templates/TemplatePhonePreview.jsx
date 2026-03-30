@@ -57,20 +57,35 @@ function buildStops(doc, scroller, maxScroll) {
     .slice(0, 9)
 }
 
+function detectScroller(doc, win) {
+  const root = doc.scrollingElement || doc.documentElement || doc.body
+  const candidates = [root]
+  const withOwnScroll = Array.from(doc.querySelectorAll('*')).filter((element) => {
+    const style = win?.getComputedStyle ? win.getComputedStyle(element) : null
+    const overflowY = style?.overflowY || ''
+    return (overflowY === 'auto' || overflowY === 'scroll') && element.scrollHeight - element.clientHeight > 80
+  })
+  candidates.push(...withOwnScroll)
+
+  return candidates
+    .filter(Boolean)
+    .sort((a, b) => (b.scrollHeight - b.clientHeight) - (a.scrollHeight - a.clientHeight))[0] || root
+}
+
 function runAutoTour(iframe, timerRef) {
-  if (!iframe) return
+  if (!iframe) return false
   try {
     const win = iframe.contentWindow
     const doc = iframe.contentDocument || win?.document
-    if (!doc) return
+    if (!doc) return false
 
     injectNoScrollbarStyles(iframe)
 
-    const scroller = doc.scrollingElement || doc.documentElement || doc.body
-    if (!scroller) return
+    const scroller = detectScroller(doc, win)
+    if (!scroller) return false
 
     const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
-    if (maxScroll <= 80) return
+    if (maxScroll <= 80) return false
 
     const stops = buildStops(doc, scroller, maxScroll)
     const paceMs = Math.max(520, Math.floor(MAX_TOUR_MS / Math.max(1, stops.length - 1)))
@@ -93,8 +108,10 @@ function runAutoTour(iframe, timerRef) {
     })
 
     timerRef.current = timers
+    return true
   } catch (error) {
     // Ignore preview auto-scroll errors and keep the live preview visible.
+    return false
   }
 }
 
@@ -146,8 +163,13 @@ export default function TemplatePhonePreview({
   useEffect(() => {
     if (!isActive || !loadedLive || !iframeRef.current) return
     clearTour(tourTimers)
-    const kickOff = window.setTimeout(() => runAutoTour(iframeRef.current, tourTimers), 260)
-    return () => window.clearTimeout(kickOff)
+    const firstTry = window.setTimeout(() => {
+      const success = runAutoTour(iframeRef.current, tourTimers)
+      if (!success && iframeRef.current?.isConnected) {
+        tourTimers.current.push(window.setTimeout(() => runAutoTour(iframeRef.current, tourTimers), 650))
+      }
+    }, 200)
+    return () => window.clearTimeout(firstTry)
   }, [isActive, loadedLive])
 
   const stepPoints = getStepPoints(baseStep)
@@ -209,7 +231,11 @@ export default function TemplatePhonePreview({
                 onLoad={(event) => {
                   injectNoScrollbarStyles(event.currentTarget)
                   setLoadedLive(true)
-                  runAutoTour(event.currentTarget, tourTimers)
+                  const didStart = runAutoTour(event.currentTarget, tourTimers)
+                  if (!didStart) {
+                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 320))
+                    tourTimers.current.push(window.setTimeout(() => runAutoTour(event.currentTarget, tourTimers), 780))
+                  }
                 }}
               />
             </div>
