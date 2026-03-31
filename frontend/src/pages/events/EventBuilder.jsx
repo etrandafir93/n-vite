@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
+import TemplatePhonePreview from '../../components/templates/TemplatePhonePreview'
+import { resolveThemeVisual } from '../../components/templates/themeRegistry'
 import './EventBuilder.css'
 
 const EMPTY_FORM = {
@@ -27,6 +29,15 @@ const EMPTY_FORM = {
   status: 'DRAFT',
   sections: [],
 }
+
+const THEMES = [
+  { key: 'classic',  name: 'Classic',  mood: 'Elegant & timeless' },
+  { key: 'romantic', name: 'Romantic', mood: 'Soft & intimate' },
+  { key: 'modern',   name: 'Modern',   mood: 'Bold & contemporary' },
+  { key: 'natural',  name: 'Natural',  mood: 'Warm & organic' },
+]
+
+const THEME_PREVIEW_LABELS = { previewInvite: "You're invited", previewLoading: 'Loading…', previewLive: 'LIVE' }
 
 const SECTION_CATALOGUE = [
   { type: 'DRESS_CODE', label: 'Dress Code', description: 'Let guests know the attire and suggested colours.' },
@@ -486,6 +497,7 @@ export default function EventBuilder() {
   const [isDirty, setIsDirty] = useState(false)
   const [error, setError] = useState(null)
   const [previewingTheme, setPreviewingTheme] = useState(null)
+  const [hoveredTheme, setHoveredTheme] = useState(null)
   const [activeSectionType, setActiveSectionType] = useState(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -796,39 +808,53 @@ export default function EventBuilder() {
 
         <form onSubmit={handleSubmit} noValidate>
 
-          <Section title="Choose a Theme" subtitle="Select the look and feel of your invitation — click Preview to explore">
-            <div className="eb-theme-grid">
-              {[
-                { value: 'classic',  label: 'Classic',  mood: 'Elegant & timeless',  colors: ['#faf8f4', '#e8dfc8', '#c9a96e', '#1c1c1c'] },
-                { value: 'romantic', label: 'Romantic', mood: 'Soft & intimate',      colors: ['#fff5f7', '#fce0e8', '#d4788a', '#4a1a28'] },
-                { value: 'modern',   label: 'Modern',   mood: 'Bold & contemporary',  colors: ['#0d1b2a', '#1a2e42', '#f5a623', '#ffffff'] },
-                { value: 'natural',  label: 'Natural',  mood: 'Warm & organic',       colors: ['#f5f2ec', '#e8dfc8', '#7a9e7e', '#3d2c1e'] },
-              ].map(theme => (
-                <label key={theme.value} className={`eb-theme-option${form.theme === theme.value ? ' eb-theme-option--selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="theme"
-                    value={theme.value}
-                    checked={form.theme === theme.value}
-                    onChange={e => set('theme')(e.target.value)}
-                    className="eb-theme-radio"
-                  />
-                  <div className="eb-theme-swatch">
-                    {theme.colors.map(c => <span key={c} style={{ background: c }} />)}
-                  </div>
-                  <div className="eb-theme-info">
-                    <span className="eb-theme-label">{theme.label}</span>
-                    <span className="eb-theme-mood">{theme.mood}</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="eb-theme-demo"
-                    onClick={e => { e.preventDefault(); setPreviewingTheme(theme.value) }}
+          <Section title="Choose a Theme" subtitle="Hover a theme to see a live preview — click to select">
+            <div className="eb-theme-cards">
+              {THEMES.map(theme => {
+                const visual = resolveThemeVisual(theme.key)
+                const isSelected = form.theme === theme.key
+                const isHovered = hoveredTheme === theme.key
+                return (
+                  <article
+                    key={theme.key}
+                    className={`eb-theme-card${isSelected ? ' eb-theme-card--selected' : ''}`}
+                    onClick={() => set('theme')(theme.key)}
+                    onMouseEnter={() => setHoveredTheme(theme.key)}
+                    onMouseLeave={() => setHoveredTheme(prev => prev === theme.key ? null : prev)}
                   >
-                    Preview
-                  </button>
-                </label>
-              ))}
+                    <input
+                      type="radio"
+                      name="theme"
+                      value={theme.key}
+                      checked={isSelected}
+                      onChange={() => set('theme')(theme.key)}
+                      className="eb-theme-radio"
+                    />
+                    <TemplatePhonePreview
+                      theme={theme}
+                      visual={visual}
+                      isActive={isHovered}
+                      demoRef={isEdit ? eventReference : 'joe-and-jane'}
+                      previewSteps={[]}
+                      labels={THEME_PREVIEW_LABELS}
+                    />
+                    <div className="eb-theme-card__body">
+                      <h3 className="eb-theme-card__name">{theme.name}</h3>
+                      <p className="eb-theme-card__mood">{theme.mood}</p>
+                      <div className="eb-theme-card__footer">
+                        <button
+                          type="button"
+                          className="eb-theme-card__demo"
+                          onClick={e => { e.preventDefault(); e.stopPropagation(); setPreviewingTheme(theme.key) }}
+                        >
+                          Preview
+                        </button>
+                        {isSelected && <span className="eb-theme-card__check">✓ Selected</span>}
+                      </div>
+                    </div>
+                  </article>
+                )
+              })}
             </div>
           </Section>
 
