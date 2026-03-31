@@ -266,6 +266,124 @@
   font-family: 'Courier New', monospace;
 }
 
+/* ---- Places input with clear button ---- */
+
+.eb-places-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eb-places-wrap .eb-input {
+  padding-right: 2rem;
+}
+
+.eb-places-clear {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem;
+  transition: color var(--transition);
+}
+
+.eb-places-clear:hover {
+  color: var(--text-dark);
+}
+
+/* ---- Pin on map button ---- */
+
+.eb-map-pin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gold);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  transition: color var(--transition);
+}
+
+.eb-map-pin-btn:hover {
+  color: var(--navy);
+}
+
+/* ---- Map picker modal ---- */
+
+.eb-map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 20, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.eb-map-modal__inner {
+  display: flex;
+  flex-direction: column;
+  width: min(900px, 96vw);
+  height: min(620px, 90vh);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+.eb-map-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+  background: #1a1a2e;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.eb-map-modal__map {
+  flex: 1;
+  min-height: 0;
+}
+
+.eb-map-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--white);
+  border-top: 1px solid var(--light-bg2);
+  flex-shrink: 0;
+  min-height: 54px;
+}
+
+.eb-map-modal__hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.eb-map-modal__address {
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ---- Theme Preview Modal ---- */
 
 .eb-preview-modal {

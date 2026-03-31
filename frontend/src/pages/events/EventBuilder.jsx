@@ -427,6 +427,21 @@ function PlacesInput({ value, onChange, onPlaceSelect, placeholder, invalid, map
   const inputRef = useRef(null)
   const acRef = useRef(null)
 
+  const setupAc = () => {
+    if (!window.google?.maps?.places || !inputRef.current) return
+    if (acRef.current) {
+      window.google.maps.event.clearInstanceListeners(acRef.current)
+      acRef.current = null
+    }
+    const ac = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['establishment', 'geocode'] })
+    ac.addListener('place_changed', () => {
+      const place = ac.getPlace()
+      onChange(place.formatted_address || inputRef.current.value)
+      onPlaceSelect?.(place)
+    })
+    acRef.current = ac
+  }
+
   useEffect(() => {
     if (inputRef.current && document.activeElement !== inputRef.current) {
       inputRef.current.value = value || ''
@@ -435,24 +450,116 @@ function PlacesInput({ value, onChange, onPlaceSelect, placeholder, invalid, map
 
   useEffect(() => {
     if (!mapsLoaded || !inputRef.current || acRef.current) return
-    const ac = new window.google.maps.places.Autocomplete(inputRef.current, { types: ['establishment', 'geocode'] })
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace()
-      onChange(place.formatted_address || inputRef.current.value)
-      onPlaceSelect?.(place)
-    })
-    acRef.current = ac
+    setupAc()
   }, [mapsLoaded])
 
+  const handleClear = () => {
+    if (inputRef.current) inputRef.current.value = ''
+    onChange('')
+    onPlaceSelect?.(null)
+    window.setTimeout(setupAc, 0)
+  }
+
   return (
-    <input
-      ref={inputRef}
-      className={`eb-input${invalid ? ' eb-input--invalid' : ''}`}
-      type="text"
-      defaultValue={value}
-      onInput={e => onChange(e.target.value)}
-      placeholder={placeholder}
-    />
+    <div className="eb-places-wrap">
+      <input
+        ref={inputRef}
+        className={`eb-input${invalid ? ' eb-input--invalid' : ''}`}
+        type="text"
+        defaultValue={value}
+        onInput={e => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
+      {value && (
+        <button type="button" className="eb-places-clear" onClick={handleClear} title="Clear address">×</button>
+      )}
+    </div>
+  )
+}
+
+function MapPicker({ onConfirm, onCancel }) {
+  const mapRef = useRef(null)
+  const mapInstanceRef = useRef(null)
+  const markerRef = useRef(null)
+  const geocoderRef = useRef(null)
+  const [selectedPlace, setSelectedPlace] = useState(null)
+  const [geocoding, setGeocoding] = useState(false)
+
+  useEffect(() => {
+    if (!mapRef.current || !window.google?.maps) return
+
+    const map = new window.google.maps.Map(mapRef.current, {
+      center: { lat: 44.4268, lng: 26.1025 },
+      zoom: 13,
+    })
+    mapInstanceRef.current = map
+    geocoderRef.current = new window.google.maps.Geocoder()
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => map.setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        () => {}
+      )
+    }
+
+    map.addListener('click', (e) => {
+      const latLng = e.latLng
+      const lat = latLng.lat()
+      const lng = latLng.lng()
+
+      if (markerRef.current) {
+        markerRef.current.setPosition(latLng)
+      } else {
+        markerRef.current = new window.google.maps.Marker({
+          position: latLng,
+          map,
+          animation: window.google.maps.Animation.DROP,
+        })
+      }
+
+      setGeocoding(true)
+      geocoderRef.current.geocode({ location: latLng }, (results, status) => {
+        setGeocoding(false)
+        const address = (status === 'OK' && results[0])
+          ? results[0].formatted_address
+          : `${lat.toFixed(5)}, ${lng.toFixed(5)}`
+        setSelectedPlace({ address, mapUrl: `https://maps.google.com/maps?q=${lat},${lng}` })
+      })
+    })
+
+    return () => {
+      if (markerRef.current) { markerRef.current.setMap(null); markerRef.current = null }
+    }
+  }, [])
+
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onCancel() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onCancel])
+
+  return (
+    <div className="eb-map-modal" onClick={onCancel}>
+      <div className="eb-map-modal__inner" onClick={e => e.stopPropagation()}>
+        <div className="eb-map-modal__bar">
+          <span>Click anywhere on the map to drop a pin</span>
+          <button type="button" className="eb-preview-modal__close" onClick={onCancel}>✕</button>
+        </div>
+        <div ref={mapRef} className="eb-map-modal__map" />
+        <div className="eb-map-modal__footer">
+          {geocoding && <span className="eb-map-modal__hint">Finding address…</span>}
+          {!geocoding && !selectedPlace && <span className="eb-map-modal__hint">Tap anywhere on the map to drop a pin</span>}
+          {!geocoding && selectedPlace && (
+            <>
+              <span className="eb-map-modal__address">{selectedPlace.address}</span>
+              <button type="button" className="eb-btn eb-btn--primary" onClick={() => onConfirm(selectedPlace)}>
+                Use this location
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -528,6 +635,7 @@ export default function EventBuilder() {
   const [error, setError] = useState(null)
   const [previewingTheme, setPreviewingTheme] = useState(null)
   const [hoveredTheme, setHoveredTheme] = useState(null)
+  const [mapPickerTarget, setMapPickerTarget] = useState(null)
   const [activeSectionType, setActiveSectionType] = useState(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -651,13 +759,26 @@ export default function EventBuilder() {
   }
 
   const onCeremonyPlace = (place) => {
+    if (!place) { set('ceremonyMapUrl')(''); return }
     const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
     if (url) set('ceremonyMapUrl')(url)
   }
 
   const onReceptionPlace = (place) => {
+    if (!place) { set('receptionMapUrl')(''); return }
     const url = place.url || (place.formatted_address ? `https://maps.google.com/maps?q=${encodeURIComponent(place.formatted_address)}` : null)
     if (url) set('receptionMapUrl')(url)
+  }
+
+  const onMapPickerConfirm = ({ address, mapUrl }) => {
+    if (mapPickerTarget === 'ceremony') {
+      set('ceremonyAddress')(address)
+      set('ceremonyMapUrl')(mapUrl)
+    } else {
+      set('receptionAddress')(address)
+      set('receptionMapUrl')(mapUrl)
+    }
+    setMapPickerTarget(null)
   }
 
   const preparePayload = (status) => {
@@ -838,6 +959,10 @@ export default function EventBuilder() {
   return (
     <div className="eb-page">
 
+      {mapPickerTarget && (
+        <MapPicker onConfirm={onMapPickerConfirm} onCancel={() => setMapPickerTarget(null)} />
+      )}
+
       {previewingTheme && (
         <div className="eb-preview-modal" onClick={() => setPreviewingTheme(null)}>
           <div className="eb-preview-modal__phone" onClick={e => e.stopPropagation()}>
@@ -980,7 +1105,7 @@ export default function EventBuilder() {
               <Field label="Venue Name" required error={fieldErrors.ceremonyVenue}>
                 <Input value={form.ceremonyVenue} onChange={set('ceremonyVenue')} placeholder="e.g. St. Mary's Cathedral" required invalid={!!fieldErrors.ceremonyVenue} />
               </Field>
-              <Field label="Address" hint={mapsLoaded ? 'Search and select a location' : undefined}>
+              <Field label="Address" hint={mapsLoaded ? 'Search, or pin directly on the map' : undefined}>
                 <PlacesInput
                   value={form.ceremonyAddress}
                   onChange={set('ceremonyAddress')}
@@ -988,6 +1113,11 @@ export default function EventBuilder() {
                   placeholder="e.g. 123 Church Street"
                   mapsLoaded={mapsLoaded}
                 />
+                {mapsLoaded && (
+                  <button type="button" className="eb-map-pin-btn" onClick={() => setMapPickerTarget('ceremony')}>
+                    📍 Pin on map
+                  </button>
+                )}
               </Field>
               <Field label="Date & Time">
                 <Input type="datetime-local" value={form.ceremonyTime} onChange={set('ceremonyTime')} />
@@ -1008,7 +1138,7 @@ export default function EventBuilder() {
               <Field label="Venue Name" required error={fieldErrors.receptionVenue}>
                 <Input value={form.receptionVenue} onChange={set('receptionVenue')} placeholder="e.g. The Grand Ballroom" required invalid={!!fieldErrors.receptionVenue} />
               </Field>
-              <Field label="Address" hint={mapsLoaded ? 'Search and select a location' : undefined}>
+              <Field label="Address" hint={mapsLoaded ? 'Search, or pin directly on the map' : undefined}>
                 <PlacesInput
                   value={form.receptionAddress}
                   onChange={set('receptionAddress')}
@@ -1016,6 +1146,11 @@ export default function EventBuilder() {
                   placeholder="e.g. 456 Elm Avenue"
                   mapsLoaded={mapsLoaded}
                 />
+                {mapsLoaded && (
+                  <button type="button" className="eb-map-pin-btn" onClick={() => setMapPickerTarget('reception')}>
+                    📍 Pin on map
+                  </button>
+                )}
               </Field>
               <Field label="Date & Time">
                 <Input type="datetime-local" value={form.receptionTime} onChange={set('receptionTime')} />
