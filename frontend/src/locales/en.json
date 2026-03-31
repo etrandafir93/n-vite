@@ -253,26 +253,18 @@
       }
     ],
     "themes": [
-      {
-        "key": "classic",
-        "name": "Classic",
-        "tagline": "Timeless elegance with gold accents and serif typography"
-      },
-      {
-        "key": "romantic",
-        "name": "Romantic",
-        "tagline": "Soft florals, rose tones and delicate curves"
-      },
-      {
-        "key": "modern",
-        "name": "Modern",
-        "tagline": "Bold, dark layouts with striking contrast"
-      },
-      {
-        "key": "natural",
-        "name": "Natural",
-        "tagline": "Earthy greens and organic textures for nature lovers"
-      }
+      { "key": "classic", "name": "Classic Editorial", "tagline": "Timeless elegance with editorial typography and warm gold accents" },
+      { "key": "romantic", "name": "Romantic Floral", "tagline": "Soft florals, rose tones and delicate details for a warm celebration" },
+      { "key": "modern", "name": "Modern Minimal", "tagline": "Sharp contrast, clean spacing and a confident modern layout" },
+      { "key": "natural", "name": "Botanical Garden", "tagline": "Greenery, soft neutrals and a calm garden-party atmosphere" },
+      { "key": "old-money", "name": "Old Money Monogram", "tagline": "Cream, black and heritage-style details with quiet luxury energy" },
+      { "key": "monochrome", "name": "Black and White Chic", "tagline": "Monochrome contrast with a gallery-like editorial attitude" },
+      { "key": "rustic", "name": "Rustic Countryside", "tagline": "Earthy textures and countryside warmth for barn and vineyard weddings" },
+      { "key": "destination", "name": "Destination Escape", "tagline": "Travel-inspired styling for beach, villa and destination weddings" },
+      { "key": "illustrated", "name": "Venue Illustration", "tagline": "A bespoke-feeling layout built around a venue or place-story moment" },
+      { "key": "photo-story", "name": "Photo Story", "tagline": "Large photography moments and story-led sections for digital-first invites" },
+      { "key": "whimsical", "name": "Whimsical Fairytale", "tagline": "Pastels, bows and hand-drawn charm with a soft fairytale mood" },
+      { "key": "dark-romance", "name": "Dark Romance", "tagline": "Deep florals, candlelit tones and a dramatic evening atmosphere" }
     ],
     "preview_loading": "Loading live preview...",
     "preview_live": "Live preview"

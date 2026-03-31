@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import TemplatePhonePreview from '../../components/templates/TemplatePhonePreview'
-import { resolveThemeVisual } from '../../components/templates/themeRegistry'
+import { THEME_OPTIONS, resolveThemeVisual } from '../../components/templates/themeRegistry'
 import './EventBuilder.css'
 
 const EMPTY_FORM = {
@@ -30,12 +30,11 @@ const EMPTY_FORM = {
   sections: [],
 }
 
-const THEMES = [
-  { key: 'classic',  name: 'Classic',  mood: 'Elegant & timeless' },
-  { key: 'romantic', name: 'Romantic', mood: 'Soft & intimate' },
-  { key: 'modern',   name: 'Modern',   mood: 'Bold & contemporary' },
-  { key: 'natural',  name: 'Natural',  mood: 'Warm & organic' },
-]
+const THEMES = THEME_OPTIONS.map((theme) => ({
+  key: theme.key,
+  name: theme.name,
+  mood: theme.mood,
+}))
 
 const THEME_PREVIEW_LABELS = { previewInvite: "You're invited", previewLoading: 'Loading…', previewLive: 'LIVE' }
 

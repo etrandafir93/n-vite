@@ -5,12 +5,28 @@ import ClassicInvitation from '../invitation/Classic'
 import RomanticInvitation from '../invitation/Romantic'
 import ModernInvitation from '../invitation/Modern'
 import NaturalInvitation from '../invitation/Natural'
+import OldMoneyInvitation from '../invitation/OldMoney'
+import MonochromeInvitation from '../invitation/Monochrome'
+import RusticInvitation from '../invitation/Rustic'
+import DestinationInvitation from '../invitation/Destination'
+import IllustratedInvitation from '../invitation/Illustrated'
+import PhotoStoryInvitation from '../invitation/PhotoStory'
+import WhimsicalInvitation from '../invitation/Whimsical'
+import DarkRomanceInvitation from '../invitation/DarkRomance'
 
 const THEME_COMPONENTS = {
   classic: ClassicInvitation,
   romantic: RomanticInvitation,
   modern: ModernInvitation,
   natural: NaturalInvitation,
+  'old-money': OldMoneyInvitation,
+  monochrome: MonochromeInvitation,
+  rustic: RusticInvitation,
+  destination: DestinationInvitation,
+  illustrated: IllustratedInvitation,
+  'photo-story': PhotoStoryInvitation,
+  whimsical: WhimsicalInvitation,
+  'dark-romance': DarkRomanceInvitation,
 }
 
 const EXTENDED_SECTION_LABELS = {
