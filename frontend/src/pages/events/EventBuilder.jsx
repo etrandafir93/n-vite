@@ -77,12 +77,12 @@ const GENERIC_SECTION_TYPES = new Set([
   'COUPLE_QUOTE',
 ])
 
-function DressCodeEditor({ value, onChange }) {
+function DressCodeEditor({ value, onChange, errors = {} }) {
   const set = key => val => onChange({ ...value, [key]: val })
   return (
     <div className="eb-sub-fields">
-      <Field label="Formality">
-        <select className="eb-input" value={value.dressCodeFormality || ''} onChange={e => set('dressCodeFormality')(e.target.value)}>
+      <Field label="Formality" required error={errors.formality}>
+        <select className={`eb-input${errors.formality ? ' eb-input--invalid' : ''}`} value={value.dressCodeFormality || ''} onChange={e => set('dressCodeFormality')(e.target.value)}>
           <option value="">Select…</option>
           <option value="BLACK_TIE">Black Tie</option>
           <option value="FORMAL">Formal</option>
@@ -103,16 +103,16 @@ function DressCodeEditor({ value, onChange }) {
   )
 }
 
-function GenericSectionEditor({ value, onChange, sectionName }) {
+function GenericSectionEditor({ value, onChange, sectionName, errors = {} }) {
   const set = key => val => onChange({ ...value, [key]: val })
   return (
     <div className="eb-sub-fields">
-      <Field label={`${sectionName} Title`}>
-        <Input value={value.title || ''} onChange={set('title')} placeholder={`e.g. ${sectionName}`} />
+      <Field label={`${sectionName} Title`} required error={errors.title}>
+        <Input value={value.title || ''} onChange={set('title')} placeholder={`e.g. ${sectionName}`} invalid={!!errors.title} />
       </Field>
-      <Field label="Description / Details">
+      <Field label="Description / Details" required error={errors.content}>
         <textarea
-          className="eb-input"
+          className={`eb-input${errors.content ? ' eb-input--invalid' : ''}`}
           rows={4}
           value={value.content || ''}
           onChange={e => set('content')(e.target.value)}
@@ -129,7 +129,7 @@ function GenericSectionEditor({ value, onChange, sectionName }) {
   )
 }
 
-function AccommodationEditor({ value, onChange }) {
+function AccommodationEditor({ value, onChange, errors = {} }) {
   const hotels = value.hotels || []
 
   const addHotel = () => onChange({ ...value, hotels: [...hotels, { name: '', distance: '', bookingLink: '', note: '' }] })
@@ -141,6 +141,7 @@ function AccommodationEditor({ value, onChange }) {
 
   return (
     <div className="eb-sub-fields">
+      {errors.hotels && <p className="eb-field-error">{errors.hotels}</p>}
       {hotels.map((hotel, i) => (
         <div key={i} className="eb-hotel-row">
           <div className="eb-hotel-row__head">
@@ -148,8 +149,8 @@ function AccommodationEditor({ value, onChange }) {
             <button type="button" className="eb-remove-btn" onClick={() => removeHotel(i)}>✕ Remove</button>
           </div>
           <div className="eb-grid-2">
-            <Field label="Hotel Name">
-              <Input value={hotel.name} onChange={v => updateHotel(i, 'name', v)} placeholder="e.g. Marriott City Centre" />
+            <Field label="Hotel Name" required error={errors[`hotel_${i}_name`]}>
+              <Input value={hotel.name} onChange={v => updateHotel(i, 'name', v)} placeholder="e.g. Marriott City Centre" invalid={!!errors[`hotel_${i}_name`]} />
             </Field>
             <Field label="Distance">
               <Input value={hotel.distance || ''} onChange={v => updateHotel(i, 'distance', v)} placeholder="e.g. 5 min walk" />
@@ -170,7 +171,7 @@ function AccommodationEditor({ value, onChange }) {
   )
 }
 
-function DayScheduleEditor({ value, onChange }) {
+function DayScheduleEditor({ value, onChange, errors = {} }) {
   const items = value.scheduleItems || []
 
   const addItem = () => onChange({ ...value, scheduleItems: [...items, { time: '', label: '' }] })
@@ -182,17 +183,18 @@ function DayScheduleEditor({ value, onChange }) {
 
   return (
     <div className="eb-sub-fields">
+      {errors.items && <p className="eb-field-error">{errors.items}</p>}
       {items.map((item, i) => (
         <div key={i} className="eb-schedule-row">
           <input
-            className="eb-input eb-schedule-row__time"
+            className={`eb-input eb-schedule-row__time${errors[`item_${i}_time`] ? ' eb-input--invalid' : ''}`}
             type="text"
             value={item.time}
             onChange={e => updateItem(i, 'time', e.target.value)}
             placeholder="e.g. 14:00"
           />
           <input
-            className="eb-input eb-schedule-row__label"
+            className={`eb-input eb-schedule-row__label${errors[`item_${i}_label`] ? ' eb-input--invalid' : ''}`}
             type="text"
             value={item.label}
             onChange={e => updateItem(i, 'label', e.target.value)}
@@ -360,6 +362,34 @@ function validate(form) {
       errors[field] = `${label} is required`
     }
   }
+
+  for (const section of form.sections) {
+    const pfx = `section_${section.type}_`
+    if (section.type === 'DRESS_CODE') {
+      if (!section.dressCodeFormality) errors[`${pfx}formality`] = 'Formality is required'
+    } else if (section.type === 'ACCOMMODATION') {
+      if (!section.hotels || section.hotels.length === 0) {
+        errors[`${pfx}hotels`] = 'Add at least one hotel'
+      } else {
+        section.hotels.forEach((h, i) => {
+          if (!h.name?.trim()) errors[`${pfx}hotel_${i}_name`] = 'Hotel name is required'
+        })
+      }
+    } else if (section.type === 'DAY_SCHEDULE') {
+      if (!section.scheduleItems || section.scheduleItems.length === 0) {
+        errors[`${pfx}items`] = 'Add at least one schedule item'
+      } else {
+        section.scheduleItems.forEach((item, i) => {
+          if (!item.time?.trim()) errors[`${pfx}item_${i}_time`] = 'Time required'
+          if (!item.label?.trim()) errors[`${pfx}item_${i}_label`] = 'Label required'
+        })
+      }
+    } else if (GENERIC_SECTION_TYPES.has(section.type)) {
+      if (!section.title?.trim()) errors[`${pfx}title`] = 'Title is required'
+      if (!section.content?.trim()) errors[`${pfx}content`] = 'Description is required'
+    }
+  }
+
   return errors
 }
 
@@ -580,11 +610,18 @@ export default function EventBuilder() {
     setActiveSectionType(prev => (prev === type ? null : prev))
   }
 
-  const updateSectionByType = (type, value) => setForm(prev => {
+  const updateSectionByType = (type, value) => {
     setIsDirty(true)
-    const sections = prev.sections.map(section => section.type === type ? value : section)
-    return { ...prev, sections }
-  })
+    setFieldErrors(prev => {
+      const prefix = `section_${type}_`
+      const next = Object.fromEntries(Object.entries(prev).filter(([k]) => !k.startsWith(prefix)))
+      return next
+    })
+    setForm(prev => {
+      const sections = prev.sections.map(section => section.type === type ? value : section)
+      return { ...prev, sections }
+    })
+  }
 
   const toggleSectionSelection = type => {
     const sectionAlreadyAdded = form.sections.some(section => section.type === type)
@@ -643,13 +680,30 @@ export default function EventBuilder() {
     }
   }
 
+  const showValidationErrors = (errors) => {
+    setFieldErrors(errors)
+    const mainFieldNames = Object.entries(errors)
+      .filter(([k]) => !k.startsWith('section_'))
+      .map(([, v]) => v.replace(' is required', ''))
+    const sectionsWithErrors = form.sections
+      .filter(s => Object.keys(errors).some(k => k.startsWith(`section_${s.type}_`)))
+      .map(s => SECTION_CATALOGUE.find(c => c.type === s.type)?.label || s.type)
+    const parts = []
+    if (mainFieldNames.length > 0) parts.push(`Required fields: ${mainFieldNames.join(', ')}`)
+    if (sectionsWithErrors.length > 0) parts.push(`Incomplete sections: ${sectionsWithErrors.join(', ')}`)
+    setError(parts.join(' — '))
+    const firstErrorSection = form.sections.find(s =>
+      Object.keys(errors).some(k => k.startsWith(`section_${s.type}_`))
+    )
+    if (firstErrorSection) setActiveSectionType(firstErrorSection.type)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
     const errors = validate(form)
     if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors)
-      setError(`Please fill in the required fields: ${Object.values(errors).map(e => e.replace(' is required', '')).join(', ')}`)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      showValidationErrors(errors)
       return
     }
     setSaving(true)
@@ -687,9 +741,7 @@ export default function EventBuilder() {
   const handlePreview = async () => {
     const errors = validate(form)
     if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors)
-      setError(`Please fill in the required fields: ${Object.values(errors).map(e => e.replace(' is required', '')).join(', ')}`)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      showValidationErrors(errors)
       return
     }
     setSaving(true)
@@ -767,6 +819,13 @@ export default function EventBuilder() {
   const readinessPercent = Math.round((readinessDoneCount / readinessChecks.length) * 100)
   const canLeaveWithoutPrompt = !isDirty || saving
   const confirmLeave = () => canLeaveWithoutPrompt || window.confirm('You have unsaved changes. Leave this page?')
+
+  const getSectionErrors = (type) => {
+    const prefix = `section_${type}_`
+    return Object.fromEntries(
+      Object.entries(fieldErrors).filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v])
+    )
+  }
 
   if (loading) {
     return (
@@ -1005,25 +1064,29 @@ export default function EventBuilder() {
             {form.sections.map((section, i) => {
               const cat = SECTION_CATALOGUE.find(c => c.type === section.type)
               const isOpen = activeSectionType === section.type
+              const sectionErrors = getSectionErrors(section.type)
+              const hasErrors = Object.keys(sectionErrors).length > 0
               return (
-                <div key={section.type} className="eb-section-editor">
+                <div key={section.type} className={`eb-section-editor${hasErrors ? ' eb-section-editor--error' : ''}`}>
                   <div className="eb-section-editor__head">
                     <button type="button" className="eb-section-editor__name-btn" onClick={() => toggleSectionEditor(section.type)}>
                       <span className="eb-section-editor__name">{cat?.label}</span>
+                      {hasErrors && <span className="eb-section-editor__error-badge">! incomplete</span>}
                       <span className="eb-section-editor__toggle">{isOpen ? 'Hide' : 'Edit'}</span>
                     </button>
                     <button type="button" className="eb-remove-btn" onClick={() => removeSectionByType(section.type)}>Remove</button>
                   </div>
                   {isOpen && (
                     <>
-                      {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} />}
-                      {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} />}
-                      {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} />}
+                      {section.type === 'DRESS_CODE'    && <DressCodeEditor    value={section} onChange={v => updateSection(i, v)} errors={sectionErrors} />}
+                      {section.type === 'ACCOMMODATION' && <AccommodationEditor value={section} onChange={v => updateSection(i, v)} errors={sectionErrors} />}
+                      {section.type === 'DAY_SCHEDULE'  && <DayScheduleEditor  value={section} onChange={v => updateSection(i, v)} errors={sectionErrors} />}
                       {GENERIC_SECTION_TYPES.has(section.type) && (
                         <GenericSectionEditor
                           value={section}
                           onChange={v => updateSection(i, v)}
                           sectionName={cat?.label || section.type}
+                          errors={sectionErrors}
                         />
                       )}
                     </>
