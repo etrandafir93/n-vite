@@ -61,12 +61,15 @@ const css = `
   @media (max-width:700px){.ti-wrap{width:min(100vw - .3rem,1080px)}.ti-hero{min-height:auto}.ti-hero__content{padding:.75rem 0 1.15rem}.ti-panel{width:100%;padding:1rem .9rem 1.2rem;border-radius:18px}.layout-framed .ti-panel,.layout-split .ti-panel{border-radius:18px}.layout-carded .ti-panel,.layout-postcard .ti-panel{transform:none}.ti-kicker{display:flex;justify-content:center;gap:.55rem;font-size:.58rem;letter-spacing:.16em;text-align:center}.ti-kicker:before{width:20px}.ti-names{font-size:clamp(2.2rem,13vw,3.35rem);margin:.8rem 0 .55rem;word-break:break-word}.ti-amp{font-size:1rem;margin:.3rem 0}.ti-divider{font-size:.58rem;letter-spacing:.16em;margin-bottom:.7rem}.ti-date{font-size:.72rem;line-height:1.5}.ti-badge{margin-top:.85rem;padding:.45rem .75rem;font-size:.62rem;letter-spacing:.08em;text-align:center}.ti-countdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:1rem}.ti-countdown__unit{min-width:0;padding:.6rem .4rem;border-radius:14px}.ti-countdown__num{font-size:1.35rem}.ti-countdown__label{font-size:.52rem;letter-spacing:.14em}.ti-nav__inner{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;gap:.75rem;padding:.7rem .15rem .8rem;scrollbar-width:none}.ti-nav__inner::-webkit-scrollbar{display:none}.ti-nav__link{font-size:.58rem;letter-spacing:.12em;flex:0 0 auto}.ti-main{padding:1rem 0 2rem}.ti-feature{padding:.8rem 0 1rem}.ti-feature__card{border-radius:20px}.ti-feature__image{aspect-ratio:9/11}.ti-feature__overlay{padding:1rem .85rem .95rem}.ti-feature__eyebrow{font-size:.54rem;letter-spacing:.14em}.ti-feature__title{font-size:clamp(1.3rem,8vw,1.9rem)}.ti-feature__copy{font-size:.82rem}.ti-section{padding:1.1rem 0}.ti-title{margin:0 0 .85rem;font-size:.6rem;letter-spacing:.14em;padding:0 .15rem}.title-scripted .ti-title{font-size:.98rem}.title-lined .ti-title:before,.title-lined .ti-title:after{max-width:32px}.ti-families,.ti-events,.ti-hotels{grid-template-columns:1fr;gap:.65rem}.ti-card,.cards-rounded .ti-card,.cards-soft .ti-card,.cards-sunny .ti-card,.cards-gallery .ti-card{border-radius:18px;width:100%}.cards-sharp .ti-card{border-radius:12px}.ti-card__body{padding:1rem .95rem}.ti-card__title{font-size:1rem}.ti-card__text{font-size:.92rem}.ti-pill{font-size:.62rem;padding:.32rem .65rem}.ti-link{font-size:.64rem;letter-spacing:.1em}.ti-dress{grid-template-columns:1fr;gap:.75rem}.ti-dress__photo{width:100%;max-width:none;aspect-ratio:4/5}.ti-dress__label{font-size:.56rem}.ti-swatches{gap:.4rem}.ti-swatches span{font-size:.68rem;padding:.28rem .58rem}.ti-schedule{gap:.7rem;padding-left:0}.ti-schedule:before{left:.25rem}.ti-schedule__item{grid-template-columns:1fr;gap:.15rem;padding-left:.95rem}.ti-schedule__item:before{top:.38rem;width:.5rem;height:.5rem}.ti-schedule__time{font-size:.62rem;letter-spacing:.12em}.ti-schedule__label{font-size:.94rem}.ti-rsvp{padding:1.25rem 0 2rem}.ti-rsvp__head{margin-bottom:1rem}.ti-rsvp__title{font-size:clamp(1.7rem,10vw,2.35rem)}.ti-rsvp__sub{font-size:.64rem;letter-spacing:.08em;line-height:1.5}.ti-form{padding:1rem .85rem 1.05rem;border-radius:18px}.ti-label{font-size:.74rem}.ti-input,.ti-textarea,.ti-inline-input{padding:.76rem .82rem;border-radius:12px}.ti-toggle-row{gap:.45rem}.ti-toggle-btn{min-width:0;width:100%;padding:.72rem .8rem;border-radius:12px;font-size:.84rem}.ti-children{align-items:flex-start;gap:.65rem}.ti-inline-input[style]{width:100%!important}.ti-errors{padding:.8rem .9rem;border-radius:12px}.ti-actions{gap:.6rem}.ti-btn{min-width:100%;width:100%;padding:.82rem 1rem;border-radius:12px}}
 `
 
-function EnvelopeIntro({ opening, onOpen, theme }) {
+function EnvelopeIntro({ phase, onOpen, theme }) {
+  const isOpening = phase === 'opening' || phase === 'fadeout'
+  const isFadingOut = phase === 'fadeout'
+
   return (
-    <div className={`ti-env${opening ? ' ti-env--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
+    <div className={`ti-env${isFadingOut ? ' ti-env--opening' : ''}`} onClick={onOpen} role="button" aria-label="Open invitation">
       <div className="ti-env__stack">
         <div className="ti-env__title">Open your invitation</div>
-        <div className={`ti-env__body${opening ? ' ti-env--open' : ''}`}>
+        <div className={`ti-env__body${isOpening ? ' ti-env--open' : ''}`}>
           <div className="ti-env__back" />
           <div className="ti-env__letter">
             <div className="ti-env__seal">{theme.icon}</div>
@@ -327,7 +330,8 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   const handleOpen = () => {
     if (phase !== 'closed') return
     setPhase('opening')
-    window.setTimeout(() => setPhase('open'), 1000)
+    window.setTimeout(() => setPhase('fadeout'), 800)
+    window.setTimeout(() => setPhase('open'), 1600)
   }
 
   if (!invitation) {
@@ -350,7 +354,7 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   return (
     <div className={`ti-page layout-${theme.layout} cards-${theme.cards} title-${theme.title}`} style={theme.style}>
       <style>{css}</style>
-      {phase !== 'open' && <EnvelopeIntro opening={phase === 'opening'} onOpen={handleOpen} theme={theme} />}
+      {phase !== 'open' && <EnvelopeIntro phase={phase} onOpen={handleOpen} theme={theme} />}
 
       <section className="ti-hero">
         <div className="ti-hero__media" style={{ backgroundImage: `url('${invitation.backgroundImageUrl}')` }} />

@@ -564,6 +564,75 @@ function MapPicker({ onConfirm, onCancel }) {
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
+const DEMO_DATA = {
+  groomName: 'Alexandru Popescu',
+  brideName: 'Maria Ionescu',
+  eventDateTime: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16), // 90 days from now
+  backgroundImageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200',
+  groomParents: 'Ion & Elena Popescu',
+  brideParents: 'Andrei & Sofia Ionescu',
+  godparents: 'George & Ana Dumitrescu',
+  eventType: 'both',
+  ceremonyVenue: 'Biserica Sfântul Nicolae',
+  ceremonyAddress: 'Strada Catedralei 25, București',
+  ceremonyTime: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16),
+  ceremonyPhotoUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
+  ceremonyMapUrl: 'https://maps.google.com/maps?q=Biserica+Sfantul+Nicolae+Bucuresti',
+  receptionVenue: 'Palatul Snagov',
+  receptionAddress: 'Șoseaua București-Ploiești 42A, Snagov',
+  receptionTime: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString().slice(0, 16), // 2 hours after ceremony
+  receptionPhotoUrl: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800',
+  receptionMapUrl: 'https://maps.google.com/maps?q=Palatul+Snagov',
+  rsvpDeadline: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10), // 60 days from now
+  menuOptions: ['Meat', 'Fish', 'Vegetarian', 'Vegan'],
+  theme: 'romantic',
+  sections: [
+    {
+      type: 'DRESS_CODE',
+      dressCodeFormality: 'FORMAL',
+      dressCodeColours: 'Dusty rose, sage green, ivory',
+      dressCodeNote: 'Please avoid white and black',
+      dressCodeImageUrl: 'https://images.unsplash.com/photo-1507680225127-6450260913c9?w=800',
+    },
+    {
+      type: 'ACCOMMODATION',
+      hotels: [
+        {
+          name: 'Hotel Marriott',
+          distance: '10 min drive',
+          bookingLink: 'https://marriott.com',
+          note: 'Use code WEDDING2026',
+        },
+        {
+          name: 'Hilton Garden Inn',
+          distance: '15 min drive',
+          bookingLink: 'https://hilton.com',
+          note: 'Special rates available',
+        },
+      ],
+    },
+    {
+      type: 'DAY_SCHEDULE',
+      scheduleItems: [
+        { time: '14:00', label: 'Ceremony begins' },
+        { time: '15:00', label: 'Photo session' },
+        { time: '16:30', label: 'Cocktail hour' },
+        { time: '18:00', label: 'Reception & dinner' },
+        { time: '21:00', label: 'First dance' },
+        { time: '22:00', label: 'Party time!' },
+      ],
+    },
+    {
+      type: 'OUR_STORY',
+      title: 'Our Story',
+      content: 'We met in the summer of 2019 at a mutual friend\'s birthday party. From the first moment, we knew there was something special between us. After years of adventures, travels, and growing together, we\'re ready to start our forever.',
+      imageUrl: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
+      linkUrl: '',
+    },
+  ],
+  status: 'DRAFT',
+}
+
 function MenuOptionsEditor({ options, onChange }) {
   const [input, setInput] = useState('')
 
@@ -893,6 +962,14 @@ export default function EventBuilder() {
       setError('Failed to create preview. Please check the form and try again.')
       setSaving(false)
     }
+  }
+
+  const loadDemoData = () => {
+    if (!window.confirm('Load demo data? This will replace all current form values.')) return
+    setForm(DEMO_DATA)
+    setIsDirty(true)
+    setFieldErrors({})
+    setError(null)
   }
 
   const previewSrc = previewingTheme
@@ -1258,6 +1335,14 @@ export default function EventBuilder() {
           </div>
 
           <div className="eb-actions">
+            <button
+              type="button"
+              onClick={loadDemoData}
+              className="eb-btn eb-btn--ghost"
+              disabled={saving}
+            >
+              Load Demo Data
+            </button>
             <Link to="/events" className="eb-btn eb-btn--ghost" onClick={e => { if (!confirmLeave()) e.preventDefault() }}>Cancel</Link>
             <button type="button" onClick={handlePreview} className="eb-btn eb-btn--secondary" disabled={saving}>
               Preview Draft
