@@ -38,7 +38,8 @@
       "Bash(xargs grep:*)",
       "Bash(npm install:*)",
       "Bash(mvn compile:*)",
-      "WebFetch(domain:codepen.io)"
+      "WebFetch(domain:codepen.io)",
+      "Bash(./mvnw.cmd compile:*)"
     ],
     "deny": [],
     "ask": []

@@ -66,6 +66,71 @@ tech.nvite/
 - In Java, always favor `private` or package-protected access modifiers whenever possible. Avoid `public` unless required by a framework or interface contract.
 - Organize code by vertical slices (e.g. what the event host can do, what the guest can see/do), not by technical layers (no `repository`, `controller`, `service` top-level packages). Each slice owns its full stack from controller to persistence.
 
+## API Contract Maintenance
+
+**CRITICAL**: When adding new fields to the domain model, **ALWAYS** update ALL related API contracts:
+
+### Required Updates Checklist
+
+When adding a field (e.g., `envelope`) to the domain model, update:
+
+1. **Domain Model** - `Event.java` (the source of truth)
+2. **Request DTOs**:
+    - `EventFormRequest.java` (API request body)
+    - `CreateEventUseCase.Request` (use case input)
+    - `EditEventUseCase.Request` (use case input)
+3. **Response DTOs**:
+    - `SeeEventUseCase.EventFormResponse` (GET /api/events/{ref}/form - **CRITICAL for edit mode**)
+    - `InvitationDetails.java` (GET /api/invitations/{ref} - guest view)
+4. **MapStruct Mappers** (auto-map if field names match):
+    - `EventBuilderMapper.java` (maps Event ↔ requests/responses)
+    - `InvitationMapper.java` (maps Event → InvitationDetails)
+
+### Why This Matters
+
+- **Frontend breaks silently** if response DTOs are missing fields
+- **Edit mode fails** if `SeeEventUseCase.EventFormResponse` is incomplete (form won't load saved values)
+- **MapStruct auto-maps** fields with matching names, but only if they exist in both source and target
+- **Guest view breaks** if `InvitationDetails` is missing fields
+
+### Example: Adding a New Field
+
+```java
+// 1. Domain Model
+public record Event(String groomName, String brideName, String newField,  // ← Add here first
+					// ...
+		) {
+}
+
+// 2. Request DTOs
+record EventFormRequest(String groomName, String brideName, String newField,  // ← Then here
+						// ...
+) {
+}
+
+// 3. Use Case Requests
+public record Request(String groomName, String brideName, String newField,  // ← And here
+					  // ...
+) {
+}
+
+// 4. Response DTOs (DON'T FORGET!)
+public record EventFormResponse(String groomName, String brideName, String newField,  // ← CRITICAL: Add to responses too!
+								// ...
+) {
+}
+```
+
+### Quick Verification
+
+After adding a field, run:
+
+```bash
+./mvnw compile
+```
+
+MapStruct will generate implementations at compile time. If field names match, mapping is automatic.
+
 ## Use Case Pattern
 
 All use cases must follow these conventions:

@@ -350,5 +350,74 @@
     "terms": "Terms of Service",
     "cookies": "Cookie Policy",
     "copyright": "© {{year}} nvite. All rights reserved."
+  },
+  "celestial": {
+    "nav": {
+      "home": "Home",
+      "couple": "The Couple",
+      "event": "Event",
+      "location": "Where & When",
+      "rsvp": "RSVP"
+    },
+    "hero": {
+      "welcome": "Welcome"
+    },
+    "story": {
+      "text": "We warmly invite you to be with us on the most important day of our lives. We are excited to share this joy with you, the closest people in our lives."
+    },
+    "couple": {
+      "bride_role": "Bride",
+      "groom_role": "Groom",
+      "bride_quote": "Serious but head in the clouds, home early but party animal. And guess what.. I'm getting married!",
+      "groom_quote": "There would be a lot to say but starting from this day it will no longer be about me, but about us.",
+      "godparents_title": "Together with our godparents"
+    },
+    "events": {
+      "title": "Where & When",
+      "ceremony": "Ceremony",
+      "reception": "Reception",
+      "map_link": "View on map"
+    },
+    "rsvp": {
+      "title": "RSVP",
+      "deadline": "Please respond by {{date}}",
+      "name_label": "Your name *",
+      "name_placeholder": "Enter your full name",
+      "attending_label": "Will you join us? *",
+      "attending_yes": "Happily attending",
+      "attending_no": "Unable to attend",
+      "plus_one_label": "Will you bring a plus one?",
+      "plus_one_yes": "Yes",
+      "plus_one_no": "No",
+      "partner_placeholder": "Partner's name",
+      "menu_label": "Menu preference *",
+      "children_label": "Bringing children?",
+      "children_yes": "Yes",
+      "children_no": "No",
+      "children_count": "How many?",
+      "allergies_label": "Food allergies",
+      "allergies_placeholder": "Please specify any allergies",
+      "notes_label": "Message (optional)",
+      "notes_placeholder_yes": "Dietary needs, special requests, or a note for the couple",
+      "notes_placeholder_no": "Share a message for the couple",
+      "submit_yes": "Confirm Attendance",
+      "submit_no": "Send Decline",
+      "submitting": "Submitting...",
+      "success_title": "Thank you for confirming!",
+      "success_message_yes": "We're thrilled you'll be joining us on this special day!",
+      "success_message_no": "We're sorry you can't make it. Thank you for letting us know!",
+      "error_name": "Your name is required",
+      "error_attending": "Please choose whether you can attend",
+      "error_partner": "Partner's name is required",
+      "error_menu": "Select a menu preference",
+      "error_title": "Please fill in the following:",
+      "draft_title": "Invitation Preview",
+      "draft_message": "This invitation has not been published yet.",
+      "past_title": "Thank You",
+      "past_message": "We hope you enjoyed celebrating with us."
+    },
+    "loading": "Loading invitation...",
+    "error_title": "Invitation not found",
+    "error_message": "Please check the link you received."
   }
 }

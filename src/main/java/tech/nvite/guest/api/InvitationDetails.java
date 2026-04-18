@@ -2,6 +2,7 @@ package tech.nvite.guest.api;
 
 import java.time.Instant;
 import java.util.List;
+
 import tech.nvite.domain.EventSection;
 import tech.nvite.domain.EventStatus;
 
@@ -26,6 +27,6 @@ record InvitationDetails(
     String receptionMapUrl,
     String rsvpDeadline,
     List<String> menuOptions,
-    String theme,
+    String theme, String envelope,
     EventStatus status,
     List<EventSection> sections) {}

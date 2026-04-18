@@ -350,5 +350,74 @@
     "terms": "Termeni si Conditii",
     "cookies": "Politica de Cookies",
     "copyright": "© {{year}} nvite. Toate drepturile rezervate."
+  },
+  "celestial": {
+    "nav": {
+      "home": "Acasă",
+      "couple": "Noi doi",
+      "event": "Eveniment",
+      "location": "Unde și când",
+      "rsvp": "Confirmare"
+    },
+    "hero": {
+      "welcome": "Bine ai venit"
+    },
+    "story": {
+      "text": "Vă invităm cu drag să fiți alături de noi în cea mai importantă zi din viața noastră. Suntem nerăbdători să împărtășim această bucurie cu voi, cei mai apropiați oameni din viața noastră."
+    },
+    "couple": {
+      "bride_role": "Mireasă",
+      "groom_role": "Mire",
+      "bride_quote": "Serioasă dar cu capul în nori, devreme acasă dar party animal. Și ghici ce.. mă mărit!",
+      "groom_quote": "Ar fi multe de spus dar începând din această zi nu va mai fi despre mine, ci despre noi.",
+      "godparents_title": "Împreună cu nașii"
+    },
+    "events": {
+      "title": "Unde și când",
+      "ceremony": "Ceremonia",
+      "reception": "Petrecerea",
+      "map_link": "Vezi pe hartă"
+    },
+    "rsvp": {
+      "title": "Confirmare",
+      "deadline": "Te rugăm să confirmi până la {{date}}",
+      "name_label": "Numele tău *",
+      "name_placeholder": "Introdu numele complet",
+      "attending_label": "Vei participa? *",
+      "attending_yes": "Da, confirm!",
+      "attending_no": "Nu pot participa",
+      "plus_one_label": "Vii însoțit/ă?",
+      "plus_one_yes": "Da",
+      "plus_one_no": "Nu",
+      "partner_placeholder": "Numele partenerului",
+      "menu_label": "Preferință meniu *",
+      "children_label": "Copii?",
+      "children_yes": "Da",
+      "children_no": "Nu",
+      "children_count": "Câți copii?",
+      "allergies_label": "Alergii alimentare",
+      "allergies_placeholder": "Precizează eventualele alergii",
+      "notes_label": "Mesaj (opțional)",
+      "notes_placeholder_yes": "Un mesaj pentru miri sau întrebări",
+      "notes_placeholder_no": "Mesaj pentru miri",
+      "submit_yes": "Confirmă participarea",
+      "submit_no": "Trimite răspuns",
+      "submitting": "Se trimite...",
+      "success_title": "Mulțumim pentru confirmare!",
+      "success_message_yes": "Ne bucurăm că vei fi alături de noi în această zi specială!",
+      "success_message_no": "Ne pare rău că nu poți participa. Îți mulțumim că ne-ai anunțat!",
+      "error_name": "Numele tău este obligatoriu",
+      "error_attending": "Te rugăm să confirmi prezența",
+      "error_partner": "Numele partenerului este obligatoriu",
+      "error_menu": "Selectează preferința la meniu",
+      "error_title": "Te rugăm să completezi:",
+      "draft_title": "Invitație în mod preview",
+      "draft_message": "Această invitație nu a fost publicată încă.",
+      "past_title": "Mulțumim!",
+      "past_message": "Sperăm că v-a plăcut celebrarea alături de noi."
+    },
+    "loading": "Se încarcă invitația...",
+    "error_title": "Invitația nu a fost găsită",
+    "error_message": "Te rugăm să verifici link-ul primit."
   }
 }

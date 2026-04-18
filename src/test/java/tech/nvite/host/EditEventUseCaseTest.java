@@ -9,12 +9,14 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import tech.nvite.domain.Event;
 import tech.nvite.domain.EventStatus;
 import tech.nvite.domain.Events;
@@ -64,7 +66,7 @@ class EditEventUseCaseTest {
             null,
             "2026-05-31",
             List.of("Meat", "Vegan"),
-            "modern",
+            "modern", null,
             EventStatus.LIVE,
             null));
 
@@ -161,7 +163,7 @@ class EditEventUseCaseTest {
                     null,
                     null,
                     null,
-                    null,
+                    null, null,
                     EventStatus.LIVE,
                     null))
         .isInstanceOf(NullPointerException.class);
@@ -180,7 +182,7 @@ class EditEventUseCaseTest {
         null,
         null,
         null,
-        null,
+        null, null,
         null,
         null,
         null,

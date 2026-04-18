@@ -13,6 +13,7 @@ import IllustratedInvitation from '../invitation/Illustrated'
 import PhotoStoryInvitation from '../invitation/PhotoStory'
 import WhimsicalInvitation from '../invitation/Whimsical'
 import DarkRomanceInvitation from '../invitation/DarkRomance'
+import CelestialInvitation from '../invitation/Celestial' // New standalone celestial theme
 
 const THEME_COMPONENTS = {
   classic: ClassicInvitation,
@@ -27,6 +28,7 @@ const THEME_COMPONENTS = {
   'photo-story': PhotoStoryInvitation,
   whimsical: WhimsicalInvitation,
   'dark-romance': DarkRomanceInvitation,
+  celestial: CelestialInvitation,
 }
 
 const EXTENDED_SECTION_LABELS = {

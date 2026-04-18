@@ -5,11 +5,13 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.With;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Builder
 @With
@@ -37,7 +39,7 @@ public record Event(
     String receptionMapUrl,
     String rsvpDeadline,
     List<String> menuOptions,
-    String theme,
+    String theme, String envelope,
     EventStatus status,
     List<EventSection> sections) {
 
@@ -59,7 +61,7 @@ public record Event(
         null,
         null,
         null,
-        null,
+        null, null,
         null,
         null,
         null,

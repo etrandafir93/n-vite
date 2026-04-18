@@ -1,10 +1,12 @@
 package tech.nvite.host;
 
-import jakarta.annotation.Nullable;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+
+import jakarta.annotation.Nullable;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +51,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
             .menuOptions(req.menuOptions())
-            .theme(req.theme())
+            .theme(req.theme()).envelope(req.envelope())
             .status(req.status() != null ? req.status() : EventStatus.LIVE)
             .sections(req.sections())
             .eventReference(eventReference)
@@ -86,7 +88,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
       @Nullable String receptionMapUrl,
       String rsvpDeadline,
       @Nullable List<String> menuOptions,
-      @Nullable String theme,
+      @Nullable String theme, @Nullable String envelope,
       @NonNull EventStatus status,
       @Nullable List<EventSection> sections) {}
 }

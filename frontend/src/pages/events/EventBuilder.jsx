@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import TemplatePhonePreview from '../../components/templates/TemplatePhonePreview'
-import { THEME_OPTIONS, resolveThemeVisual } from '../../components/templates/themeRegistry'
+import { THEME_OPTIONS, resolveThemeVisual, ENVELOPE_OPTIONS, resolveEnvelopeMeta } from '../../components/templates/themeRegistry'
 import './EventBuilder.css'
 
 const EMPTY_FORM = {
@@ -26,6 +26,7 @@ const EMPTY_FORM = {
   rsvpDeadline: '',
   menuOptions: [],
   theme: 'classic',
+  envelope: 'classic',
   status: 'DRAFT',
   sections: [],
 }
@@ -1068,6 +1069,20 @@ export default function EventBuilder() {
 
         <form onSubmit={handleSubmit} noValidate>
 
+          {!isEdit && (
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                onClick={loadDemoData}
+                className="eb-btn eb-btn--ghost"
+                disabled={saving}
+                style={{ fontSize: '0.85rem' }}
+              >
+                📝 Load Demo Data
+              </button>
+            </div>
+          )}
+
           <Section title="Choose a Theme" subtitle="Hover a theme to see a live preview — click to select">
             <div className="eb-theme-cards">
               {THEMES.map(theme => {
@@ -1111,6 +1126,36 @@ export default function EventBuilder() {
                         </button>
                         {isSelected && <span className="eb-theme-card__check">✓ Selected</span>}
                       </div>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </Section>
+
+          <Section title="Choose an Envelope Animation" subtitle="Select the animation guests see when opening your invitation">
+            <div className="eb-envelope-cards">
+              {ENVELOPE_OPTIONS.map(envelope => {
+                const isSelected = form.envelope === envelope.key
+                return (
+                  <article
+                    key={envelope.key}
+                    className={`eb-envelope-card${isSelected ? ' eb-envelope-card--selected' : ''}`}
+                    onClick={() => set('envelope')(envelope.key)}
+                  >
+                    <input
+                      type="radio"
+                      name="envelope"
+                      value={envelope.key}
+                      checked={isSelected}
+                      onChange={() => set('envelope')(envelope.key)}
+                      className="eb-envelope-radio"
+                    />
+                    <div className="eb-envelope-card__icon">{envelope.icon}</div>
+                    <div className="eb-envelope-card__body">
+                      <h3 className="eb-envelope-card__name">{envelope.name}</h3>
+                      <p className="eb-envelope-card__desc">{envelope.description}</p>
+                      {isSelected && <span className="eb-envelope-card__check">✓ Selected</span>}
                     </div>
                   </article>
                 )

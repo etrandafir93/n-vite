@@ -18,6 +18,7 @@ const THEMES = {
   'photo-story': { layout: 'story', cards: 'rounded', title: 'lined', kicker: 'A story told in photographs', badge: 'Digital-first photo narrative', amp: '+', divider: '● ● ●', icon: '◉', rsvp: 'Reply to the Story', labels: { families: 'Our People', events: 'The Day', dress: 'Dress Code', stay: 'Guest Stay', schedule: 'Story Timeline', ceremony: 'Ceremony', reception: 'Reception' }, style: vars('#f8f3f1', '#fffdfd', '#f1e5e1', '#31262f', '#7c6877', '#b87492', 'rgba(29,19,31,.84)') },
   whimsical: { layout: 'storybook', cards: 'soft', title: 'scripted', kicker: 'A fairytale invitation', badge: 'Dreamy pastel celebration', amp: '♡', divider: '☁ ☁ ☁', icon: '☽', rsvp: 'RSVP with a Wish', labels: { families: 'Our Favorite People', events: 'The Dream Day', dress: 'Dream Palette', stay: 'Stay Nearby', schedule: 'Flow of the Day', ceremony: 'Ceremony', reception: 'Celebration' }, style: vars('#fff7fb', '#ffffff', '#fbe7f2', '#4b3552', '#8f7092', '#c884a6', 'rgba(74,43,69,.8)') },
   'dark-romance': { layout: 'framed', cards: 'velvet', title: 'scripted', kicker: 'An evening celebration', badge: 'Moody florals and candlelight', amp: '✢', divider: '✢ ✢ ✢', icon: '✺', rsvp: 'Reply by Candlelight', labels: { families: 'Those We Honor', events: 'Evening Programme', dress: 'Evening Dress Code', stay: 'Stay the Night', schedule: 'Night Timeline', ceremony: 'Candlelit Ceremony', reception: 'Midnight Reception' }, style: vars('#120d14', '#1c1320', '#2b1b30', '#f6ecf2', '#b999ab', '#d27c99', 'rgba(9,5,10,.88)') },
+  celestial: { layout: 'soft', cards: 'rounded', title: 'lined', kicker: 'Under the stars, two hearts unite', badge: 'A celestial celebration', amp: '✧', divider: '✦ ✦ ✦', icon: '✧', rsvp: 'Share Your Constellation', labels: { families: 'Our Guiding Stars', events: 'Celestial Timeline', dress: 'Dress Code', stay: 'Where to Stay', schedule: 'Day Schedule', ceremony: 'Ceremony', reception: 'Reception' }, style: vars('#ffffff', '#fdfcff', '#fef7fc', '#1a0d2e', '#7a6b8f', '#f97baa', 'rgba(26,13,46,.75)') },
 }
 
 function vars(bg, surface, alt, text, muted, accent, overlay) {
@@ -48,7 +49,7 @@ function sectionOf(invitation, type) {
 
 const css = `
   .ti-page{min-height:100vh;background:var(--ti-bg);color:var(--ti-text);font-family:'Inter',system-ui,sans-serif}.ti-page *{box-sizing:border-box}.ti-wrap{width:min(1080px,calc(100vw - 1.5rem));margin:0 auto}.ti-page img{max-width:100%;display:block}
-  .ti-env{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,var(--ti-surface) 0%,var(--ti-bg) 100%);transition:opacity .65s ease;animation:envFadeIn .4s ease-out}.ti-env--opening{opacity:0;pointer-events:none}@keyframes envFadeIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}.ti-env__stack{text-align:center;display:grid;gap:1.4rem}.ti-env__title{color:var(--ti-accent);font-size:1rem;letter-spacing:.18em;text-transform:uppercase;opacity:.9;font-weight:500;cursor:pointer}.ti-env__wrapper{position:relative;width:320px;height:220px;cursor:pointer;perspective:1200px}.ti-env__body{position:relative;width:100%;height:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--ti-surface) 88%,var(--ti-accent)) 0%,color-mix(in srgb,var(--ti-surface) 82%,var(--ti-accent)) 100%);box-shadow:0 8px 32px rgba(0,0,0,.18);overflow:hidden}.ti-env__flap{position:absolute;top:0;left:0;width:100%;height:60%;background:linear-gradient(180deg,color-mix(in srgb,var(--ti-surface) 95%,var(--ti-accent)) 0%,color-mix(in srgb,var(--ti-surface) 88%,var(--ti-accent)) 100%);clip-path:polygon(0 0,100% 0,50% 85%);transform-origin:50% 0;transition:transform .7s cubic-bezier(.34,.05,.25,1) .4s;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,.15)}.ti-env__flap::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 50%);clip-path:polygon(0 0,100% 0,50% 85%)}.ti-env__letter{position:absolute;left:50%;top:100%;transform:translate(-50%,0);width:170px;height:180px;background:linear-gradient(180deg,#fffef9 0%,#faf8f0 100%);box-shadow:0 4px 16px rgba(0,0,0,.2);padding:18px 14px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',Georgia,serif;font-size:14px;color:var(--ti-text);line-height:1.6;text-align:center;transition:all .85s cubic-bezier(.34,.05,.25,1);z-index:5;border:1px solid rgba(0,0,0,.08)}.ti-env__heart{position:absolute;top:52%;left:50%;width:18px;height:18px;background:var(--ti-accent);z-index:15;transform:translate(-50%,-50%) rotate(-45deg);transition:transform .5s ease-in-out .7s;box-shadow:0 3px 10px rgba(0,0,0,.25);cursor:pointer}.ti-env__heart::before,.ti-env__heart::after{content:"";position:absolute;width:18px;height:18px;background:var(--ti-accent);border-radius:50%}.ti-env__heart::before{top:-9px;left:0}.ti-env__heart::after{top:0;right:-9px}.ti-env--open .ti-env__flap{transform:rotateX(175deg);z-index:1}.ti-env--open .ti-env__letter{top:10%;transform:translate(-50%,0) scale(1.35);transition-delay:.5s}.ti-env--open .ti-env__heart{transform:translate(-50%,-50%) rotate(45deg);transition-delay:.25s}
+  .ti-env{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,var(--ti-surface) 0%,var(--ti-bg) 100%);transition:opacity .65s ease;animation:envFadeIn .4s ease-out}.ti-env--opening{opacity:0;pointer-events:none}@keyframes envFadeIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}.ti-env__stack{text-align:center;display:grid;gap:1.4rem}.ti-env__title{color:var(--ti-accent);font-size:1rem;letter-spacing:.18em;text-transform:uppercase;opacity:.9;font-weight:500;cursor:pointer}.ti-env__wrapper{position:relative;width:320px;height:220px;cursor:pointer;perspective:1200px}.ti-env__body{position:relative;width:100%;height:100%;background:linear-gradient(180deg,color-mix(in srgb,var(--ti-surface) 88%,var(--ti-accent)) 0%,color-mix(in srgb,var(--ti-surface) 82%,var(--ti-accent)) 100%);box-shadow:0 8px 32px rgba(0,0,0,.18);overflow:hidden}.ti-env__flap{position:absolute;top:0;left:0;width:100%;height:60%;background:linear-gradient(180deg,color-mix(in srgb,var(--ti-surface) 95%,var(--ti-accent)) 0%,color-mix(in srgb,var(--ti-surface) 88%,var(--ti-accent)) 100%);clip-path:polygon(0 0,100% 0,50% 85%);transform-origin:50% 0;transition:transform .7s cubic-bezier(.34,.05,.25,1) .4s;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,.15)}.ti-env__flap::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 50%);clip-path:polygon(0 0,100% 0,50% 85%)}.ti-env__letter{position:absolute;left:50%;top:100%;transform:translate(-50%,0);width:170px;height:180px;background:linear-gradient(180deg,#fffef9 0%,#faf8f0 100%);box-shadow:0 4px 16px rgba(0,0,0,.2);padding:18px 14px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',Georgia,serif;font-size:14px;color:var(--ti-text);line-height:1.6;text-align:center;transition:all .85s cubic-bezier(.34,.05,.25,1);z-index:5;border:1px solid rgba(0,0,0,.08)}.ti-env__heart{position:absolute;top:52%;left:50%;width:18px;height:18px;background:var(--ti-accent);z-index:15;transform:translate(-50%,-50%) rotate(-45deg);transition:transform .5s ease-in-out .7s;box-shadow:0 3px 10px rgba(0,0,0,.25);cursor:pointer}.ti-env__heart::before,.ti-env__heart::after{content:"";position:absolute;width:18px;height:18px;background:var(--ti-accent);border-radius:50%}.ti-env__heart::before{top:-9px;left:0}.ti-env__heart::after{top:0;right:-9px}.ti-env--open .ti-env__flap{transform:rotateX(175deg);z-index:1}.ti-env--open .ti-env__letter{top:10%;transform:translate(-50%,0) scale(1.35);transition-delay:.5s}.ti-env--open .ti-env__heart{transform:translate(-50%,-50%) rotate(45deg);transition-delay:.25s}.ti-env--elegant .ti-env__flap{transition-duration:1.2s;transition-delay:.6s}.ti-env--elegant .ti-env__letter{transition-duration:1.4s}.ti-env--elegant .ti-env__heart{transition-duration:.8s;transition-delay:1s}.ti-env--elegant.ti-env--opening{transition-duration:1s}.ti-env--minimal{animation:envFadeIn .5s ease-out}.ti-env--minimal.ti-env--opening{transition-duration:.4s}.ti-env__simple{padding:2rem;background:var(--ti-surface);border:2px solid var(--ti-border);border-radius:24px;cursor:pointer;transition:all .3s ease;box-shadow:0 12px 36px rgba(0,0,0,.1)}.ti-env__simple:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.15)}.ti-env__simple-icon{font-size:4rem;margin-bottom:1rem;line-height:1}.ti-env__simple-text{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;color:var(--ti-text)}
   .ti-hero{position:relative;min-height:100svh;display:grid;align-items:center}.ti-hero__media,.ti-hero__overlay{position:absolute;inset:0}.ti-hero__media{background-size:cover;background-position:center}.ti-hero__overlay{background:var(--ti-overlay)}.ti-hero__content{position:relative;z-index:1;padding:2rem 0}.ti-panel{width:min(680px,100%);padding:clamp(1.5rem,4vw,3rem);border:1px solid rgba(255,255,255,.16);border-radius:28px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));backdrop-filter:blur(12px);box-shadow:0 24px 60px rgba(0,0,0,.15);color:#fff}.layout-centered .ti-hero__content,.layout-soft .ti-hero__content,.layout-framed .ti-hero__content,.layout-carded .ti-hero__content,.layout-postcard .ti-hero__content,.layout-story .ti-hero__content,.layout-storybook .ti-hero__content{display:grid;justify-items:center}.layout-framed .ti-panel{border-radius:0}.layout-carded .ti-panel,.layout-postcard .ti-panel{transform:translateY(10%);background:var(--ti-surface);color:var(--ti-text);border-color:var(--ti-border)}.layout-split .ti-hero{grid-template-columns:1fr 1fr;background:var(--ti-bg)}.layout-split .ti-hero__media,.layout-split .ti-hero__overlay{inset:0 50% 0 0}.layout-split .ti-hero__content{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}.layout-split .ti-panel{width:auto;border:none;border-left:1px solid var(--ti-border);border-radius:0;background:var(--ti-bg);color:var(--ti-text);display:flex;flex-direction:column;justify-content:center;box-shadow:none}.layout-split .ti-panel--spacer{display:block}.ti-panel--spacer{display:none}
   .ti-kicker{display:inline-flex;gap:.75rem;align-items:center;color:rgba(255,255,255,.84);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}.ti-kicker:before{content:'';width:32px;height:1px;background:currentColor}.layout-carded .ti-kicker,.layout-postcard .ti-kicker,.layout-split .ti-kicker,.layout-carded .ti-divider,.layout-postcard .ti-divider,.layout-split .ti-divider,.layout-carded .ti-amp,.layout-postcard .ti-amp,.layout-split .ti-amp{color:var(--ti-accent)}.ti-names{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.8rem,9vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:1rem 0 .7rem}.title-uppercase .ti-names,.title-uppercase .ti-card__title{text-transform:uppercase;font-family:'Inter',system-ui,sans-serif;font-weight:800}.ti-amp{display:block;font-size:clamp(1.15rem,3vw,1.85rem);color:rgba(255,255,255,.8);margin:.5rem 0;letter-spacing:.16em}.ti-divider{font-size:.72rem;color:rgba(255,255,255,.7);letter-spacing:.24em;margin-bottom:1rem}.ti-date{font-size:.88rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.86)}.layout-carded .ti-date,.layout-postcard .ti-date,.layout-split .ti-date{color:var(--ti-muted)}.ti-badge{display:inline-flex;margin-top:1.25rem;padding:.5rem .95rem;border-radius:999px;background:var(--ti-accent-soft);border:1px solid var(--ti-border);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}.ti-countdown{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:1.5rem}.ti-countdown__unit{min-width:74px;padding:.75rem .6rem;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);text-align:center}.layout-carded .ti-countdown__unit,.layout-postcard .ti-countdown__unit,.layout-split .ti-countdown__unit{background:var(--ti-surface-alt);border-color:var(--ti-border)}.ti-countdown__num{display:block;font-family:'Playfair Display',Georgia,serif;font-size:1.75rem;line-height:1}.ti-countdown__label{display:block;margin-top:.3rem;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;opacity:.78}
   .ti-nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ti-bg) 90%, transparent);border-bottom:1px solid var(--ti-border);backdrop-filter:blur(10px)}.ti-nav__inner{width:min(1080px,calc(100vw - 1.5rem));margin:0 auto;display:flex;justify-content:center;flex-wrap:wrap;gap:1.1rem 1.6rem;padding:.9rem 0}.ti-nav__link{text-decoration:none;text-transform:uppercase;letter-spacing:.18em;font-size:.66rem;color:var(--ti-muted);padding-bottom:.16rem;border-bottom:2px solid transparent;white-space:nowrap}.ti-nav__link:hover{color:var(--ti-accent);border-bottom-color:var(--ti-accent)}
@@ -62,12 +63,30 @@ const css = `
   @media (prefers-reduced-motion:reduce){@keyframes envFadeIn{from{opacity:0}to{opacity:1}}.ti-env{animation-duration:.2s}.ti-env__flap,.ti-env__letter,.ti-env__heart{transition-duration:.25s}.ti-env--open .ti-env__heart{transform:translate(-50%,-50%) rotate(45deg)}}
 `
 
-function EnvelopeIntro({ phase, onOpen, theme }) {
+function EnvelopeIntro({ phase, onOpen, theme, envelopeType = 'classic' }) {
   const isOpening = phase === 'opening' || phase === 'fadeout'
   const isFadingOut = phase === 'fadeout'
 
+  // For minimal envelope, show simplified version
+  if (envelopeType === 'minimal') {
+    return (
+      <div className={`ti-env ti-env--minimal${isFadingOut ? ' ti-env--opening' : ''}`} role="button" aria-label="Open invitation" onClick={onOpen}>
+        <div className="ti-env__stack">
+          <div className="ti-env__title">Open your invitation</div>
+          <div className="ti-env__simple">
+            <div className="ti-env__simple-icon">✉️</div>
+            <div className="ti-env__simple-text">You're Invited</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Classic and elegant use the full envelope animation
+  const envClass = `ti-env ti-env--${envelopeType}${isFadingOut ? ' ti-env--opening' : ''}`
+
   return (
-    <div className={`ti-env${isFadingOut ? ' ti-env--opening' : ''}`} role="button" aria-label="Open invitation">
+    <div className={envClass} role="button" aria-label="Open invitation">
       <div className="ti-env__stack">
         <div className="ti-env__title" onClick={onOpen}>Open your invitation</div>
         <div className={`ti-env__wrapper${isOpening ? ' ti-env--open' : ''}`} onClick={onOpen}>
@@ -314,7 +333,9 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
   const isPreview = searchParams.get('preview') === 'true'
   const isEmbeddedPreview = searchParams.get('embed') === 'true'
-  const [phase, setPhase] = useState(isPreview ? 'open' : 'closed')
+  const envelopeType = invitation?.envelope || 'classic'
+  const skipEnvelope = envelopeType === 'none'
+  const [phase, setPhase] = useState(skipEnvelope ? 'open' : 'closed')
 
   useEffect(() => {
     if (invitationData) {
@@ -332,8 +353,17 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   const handleOpen = () => {
     if (phase !== 'closed') return
     setPhase('opening')
-    window.setTimeout(() => setPhase('fadeout'), 1600)
-    window.setTimeout(() => setPhase('open'), 2200)
+
+    // Different timings based on envelope type
+    const timings = {
+      classic: { fadeout: 1600, open: 2200 },
+      elegant: { fadeout: 2400, open: 3200 },  // Slower, more graceful
+      minimal: { fadeout: 400, open: 800 },    // Quick fade
+    }
+
+    const timing = timings[envelopeType] || timings.classic
+    window.setTimeout(() => setPhase('fadeout'), timing.fadeout)
+    window.setTimeout(() => setPhase('open'), timing.open)
   }
 
   if (!invitation) {
@@ -356,7 +386,7 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   return (
     <div className={`ti-page layout-${theme.layout} cards-${theme.cards} title-${theme.title}`} style={theme.style}>
       <style>{css}</style>
-      {phase !== 'open' && <EnvelopeIntro phase={phase} onOpen={handleOpen} theme={theme} />}
+      {phase !== 'open' && <EnvelopeIntro phase={phase} onOpen={handleOpen} theme={theme} envelopeType={envelopeType} />}
 
       <section className="ti-hero">
         <div className="ti-hero__media" style={{ backgroundImage: `url('${invitation.backgroundImageUrl}')` }} />

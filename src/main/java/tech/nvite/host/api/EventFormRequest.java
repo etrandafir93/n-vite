@@ -1,8 +1,10 @@
 package tech.nvite.host.api;
 
-import jakarta.annotation.Nullable;
 import java.time.Instant;
 import java.util.List;
+
+import jakarta.annotation.Nullable;
+
 import lombok.NonNull;
 import tech.nvite.domain.EventSection;
 import tech.nvite.domain.EventStatus;
@@ -27,6 +29,6 @@ record EventFormRequest(
     @Nullable String receptionMapUrl,
     String rsvpDeadline,
     @Nullable List<String> menuOptions,
-    @Nullable String theme,
+    @Nullable String theme, @Nullable String envelope,
     @NonNull EventStatus status,
     @Nullable List<EventSection> sections) {}

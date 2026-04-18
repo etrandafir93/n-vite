@@ -11,6 +11,7 @@ export const THEME_OPTIONS = [
   { key: 'photo-story', name: 'Photo Story', mood: 'Personal and cinematic', tagline: 'Large photography moments and story-led sections for digital-first invites' },
   { key: 'whimsical', name: 'Whimsical Fairytale', mood: 'Playful and dreamy', tagline: 'Pastels, bows and hand-drawn charm with a soft fairytale mood' },
   { key: 'dark-romance', name: 'Dark Romance', mood: 'Moody and dramatic', tagline: 'Deep florals, candlelit tones and a dramatic evening atmosphere' },
+  { key: 'celestial', name: 'Celestial Dreams', mood: 'Ethereal and minimalist', tagline: 'Clean white spaces with pink starlit accents for a modern cosmic celebration' },
 ]
 
 export const DEFAULT_THEME_VISUAL = {
@@ -31,6 +32,7 @@ export const THEME_VISUALS = {
   'photo-story': { gradient: 'linear-gradient(165deg, #1f2433 0%, #61536b 56%, #e3b3a2 100%)', accent: '#f1d0c6' },
   whimsical: { gradient: 'linear-gradient(165deg, #5a436d 0%, #c384a6 56%, #f7d7b8 100%)', accent: '#ffe7d4' },
   'dark-romance': { gradient: 'linear-gradient(165deg, #120b14 0%, #4b1733 56%, #a2475a 100%)', accent: '#efb7c2' },
+  celestial: { gradient: 'linear-gradient(165deg, #ffffff 0%, #fef7fc 56%, #f97baa 100%)', accent: '#ff3592' },
 }
 
 export const THEME_LOOKUP = Object.fromEntries(THEME_OPTIONS.map((theme) => [theme.key, theme]))
@@ -41,4 +43,17 @@ export function resolveThemeVisual(themeKey) {
 
 export function resolveThemeMeta(themeKey) {
   return THEME_LOOKUP[themeKey] || THEME_LOOKUP.classic
+}
+
+export const ENVELOPE_OPTIONS = [
+  { key: 'classic', name: 'Classic Envelope', description: 'Traditional 3D envelope with flap opening and letter rising', icon: '✉️' },
+  { key: 'elegant', name: 'Elegant Fade', description: 'Slower, more graceful animation with smooth transitions', icon: '💌' },
+  { key: 'minimal', name: 'Minimal', description: 'Simple fade-in without 3D effects', icon: '📧' },
+  { key: 'none', name: 'No Animation', description: 'Skip the envelope and show invitation immediately', icon: '📄' },
+]
+
+export const ENVELOPE_LOOKUP = Object.fromEntries(ENVELOPE_OPTIONS.map((envelope) => [envelope.key, envelope]))
+
+export function resolveEnvelopeMeta(envelopeKey) {
+  return ENVELOPE_LOOKUP[envelopeKey] || ENVELOPE_LOOKUP.classic
 }
