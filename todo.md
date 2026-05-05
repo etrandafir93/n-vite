@@ -1,3 +1,2 @@
 - open api contacts + generate client code
-- cleanup up old code related to thymeleaf
 - adjust constraints according to the new data model

@@ -39,7 +39,9 @@
       "Bash(npm install:*)",
       "Bash(mvn compile:*)",
       "WebFetch(domain:codepen.io)",
-      "Bash(./mvnw.cmd compile:*)"
+      "Bash(./mvnw.cmd compile:*)",
+      "Bash(npx vite:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

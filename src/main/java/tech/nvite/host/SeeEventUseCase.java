@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import lombok.RequiredArgsConstructor;
 import tech.nvite.domain.EventSection;
+import tech.nvite.domain.EventStatus;
 import tech.nvite.domain.Events;
 import tech.nvite.host.api.EventBuilderMapper;
 import tech.nvite.infra.UseCase;
@@ -45,6 +46,6 @@ public class SeeEventUseCase implements Function<String, SeeEventUseCase.EventFo
       String rsvpDeadline,
       List<String> menuOptions,
       String theme, String envelope,
-      String status,
+      EventStatus status,
       List<EventSection> sections) {}
 }

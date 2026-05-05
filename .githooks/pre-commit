@@ -1,0 +1,41 @@
+#!/bin/sh
+# Enforce version bumps as required by DEVELOPMENT_RULES.md
+
+check_frontend_version() {
+  staged_frontend=$(git diff --cached --name-only | grep -E '^frontend/src/' | head -1)
+  if [ -n "$staged_frontend" ]; then
+    if ! git diff --cached --name-only | grep -q '^frontend/package\.json$'; then
+      echo "ERROR: frontend/src files are staged but frontend/package.json is not."
+      echo "Bump the version in frontend/package.json before committing."
+      exit 1
+    fi
+    old_version=$(git show HEAD:frontend/package.json 2>/dev/null | grep '"version"' | head -1)
+    new_version=$(git show :frontend/package.json 2>/dev/null | grep '"version"' | head -1)
+    if [ "$old_version" = "$new_version" ]; then
+      echo "ERROR: frontend/src files changed but frontend/package.json version was not bumped."
+      echo "Update the \"version\" field in frontend/package.json before committing."
+      exit 1
+    fi
+  fi
+}
+
+check_backend_version() {
+  staged_backend=$(git diff --cached --name-only | grep -E '^src/' | head -1)
+  if [ -n "$staged_backend" ]; then
+    if ! git diff --cached --name-only | grep -q '^pom\.xml$'; then
+      echo "ERROR: src/ files are staged but pom.xml is not."
+      echo "Bump the version in pom.xml before committing."
+      exit 1
+    fi
+    old_version=$(git show HEAD:pom.xml 2>/dev/null | grep '<version>.*-SNAPSHOT</version>' | head -1 | tr -d ' ')
+    new_version=$(git show :pom.xml 2>/dev/null | grep '<version>.*-SNAPSHOT</version>' | head -1 | tr -d ' ')
+    if [ "$old_version" = "$new_version" ]; then
+      echo "ERROR: src/ files changed but pom.xml version was not bumped."
+      echo "Update the <version> in pom.xml before committing."
+      exit 1
+    fi
+  fi
+}
+
+check_frontend_version
+check_backend_version
