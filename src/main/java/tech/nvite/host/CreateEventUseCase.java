@@ -50,10 +50,10 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
             .receptionPhotoUrl(req.receptionPhotoUrl())
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
-            .menuOptions(req.menuOptions())
-            .theme(req.theme()).envelope(req.envelope())
+            .menuOptions(req.menuOptions()).theme(req.theme()).envelope(req.envelope())
             .status(req.status() != null ? req.status() : EventStatus.LIVE)
-            .sections(req.sections())
+            .sections(req.sections()).groomImageUrl(req.groomImageUrl())
+				.brideImageUrl(req.brideImageUrl())
             .eventReference(eventReference)
             .createdBy(currentUser.get().id())
             .build();
@@ -87,8 +87,9 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
       String receptionPhotoUrl,
       @Nullable String receptionMapUrl,
       String rsvpDeadline,
-      @Nullable List<String> menuOptions,
-      @Nullable String theme, @Nullable String envelope,
-      @NonNull EventStatus status,
-      @Nullable List<EventSection> sections) {}
+      @Nullable List<String> menuOptions, @Nullable String theme,
+	  @Nullable String envelope,
+      @NonNull EventStatus status, @Nullable List<EventSection> sections,
+	  @Nullable String groomImageUrl, @Nullable String brideImageUrl) {
+  }
 }

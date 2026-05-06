@@ -12,6 +12,7 @@ export const THEME_OPTIONS = [
   { key: 'whimsical', name: 'Whimsical Fairytale', mood: 'Playful and dreamy', tagline: 'Pastels, bows and hand-drawn charm with a soft fairytale mood' },
   { key: 'dark-romance', name: 'Dark Romance', mood: 'Moody and dramatic', tagline: 'Deep florals, candlelit tones and a dramatic evening atmosphere' },
   { key: 'celestial', name: 'Celestial Dreams', mood: 'Ethereal and minimalist', tagline: 'Clean white spaces with pink starlit accents for a modern cosmic celebration' },
+  { key: 'alexandra-radu', name: 'Alexandra & Radu', mood: 'Ethereal and minimalist', tagline: 'Clean white spaces with pink starlit accents for a modern cosmic celebration' },
 ]
 
 export const DEFAULT_THEME_VISUAL = {
@@ -33,6 +34,7 @@ export const THEME_VISUALS = {
   whimsical: { gradient: 'linear-gradient(165deg, #5a436d 0%, #c384a6 56%, #f7d7b8 100%)', accent: '#ffe7d4' },
   'dark-romance': { gradient: 'linear-gradient(165deg, #120b14 0%, #4b1733 56%, #a2475a 100%)', accent: '#efb7c2' },
   celestial: { gradient: 'linear-gradient(165deg, #ffffff 0%, #fef7fc 56%, #f97baa 100%)', accent: '#ff3592' },
+  'alexandra-radu': { gradient: 'linear-gradient(165deg, #ffffff 0%, #fef7fc 56%, #f97baa 100%)', accent: '#ff3592' },
 }
 
 export const THEME_LOOKUP = Object.fromEntries(THEME_OPTIONS.map((theme) => [theme.key, theme]))

@@ -337,6 +337,19 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
+.cel-event-card {
+  overflow: hidden;
+}
+
+.cel-event-card__photo {
+  width: calc(100% + 4rem);
+  margin: -2rem -2rem 1.5rem;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
 .cel-event-card__icon {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -773,5 +786,112 @@
 
   .cel-form {
     padding: 1.5rem 1.25rem;
+  }
+}
+
+/* ===== Alexandra & Radu – Countdown ===== */
+.ar-countdown {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.ar-countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 56px;
+}
+
+.ar-countdown__num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.02em;
+}
+
+.ar-countdown__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 768px) {
+  .ar-countdown {
+    gap: 0.75rem;
+  }
+
+  .ar-countdown__num {
+    font-size: 1.85rem;
+  }
+
+  .ar-countdown__unit {
+    min-width: 44px;
+  }
+}
+
+/* ===== Alexandra & Radu – global ===== */
+.cel-page--ar * {
+  cursor: default;
+  user-select: none;
+}
+
+.cel-page--ar a,
+.cel-page--ar button,
+.cel-page--ar select,
+.cel-page--ar [role="button"] {
+  cursor: pointer;
+}
+
+.cel-page--ar input,
+.cel-page--ar textarea {
+  cursor: text;
+  user-select: text;
+}
+
+/* ===== Alexandra & Radu – desktop hero position ===== */
+.cel-hero--ar {
+  align-items: flex-end;
+}
+
+.cel-hero__content--ar {
+  padding-bottom: 12vh;
+}
+
+/* ===== Alexandra & Radu – mobile overrides ===== */
+@media (max-width: 768px) {
+  .cel-page--ar .cel-sidebar__leaf-icon {
+    display: none;
+  }
+
+  .cel-page--ar .cel-sidebar__nav {
+    display: none;
+  }
+
+  .cel-page--ar .cel-sidebar {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .cel-page--ar .cel-sidebar__header {
+    margin-bottom: 0;
+  }
+
+  .cel-page--ar .cel-sidebar__title {
+    font-size: 1.1rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .cel-page--ar .cel-sidebar__date {
+    font-size: 0.8rem;
+  }
+
+  .cel-hero__content--ar {
+    padding-bottom: 3vh;
   }
 }

@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import CelestialSidebar from './celestial/CelestialSidebar'
-import CelestialHero from './celestial/CelestialHero'
-import CelestialCouple from './celestial/CelestialCouple'
-import CelestialEvents from './celestial/CelestialEvents'
-import CelestialRsvp from './celestial/CelestialRsvp'
-import LanguageSelector from '../../components/LanguageSelector'
+import AlexandraRaduSidebar from './alexandra-radu/AlexandraRaduSidebar'
+import AlexandraRaduHero from './alexandra-radu/AlexandraRaduHero'
+import AlexandraRaduCouple from './alexandra-radu/AlexandraRaduCouple'
+import AlexandraRaduEvents from './alexandra-radu/AlexandraRaduEvents'
+import AlexandraRaduRsvp from './alexandra-radu/AlexandraRaduRsvp'
 import EnvelopeIntro, { useEnvelopePhase } from './EnvelopeIntro'
 import './Celestial.css'
 
-const CEL_ENVELOPE_VARS = {
+const AR_ENVELOPE_VARS = {
   '--ti-surface': '#ffffff',
   '--ti-bg': '#fef7fc',
   '--ti-accent': '#f97baa',
   '--ti-text': '#1a0d2e',
 }
 
-export default function CelestialInvitation({ invitationRef, invitationData }) {
+export default function AlexandraRaduInvitation({ invitationRef, invitationData }) {
   const { ref: routeRef } = useParams()
   const { t } = useTranslation()
   const [invitation, setInvitation] = useState(invitationData || null)
@@ -93,23 +92,19 @@ export default function CelestialInvitation({ invitationRef, invitationData }) {
   }))
 
   return (
-    <div className="cel-page">
+    <div className="cel-page cel-page--ar">
       {phase !== 'open' && (
-        <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={CEL_ENVELOPE_VARS} />
+        <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={AR_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} />
       )}
-      <div className="cel-lang-selector-wrapper">
-        <LanguageSelector />
-      </div>
-
-      <CelestialSidebar
+      {phase === 'open' && <AlexandraRaduSidebar
         groomName={invitation.groomName}
         brideName={invitation.brideName}
         eventDate={invitation.eventDate}
         extraNavItems={extraNavItems}
-      />
+      />}
 
       <main className="cel-main">
-        <CelestialHero
+        <AlexandraRaduHero
           groomName={invitation.groomName}
           brideName={invitation.brideName}
           eventDate={invitation.eventDate}
@@ -128,22 +123,26 @@ export default function CelestialInvitation({ invitationRef, invitationData }) {
           </div>
         </section>
 
-        <CelestialCouple
+        <AlexandraRaduCouple
           groomName={invitation.groomName}
           brideName={invitation.brideName}
+          groomImageUrl={invitation.groomImageUrl}
+          brideImageUrl={invitation.brideImageUrl}
           backgroundImageUrl={invitation.backgroundImageUrl}
           godparents={invitation.godparents}
         />
 
-        <CelestialEvents
+        <AlexandraRaduEvents
           eventDate={invitation.eventDate}
           ceremonyVenue={invitation.ceremonyVenue}
           ceremonyAddress={invitation.ceremonyAddress}
           ceremonyTime={invitation.ceremonyTime}
+          ceremonyPhotoUrl={invitation.ceremonyPhotoUrl}
           ceremonyMapUrl={invitation.ceremonyMapUrl}
           receptionVenue={invitation.receptionVenue}
           receptionAddress={invitation.receptionAddress}
           receptionTime={invitation.receptionTime}
+          receptionPhotoUrl={invitation.receptionPhotoUrl}
           receptionMapUrl={invitation.receptionMapUrl}
         />
 
@@ -195,7 +194,7 @@ export default function CelestialInvitation({ invitationRef, invitationData }) {
             </div>
           </section>
         ) : (
-          <CelestialRsvp
+          <AlexandraRaduRsvp
             invitationRef={invitationRef || routeRef}
             menuOptions={invitation.menuOptions}
             rsvpDeadline={invitation.rsvpDeadline}
