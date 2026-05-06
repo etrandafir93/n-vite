@@ -9,6 +9,8 @@ const EMPTY_FORM = {
   brideName: '',
   eventDateTime: '',
   backgroundImageUrl: '',
+  groomImageUrl: '',
+  brideImageUrl: '',
   groomParents: '',
   brideParents: '',
   godparents: '',
@@ -731,6 +733,8 @@ export default function EventBuilder() {
           brideName: data.brideName ?? '',
           eventDateTime: toLocalDateTimeInput(data.eventDateTime),
           backgroundImageUrl: data.backgroundImageUrl ?? '',
+          groomImageUrl: data.groomImageUrl ?? '',
+          brideImageUrl: data.brideImageUrl ?? '',
           groomParents: data.groomParents ?? '',
           brideParents: data.brideParents ?? '',
           godparents: data.godparents ?? '',
@@ -1165,12 +1169,22 @@ export default function EventBuilder() {
 
           <Section title="The Couple" subtitle="Names as they will appear on the invitation">
             <div className="eb-grid-2">
-              <Field label="Groom's Name" required error={fieldErrors.groomName}>
-                <Input value={form.groomName} onChange={set('groomName')} placeholder="e.g. John Doe" required invalid={!!fieldErrors.groomName} />
-              </Field>
-              <Field label="Bride's Name" required error={fieldErrors.brideName}>
-                <Input value={form.brideName} onChange={set('brideName')} placeholder="e.g. Jane Smith" required invalid={!!fieldErrors.brideName} />
-              </Field>
+              <div>
+                <Field label="Groom's Name" required error={fieldErrors.groomName}>
+                  <Input value={form.groomName} onChange={set('groomName')} placeholder="e.g. John Doe" required invalid={!!fieldErrors.groomName} />
+                </Field>
+                <Field label="Groom's Photo" hint="Individual photo of the groom">
+                  <ImageUpload value={form.groomImageUrl} onChange={set('groomImageUrl')} label="Groom Photo" />
+                </Field>
+              </div>
+              <div>
+                <Field label="Bride's Name" required error={fieldErrors.brideName}>
+                  <Input value={form.brideName} onChange={set('brideName')} placeholder="e.g. Jane Smith" required invalid={!!fieldErrors.brideName} />
+                </Field>
+                <Field label="Bride's Photo" hint="Individual photo of the bride">
+                  <ImageUpload value={form.brideImageUrl} onChange={set('brideImageUrl')} label="Bride Photo" />
+                </Field>
+              </div>
             </div>
           </Section>
 

@@ -26,7 +26,7 @@ record InvitationDetails(
     String receptionPhotoUrl,
     String receptionMapUrl,
     String rsvpDeadline,
-    List<String> menuOptions,
-    String theme, String envelope,
-    EventStatus status,
-    List<EventSection> sections) {}
+    List<String> menuOptions, String theme, String envelope,
+    EventStatus status, List<EventSection> sections, String groomImageUrl,
+	String brideImageUrl) {
+}

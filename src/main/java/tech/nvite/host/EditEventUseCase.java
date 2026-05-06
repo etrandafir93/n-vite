@@ -48,10 +48,10 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
             .receptionPhotoUrl(req.receptionPhotoUrl())
             .receptionMapUrl(req.receptionMapUrl())
             .rsvpDeadline(req.rsvpDeadline())
-            .menuOptions(req.menuOptions())
-            .theme(req.theme()).envelope(req.envelope())
+            .menuOptions(req.menuOptions()).theme(req.theme()).envelope(req.envelope())
             .status(req.status() != null ? req.status() : existing.status())
             .sections(req.sections() != null ? req.sections() : existing.sections())
+				.groomImageUrl(req.groomImageUrl()).brideImageUrl(req.brideImageUrl())
             .eventReference(req.eventReference())
             .createdBy(existing.createdBy())
             .created(existing.created())
@@ -82,8 +82,9 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
       String receptionPhotoUrl,
       String receptionMapUrl,
       String rsvpDeadline,
-      @Nullable List<String> menuOptions,
-      @Nullable String theme, @Nullable String envelope,
-      @NonNull EventStatus status,
-      @Nullable List<EventSection> sections) {}
+      @Nullable List<String> menuOptions, @Nullable String theme,
+	  @Nullable String envelope,
+      @NonNull EventStatus status, @Nullable List<EventSection> sections,
+	  @Nullable String groomImageUrl, @Nullable String brideImageUrl) {
+  }
 }

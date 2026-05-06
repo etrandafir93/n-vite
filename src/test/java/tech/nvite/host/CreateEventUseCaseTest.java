@@ -71,9 +71,8 @@ class CreateEventUseCaseTest {
             null,
             null,
             "2026-06-01",
-            List.of("Meat", "Fish", "Veg"),
-            "classic", null,
-            EventStatus.LIVE,
+            List.of("Meat", "Fish", "Veg"), "classic", null,
+            EventStatus.LIVE, null, null,
             null));
 
     ArgumentCaptor<Event> captor = forClass(Event.class);
@@ -159,9 +158,8 @@ class CreateEventUseCaseTest {
                     null,
                     null,
                     null,
-                    null,
-                    null, null,
-                    EventStatus.LIVE,
+                    null, null, null,
+                    EventStatus.LIVE, null, null,
                     null))
         .isInstanceOf(NullPointerException.class);
   }
@@ -173,8 +171,7 @@ class CreateEventUseCaseTest {
     return new CreateEventUseCase.Request(
         groom,
         bride,
-        DATE,
-        "https://img.com/bg.jpg", null,
+        DATE, "https://img.com/bg.jpg", null,
         null,
         null,
         null,
@@ -191,7 +188,7 @@ class CreateEventUseCaseTest {
         null,
         null,
         null,
-        status,
+        status, null, null,
         null);
   }
 

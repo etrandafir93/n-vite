@@ -65,9 +65,8 @@ class EditEventUseCaseTest {
             null,
             null,
             "2026-05-31",
-            List.of("Meat", "Vegan"),
-            "modern", null,
-            EventStatus.LIVE,
+            List.of("Meat", "Vegan"), "modern", null,
+            EventStatus.LIVE, null, null,
             null));
 
     ArgumentCaptor<Event> captor = forClass(Event.class);
@@ -162,9 +161,8 @@ class EditEventUseCaseTest {
                     null,
                     null,
                     null,
-                    null,
-                    null, null,
-                    EventStatus.LIVE,
+                    null, null, null,
+                    EventStatus.LIVE, null, null,
                     null))
         .isInstanceOf(NullPointerException.class);
   }
@@ -181,9 +179,7 @@ class EditEventUseCaseTest {
         null,
         null,
         null,
-        null,
-        null, null,
-        null,
+        null, null, null,
         null,
         null,
         null,
@@ -194,7 +190,8 @@ class EditEventUseCaseTest {
         null,
         null,
         null,
-        status,
+        null,
+        status, null, null,
         null);
   }
 

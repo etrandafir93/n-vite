@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
 
-export default function CelestialCouple({ groomName, brideName, backgroundImageUrl, godparents }) {
+export default function AlexandraRaduCouple({ groomName, brideName, groomImageUrl, brideImageUrl, backgroundImageUrl, godparents }) {
   const { t } = useTranslation()
 
-  // For now, we'll use the background image as a fallback for couple photos
-  // In the future, these could be separate fields
+  const groomPhoto = groomImageUrl || backgroundImageUrl
+  const bridePhoto = brideImageUrl || backgroundImageUrl
 
   return (
     <section id="noi-doi" className="cel-section cel-couple">
@@ -13,7 +13,7 @@ export default function CelestialCouple({ groomName, brideName, backgroundImageU
           <div className="cel-couple__person">
             <div className="cel-couple__photo-wrapper">
               <img
-                src={backgroundImageUrl}
+                src={groomPhoto}
                 alt={groomName}
                 className="cel-couple__photo"
               />
@@ -30,7 +30,7 @@ export default function CelestialCouple({ groomName, brideName, backgroundImageU
           <div className="cel-couple__person">
             <div className="cel-couple__photo-wrapper">
               <img
-                src={backgroundImageUrl}
+                src={bridePhoto}
                 alt={brideName}
                 className="cel-couple__photo"
               />

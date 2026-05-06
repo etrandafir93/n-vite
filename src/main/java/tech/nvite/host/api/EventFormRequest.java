@@ -28,7 +28,7 @@ record EventFormRequest(
     String receptionPhotoUrl,
     @Nullable String receptionMapUrl,
     String rsvpDeadline,
-    @Nullable List<String> menuOptions,
-    @Nullable String theme, @Nullable String envelope,
-    @NonNull EventStatus status,
-    @Nullable List<EventSection> sections) {}
+    @Nullable List<String> menuOptions, @Nullable String theme, @Nullable String envelope,
+    @NonNull EventStatus status, @Nullable List<EventSection> sections,
+	@Nullable String groomImageUrl, @Nullable String brideImageUrl) {
+}

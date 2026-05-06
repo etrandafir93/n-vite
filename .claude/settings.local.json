@@ -41,7 +41,11 @@
       "WebFetch(domain:codepen.io)",
       "Bash(./mvnw.cmd compile:*)",
       "Bash(npx vite:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(git add *)",
+      "Bash(git rebase *)"
     ],
     "deny": [],
     "ask": []

@@ -13,7 +13,8 @@ import IllustratedInvitation from '../invitation/Illustrated'
 import PhotoStoryInvitation from '../invitation/PhotoStory'
 import WhimsicalInvitation from '../invitation/Whimsical'
 import DarkRomanceInvitation from '../invitation/DarkRomance'
-import CelestialInvitation from '../invitation/Celestial' // New standalone celestial theme
+import CelestialInvitation from '../invitation/Celestial'
+import AlexandraRaduInvitation from '../invitation/AlexandraRadu'
 
 const THEME_COMPONENTS = {
   classic: ClassicInvitation,
@@ -29,6 +30,7 @@ const THEME_COMPONENTS = {
   whimsical: WhimsicalInvitation,
   'dark-romance': DarkRomanceInvitation,
   celestial: CelestialInvitation,
+  'alexandra-radu': AlexandraRaduInvitation,
 }
 
 const EXTENDED_SECTION_LABELS = {
@@ -138,10 +140,12 @@ export default function Invitation() {
   const selectedTheme = urlTheme || invitation.theme || 'classic'
   const ThemeComponent = THEME_COMPONENTS[selectedTheme] || THEME_COMPONENTS.classic
 
+  const themeHandlesExtendedSections = selectedTheme === 'celestial' || selectedTheme === 'alexandra-radu'
+
   return (
     <>
       <ThemeComponent invitationRef={ref} invitationData={invitation} />
-      <ExtendedSections sections={invitation.sections} t={t} />
+      {!themeHandlesExtendedSections && <ExtendedSections sections={invitation.sections} t={t} />}
     </>
   )
 }
