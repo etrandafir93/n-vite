@@ -167,6 +167,8 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
         <AlexandraRaduCouple
           groomName={invitation.groomName}
           brideName={invitation.brideName}
+          groomParents={invitation.groomParents}
+          brideParents={invitation.brideParents}
           groomImageUrl={invitation.groomImageUrl}
           brideImageUrl={invitation.brideImageUrl}
           backgroundImageUrl={invitation.backgroundImageUrl}

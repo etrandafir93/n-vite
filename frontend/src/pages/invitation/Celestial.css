@@ -940,6 +940,14 @@
   color: #7a5460;
 }
 
+.cel-couple__parents {
+  font-size: 0.85rem;
+  color: #9a7a85;
+  font-style: italic;
+  margin: 0.25rem 0 0.5rem;
+  text-align: center;
+}
+
 .cel-page--ar .cel-couple__photo-wrapper {
   border-color: #f0d0d8;
   box-shadow: 0 8px 24px rgba(180, 100, 120, 0.12);

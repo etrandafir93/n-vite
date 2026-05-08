@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-export default function AlexandraRaduCouple({ groomName, brideName, groomImageUrl, brideImageUrl, backgroundImageUrl, godparents }) {
+export default function AlexandraRaduCouple({ groomName, brideName, groomParents, brideParents, groomImageUrl, brideImageUrl, backgroundImageUrl, godparents }) {
   const { t } = useTranslation()
 
   const groomPhoto = groomImageUrl || backgroundImageUrl
@@ -21,6 +21,7 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomImageUr
             <h3 className="cel-couple__name">
               {groomName} <span className="cel-couple__heart">♡</span>
             </h3>
+            {groomParents && <p className="cel-couple__parents">{groomParents}</p>}
             <p className="cel-couple__quote">
               {t('celestial.couple.groom_quote')}
             </p>
@@ -37,6 +38,7 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomImageUr
             <h3 className="cel-couple__name">
               {brideName} <span className="cel-couple__heart">♡</span>
             </h3>
+            {brideParents && <p className="cel-couple__parents">{brideParents}</p>}
             <p className="cel-couple__quote">
               {t('celestial.couple.bride_quote')}
             </p>
