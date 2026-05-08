@@ -10,10 +10,10 @@ import EnvelopeIntro, { useEnvelopePhase } from './EnvelopeIntro'
 import './Celestial.css'
 
 const AR_ENVELOPE_VARS = {
-  '--ti-surface': '#ffffff',
-  '--ti-bg': '#fef7fc',
-  '--ti-accent': '#f97baa',
-  '--ti-text': '#1a0d2e',
+  '--ti-surface': '#fffaf8',
+  '--ti-bg': '#fbeef2',
+  '--ti-accent': '#c4a44d',
+  '--ti-text': '#3a2a2e',
 }
 
 export default function AlexandraRaduInvitation({ invitationRef, invitationData }) {
@@ -21,7 +21,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
   const { t } = useTranslation()
   const [invitation, setInvitation] = useState(invitationData || null)
   const [loading, setLoading] = useState(!invitationData)
-  const envelopeType = invitation?.envelope || 'classic'
+  const envelopeType = invitation?.envelope || 'elegant'
   const { phase, handleOpen } = useEnvelopePhase(envelopeType)
 
   useEffect(() => {

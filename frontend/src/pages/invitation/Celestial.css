@@ -1066,6 +1066,28 @@
   color: #7a5460;
 }
 
+/* ===== Alexandra & Radu – envelope overrides ===== */
+.cel-page--ar .ti-env__letter {
+  font-family: 'Great Vibes', cursive;
+  font-size: 20px;
+  color: #b8883a;
+  background: linear-gradient(180deg, #fffdf9 0%, #fdf8f2 100%);
+  border-color: rgba(196, 164, 77, 0.18);
+}
+
+.cel-page--ar .ti-env__letter-date {
+  font-size: 6.5px;
+  letter-spacing: 0.22em;
+  opacity: 0.42;
+  color: #7a6040;
+}
+
+.cel-page--ar .ti-env__title {
+  font-size: 0.875rem;
+  letter-spacing: 0.22em;
+  font-weight: 400;
+}
+
 /* ===== Alexandra & Radu – desktop hero position ===== */
 .cel-hero--ar {
   align-items: flex-end;
