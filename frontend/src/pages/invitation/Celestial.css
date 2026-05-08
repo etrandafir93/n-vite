@@ -875,7 +875,7 @@
   }
 
   .cel-page--ar .cel-sidebar {
-    padding: 0.875rem 1.25rem;
+    display: none;
   }
 
   .cel-page--ar .cel-sidebar__header {
