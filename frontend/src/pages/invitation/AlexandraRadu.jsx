@@ -142,7 +142,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
     <div className="cel-page cel-page--ar">
       {phase !== 'open' && (
         <>
-          <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={AR_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={invitation.eventDate ? new Date(invitation.eventDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''} />
+          <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={AR_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={invitation.eventDate ? new Date(invitation.eventDate).toLocaleDateString('ro-RO', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''} />
           <FloralCornerOverlay />
         </>
       )}
