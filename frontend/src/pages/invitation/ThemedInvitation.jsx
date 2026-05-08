@@ -331,7 +331,7 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
   return (
     <div className={`ti-page layout-${theme.layout} cards-${theme.cards} title-${theme.title}`} style={theme.style}>
       <style>{css}</style>
-      {phase !== 'open' && <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={theme.style} />}
+      {phase !== 'open' && <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={theme.style} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={dateText} />}
 
       <section className="ti-hero">
         <div className="ti-hero__media" style={{ backgroundImage: `url('${invitation.backgroundImageUrl}')` }} />
