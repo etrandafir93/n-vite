@@ -171,6 +171,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
 
         <section id="eveniment" className="cel-section cel-story">
           <div className="cel-section__inner">
+            <h2 className="cel-section__title">Povestea noastră</h2>
             <div className="cel-story__content">
               <p className="cel-story__text">
                 {t('celestial.story.text')}
