@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
-const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
+const DEFAULT_MENU_OPTIONS = ['Carne', 'Pește', 'Vegetarian']
 
 export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDeadline }) {
-  const { t } = useTranslation()
   const menuChoices = menuOptions?.length ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [attending, setAttending] = useState(null)
@@ -22,12 +20,12 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
 
   const validate = () => {
     const nextErrors = {}
-    if (!guestName.trim()) nextErrors.guestName = t('celestial.rsvp.error_name')
-    if (!attending) nextErrors.attending = t('celestial.rsvp.error_attending')
+    if (!guestName.trim()) nextErrors.guestName = 'Numele tău este obligatoriu'
+    if (!attending) nextErrors.attending = 'Te rugăm să confirmi prezența'
     if (attending === 'yes' && plusOne === 'yes' && !partnerName.trim()) {
-      nextErrors.partnerName = t('celestial.rsvp.error_partner')
+      nextErrors.partnerName = 'Numele partenerului este obligatoriu'
     }
-    if (attending === 'yes' && !menu) nextErrors.menu = t('celestial.rsvp.error_menu')
+    if (attending === 'yes' && !menu) nextErrors.menu = 'Selectează preferința la meniu'
     return nextErrors
   }
 
@@ -70,7 +68,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
       setSubmitted(true)
     } catch (error) {
       console.error('Error submitting RSVP:', error)
-      setSubmitError(t('rsvp_common.submit_error'))
+      setSubmitError('Nu am putut salva răspunsul acum. Te rugăm să încerci din nou.')
     } finally {
       setSubmitting(false)
     }
@@ -82,11 +80,11 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
         <div className="cel-section__inner">
           <div className="cel-rsvp__success">
             <div className="cel-rsvp__success-icon">✓</div>
-            <h2 className="cel-rsvp__success-title">{t('celestial.rsvp.success_title')}</h2>
+            <h2 className="cel-rsvp__success-title">Mulțumim pentru confirmare!</h2>
             <p className="cel-rsvp__success-message">
               {attending === 'yes'
-                ? t('celestial.rsvp.success_message_yes')
-                : t('celestial.rsvp.success_message_no')}
+                ? 'Ne bucurăm că vei fi alături de noi în această zi specială!'
+                : 'Ne pare rău că nu poți participa. Îți mulțumim că ne-ai anunțat!'}
             </p>
           </div>
         </div>
@@ -97,38 +95,38 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
   return (
     <section id="confirmare" className="cel-section cel-rsvp">
       <div className="cel-section__inner">
-        <h2 className="cel-section__title">{t('celestial.rsvp.title')}</h2>
+        <h2 className="cel-section__title">Confirmare</h2>
         {rsvpDeadline && (
-          <p className="cel-rsvp__deadline">{t('celestial.rsvp.deadline', { date: rsvpDeadline })}</p>
+          <p className="cel-rsvp__deadline">Te rugăm să confirmi până la {rsvpDeadline}</p>
         )}
 
         <div className="cel-form">
           <div className={`cel-field ${errors.guestName ? 'cel-field--error' : ''}`}>
-            <label className="cel-label">{t('celestial.rsvp.name_label')}</label>
+            <label className="cel-label">Numele tău *</label>
             <input
               className="cel-input"
               value={guestName}
               onChange={(e) => setGuestName(e.target.value)}
-              placeholder={t('celestial.rsvp.name_placeholder')}
+              placeholder="Introdu numele complet"
             />
           </div>
 
           <div className={`cel-field ${errors.attending ? 'cel-field--error' : ''}`}>
-            <label className="cel-label">{t('celestial.rsvp.attending_label')}</label>
+            <label className="cel-label">Vei participa? *</label>
             <div className="cel-toggle-row">
               <button
                 type="button"
                 className={`cel-toggle-btn ${attending === 'yes' ? 'active' : ''}`}
                 onClick={() => setAttending('yes')}
               >
-                {t('celestial.rsvp.attending_yes')}
+                Da, confirm!
               </button>
               <button
                 type="button"
                 className={`cel-toggle-btn ${attending === 'no' ? 'active' : ''}`}
                 onClick={() => setAttending('no')}
               >
-                {t('celestial.rsvp.attending_no')}
+                Nu pot participa
               </button>
             </div>
           </div>
@@ -136,21 +134,21 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
           {attending === 'yes' && (
             <>
               <div className={`cel-field ${errors.partnerName ? 'cel-field--error' : ''}`}>
-                <label className="cel-label">{t('celestial.rsvp.plus_one_label')}</label>
+                <label className="cel-label">Vii însoțit/ă?</label>
                 <div className="cel-toggle-row">
                   <button
                     type="button"
                     className={`cel-toggle-btn ${plusOne === 'yes' ? 'active' : ''}`}
                     onClick={() => setPlusOne('yes')}
                   >
-                    {t('celestial.rsvp.plus_one_yes')}
+                    Da
                   </button>
                   <button
                     type="button"
                     className={`cel-toggle-btn ${plusOne === 'no' ? 'active' : ''}`}
                     onClick={() => setPlusOne('no')}
                   >
-                    {t('celestial.rsvp.plus_one_no')}
+                    Nu
                   </button>
                 </div>
                 {plusOne === 'yes' && (
@@ -158,13 +156,13 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                     className="cel-input cel-input--inline"
                     value={partnerName}
                     onChange={(e) => setPartnerName(e.target.value)}
-                    placeholder={t('celestial.rsvp.partner_placeholder')}
+                    placeholder="Numele partenerului"
                   />
                 )}
               </div>
 
               <div className={`cel-field ${errors.menu ? 'cel-field--error' : ''}`}>
-                <label className="cel-label">{t('celestial.rsvp.menu_label')}</label>
+                <label className="cel-label">Preferință meniu *</label>
                 <div className="cel-toggle-row">
                   {menuChoices.map((choice) => (
                     <button
@@ -229,7 +227,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
               className="cel-textarea"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Un mesaj pentru miri sau întrebări"
+              placeholder={attending === 'no' ? 'Mesaj pentru miri' : 'Un mesaj pentru miri sau întrebări'}
               rows={4}
             />
           </div>
@@ -259,7 +257,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                   disabled={submitting}
                   onClick={() => handleSubmit('ACCEPTED')}
                 >
-                  {submitting ? t('celestial.rsvp.submitting') : t('celestial.rsvp.submit_yes')}
+                  {submitting ? 'Se trimite...' : 'Confirmă participarea'}
                 </button>
               )}
               {attending === 'no' && (
@@ -269,7 +267,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                   disabled={submitting}
                   onClick={() => handleSubmit('DECLINED')}
                 >
-                  {submitting ? t('celestial.rsvp.submitting') : t('celestial.rsvp.submit_no')}
+                  {submitting ? 'Se trimite...' : 'Trimite răspuns'}
                 </button>
               )}
             </div>
