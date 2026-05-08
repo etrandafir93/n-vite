@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function AlexandraRaduSidebar({ extraNavItems = [] }) {
+export default function AlexandraRaduSidebar({ ourStoryNavItem = null, extraNavItems = [] }) {
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('acasa')
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['acasa', 'noi-doi', 'eveniment', 'unde-cand', ...extraNavItems.map(i => i.id), 'confirmare']
+      const ourStoryIds = ourStoryNavItem ? [ourStoryNavItem.id] : []
+      const sections = ['acasa', 'noi-doi', ...ourStoryIds, 'unde-cand', ...extraNavItems.map(i => i.id), 'confirmare']
 
       for (const id of sections) {
         const element = document.getElementById(id)
@@ -49,12 +50,14 @@ export default function AlexandraRaduSidebar({ extraNavItems = [] }) {
         >
           {t('celestial.nav.couple')}
         </button>
-        <button
-          className={`cel-sidebar__nav-item ${activeSection === 'eveniment' ? 'active' : ''}`}
-          onClick={() => scrollToSection('eveniment')}
-        >
-          {t('celestial.nav.event')}
-        </button>
+        {ourStoryNavItem && (
+          <button
+            className={`cel-sidebar__nav-item ${activeSection === ourStoryNavItem.id ? 'active' : ''}`}
+            onClick={() => scrollToSection(ourStoryNavItem.id)}
+          >
+            {ourStoryNavItem.label}
+          </button>
+        )}
         <button
           className={`cel-sidebar__nav-item ${activeSection === 'unde-cand' ? 'active' : ''}`}
           onClick={() => scrollToSection('unde-cand')}

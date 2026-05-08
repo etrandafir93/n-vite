@@ -21,7 +21,6 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomImageUr
             <h3 className="cel-couple__name">
               {groomName} <span className="cel-couple__heart">♡</span>
             </h3>
-            <p className="cel-couple__role">{t('celestial.couple.groom_role')}</p>
             <p className="cel-couple__quote">
               {t('celestial.couple.groom_quote')}
             </p>
@@ -38,7 +37,6 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomImageUr
             <h3 className="cel-couple__name">
               {brideName} <span className="cel-couple__heart">♡</span>
             </h3>
-            <p className="cel-couple__role">{t('celestial.couple.bride_role')}</p>
             <p className="cel-couple__quote">
               {t('celestial.couple.bride_quote')}
             </p>

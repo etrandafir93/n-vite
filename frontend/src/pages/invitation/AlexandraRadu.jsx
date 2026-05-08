@@ -116,7 +116,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
 
   const EXTENDED_SECTION_LABELS = {
     GIFT_REGISTRY: 'Gift Registry',
-    OUR_STORY: 'Our Story',
+    OUR_STORY: 'Povestea noastră',
     WEDDING_PARTY: 'Wedding Party',
     FAQ: 'FAQ',
     TRANSPORT: 'Transport',
@@ -129,7 +129,10 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
     COUPLE_QUOTE: 'Couple Quote',
   }
 
-  const extendedSections = (invitation.sections || []).filter(s => EXTENDED_SECTION_LABELS[s.type])
+  const allExtendedSections = (invitation.sections || []).filter(s => EXTENDED_SECTION_LABELS[s.type])
+  const ourStorySection = allExtendedSections.find(s => s.type === 'OUR_STORY')
+  const extendedSections = allExtendedSections.filter(s => s.type !== 'OUR_STORY')
+  const ourStoryNavItem = ourStorySection ? { id: 'ext-our-story', label: ourStorySection.title || EXTENDED_SECTION_LABELS['OUR_STORY'] } : null
   const extraNavItems = extendedSections.map(s => ({
     id: `ext-${s.type.toLowerCase().replace(/_/g, '-')}`,
     label: s.title || EXTENDED_SECTION_LABELS[s.type],
@@ -147,6 +150,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
         groomName={invitation.groomName}
         brideName={invitation.brideName}
         eventDate={invitation.eventDate}
+        ourStoryNavItem={ourStoryNavItem}
         extraNavItems={extraNavItems}
       />}
 
@@ -169,16 +173,30 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
           godparents={invitation.godparents}
         />
 
-        <section id="eveniment" className="cel-section cel-story">
-          <div className="cel-section__inner">
-            <h2 className="cel-section__title">Povestea noastră</h2>
-            <div className="cel-story__content">
-              <p className="cel-story__text">
-                {t('celestial.story.text')}
-              </p>
+        {ourStorySection && (
+          <section id="ext-our-story" className="cel-section cel-story">
+            <div className="cel-section__inner">
+              <h2 className="cel-section__title" style={{ textAlign: 'center', marginBottom: '2rem' }}>{ourStoryNavItem.label}</h2>
+              <div className="cel-story__content">
+                {ourStorySection.imageUrl && (
+                  <img
+                    src={ourStorySection.imageUrl}
+                    alt={ourStoryNavItem.label}
+                    style={{ width: '100%', borderRadius: '14px', marginBottom: '1.25rem', objectFit: 'cover' }}
+                  />
+                )}
+                {ourStorySection.content && (
+                  <p className="cel-story__text">{ourStorySection.content}</p>
+                )}
+                {ourStorySection.linkUrl && (
+                  <a href={ourStorySection.linkUrl} target="_blank" rel="noreferrer" style={{ color: '#8a6742', fontWeight: 600 }}>
+                    {t('guest_invitation.open_link')}
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <AlexandraRaduEvents
           eventDate={invitation.eventDate}
