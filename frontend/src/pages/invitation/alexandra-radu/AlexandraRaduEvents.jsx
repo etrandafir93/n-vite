@@ -31,7 +31,6 @@ export default function AlexandraRaduEvents({
           {ceremonyVenue && (
             <div className="cel-event-card">
               {ceremonyPhotoUrl && <img src={ceremonyPhotoUrl} alt={ceremonyVenue} className="cel-event-card__photo" />}
-              <div className="cel-event-card__icon">💒</div>
               <h3 className="cel-event-card__title">Ceremonia</h3>
               <p className="cel-event-card__venue">{ceremonyVenue}</p>
               {ceremonyAddress && ceremonyAddress !== ceremonyVenue && (
@@ -51,7 +50,6 @@ export default function AlexandraRaduEvents({
           {receptionVenue && (
             <div className="cel-event-card">
               {receptionPhotoUrl && <img src={receptionPhotoUrl} alt={receptionVenue} className="cel-event-card__photo" />}
-              <div className="cel-event-card__icon">🥂</div>
               <h3 className="cel-event-card__title">Petrecerea</h3>
               <p className="cel-event-card__venue">{receptionVenue}</p>
               {receptionAddress && receptionAddress !== receptionVenue && (
