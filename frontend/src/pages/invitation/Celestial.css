@@ -1105,4 +1105,8 @@
   .cel-hero__content--ar {
     padding-bottom: 3vh;
   }
+
+  .cel-page--ar .cel-hero {
+    height: 100dvh;
+  }
 }
