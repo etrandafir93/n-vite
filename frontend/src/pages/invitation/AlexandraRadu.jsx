@@ -9,6 +9,50 @@ import AlexandraRaduRsvp from './alexandra-radu/AlexandraRaduRsvp'
 import EnvelopeIntro, { useEnvelopePhase } from './EnvelopeIntro'
 import './Celestial.css'
 
+const FLORAL_COLOR = '#c8849a'
+const FLORAL_OPACITY = 0.28
+
+function FloralCorner({ style }) {
+  return (
+    <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', ...style }}>
+      <g stroke={FLORAL_COLOR} strokeLinecap="round" strokeLinejoin="round" opacity={FLORAL_OPACITY}>
+        <ellipse cx="28" cy="28" rx="13" ry="8" strokeWidth="1"/>
+        <ellipse cx="28" cy="28" rx="13" ry="8" strokeWidth="1" transform="rotate(45 28 28)"/>
+        <ellipse cx="28" cy="28" rx="13" ry="8" strokeWidth="1" transform="rotate(90 28 28)"/>
+        <ellipse cx="28" cy="28" rx="13" ry="8" strokeWidth="1" transform="rotate(135 28 28)"/>
+        <ellipse cx="28" cy="28" rx="8" ry="5" strokeWidth="0.8" transform="rotate(22 28 28)"/>
+        <ellipse cx="28" cy="28" rx="8" ry="5" strokeWidth="0.8" transform="rotate(67 28 28)"/>
+        <circle cx="28" cy="28" r="4" fill={FLORAL_COLOR} stroke="none" opacity="0.3"/>
+        <path d="M41 32 C58 27 78 25 100 25 C122 24 143 22 156 17" strokeWidth="0.9"/>
+        <path d="M32 41 C27 58 25 78 25 100 C24 122 22 143 17 156" strokeWidth="0.9"/>
+        <ellipse cx="76" cy="25" rx="3.5" ry="7.5" strokeWidth="0.8" transform="rotate(-5 76 25)"/>
+        <ellipse cx="106" cy="25" rx="3.5" ry="6.5" strokeWidth="0.8"/>
+        <ellipse cx="103" cy="21" rx="2.5" ry="4.5" strokeWidth="0.7" transform="rotate(-18 103 21)"/>
+        <circle cx="140" cy="19" r="2.5" strokeWidth="0.8"/>
+        <circle cx="148" cy="16" r="1.8" strokeWidth="0.7"/>
+        <circle cx="144" cy="12" r="1.8" strokeWidth="0.7"/>
+        <ellipse cx="25" cy="76" rx="7.5" ry="3.5" strokeWidth="0.8" transform="rotate(85 25 76)"/>
+        <ellipse cx="25" cy="106" rx="6.5" ry="3.5" strokeWidth="0.8" transform="rotate(90 25 106)"/>
+        <ellipse cx="21" cy="103" rx="4.5" ry="2.5" strokeWidth="0.7" transform="rotate(72 21 103)"/>
+        <circle cx="19" cy="140" r="2.5" strokeWidth="0.8"/>
+        <circle cx="16" cy="148" r="1.8" strokeWidth="0.7"/>
+        <circle cx="12" cy="144" r="1.8" strokeWidth="0.7"/>
+      </g>
+    </svg>
+  )
+}
+
+function FloralCornerOverlay() {
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 51, pointerEvents: 'none', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0 }}><FloralCorner /></div>
+      <div style={{ position: 'absolute', top: 0, right: 0 }}><FloralCorner style={{ transform: 'scaleX(-1)' }} /></div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0 }}><FloralCorner style={{ transform: 'scaleY(-1)' }} /></div>
+      <div style={{ position: 'absolute', bottom: 0, right: 0 }}><FloralCorner style={{ transform: 'scale(-1,-1)' }} /></div>
+    </div>
+  )
+}
+
 const AR_ENVELOPE_VARS = {
   '--ti-surface': '#fffaf8',
   '--ti-bg': '#fbeef2',
@@ -94,7 +138,10 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
   return (
     <div className="cel-page cel-page--ar">
       {phase !== 'open' && (
-        <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={AR_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={invitation.eventDate ? new Date(invitation.eventDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''} />
+        <>
+          <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={AR_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={invitation.eventDate ? new Date(invitation.eventDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''} />
+          <FloralCornerOverlay />
+        </>
       )}
       {phase === 'open' && <AlexandraRaduSidebar
         groomName={invitation.groomName}
