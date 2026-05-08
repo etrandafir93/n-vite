@@ -132,7 +132,7 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
   const allExtendedSections = (invitation.sections || []).filter(s => EXTENDED_SECTION_LABELS[s.type])
   const ourStorySection = allExtendedSections.find(s => s.type === 'OUR_STORY')
   const extendedSections = allExtendedSections.filter(s => s.type !== 'OUR_STORY')
-  const ourStoryNavItem = ourStorySection ? { id: 'ext-our-story', label: ourStorySection.title || EXTENDED_SECTION_LABELS['OUR_STORY'] } : null
+  const ourStoryNavItem = ourStorySection ? { id: 'ext-our-story', label: 'Povestea noastră' } : null
   const extraNavItems = extendedSections.map(s => ({
     id: `ext-${s.type.toLowerCase().replace(/_/g, '-')}`,
     label: s.title || EXTENDED_SECTION_LABELS[s.type],

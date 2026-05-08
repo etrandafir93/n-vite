@@ -21,7 +21,6 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomParents
             <h3 className="cel-couple__name">
               {groomName} <span className="cel-couple__heart">♡</span>
             </h3>
-            {groomParents && <p className="cel-couple__parents">{groomParents}</p>}
             <p className="cel-couple__quote">
               {t('celestial.couple.groom_quote')}
             </p>
@@ -38,17 +37,27 @@ export default function AlexandraRaduCouple({ groomName, brideName, groomParents
             <h3 className="cel-couple__name">
               {brideName} <span className="cel-couple__heart">♡</span>
             </h3>
-            {brideParents && <p className="cel-couple__parents">{brideParents}</p>}
             <p className="cel-couple__quote">
               {t('celestial.couple.bride_quote')}
             </p>
           </div>
         </div>
 
-        {godparents && (
-          <div className="cel-godparents">
-            <h3 className="cel-godparents__title">{t('celestial.couple.godparents_title')}</h3>
-            <p className="cel-godparents__names">{godparents}</p>
+        {(groomParents || brideParents || godparents) && (
+          <div className="cel-ar-family">
+            {(groomParents || brideParents) && (
+              <div className="cel-ar-family__block">
+                <p className="cel-ar-family__intro">Alături de părinții care ne-au călăuzit pașii în viață,</p>
+                {groomParents && <p className="cel-ar-family__names">{groomParents}</p>}
+                {brideParents && <p className="cel-ar-family__names">{brideParents}</p>}
+              </div>
+            )}
+            {godparents && (
+              <div className="cel-ar-family__block">
+                <p className="cel-ar-family__intro">Sub ocrotirea nașilor noștri dragi,</p>
+                <p className="cel-ar-family__names">{godparents}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
