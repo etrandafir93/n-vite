@@ -160,6 +160,15 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
           receptionVenue={invitation.receptionVenue}
         />
 
+        <AlexandraRaduCouple
+          groomName={invitation.groomName}
+          brideName={invitation.brideName}
+          groomImageUrl={invitation.groomImageUrl}
+          brideImageUrl={invitation.brideImageUrl}
+          backgroundImageUrl={invitation.backgroundImageUrl}
+          godparents={invitation.godparents}
+        />
+
         <section id="eveniment" className="cel-section cel-story">
           <div className="cel-section__inner">
             <div className="cel-story__content">
@@ -169,15 +178,6 @@ export default function AlexandraRaduInvitation({ invitationRef, invitationData 
             </div>
           </div>
         </section>
-
-        <AlexandraRaduCouple
-          groomName={invitation.groomName}
-          brideName={invitation.brideName}
-          groomImageUrl={invitation.groomImageUrl}
-          brideImageUrl={invitation.brideImageUrl}
-          backgroundImageUrl={invitation.backgroundImageUrl}
-          godparents={invitation.godparents}
-        />
 
         <AlexandraRaduEvents
           eventDate={invitation.eventDate}

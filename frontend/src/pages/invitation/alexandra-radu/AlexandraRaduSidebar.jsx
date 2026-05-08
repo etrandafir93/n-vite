@@ -7,7 +7,7 @@ export default function AlexandraRaduSidebar({ extraNavItems = [] }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['acasa', 'eveniment', 'noi-doi', 'unde-cand', ...extraNavItems.map(i => i.id), 'confirmare']
+      const sections = ['acasa', 'noi-doi', 'eveniment', 'unde-cand', ...extraNavItems.map(i => i.id), 'confirmare']
 
       for (const id of sections) {
         const element = document.getElementById(id)
@@ -44,16 +44,16 @@ export default function AlexandraRaduSidebar({ extraNavItems = [] }) {
           {t('celestial.nav.home')}
         </button>
         <button
-          className={`cel-sidebar__nav-item ${activeSection === 'eveniment' ? 'active' : ''}`}
-          onClick={() => scrollToSection('eveniment')}
-        >
-          {t('celestial.nav.event')}
-        </button>
-        <button
           className={`cel-sidebar__nav-item ${activeSection === 'noi-doi' ? 'active' : ''}`}
           onClick={() => scrollToSection('noi-doi')}
         >
           {t('celestial.nav.couple')}
+        </button>
+        <button
+          className={`cel-sidebar__nav-item ${activeSection === 'eveniment' ? 'active' : ''}`}
+          onClick={() => scrollToSection('eveniment')}
+        >
+          {t('celestial.nav.event')}
         </button>
         <button
           className={`cel-sidebar__nav-item ${activeSection === 'unde-cand' ? 'active' : ''}`}
