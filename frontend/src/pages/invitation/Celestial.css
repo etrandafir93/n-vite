@@ -450,6 +450,7 @@
   border: 1px solid #d4cec4;
   border-radius: 8px;
   font-size: 1rem;
+  font-family: inherit;
   color: #2f2a24;
   background: #fafaf8;
   transition: border-color 0.2s ease;

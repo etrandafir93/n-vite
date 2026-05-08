@@ -2,6 +2,17 @@ import { useState } from 'react'
 
 const DEFAULT_MENU_OPTIONS = ['Carne', 'Pește', 'Vegetarian']
 
+const MENU_RO = {
+  'Meat': 'Carne',
+  'Fish': 'Pește',
+  'Vegetarian': 'Vegetarian',
+  'Vegan': 'Vegan',
+  'Chicken': 'Pui',
+  'Beef': 'Vită',
+  'Pork': 'Porc',
+}
+const menuLabel = (option) => MENU_RO[option] || option
+
 export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDeadline }) {
   const menuChoices = menuOptions?.length ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
@@ -171,7 +182,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                       className={`cel-toggle-btn ${menu === choice ? 'active' : ''}`}
                       onClick={() => setMenu(choice)}
                     >
-                      {choice}
+                      {menuLabel(choice)}
                     </button>
                   ))}
                 </div>
