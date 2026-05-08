@@ -95,7 +95,7 @@ export default function CelestialInvitation({ invitationRef, invitationData }) {
   return (
     <div className="cel-page">
       {phase !== 'open' && (
-        <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={CEL_ENVELOPE_VARS} />
+        <EnvelopeIntro phase={phase} onOpen={handleOpen} envelopeType={envelopeType} cssVars={CEL_ENVELOPE_VARS} letterText={`${invitation.groomName} & ${invitation.brideName}`} dateText={invitation.eventDate ? new Date(invitation.eventDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''} />
       )}
       <div className="cel-lang-selector-wrapper">
         <LanguageSelector />
