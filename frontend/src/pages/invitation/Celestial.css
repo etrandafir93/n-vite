@@ -324,12 +324,14 @@
 }
 
 .cel-event-card {
+  --cel-card-padding: 2rem;
   background: #fafaf8;
   border: 1px solid #e8e3dc;
   border-radius: 16px;
-  padding: 2rem;
+  padding: var(--cel-card-padding);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
 .cel-event-card:hover {
@@ -337,13 +339,9 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.cel-event-card {
-  overflow: hidden;
-}
-
 .cel-event-card__photo {
-  width: calc(100% + 4rem);
-  margin: -2rem -2rem 1.5rem;
+  width: calc(100% + (var(--cel-card-padding) * 2));
+  margin: calc(var(--cel-card-padding) * -1) calc(var(--cel-card-padding) * -1) 1.5rem;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 14px 14px 0 0;
@@ -782,7 +780,7 @@
   }
 
   .cel-event-card {
-    padding: 1.5rem;
+    --cel-card-padding: 1.5rem;
   }
 
   .cel-form {
