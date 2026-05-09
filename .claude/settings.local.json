@@ -45,9 +45,35 @@
       "Bash(pkill -f \"vite\")",
       "Bash(pkill -f \"npm run dev\")",
       "Bash(git add *)",
-      "Bash(git rebase *)"
+      "Bash(git rebase *)",
+      "Skill(telegram:configure)",
+      "Read(//c/Users/Emanuel/.claude/channels/telegram/**)",
+      "Skill(telegram:access)",
+      "WebFetch(domain:api.telegram.org)",
+      "Bash(bun --version)",
+      "PowerShell(bun *)",
+      "Bash(tasklist)",
+      "mcp__plugin_telegram_telegram__reply",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gcloud run *)",
+      "PowerShell(gcloud run services list *)",
+      "PowerShell(gcloud run services logs *)",
+      "PowerShell(gcloud beta run services logs tail *)",
+      "PowerShell(gcloud logging read *)"
     ],
     "deny": [],
     "ask": []
+  },
+  "enabledPlugins": {
+    "telegram@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
   }
 }

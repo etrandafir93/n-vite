@@ -1007,9 +1007,19 @@
   background: #ffffff;
 }
 
+.cel-page--ar .cel-events__grid {
+  grid-template-columns: 1fr;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
 .cel-page--ar .cel-event-card {
   background: #fff8f9;
   border-color: #f0d0d8;
+}
+
+.cel-page--ar .cel-event-card__photo {
+  object-position: center;
 }
 
 .cel-page--ar .cel-event-card__title {
