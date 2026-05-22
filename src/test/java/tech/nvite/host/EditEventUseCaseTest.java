@@ -32,7 +32,7 @@ class EditEventUseCaseTest {
 
   @Test
   void returnsEventReference() {
-    when(events.findOrThrow("anna-and-mark")).thenReturn(existingEvent("anna-and-mark"));
+    when(events.findEditableOrThrow("anna-and-mark")).thenReturn(existingEvent("anna-and-mark"));
     when(events.edit(any())).thenReturn("anna-and-mark");
 
     var ref = useCase.apply(minimalRequest("anna-and-mark", EventStatus.LIVE));
@@ -42,7 +42,7 @@ class EditEventUseCaseTest {
 
   @Test
   void savesUpdatedFields() {
-    when(events.findOrThrow("ref-1")).thenReturn(existingEvent("ref-1"));
+    when(events.findEditableOrThrow("ref-1")).thenReturn(existingEvent("ref-1"));
 
     useCase.apply(
         new EditEventUseCase.Request(
@@ -86,7 +86,7 @@ class EditEventUseCaseTest {
   @Test
   void preservesCreatedByAndCreatedFromExistingEvent() {
     var existing = existingEvent("ref-1");
-    when(events.findOrThrow("ref-1")).thenReturn(existing);
+    when(events.findEditableOrThrow("ref-1")).thenReturn(existing);
 
     useCase.apply(minimalRequest("ref-1", EventStatus.LIVE));
 
@@ -98,7 +98,7 @@ class EditEventUseCaseTest {
 
   @Test
   void canTransitionFromLiveToDraft() {
-    when(events.findOrThrow("ref-1")).thenReturn(existingEvent("ref-1"));
+    when(events.findEditableOrThrow("ref-1")).thenReturn(existingEvent("ref-1"));
 
     useCase.apply(minimalRequest("ref-1", EventStatus.DRAFT));
 
@@ -119,7 +119,7 @@ class EditEventUseCaseTest {
             .eventReference("ref-1")
             .createdBy("user-1")
             .build();
-    when(events.findOrThrow("ref-1")).thenReturn(existing);
+    when(events.findEditableOrThrow("ref-1")).thenReturn(existing);
 
     // Pass a request with explicit DRAFT status (null not possible due to @NonNull)
     useCase.apply(minimalRequest("ref-1", EventStatus.DRAFT));
@@ -131,7 +131,7 @@ class EditEventUseCaseTest {
 
   @Test
   void throwsWhenEventNotFound() {
-    when(events.findOrThrow("unknown")).thenThrow(new EventNotFoundException("unknown"));
+    when(events.findEditableOrThrow("unknown")).thenThrow(new EventNotFoundException("unknown"));
 
     assertThatThrownBy(() -> useCase.apply(minimalRequest("unknown", EventStatus.LIVE)))
         .isInstanceOf(EventNotFoundException.class);

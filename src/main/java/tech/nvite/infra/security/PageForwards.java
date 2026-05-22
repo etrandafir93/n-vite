@@ -32,6 +32,11 @@ class PageForwards {
     return "forward:/index.html";
   }
 
+  @GetMapping("/admin")
+  String adminDashboard() {
+    return "forward:/index.html";
+  }
+
   @GetMapping("/events/builder")
   String eventsBuilder() {
     return "forward:/index.html";

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import './EventsDashboard.css'
 
 function formatDate(iso) {
@@ -80,6 +80,13 @@ const ChartIcon = () => (
   </svg>
 )
 
+const ShieldIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 3l7 4v5c0 5-3.5 8.5-7 9-3.5-.5-7-4-7-9V7l7-4z" />
+    <path d="M9.5 12l1.5 1.5 3.5-3.5" />
+  </svg>
+)
+
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -134,6 +141,130 @@ function DeleteConfirmModal({ isOpen, onClose, onConfirm, eventName }) {
           </button>
           <button onClick={onConfirm} className="ev-modal__btn ev-modal__btn--danger">
             Delete Invitation
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AccessModal({ event, isOpen, onClose }) {
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [data, setData] = useState(null)
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!isOpen || !event?.canManageAccess) return
+
+    setLoading(true)
+    setError('')
+    fetch(`/api/events/${event.reference}/access`)
+      .then(r => {
+        if (!r.ok) throw new Error('Failed to load invitation access')
+        return r.json()
+      })
+      .then(setData)
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [isOpen, event])
+
+  const grant = async () => {
+    if (!email.trim()) return
+    setSaving(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/events/${event.reference}/access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), role: 'EDITOR' }),
+      })
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null)
+        throw new Error(payload?.error || 'Failed to grant access')
+      }
+      setData(await response.json())
+      setEmail('')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const revoke = async (targetEmail) => {
+    setSaving(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/events/${event.reference}/access?email=${encodeURIComponent(targetEmail)}`, {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null)
+        throw new Error(payload?.error || 'Failed to revoke access')
+      }
+      setData(await response.json())
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="ev-modal-overlay" onClick={onClose}>
+      <div className="ev-modal ev-access-modal" onClick={e => e.stopPropagation()}>
+        <div className="ev-modal__header">
+          <h3 className="ev-modal__title">Invitation Access</h3>
+        </div>
+        <div className="ev-modal__body">
+          <p className="ev-access-modal__owner">
+            Owner: <strong>{data?.ownerEmail || 'legacy owner record'}</strong>
+          </p>
+          {loading && <p className="ev-access-modal__muted">Loading access list…</p>}
+          {error && <p className="ev-access-modal__error">{error}</p>}
+          {!loading && data && (
+            <>
+              <div className="ev-access-modal__form">
+                <input
+                  className="ev-access-modal__input"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="partner@example.com"
+                />
+                <button onClick={grant} className="ev-modal__btn" disabled={saving}>
+                  Grant editor access
+                </button>
+              </div>
+              <div className="ev-access-modal__list">
+                {data.grants.length === 0 && (
+                  <p className="ev-access-modal__muted">No collaborator access granted yet.</p>
+                )}
+                {data.grants.map(grant => (
+                  <div key={grant.email} className="ev-access-modal__row">
+                    <div>
+                      <strong>{grant.email}</strong>
+                      <div className="ev-access-modal__meta">{grant.role}</div>
+                    </div>
+                    <button
+                      onClick={() => revoke(grant.email)}
+                      className="ev-modal__btn ev-modal__btn--danger"
+                      disabled={saving}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+        <div className="ev-modal__footer">
+          <button onClick={onClose} className="ev-modal__btn ev-modal__btn--cancel">
+            Close
           </button>
         </div>
       </div>
@@ -232,6 +363,7 @@ function EventCard({ event, onDelete, onEnable }) {
   const isDraft = event.status === 'DRAFT'
   const [shareOpen, setShareOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [accessModalOpen, setAccessModalOpen] = useState(false)
 
   const handleDeleteClick = () => {
     setDeleteModalOpen(true)
@@ -266,6 +398,9 @@ function EventCard({ event, onDelete, onEnable }) {
               {event.groomName} &amp; {event.brideName}
             </h3>
             {isDraft && <span className="ev-badge ev-badge--draft">Draft</span>}
+            {event.accessRole && event.accessRole !== 'OWNER' && (
+              <span className="ev-badge ev-badge--shared">{event.accessRole}</span>
+            )}
           </div>
           <p className="ev-card__date">{formatDate(event.dateTime)}</p>
           <span className={`ev-card__when${isPast ? ' ev-card__when--past' : ''}`}>
@@ -283,14 +418,16 @@ function EventCard({ event, onDelete, onEnable }) {
             <EyeIcon />
             <span className="ev-btn__label">Preview</span>
           </a>
-          <Link
-            to={`/events/builder?eventReference=${event.reference}`}
-            className="ev-btn"
-            title="Edit invitation"
-          >
-            <EditIcon />
-            <span className="ev-btn__label">Edit</span>
-          </Link>
+          {event.canEdit && (
+            <Link
+              to={`/events/builder?eventReference=${event.reference}`}
+              className="ev-btn"
+              title="Edit invitation"
+            >
+              <EditIcon />
+              <span className="ev-btn__label">Edit</span>
+            </Link>
+          )}
           {!isDraft && (
             <Link
               to={`/events/${event.reference}/dashboard`}
@@ -314,10 +451,22 @@ function EventCard({ event, onDelete, onEnable }) {
               onOpenChange={setShareOpen}
             />
           )}
-          <button onClick={handleDeleteClick} className="ev-btn ev-btn--danger" title="Delete invitation">
-            <TrashIcon />
-            <span className="ev-btn__label">Delete</span>
-          </button>
+          {event.canManageAccess && (
+            <button
+              onClick={() => setAccessModalOpen(true)}
+              className="ev-btn ev-btn--info"
+              title="Manage access"
+            >
+              <ShieldIcon />
+              <span className="ev-btn__label">Access</span>
+            </button>
+          )}
+          {event.canDelete && (
+            <button onClick={handleDeleteClick} className="ev-btn ev-btn--danger" title="Delete invitation">
+              <TrashIcon />
+              <span className="ev-btn__label">Delete</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -327,13 +476,291 @@ function EventCard({ event, onDelete, onEnable }) {
         onConfirm={handleDeleteConfirm}
         eventName={`${event.groomName} & ${event.brideName}`}
       />
+      <AccessModal
+        event={event}
+        isOpen={accessModalOpen}
+        onClose={() => setAccessModalOpen(false)}
+      />
+    </>
+  )
+}
+
+function AdminInvitationRow({ event, onAccessUpdated }) {
+  const ownerLabel = event.ownerEmail || 'Legacy owner'
+  const editors = Array.isArray(event.editors) ? event.editors : []
+  const [email, setEmail] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const grantEditor = async () => {
+    if (!email.trim()) return
+    setSaving(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/events/${event.reference}/access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), role: 'EDITOR' }),
+      })
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) {
+        throw new Error(payload?.error || 'Failed to grant editor access')
+      }
+      onAccessUpdated(event.reference, payload)
+      setEmail('')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const revokeEditor = async (targetEmail) => {
+    setSaving(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/events/${event.reference}/access?email=${encodeURIComponent(targetEmail)}`, {
+        method: 'DELETE',
+      })
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) {
+        throw new Error(payload?.error || 'Failed to remove editor access')
+      }
+      onAccessUpdated(event.reference, payload)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <tr>
+      <td>
+        <div className="ev-admin-table__primary">{event.groomName} &amp; {event.brideName}</div>
+        <div className="ev-admin-table__secondary">{event.reference}</div>
+      </td>
+      <td>{formatDate(event.dateTime)}</td>
+      <td>
+        <div className="ev-admin-table__primary">{ownerLabel}</div>
+        {!event.ownerEmail && (
+          <div className="ev-admin-table__secondary">Needs email backfill</div>
+        )}
+      </td>
+      <td>
+        {editors.length > 0 ? (
+          <div className="ev-admin-table__chips">
+            {editors.map(editor => (
+              <button
+                key={editor}
+                type="button"
+                className="ev-admin-chip ev-admin-chip--removable"
+                onClick={() => revokeEditor(editor)}
+                disabled={saving}
+                title={`Remove ${editor}`}
+              >
+                <span>{editor}</span>
+                <span className="ev-admin-chip__remove">×</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span className="ev-admin-table__secondary">No editors</span>
+        )}
+        {event.canManageAccess && (
+          <div className="ev-admin-inline-access">
+            <input
+              className="ev-admin-inline-access__input"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Add editor email"
+            />
+            <button
+              type="button"
+              className="ev-btn ev-btn--info"
+              onClick={grantEditor}
+              disabled={saving || !email.trim()}
+            >
+              <span className="ev-btn__label">Grant</span>
+            </button>
+          </div>
+        )}
+        {error && <div className="ev-admin-inline-access__error">{error}</div>}
+      </td>
+      <td>
+        <span className={`ev-admin-pill ev-admin-pill--${(event.status || 'live').toLowerCase()}`}>
+          {event.status || 'LIVE'}
+        </span>
+      </td>
+      <td>
+        <span className={`ev-admin-pill ev-admin-pill--access ev-admin-pill--${(event.accessRole || 'owner').toLowerCase()}`}>
+          {event.accessRole || 'OWNER'}
+        </span>
+      </td>
+      <td>
+        <div className="ev-admin-table__actions">
+          <a
+            href={`/invitations/${event.reference}`}
+            target="_blank"
+            rel="noreferrer"
+            className="ev-btn"
+            title="Preview invitation"
+          >
+            <EyeIcon />
+            <span className="ev-btn__label">Preview</span>
+          </a>
+          {event.canEdit && (
+            <Link
+              to={`/events/builder?eventReference=${event.reference}`}
+              className="ev-btn"
+              title="Edit invitation"
+            >
+              <EditIcon />
+              <span className="ev-btn__label">Edit</span>
+            </Link>
+          )}
+          {event.canManageAccess && (
+            <span className="ev-admin-table__secondary">Inline access</span>
+          )}
+        </div>
+      </td>
+    </tr>
+  )
+}
+
+function AdminPanel({ events, authState, onEventsChange }) {
+  const [query, setQuery] = useState('')
+  const [accessFilter, setAccessFilter] = useState('ALL')
+  const [statusFilter, setStatusFilter] = useState('ALL')
+
+  const normalizedQuery = query.trim().toLowerCase()
+  const filteredEvents = events.filter(event => {
+    const matchesQuery =
+      !normalizedQuery
+      || `${event.groomName} ${event.brideName} ${event.reference}`.toLowerCase().includes(normalizedQuery)
+    const matchesAccess = accessFilter === 'ALL' || (event.accessRole || 'OWNER') === accessFilter
+    const matchesStatus = statusFilter === 'ALL' || (event.status || 'LIVE') === statusFilter
+    return matchesQuery && matchesAccess && matchesStatus
+  })
+
+  const totalCount = events.length
+  const ownerCount = events.filter(event => (event.accessRole || 'OWNER') === 'OWNER').length
+  const editorCount = events.filter(event => event.accessRole === 'EDITOR').length
+  const draftCount = events.filter(event => event.status === 'DRAFT').length
+
+  const handleAccessUpdated = (reference, payload) => {
+    const nextEditors = Array.isArray(payload?.grants) ? payload.grants.map(grant => grant.email) : []
+    onEventsChange(current =>
+      current.map(event =>
+        event.reference === reference
+          ? { ...event, ownerEmail: payload?.ownerEmail || event.ownerEmail, editors: nextEditors }
+          : event
+      )
+    )
+  }
+
+  return (
+    <>
+      <section className="ev-admin-hero">
+        <div>
+          <div className="ev-admin-hero__eyebrow">Admin Console</div>
+          <h1 className="ev-admin-hero__title">Invitation Control Center</h1>
+          <p className="ev-admin-hero__text">
+            Signed in as {authState.email || 'admin user'}. Search invitations, filter by access level, and grant collaborator permissions without leaving the list.
+          </p>
+        </div>
+        <Link to="/events" className="ev-admin-hero__link">
+          Back to My Workspace
+        </Link>
+      </section>
+
+      <section className="ev-admin-stats">
+        <div className="ev-admin-stat">
+          <div className="ev-admin-stat__label">Total Invitations</div>
+          <div className="ev-admin-stat__value">{totalCount}</div>
+        </div>
+        <div className="ev-admin-stat">
+          <div className="ev-admin-stat__label">Owner Access</div>
+          <div className="ev-admin-stat__value">{ownerCount}</div>
+        </div>
+        <div className="ev-admin-stat">
+          <div className="ev-admin-stat__label">Editor Access</div>
+          <div className="ev-admin-stat__value">{editorCount}</div>
+        </div>
+        <div className="ev-admin-stat">
+          <div className="ev-admin-stat__label">Drafts</div>
+          <div className="ev-admin-stat__value">{draftCount}</div>
+        </div>
+      </section>
+
+      <section className="ev-admin-toolbar">
+        <input
+          className="ev-admin-toolbar__search"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search by couple names or invitation reference"
+        />
+        <select
+          className="ev-admin-toolbar__select"
+          value={accessFilter}
+          onChange={e => setAccessFilter(e.target.value)}
+        >
+          <option value="ALL">All access</option>
+          <option value="OWNER">Owner</option>
+          <option value="EDITOR">Editor</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+        <select
+          className="ev-admin-toolbar__select"
+          value={statusFilter}
+          onChange={e => setStatusFilter(e.target.value)}
+        >
+          <option value="ALL">All status</option>
+          <option value="LIVE">Live</option>
+          <option value="DRAFT">Draft</option>
+        </select>
+      </section>
+
+      {filteredEvents.length === 0 ? (
+        <div className="ev-empty ev-empty--admin">
+          <p>No invitations match the current filters.</p>
+        </div>
+      ) : (
+        <section className="ev-admin-table-wrap">
+          <table className="ev-admin-table">
+            <thead>
+              <tr>
+                <th>Invitation</th>
+                <th>Date</th>
+                <th>Owner</th>
+                <th>Editors</th>
+                <th>Status</th>
+                <th>Access</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEvents.map(event => (
+                <AdminInvitationRow
+                  key={event.reference}
+                  event={event}
+                  onAccessUpdated={handleAccessUpdated}
+                />
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
     </>
   )
 }
 
 export default function EventsDashboard() {
+  const location = useLocation()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
+  const [authState, setAuthState] = useState({ loading: true, authenticated: false, role: null, email: null })
+  const isAdminPage = location.pathname === '/admin'
 
   useEffect(() => {
     fetch('/api/events')
@@ -343,6 +770,20 @@ export default function EventsDashboard() {
         setLoading(false)
       })
       .catch(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => {
+        setAuthState({
+          loading: false,
+          authenticated: !!data.authenticated,
+          role: data.role || null,
+          email: data.email || null,
+        })
+      })
+      .catch(() => setAuthState({ loading: false, authenticated: false, role: null, email: null }))
   }, [])
 
   const now = new Date()
@@ -380,20 +821,29 @@ export default function EventsDashboard() {
             n<span>·</span>vite
           </Link>
           <div className="ev-header__right">
-            <Link to="/events/builder" className="ev-new-btn">
-              + New Invitation
-            </Link>
+            {!isAdminPage && (
+              <Link to="/events/builder" className="ev-new-btn">
+                + New Invitation
+              </Link>
+            )}
           </div>
         </div>
       </header>
 
       <main className="ev-main container">
+        {isAdminPage ? (
+          <AdminPanel events={events} authState={authState} onEventsChange={setEvents} />
+        ) : (
+          <>
+
         {events.length === 0 && (
           <div className="ev-empty">
             <p>You haven&apos;t created any invitations yet.</p>
-            <Link to="/events/builder" className="ev-cta-btn">
-              Create your first invitation
-            </Link>
+            {!isAdminPage && (
+              <Link to="/events/builder" className="ev-cta-btn">
+                Create your first invitation
+              </Link>
+            )}
           </div>
         )}
 
@@ -418,11 +868,15 @@ export default function EventsDashboard() {
             </div>
           </section>
         )}
+          </>
+        )}
       </main>
 
-      <Link to="/events/builder" className="ev-fab" title="Create new invitation">
-        +
-      </Link>
+      {!isAdminPage && (
+        <Link to="/events/builder" className="ev-fab" title="Create new invitation">
+          +
+        </Link>
+      )}
 
     </div>
   )

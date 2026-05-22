@@ -20,7 +20,7 @@ public class SeeEventUseCase implements Function<String, SeeEventUseCase.EventFo
 
   @Override
   public EventFormResponse apply(String reference) {
-    var evt = events.findOrThrow(reference);
+    var evt = events.findEditableOrThrow(reference);
     return mapper.toFormResponse(evt);
   }
 

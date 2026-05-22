@@ -14,7 +14,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
-  const [authState, setAuthState] = useState({ loading: true, authenticated: false, name: null })
+  const [authState, setAuthState] = useState({ loading: true, authenticated: false, name: null, role: null })
   const langRef = useRef(null)
   const { t, i18n } = useTranslation()
 
@@ -35,10 +35,11 @@ export default function Navbar() {
           loading: false,
           authenticated: !!data.authenticated,
           name: data.name || null,
+          role: data.role || null,
         })
       })
       .catch(() => {
-        setAuthState({ loading: false, authenticated: false, name: null })
+        setAuthState({ loading: false, authenticated: false, name: null, role: null })
       })
   }, [])
 
@@ -118,7 +119,9 @@ export default function Navbar() {
           {authState.authenticated && (
             <>
               <span className="navbar__user">{authState.name}</span>
+              {authState.role === 'ADMIN' && <span className="navbar__role">Admin</span>}
               <a href="/events" className="navbar__login navbar__login--app">{t('nav.my_invitations')}</a>
+              {authState.role === 'ADMIN' && <a href="/admin" className="navbar__login navbar__login--app">Admin</a>}
               <a href="/events/builder" className="navbar__cta navbar__cta--app">{t('nav.create_invitation')}</a>
               <a href="/logout" className="navbar__login navbar__login--logout">{t('nav.log_out')}</a>
             </>

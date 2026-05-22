@@ -17,18 +17,34 @@ public class SeeUpcomingEventsUseCase
   @Override
   public List<EventListItem> get() {
     return events
-        .findAllForLoggedInUser()
+        .findAllAccessibleForCurrentUser()
         .map(
-            evt ->
+            access ->
                 new EventListItem(
-                    evt.groomName(),
-                    evt.brideName(),
-                    evt.eventDateTime(),
-                    evt.eventReference(),
-                    evt.status() != null ? evt.status().toString() : "LIVE"))
+                    access.event().groomName(),
+                    access.event().brideName(),
+                    access.event().eventDateTime(),
+                    access.event().eventReference(),
+                    access.event().status() != null ? access.event().status().toString() : "LIVE",
+                    access.ownerEmail(),
+                    access.editors(),
+                    access.accessRole(),
+                    access.canEdit(),
+                    access.canDelete(),
+                    access.canManageAccess()))
         .toList();
   }
 
   public record EventListItem(
-      String groomName, String brideName, Instant dateTime, String reference, String status) {}
+      String groomName,
+      String brideName,
+      Instant dateTime,
+      String reference,
+      String status,
+      String ownerEmail,
+      java.util.List<String> editors,
+      String accessRole,
+      boolean canEdit,
+      boolean canDelete,
+      boolean canManageAccess) {}
 }

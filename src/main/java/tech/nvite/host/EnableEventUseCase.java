@@ -17,7 +17,7 @@ public class EnableEventUseCase implements Function<String, String> {
   @Override
   public String apply(String eventReference) {
     log.info("Enabling event {}", eventReference);
-    var existing = events.findOrThrow(eventReference);
+    var existing = events.findEditableOrThrow(eventReference);
     events.edit(existing.withStatus(EventStatus.LIVE));
     log.info("Event enabled {}", eventReference);
     return eventReference;

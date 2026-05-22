@@ -89,6 +89,7 @@ class CreateEventUseCaseTest {
     assertThat(saved.theme()).isEqualTo("classic");
     assertThat(saved.status()).isEqualTo(EventStatus.LIVE);
     assertThat(saved.createdBy()).isEqualTo("user-123");
+    assertThat(saved.ownerEmail()).isEqualTo("host@example.com");
   }
 
   @Test

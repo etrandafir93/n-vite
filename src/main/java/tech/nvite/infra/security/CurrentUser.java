@@ -1,5 +1,6 @@
 package tech.nvite.infra.security;
 
+import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,10 @@ public class CurrentUser {
   }
 
   public record User(String id, String email) {
+    public String normalizedEmail() {
+      return email == null ? null : email.trim().toLowerCase(Locale.ROOT);
+    }
+
     @Override
     public String toString() {
       return email.split("@")[0];

@@ -28,7 +28,7 @@ public class SeeEventDashboardUseCase
 
   @Override
   public EventStats apply(String eventReference) {
-    var event = events.findOrThrow(eventReference);
+    var event = events.findViewableOrThrow(eventReference);
 
     var visitList =
         visits

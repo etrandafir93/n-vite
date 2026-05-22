@@ -45,7 +45,7 @@ public class ExportGuestListUseCase
 
   @Override
   public ExportResult apply(String eventReference) {
-    var event = events.findOrThrow(eventReference);
+    var event = events.findViewableOrThrow(eventReference);
     var allRsvps = rsvps.findAllByEventReference(eventReference);
 
     try (Workbook workbook = new XSSFWorkbook()) {

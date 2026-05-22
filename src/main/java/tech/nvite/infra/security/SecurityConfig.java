@@ -17,15 +17,16 @@ class SecurityConfig {
             auth ->
                 auth.requestMatchers("/actuator/**")
                     .permitAll()
+                    .requestMatchers("/api/auth/me", "/api/invitations/**")
+                    .permitAll()
                     .requestMatchers("/api/**")
-                    .permitAll() // temp workaround to start api testing sooner
+                    .authenticated()
                     .requestMatchers(
                         "/",
                         "/index.html",
                         "/login",
                         "/invitations/**",
                         "/invitation/**",
-                        "/events/**",
                         "/icons/**",
                         "/css/**",
                         "/js/**",

@@ -82,6 +82,7 @@ class EventTest {
     assertThat(event.theme()).isEqualTo("classic");
     assertThat(event.status()).isEqualTo(EventStatus.LIVE);
     assertThat(event.createdBy()).isEqualTo("user-1");
+    assertThat(event.ownerEmail()).isNull();
   }
 
   @Test

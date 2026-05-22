@@ -3,6 +3,10 @@ google:
   maps:
     api-key: ${GOOGLE_MAPS_API_KEY:}
 
+app:
+  security:
+    admin-emails: ${ADMIN_EMAILS:}
+
 logging:
   level:
     org.springdoc: DEBUG

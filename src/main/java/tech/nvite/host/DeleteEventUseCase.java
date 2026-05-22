@@ -18,7 +18,7 @@ public class DeleteEventUseCase implements Consumer<DeleteEventUseCase.Request> 
   @Override
   public void accept(DeleteEventUseCase.Request req) {
     log.info("Deleting event {}", req);
-    var event = events.findOrThrow(req.eventReference());
+    var event = events.findDeletableOrThrow(req.eventReference());
 
     events.delete(req.eventReference());
 

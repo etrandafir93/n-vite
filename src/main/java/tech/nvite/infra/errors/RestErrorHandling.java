@@ -25,6 +25,13 @@ public class RestErrorHandling {
     return new ResponseEntity<>(new ErrorResponse(ex), HttpStatus.UNAUTHORIZED);
   }
 
+  @ExceptionHandler(ForbiddenOperationException.class)
+  ResponseEntity<ErrorResponse> handleForbiddenOperationException(
+      ForbiddenOperationException ex, WebRequest __) {
+    log.error("Forbidden operation: {}", ex.getMessage());
+    return new ResponseEntity<>(new ErrorResponse(ex), HttpStatus.FORBIDDEN);
+  }
+
   @ExceptionHandler(RuntimeException.class)
   ResponseEntity<ErrorResponse> handleRuntimeExceptions(RuntimeException ex, WebRequest __) {
     log.error("Internal server error: {}", ex.getMessage(), ex);

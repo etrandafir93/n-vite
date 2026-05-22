@@ -56,6 +56,7 @@ public class CreateEventUseCase implements Function<CreateEventUseCase.Request, 
 				.brideImageUrl(req.brideImageUrl())
             .eventReference(eventReference)
             .createdBy(currentUser.get().id())
+            .ownerEmail(currentUser.get().normalizedEmail())
             .build();
 
     events.create(evt);

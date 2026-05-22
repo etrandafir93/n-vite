@@ -26,7 +26,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
   @Override
   public String apply(EditEventUseCase.Request req) {
     log.info("Editing event {}", req.eventReference());
-    var existing = events.findOrThrow(req.eventReference());
+    var existing = events.findEditableOrThrow(req.eventReference());
 
     var evt =
         Event.builder()
@@ -54,6 +54,7 @@ public class EditEventUseCase implements Function<EditEventUseCase.Request, Stri
 				.groomImageUrl(req.groomImageUrl()).brideImageUrl(req.brideImageUrl())
             .eventReference(req.eventReference())
             .createdBy(existing.createdBy())
+            .ownerEmail(existing.ownerEmail())
             .created(existing.created())
             .build();
 

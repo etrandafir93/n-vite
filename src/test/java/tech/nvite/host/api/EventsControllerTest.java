@@ -68,7 +68,17 @@ class EventsControllerTest {
         .thenReturn(
             List.of(
                 new SeeUpcomingEventsUseCase.EventListItem(
-                    "Mark", "Anna", DATE, "anna-and-mark", "LIVE")));
+                    "Mark",
+                    "Anna",
+                    DATE,
+                    "anna-and-mark",
+                    "LIVE",
+                    "owner@example.com",
+                    List.of("editor@example.com"),
+                    "OWNER",
+                    true,
+                    true,
+                    false)));
 
     mvc.perform(get("/api/events"))
         .andExpect(status().isOk())
