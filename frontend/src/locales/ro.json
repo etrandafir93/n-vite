@@ -327,7 +327,8 @@
     "more_details": "Mai multe detalii",
     "open_link": "Deschide link",
     "loading": "Se incarca...",
-    "not_found": "Invitatia nu a fost gasita"
+    "not_found": "Invitatia nu a fost gasita",
+    "add_to_calendar": "Adauga in Google Calendar"
   },
   "rsvp_common": {
     "submit_error": "Nu am putut salva raspunsul acum. Te rugam sa incerci din nou.",

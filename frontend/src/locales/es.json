@@ -327,7 +327,8 @@
     "more_details": "Mas detalles",
     "open_link": "Abrir enlace",
     "loading": "Cargando...",
-    "not_found": "Invitacion no encontrada"
+    "not_found": "Invitacion no encontrada",
+    "add_to_calendar": "Agregar a Google Calendar"
   },
   "rsvp_common": {
     "submit_error": "No pudimos guardar tu respuesta ahora. Intentalo de nuevo.",
