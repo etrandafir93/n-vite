@@ -98,7 +98,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                 ? 'Ne bucurăm că vei fi alături de noi în această zi specială!'
                 : 'Ne pare rău că nu poți participa. Îți mulțumim că ne-ai anunțat!'}
             </p>
-            {attending === 'yes' && <AddToCalendarButton invitation={invitation} />}
+            <AddToCalendarButton invitation={invitation} />
           </div>
         </div>
       </section>
@@ -112,6 +112,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
         {rsvpDeadline && (
           <p className="cel-rsvp__deadline">Te rugăm să confirmi până la {rsvpDeadline}</p>
         )}
+        <AddToCalendarButton invitation={invitation} />
 
         <div className="cel-form">
           <div className={`cel-field ${errors.guestName ? 'cel-field--error' : ''}`}>

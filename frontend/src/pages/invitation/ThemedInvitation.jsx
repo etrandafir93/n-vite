@@ -209,7 +209,6 @@ function RsvpForm({ invitationRef, menuOptions, theme, invitation }) {
             ? "We're thrilled you'll be joining us on this special day!"
             : "Thank you for letting us know."}
         </p>
-        {submittedAnswer === 'ACCEPTED' && <AddToCalendarButton invitation={invitation} />}
       </div>
     )
   }
@@ -494,6 +493,7 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
                 <div className="ti-title" style={{ justifyContent: 'center' }}>RSVP</div>
                 <h2 className="ti-rsvp__title">{theme.rsvp}</h2>
                 {invitation.rsvpDeadline && <p className="ti-rsvp__sub">Please respond by {invitation.rsvpDeadline}</p>}
+                <AddToCalendarButton invitation={invitation} />
               </div>
               <RsvpForm invitationRef={invitationRef || routeRef} menuOptions={invitation.menuOptions} theme={theme} invitation={invitation} />
             </>

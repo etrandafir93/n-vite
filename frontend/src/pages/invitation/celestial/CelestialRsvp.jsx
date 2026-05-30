@@ -89,7 +89,7 @@ export default function CelestialRsvp({ invitationRef, menuOptions, rsvpDeadline
                 ? t('celestial.rsvp.success_message_yes')
                 : t('celestial.rsvp.success_message_no')}
             </p>
-            {attending === 'yes' && <AddToCalendarButton invitation={invitation} />}
+            <AddToCalendarButton invitation={invitation} />
           </div>
         </div>
       </section>
@@ -103,6 +103,7 @@ export default function CelestialRsvp({ invitationRef, menuOptions, rsvpDeadline
         {rsvpDeadline && (
           <p className="cel-rsvp__deadline">{t('celestial.rsvp.deadline', { date: rsvpDeadline })}</p>
         )}
+        <AddToCalendarButton invitation={invitation} />
 
         <div className="cel-form">
           <div className={`cel-field ${errors.guestName ? 'cel-field--error' : ''}`}>
