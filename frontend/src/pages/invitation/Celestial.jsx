@@ -199,6 +199,7 @@ export default function CelestialInvitation({ invitationRef, invitationData }) {
             invitationRef={invitationRef || routeRef}
             menuOptions={invitation.menuOptions}
             rsvpDeadline={invitation.rsvpDeadline}
+            invitation={invitation}
           />
         )}
       </main>

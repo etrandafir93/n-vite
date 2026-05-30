@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import AddToCalendarButton from '../invitation/AddToCalendarButton'
 import ClassicInvitation from '../invitation/Classic'
 import RomanticInvitation from '../invitation/Romantic'
 import ModernInvitation from '../invitation/Modern'
@@ -147,7 +146,6 @@ export default function Invitation() {
     <>
       <ThemeComponent invitationRef={ref} invitationData={invitation} />
       {!themeHandlesExtendedSections && <ExtendedSections sections={invitation.sections} t={t} />}
-      <AddToCalendarButton invitation={invitation} />
     </>
   )
 }

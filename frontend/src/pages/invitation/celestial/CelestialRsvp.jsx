@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import AddToCalendarButton from '../AddToCalendarButton'
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
-export default function CelestialRsvp({ invitationRef, menuOptions, rsvpDeadline }) {
+export default function CelestialRsvp({ invitationRef, menuOptions, rsvpDeadline, invitation }) {
   const { t } = useTranslation()
   const menuChoices = menuOptions?.length ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
@@ -88,6 +89,7 @@ export default function CelestialRsvp({ invitationRef, menuOptions, rsvpDeadline
                 ? t('celestial.rsvp.success_message_yes')
                 : t('celestial.rsvp.success_message_no')}
             </p>
+            {attending === 'yes' && <AddToCalendarButton invitation={invitation} />}
           </div>
         </div>
       </section>

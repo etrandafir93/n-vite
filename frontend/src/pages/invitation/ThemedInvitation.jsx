@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCountdown } from './useCountdown'
 import EnvelopeIntro, { useEnvelopePhase } from './EnvelopeIntro'
+import AddToCalendarButton from './AddToCalendarButton'
 
 const DEFAULT_MENU_OPTIONS = ['Meat', 'Fish', 'Vegetarian']
 
@@ -120,7 +121,7 @@ function AccommodationCard({ hotel }) {
   )
 }
 
-function RsvpForm({ invitationRef, menuOptions, theme }) {
+function RsvpForm({ invitationRef, menuOptions, theme, invitation }) {
   const { t } = useTranslation()
   const menuChoices = menuOptions?.length ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
@@ -137,6 +138,8 @@ function RsvpForm({ invitationRef, menuOptions, theme }) {
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submittedAnswer, setSubmittedAnswer] = useState(null)
 
   const validate = () => {
     const nextErrors = {}
@@ -184,13 +187,31 @@ function RsvpForm({ invitationRef, menuOptions, theme }) {
       })
       if (!response.ok) throw new Error('Failed to submit RSVP')
       resetForm()
-      setNotes(answer === 'DECLINED' ? "We'll miss you." : 'Thank you, your response has been saved.')
+      setSubmittedAnswer(answer)
+      setSubmitted(true)
     } catch (error) {
       console.error('Error submitting RSVP:', error)
       setSubmitError(t('rsvp_common.submit_error'))
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (submitted) {
+    return (
+      <div className="ti-form" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✓</div>
+        <h3 style={{ margin: '0 0 0.5rem' }}>
+          {submittedAnswer === 'ACCEPTED' ? 'Thank you for confirming!' : "We'll miss you"}
+        </h3>
+        <p style={{ margin: '0 0 1.5rem', opacity: 0.75 }}>
+          {submittedAnswer === 'ACCEPTED'
+            ? "We're thrilled you'll be joining us on this special day!"
+            : "Thank you for letting us know."}
+        </p>
+        {submittedAnswer === 'ACCEPTED' && <AddToCalendarButton invitation={invitation} />}
+      </div>
+    )
   }
 
   return (
@@ -474,7 +495,7 @@ export default function ThemedInvitation({ themeKey = 'classic', invitationRef, 
                 <h2 className="ti-rsvp__title">{theme.rsvp}</h2>
                 {invitation.rsvpDeadline && <p className="ti-rsvp__sub">Please respond by {invitation.rsvpDeadline}</p>}
               </div>
-              <RsvpForm invitationRef={invitationRef || routeRef} menuOptions={invitation.menuOptions} theme={theme} />
+              <RsvpForm invitationRef={invitationRef || routeRef} menuOptions={invitation.menuOptions} theme={theme} invitation={invitation} />
             </>
           )}
         </div>

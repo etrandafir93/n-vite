@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import AddToCalendarButton from '../AddToCalendarButton'
 
 const DEFAULT_MENU_OPTIONS = ['Carne', 'Pește', 'Vegetarian']
 
@@ -13,7 +14,7 @@ const MENU_RO = {
 }
 const menuLabel = (option) => MENU_RO[option] || option
 
-export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDeadline }) {
+export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDeadline, invitation }) {
   const menuChoices = menuOptions?.length ? menuOptions : DEFAULT_MENU_OPTIONS
   const [guestName, setGuestName] = useState('')
   const [attending, setAttending] = useState(null)
@@ -97,6 +98,7 @@ export default function AlexandraRaduRsvp({ invitationRef, menuOptions, rsvpDead
                 ? 'Ne bucurăm că vei fi alături de noi în această zi specială!'
                 : 'Ne pare rău că nu poți participa. Îți mulțumim că ne-ai anunțat!'}
             </p>
+            {attending === 'yes' && <AddToCalendarButton invitation={invitation} />}
           </div>
         </div>
       </section>
